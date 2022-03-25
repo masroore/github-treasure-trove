@@ -1,0 +1,17 @@
+<script>
+
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+
+    xhr.addEventListener("readystatechange", function() {
+        if(this.readyState === 4) {
+            console.log(this.responseText);
+        }
+    });
+
+    xhr.open("post", "http://127.0.0.1:8000/user/login");
+    xhr.setRequestHeader("Accept", "application/json");
+    // xhr.setRequestHeader("Authorization", "Bearer 1|qxvaZoKNrSRvsVRLQ57yjNmrqCGoyaFIwdOM6e6V");
+
+    xhr.send();
+</script>

@@ -1,0 +1,80 @@
+[16-Jul-2021 03:59:50 UTC] PHP Deprecated:  Method ReflectionParameter::getClass() is deprecated in /home/onamhamy/public_html/account/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 873
+[16-Jul-2021 03:59:50 UTC] PHP Deprecated:  Method ReflectionParameter::getClass() is deprecated in /home/onamhamy/public_html/account/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 955
+[16-Jul-2021 03:59:50 UTC] PHP Deprecated:  Method ReflectionParameter::getClass() is deprecated in /home/onamhamy/public_html/account/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 873
+[16-Jul-2021 03:59:50 UTC] PHP Deprecated:  Method ReflectionParameter::getClass() is deprecated in /home/onamhamy/public_html/account/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 955
+[16-Jul-2021 03:59:50 UTC] PHP Fatal error:  Uncaught ErrorException: Method ReflectionParameter::getClass() is deprecated in /home/onamhamy/public_html/account/vendor/laravel/framework/src/Illuminate/Container/Container.php:873
+Stack trace:
+#0 /home/onamhamy/public_html/account/vendor/laravel/framework/src/Illuminate/Container/Container.php(873): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(8192, 'Method Reflecti...', '/home/onamhamy/...', 873)
+#1 /home/onamhamy/public_html/account/vendor/laravel/framework/src/Illuminate/Container/Container.php(836): Illuminate\Container\Container->resolveDependencies(Array)
+#2 /home/onamhamy/public_html/account/vendor/laravel/framework/src/Illuminate/Container/Container.php(687): Illuminate\Container\Container->build('App\\Exceptions\\...')
+#3 /home/onamhamy/public_html/account/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(796): Illuminate\Container\Container->resolve('App\\Exceptions\\...', Array, false)
+#4 /home/onamhamy/public_html/account/vendor/laravel/framework/src/Illuminate/Container/Container.php(265): Illuminate\Foundation\Application->resolve('App\\Exceptions\\...', Array, false)
+#5 /home/onamhamy/public_html/account/vendor/laravel/framework/src/Illuminate/Container/Container.php(801): Illuminate\Container\Container->Illuminate\Container\{closure}(Object(Illuminate\Foundation\Application), Array)
+#6 /home/onamhamy/public_html/account/vendor/laravel/framework/src/Illuminate/Container/Container.php(687): Illuminate\Container\Container->build(Object(Closure))
+#7 /home/onamhamy/public_html/account/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(796): Illuminate\Container\Container->resolve('Illuminate\\Cont...', Array, true)
+#8 /home/onamhamy/public_html/account/vendor/laravel/framework/src/Illuminate/Container/Container.php(633): Illuminate\Foundation\Application->resolve('Illuminate\\Cont...', Array)
+#9 /home/onamhamy/public_html/account/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(781): Illuminate\Container\Container->make('Illuminate\\Cont...', Array)
+#10 /home/onamhamy/public_html/account/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(164): Illuminate\Foundation\Application->make('Illuminate\\Cont...')
+#11 /home/onamhamy/public_html/account/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(119): Illuminate\Foundation\Bootstrap\HandleExceptions->getExceptionHandler()
+#12 /home/onamhamy/public_html/account/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(96): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse(Object(ErrorException))
+#13 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException(Object(ErrorException))
+#14 {main}
+  thrown in /home/onamhamy/public_html/account/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 873
+[16-Jul-2021 03:59:52 UTC] PHP Deprecated:  Method ReflectionParameter::getClass() is deprecated in /home/onamhamy/public_html/account/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 873
+[16-Jul-2021 03:59:52 UTC] PHP Deprecated:  Method ReflectionParameter::getClass() is deprecated in /home/onamhamy/public_html/account/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 955
+[16-Jul-2021 03:59:52 UTC] PHP Deprecated:  Method ReflectionParameter::getClass() is deprecated in /home/onamhamy/public_html/account/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 873
+[16-Jul-2021 03:59:52 UTC] PHP Deprecated:  Method ReflectionParameter::getClass() is deprecated in /home/onamhamy/public_html/account/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 955
+[16-Jul-2021 03:59:52 UTC] PHP Fatal error:  Uncaught ErrorException: Method ReflectionParameter::getClass() is deprecated in /home/onamhamy/public_html/account/vendor/laravel/framework/src/Illuminate/Container/Container.php:873
+Stack trace:
+#0 /home/onamhamy/public_html/account/vendor/laravel/framework/src/Illuminate/Container/Container.php(873): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(8192, 'Method Reflecti...', '/home/onamhamy/...', 873)
+#1 /home/onamhamy/public_html/account/vendor/laravel/framework/src/Illuminate/Container/Container.php(836): Illuminate\Container\Container->resolveDependencies(Array)
+#2 /home/onamhamy/public_html/account/vendor/laravel/framework/src/Illuminate/Container/Container.php(687): Illuminate\Container\Container->build('App\\Exceptions\\...')
+#3 /home/onamhamy/public_html/account/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(796): Illuminate\Container\Container->resolve('App\\Exceptions\\...', Array, false)
+#4 /home/onamhamy/public_html/account/vendor/laravel/framework/src/Illuminate/Container/Container.php(265): Illuminate\Foundation\Application->resolve('App\\Exceptions\\...', Array, false)
+#5 /home/onamhamy/public_html/account/vendor/laravel/framework/src/Illuminate/Container/Container.php(801): Illuminate\Container\Container->Illuminate\Container\{closure}(Object(Illuminate\Foundation\Application), Array)
+#6 /home/onamhamy/public_html/account/vendor/laravel/framework/src/Illuminate/Container/Container.php(687): Illuminate\Container\Container->build(Object(Closure))
+#7 /home/onamhamy/public_html/account/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(796): Illuminate\Container\Container->resolve('Illuminate\\Cont...', Array, true)
+#8 /home/onamhamy/public_html/account/vendor/laravel/framework/src/Illuminate/Container/Container.php(633): Illuminate\Foundation\Application->resolve('Illuminate\\Cont...', Array)
+#9 /home/onamhamy/public_html/account/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(781): Illuminate\Container\Container->make('Illuminate\\Cont...', Array)
+#10 /home/onamhamy/public_html/account/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(164): Illuminate\Foundation\Application->make('Illuminate\\Cont...')
+#11 /home/onamhamy/public_html/account/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(119): Illuminate\Foundation\Bootstrap\HandleExceptions->getExceptionHandler()
+#12 /home/onamhamy/public_html/account/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(96): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse(Object(ErrorException))
+#13 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException(Object(ErrorException))
+#14 {main}
+  thrown in /home/onamhamy/public_html/account/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 873
+[16-Jul-2021 04:11:25 UTC] PHP Fatal error:  Uncaught ErrorException: include(/home/onamhamy/public_html/account/vendor/composer/../symfony/http-foundation/Response.php): failed to open stream: No such file or directory in /home/onamhamy/public_html/account/vendor/composer/ClassLoader.php:478
+Stack trace:
+#0 /home/onamhamy/public_html/account/vendor/composer/ClassLoader.php(478): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(2, 'include(/home/o...', '/home/onamhamy/...', 478, Array)
+#1 /home/onamhamy/public_html/account/vendor/composer/ClassLoader.php(478): include()
+#2 /home/onamhamy/public_html/account/vendor/composer/ClassLoader.php(346): Composer\Autoload\includeFile('/home/onamhamy/...')
+#3 [internal function]: Composer\Autoload\ClassLoader->loadClass('Symfony\\Compone...')
+#4 /home/onamhamy/public_html/account/vendor/laravel/framework/src/Illuminate/Http/Response.php(14): spl_autoload_call('Symfony\\Compone...')
+#5 /home/onamhamy/public_html/account/vendor/composer/ClassLoader.php(478): include('/home/onamhamy/...')
+#6 /home/onamha in /home/onamhamy/public_html/account/vendor/composer/ClassLoader.php on line 478
+[04-Aug-2021 12:46:30 UTC] PHP Fatal error:  Namespace declaration statement has to be the very first statement or after any declare call in the script in /home/onamhamy/public_html/account/app/Http/Controllers/DocumentController.php on line 4
+[04-Aug-2021 12:46:31 UTC] PHP Fatal error:  Namespace declaration statement has to be the very first statement or after any declare call in the script in /home/onamhamy/public_html/account/app/Http/Controllers/DocumentController.php on line 4
+[04-Aug-2021 12:46:33 UTC] PHP Fatal error:  Namespace declaration statement has to be the very first statement or after any declare call in the script in /home/onamhamy/public_html/account/app/Http/Controllers/DocumentController.php on line 4
+[05-Aug-2021 18:26:38 UTC] PHP Deprecated:  Directive 'allow_url_include' is deprecated in Unknown on line 0
+[05-Aug-2021 18:26:39 UTC] PHP Deprecated:  Directive 'allow_url_include' is deprecated in Unknown on line 0
+[10-Sep-2021 12:41:55 UTC] PHP Deprecated:  Directive 'allow_url_include' is deprecated in Unknown on line 0
+[10-Sep-2021 12:42:00 UTC] PHP Deprecated:  Directive 'allow_url_include' is deprecated in Unknown on line 0
+[12-Sep-2021 19:42:05 UTC] PHP Deprecated:  Directive 'allow_url_include' is deprecated in Unknown on line 0
+[12-Sep-2021 19:42:07 UTC] PHP Deprecated:  Directive 'allow_url_include' is deprecated in Unknown on line 0
+[18-Sep-2021 03:33:13 UTC] PHP Deprecated:  Directive 'allow_url_include' is deprecated in Unknown on line 0
+[18-Sep-2021 03:33:13 UTC] PHP Deprecated:  Directive 'allow_url_include' is deprecated in Unknown on line 0
+[20-Sep-2021 20:33:47 UTC] PHP Deprecated:  Directive 'allow_url_include' is deprecated in Unknown on line 0
+[20-Sep-2021 20:33:48 UTC] PHP Deprecated:  Directive 'allow_url_include' is deprecated in Unknown on line 0
+[30-Sep-2021 20:35:22 UTC] PHP Deprecated:  Directive 'allow_url_include' is deprecated in Unknown on line 0
+[30-Sep-2021 20:35:26 UTC] PHP Deprecated:  Directive 'allow_url_include' is deprecated in Unknown on line 0
+[30-Sep-2021 21:53:38 UTC] PHP Deprecated:  Directive 'allow_url_include' is deprecated in Unknown on line 0
+[30-Sep-2021 21:53:39 UTC] PHP Deprecated:  Directive 'allow_url_include' is deprecated in Unknown on line 0
+[30-Sep-2021 21:57:58 UTC] PHP Deprecated:  Directive 'allow_url_include' is deprecated in Unknown on line 0
+[30-Sep-2021 21:57:59 UTC] PHP Deprecated:  Directive 'allow_url_include' is deprecated in Unknown on line 0
+[04-Oct-2021 20:06:28 UTC] PHP Deprecated:  Directive 'allow_url_include' is deprecated in Unknown on line 0
+[04-Oct-2021 20:06:29 UTC] PHP Deprecated:  Directive 'allow_url_include' is deprecated in Unknown on line 0
+[06-Oct-2021 19:59:07 UTC] PHP Deprecated:  Directive 'allow_url_include' is deprecated in Unknown on line 0
+[06-Oct-2021 19:59:07 UTC] PHP Deprecated:  Directive 'allow_url_include' is deprecated in Unknown on line 0
+[11-Oct-2021 19:18:52 UTC] PHP Deprecated:  Directive 'allow_url_include' is deprecated in Unknown on line 0
+[11-Oct-2021 19:18:53 UTC] PHP Deprecated:  Directive 'allow_url_include' is deprecated in Unknown on line 0
+[13-Oct-2021 12:48:33 UTC] PHP Deprecated:  Directive 'allow_url_include' is deprecated in Unknown on line 0
+[13-Oct-2021 12:48:33 UTC] PHP Deprecated:  Directive 'allow_url_include' is deprecated in Unknown on line 0

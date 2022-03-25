@@ -1,0 +1,272 @@
+/*--
+Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+--*/
+
+/* reset */
+
+/*-- main --*/
+.main-agile  {
+    width: 75%;
+    margin:40px auto 0;
+}
+/*-- title name --*/
+
+/*-- //title name --*/
+/*-- timer --*/
+.clock .column {
+    display: inline-block;
+    width: 14%;
+    margin:0 22px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.23);
+	-webkit-box-shadow: 0px 2px 15px -5px rgba(0,0,0,0.75);
+	-moz-box-shadow: 0px 2px 15px -5px rgba(0,0,0,0.75);
+	box-shadow: 0px 2px 15px -5px rgba(0,0,0,0.75);
+}
+.clock {
+    text-align: center;
+	margin:120px 0;
+}
+.timer {
+    font-size: 80px;
+    font-weight: 700;
+    display: inline-block;
+    vertical-align: top;
+    color: #fff;
+    letter-spacing: 8px;
+    padding: 13px 12px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/*-- //timer --*/
+/*-- form style --*/
+.subscribe h2 {
+    color: #fff;
+    font-size: 16px;
+    letter-spacing: 2px;
+	margin: 20px 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+
+/*--responsive--*/
+
+@media(max-width: 1440px){
+	.clock .column {
+		width: 16%;
+	}
+}
+@media(max-width: 1366px){
+	.contact-form {
+		width: 65%;
+	}
+}
+@media(max-width: 1280px){
+	.content h1 {
+		font-size: 52px;
+		letter-spacing: 4px;
+	}
+	p.para-w3ls {
+		font-size: 16px;
+	}
+	.clock .column {
+		width: 18%;
+	}
+	.timer {
+		font-size: 70px;
+	}
+	.text {
+		font-size: 13px;
+	}
+	.subscribe h2 {
+		font-size: 15px;
+	}
+	.clock {
+		margin: 100px 0;
+	}
+	p.copy_rights {
+		margin: 80px 0 50px;
+	}
+}
+@media(max-width: 1080px){
+	.main-agile  {
+		width: 85%;
+	}
+	.contact-form {
+		width: 70%;
+	}
+}
+@media(max-width: 991px){
+	.content h1 {
+		font-size: 50px;
+	}
+	.timer {
+		font-size: 65px;
+	}	
+}
+@media(max-width: 900px){
+	.content h1 {
+		font-size: 48px;
+		letter-spacing: 3px;
+	}
+	p.para-w3ls {
+		font-size: 15px;
+	}
+	.clock .column {
+		margin:0 16px;
+		width: 19%;
+	}
+}
+@media(max-width: 800px){
+	.content h1 {
+		font-size: 45px;
+		letter-spacing: 2px;
+	}
+	p.para-w3ls {
+		font-size: 14px;
+		letter-spacing: 4px;
+	}
+	.clock {
+		margin: 90px 0;
+	}
+	.timer {
+		font-size: 60px;
+		letter-spacing: 4px;
+	}
+	.contact-form {
+		width: 80%;
+	}
+	p.copy_rights {
+		font-size: 14px;
+	}
+}
+@media(max-width: 736px){
+	.main-agile  {
+		width: 100%;
+	}
+	.clock .column {
+		width: 19%;
+	}
+}
+@media(max-width: 667px){
+	.timer {
+		font-size: 56px;
+	}
+	.content h1 {
+		font-size: 42px;
+	}
+	.clock .column {
+		margin: 0 12px;
+	}
+}
+@media(max-width: 600px){
+	.content h1 {
+		font-size: 40px;
+	}
+	p.para-w3ls {
+		font-size: 13px;
+	}
+	.main-agile  {
+		margin: 30px auto 0;
+	}
+	.timer {
+		font-size: 53px;
+	}
+	.subscribe h2 {
+		font-size: 14px;
+	}
+	p.copy_rights {
+		margin: 70px 0 40px;
+		letter-spacing: 1px;
+	}
+	.clock {
+		margin: 78px 0;
+	}
+}
+@media(max-width: 480px){
+	.content h1 {
+		font-size: 36px;
+	}
+	p.para-w3ls {
+		font-size: 12px;
+		margin: 10px 0;
+		letter-spacing: 3px;
+	}
+	.timer {
+		font-size: 44px;
+	}
+	.clock .column {
+		width: 35%;
+	}
+	.column:nth-child(3), .column:nth-child(4) {
+		margin-top: 30px;
+	}
+	.clock {
+		margin: 50px 0 60px;
+	}
+	p.copy_rights {
+		margin: 50px 0 30px;
+		letter-spacing: 2px;
+		line-height: 1.9;
+	}
+	.subscribe h2 {
+		font-size: 13px;
+	}
+}
+@media(max-width: 440px){
+	.subscribe input[type="submit"] {
+		font-size: 14px;
+	}
+	.subscribe input[type="email"] {
+		font-size: 14px;
+	}
+	p.copy_rights {
+		font-size: 13px;
+	}
+}
+@media(max-width: 414px){
+	.contact-form {
+		width: 90%;
+	}
+	.content h1 {
+		font-size: 35px;
+		letter-spacing: 1px;
+	}
+}
+@media(max-width: 384px){
+	.content h1 {
+		font-size: 33px;
+	}
+	p.copy_rights {
+		letter-spacing: 1px;
+	}
+}
+@media(max-width: 375px){
+	p.copy_rights {
+		margin: 40px 0 30px;
+	}
+}
+@media(max-width: 320px){
+
+	.timer {
+		font-size: 40px;
+	}
+	
+	.clock .column {
+		width: 40%;
+		margin: 0 10px;
+	}
+	.subscribe h2 {
+		font-size: 12px;
+		letter-spacing: 1px;
+	}
+	.column:nth-child(3), .column:nth-child(4) {
+		margin-top: 20px;
+	}
+	
+}
+
+/*--//responsive--*/

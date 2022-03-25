@@ -1,0 +1,27 @@
+Resit clearance
+
+Graduating Students
+------------------------------------------
+
+select all from student info where level = 400
+
+user_id
+indexnumber
+level
+
+
+
+$indexnumber = GES3883993
+
+select * from Coursereg where level = 400 AND INDEX = $indexnumber
+
+
+
+
+
+
+
+
+
+
+
