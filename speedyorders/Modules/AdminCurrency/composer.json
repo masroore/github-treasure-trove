@@ -1,0 +1,25 @@
+{
+    "name": "nwidart/admincurrency",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\AdminCurrency\\Providers\\AdminCurrencyServiceProvider"
+            ],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\AdminCurrency\\": ""
+        }
+    }
+}

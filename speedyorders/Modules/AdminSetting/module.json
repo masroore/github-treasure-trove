@@ -1,0 +1,13 @@
+{
+    "name": "AdminSetting",
+    "alias": "adminsetting",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\AdminSetting\\Providers\\AdminSettingServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

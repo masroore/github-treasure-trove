@@ -1,0 +1,13 @@
+{
+    "name": "AdminOrder",
+    "alias": "adminorder",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\AdminOrder\\Providers\\AdminOrderServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

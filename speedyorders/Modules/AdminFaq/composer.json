@@ -1,0 +1,25 @@
+{
+    "name": "nwidart/adminfaq",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\AdminFaq\\Providers\\AdminFaqServiceProvider"
+            ],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\AdminFaq\\": ""
+        }
+    }
+}

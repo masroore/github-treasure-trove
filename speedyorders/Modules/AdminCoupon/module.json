@@ -1,0 +1,13 @@
+{
+    "name": "AdminCoupon",
+    "alias": "admincoupon",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\AdminCoupon\\Providers\\AdminCouponServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

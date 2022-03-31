@@ -1,0 +1,13 @@
+{
+    "name": "AdminCustomer",
+    "alias": "admincustomer",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\AdminCustomer\\Providers\\AdminCustomerServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

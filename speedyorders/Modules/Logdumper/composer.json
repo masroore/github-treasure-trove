@@ -1,0 +1,25 @@
+{
+    "name": "nwidart/logdumper",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\Logdumper\\Providers\\LogdumperServiceProvider"
+            ],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Logdumper\\": ""
+        }
+    }
+}

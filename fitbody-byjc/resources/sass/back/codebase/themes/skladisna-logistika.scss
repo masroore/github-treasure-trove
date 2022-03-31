@@ -1,0 +1,46 @@
+//
+// Color Theme - Corporate
+// --------------------------------------------------
+
+// Bootstrap functions (original)
+@import '../../bootstrap/functions';
+
+// Codebase variables and Bootstrap variable overrides
+@import '../variables';
+@import '../variables-themes';
+@import '../variables-bootstrap';
+
+// Bootstrap variables and mixins (original)
+@import '../../bootstrap/variables';
+@import '../../bootstrap/mixins';
+
+// Codebase mixins and Bootstrap overrides
+@import '../mixins';
+
+// Generate color theme
+@include color-theme($theme-skladisna-logistika-primary,
+                     $theme-skladisna-logistika-light,
+                     $theme-skladisna-logistika-lighter,
+                     $theme-skladisna-logistika-dark,
+                     $theme-skladisna-logistika-darker,
+                     $theme-skladisna-logistika-body-bg,
+                     $theme-skladisna-logistika-body-bg-dark,
+                     $theme-skladisna-logistika-body-bg-light,
+                     $theme-skladisna-logistika-body-color,
+                     $theme-skladisna-logistika-body-color-dark,
+                     $theme-skladisna-logistika-body-color-light,
+                     $theme-skladisna-logistika-link-color,
+                     $theme-skladisna-logistika-link-hover-color,
+                     $theme-skladisna-logistika-headings-color,
+                     $theme-skladisna-logistika-headings-small-color,
+                     $theme-skladisna-logistika-header-bg,
+                     $theme-skladisna-logistika-header-inverse-bg,
+                     $theme-skladisna-logistika-sidebar-bg,
+                     $theme-skladisna-logistika-sidebar-inverse-bg,
+                     $theme-skladisna-logistika-side-overlay-bg,
+                     $theme-skladisna-logistika-input-color,
+                     $theme-skladisna-logistika-input-focus-color,
+                     $theme-skladisna-logistika-input-border-color,
+                     $theme-skladisna-logistika-input-focus-border-color,
+                     $theme-skladisna-logistika-input-bg,
+                     $theme-skladisna-logistika-input-focus-bg);

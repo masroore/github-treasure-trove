@@ -1,0 +1,13 @@
+{
+    "name": "AdminReview",
+    "alias": "adminreview",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\AdminReview\\Providers\\AdminReviewServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

@@ -1,0 +1,13 @@
+{
+    "name": "AdminPage",
+    "alias": "adminpage",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\AdminPage\\Providers\\AdminPageServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

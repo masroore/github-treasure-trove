@@ -1,0 +1,25 @@
+{
+    "name": "nwidart/admincustomer",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\AdminCustomer\\Providers\\AdminCustomerServiceProvider"
+            ],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\AdminCustomer\\": ""
+        }
+    }
+}

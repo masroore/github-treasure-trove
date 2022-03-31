@@ -1,0 +1,13 @@
+{
+    "name": "AdminInventry",
+    "alias": "admininventry",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\AdminInventry\\Providers\\AdminInventryServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

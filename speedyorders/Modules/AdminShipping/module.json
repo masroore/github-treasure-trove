@@ -1,0 +1,13 @@
+{
+    "name": "AdminShipping",
+    "alias": "adminshipping",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\AdminShipping\\Providers\\AdminShippingServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

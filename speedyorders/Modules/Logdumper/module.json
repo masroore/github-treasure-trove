@@ -1,0 +1,13 @@
+{
+    "name": "Logdumper",
+    "alias": "logdumper",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\Logdumper\\Providers\\LogdumperServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

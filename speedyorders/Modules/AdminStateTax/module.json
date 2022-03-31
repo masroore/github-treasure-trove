@@ -1,0 +1,13 @@
+{
+    "name": "AdminStateTax",
+    "alias": "adminstatetax",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\AdminStateTax\\Providers\\AdminStateTaxServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

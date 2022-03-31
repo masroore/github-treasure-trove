@@ -1,0 +1,6 @@
+<div class="form-group">
+    <label class="col-sm-2 control-label">%%itemName%%</label>
+    <div class="col-sm-4">
+        <input type="%%fieldType%%" name="%%itemName%%" id="%%itemName%%"> value="{{ isset($%%crudNameSingular%%->%%itemName%%) ? $%%crudNameSingular%%->%%itemName%% : ''}}" %%required%%> </input>
+    </div>
+</div>

@@ -1,0 +1,13 @@
+{
+    "name": "AdminFaq",
+    "alias": "adminfaq",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\AdminFaq\\Providers\\AdminFaqServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

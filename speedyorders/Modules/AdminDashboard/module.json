@@ -1,0 +1,13 @@
+{
+    "name": "AdminDashboard",
+    "alias": "admindashboard",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\AdminDashboard\\Providers\\AdminDashboardServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

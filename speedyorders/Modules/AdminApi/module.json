@@ -1,0 +1,13 @@
+{
+    "name": "AdminApi",
+    "alias": "adminapi",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\AdminApi\\Providers\\AdminApiServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

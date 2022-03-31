@@ -1,0 +1,13 @@
+{
+    "name": "CustomerLogin",
+    "alias": "customerlogin",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\CustomerLogin\\Providers\\CustomerLoginServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

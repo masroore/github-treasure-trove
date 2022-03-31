@@ -1,0 +1,13 @@
+{
+    "name": "AdminCurrency",
+    "alias": "admincurrency",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\AdminCurrency\\Providers\\AdminCurrencyServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

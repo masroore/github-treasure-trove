@@ -1,0 +1,13 @@
+{
+    "name": "AdminProductAttribute",
+    "alias": "adminproductattribute",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\AdminProductAttribute\\Providers\\AdminProductAttributeServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

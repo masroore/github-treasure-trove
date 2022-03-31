@@ -1,0 +1,13 @@
+{
+    "name": "AdminCategory",
+    "alias": "admincategory",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\AdminCategory\\Providers\\AdminCategoryServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

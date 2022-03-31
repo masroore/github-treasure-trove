@@ -1,0 +1,13 @@
+{
+    "name": "AdminProductQuestion",
+    "alias": "adminproductquestion",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\AdminProductQuestion\\Providers\\AdminProductQuestionServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

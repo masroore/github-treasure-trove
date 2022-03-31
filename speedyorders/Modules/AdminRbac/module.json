@@ -1,0 +1,14 @@
+{
+    "name": "AdminRbac",
+    "alias": "adminrbac",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 0,
+    "providers": [
+        "Modules\\AdminRbac\\Providers\\AdminRbacServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

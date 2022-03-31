@@ -1,0 +1,358 @@
+{
+    "fields": [
+        {
+            "name": "customer_id",
+            "type": "integer"
+        },
+        {
+            "name": "invoice_number",
+            "type": "string"
+        },
+        {
+            "name": "invoice_prefix",
+            "type": "string"
+        },
+        {
+            "name": "first_name",
+            "type": "string"
+        },
+        {
+            "name": "last_name",
+            "type": "string"
+        },
+        {
+            "name": "address1",
+            "type": "string"
+        },
+        {
+            "name": "address2",
+            "type": "string"
+        },
+        {
+            "name": "email",
+            "type": "string"
+        },
+        {
+            "name": "postal_code",
+            "type": "string"
+        },
+        {
+            "name": "phone",
+            "type": "string"
+        },
+        {
+            "name": "payment_first_name",
+            "type": "string"
+        },
+        {
+            "name": "payment_last_name",
+            "type": "string"
+        },
+        {
+            "name": "payment_company",
+            "type": "string"
+        },
+        {
+            "name": "payment_address1",
+            "type": "string"
+        },
+        {
+            "name": "payment_address2",
+            "type": "string"
+        },
+        {
+            "name": "payment_city",
+            "type": "string"
+        },
+        {
+            "name": "payment_postalcode",
+            "type": "string"
+        },
+        {
+            "name": "payment_country_name",
+            "type": "string"
+        },
+        {
+            "name": "payment_region",
+            "type": "string"
+        },
+        {
+            "name": "payment_method",
+            "type": "string"
+        },
+        {
+            "name": "payment_unique_code",
+            "type": "string"
+        },
+        {
+            "name": "shipping_first_name",
+            "type": "string"
+        },
+        {
+            "name": "shipping_last_name",
+            "type": "string"
+        },
+        {
+            "name": "shipping_company",
+            "type": "string"
+        },
+        {
+            "name": "shipping_address1",
+            "type": "string"
+        },
+        {
+            "name": "shipping_address2",
+            "type": "string"
+        },
+        {
+            "name": "shipping_city",
+            "type": "string"
+        },
+        {
+            "name": "shipping_postalcode",
+            "type": "string"
+        },
+        {
+            "name": "shipping_country_name",
+            "type": "string"
+        },
+        {
+            "name": "shipping_region",
+            "type": "string"
+        },
+        {
+            "name": "shipping_method",
+            "type": "string"
+        },
+        {
+            "name": "shipping_unique_code",
+            "type": "string"
+        },
+        {
+            "name": "shipping_tracking_code",
+            "type": "string"
+        },
+        {
+            "name": "comment",
+            "type": "text"
+        },
+        {
+            "name": "status",
+            "type": "select",
+            "options": {
+                "1": "Active",
+                "0": "Inactive"
+            }
+        },
+        {
+            "name": "commisison",
+            "type": "float"
+        },
+        {
+            "name": "currency_code",
+            "type": "string"
+        },
+        {
+            "name": "currency_value",
+            "type": "float"
+        },
+        {
+            "name": "ip",
+            "type": "string"
+        }
+    ],
+    "relationships": [
+        {
+            "name": "customers",
+            "type": "belongsTo",
+            "class": "App\\Models\\Customer"
+        }
+
+    ],
+    "validations": [
+        {
+            "field": "customer_id",
+            "rules": "integer#unsignedBigInteger"
+        },
+        {
+            "field": "invoice_number",
+            "rules": "required|string:max:255"
+        },
+        {
+            "field": "invoice_prefix",
+            "rules": "required|string:max:255"
+        },
+        {
+            "field": "first_name",
+            "rules": "required|string:max:255"
+        },
+        {
+            "field": "last_name",
+            "rules": "required|string:max:255"
+        },
+        {
+            "field": "address1",
+            "rules": "required|string:max:255"
+
+        },
+        {
+            "field": "address2",
+            "rules": "required|string:max:255"
+
+        },
+        {
+            "field": "email",
+            "rules": "required|string:max:255"
+
+        },
+        {
+            "field": "postal_code",
+            "rules": "required|string:max:255"
+
+        },
+        {
+            "field": "phone",
+            "rules": "required|string:max:255"
+
+        },
+        {
+            "field": "payment_first_name",
+            "rules": "required|string:max:255"
+
+        },
+        {
+            "field": "payment_last_name",
+            "rules": "required|string:max:255"
+
+        },
+        {
+            "field": "payment_company",
+            "rules": "required|string:max:255"
+
+        },
+        {
+            "field": "payment_address1",
+            "rules": "required|string:max:255"
+
+        },
+        {
+            "field": "payment_address2",
+            "rules": "required|string:max:255"
+
+        },
+        {
+            "field": "payment_city",
+            "rules": "required|string:max:255"
+
+        },
+        {
+            "field": "payment_postalcode",
+            "rules": "required|string:max:255"
+
+        },
+        {
+            "field": "payment_country_name",
+            "rules": "required|string:max:255"
+
+        },
+        {
+            "field": "payment_region",
+            "rules": "required|string:max:255"
+
+        },
+        {
+            "field": "payment_method",
+            "rules": "required|string:max:255"
+
+        },
+        {
+            "field": "payment_unique_code",
+            "rules": "required|string:max:255"
+
+        },
+        {
+            "field": "shipping_first_name",
+            "rules": "required|string:max:255"
+
+        },
+        {
+            "field": "shipping_last_name",
+            "rules": "required|string:max:255"
+
+        },
+        {
+            "field": "shipping_company",
+            "rules": "required|string:max:255"
+
+        },
+        {
+            "field": "shipping_address1",
+            "rules": "required|string:max:255"
+
+        },
+        {
+            "field": "shipping_address2",
+            "rules": "required|string:max:255"
+
+        },
+        {
+            "field": "shipping_city",
+            "rules": "required|string:max:255"
+
+        },
+        {
+            "field": "shipping_postalcode",
+            "rules": "required|string:max:255"
+
+        },
+        {
+            "field": "shipping_country_name",
+            "rules": "required|string:max:255"
+
+        },
+        {
+            "field": "shipping_region",
+            "rules": "required|string:max:255"
+
+        },
+        {
+            "field": "shipping_method",
+            "rules": "required|string:max:255"
+
+        },
+        {
+            "field": "shipping_unique_code",
+            "rules": "required|string:max:255"
+
+        },
+        {
+            "field": "shipping_tracking_code",
+            "rules": "required|string:max:255"
+
+        },
+        {
+            "field": "comment",
+            "rules": "required|string"
+        },
+        {
+            "field": "status",
+            "rules": "required:in:0,1"
+        },
+        {
+            "field": "commisison",
+            "rules": "required|numeric"
+        },
+        {
+            "field": "currency_code",
+            "rules": "required|string:max:255"
+        },
+        {
+            "field": "currency_value",
+            "rules": "required|numeric"
+        },
+        {
+            "field": "ip",
+            "rules": "required|string:max:255"
+        }
+    ]
+}
