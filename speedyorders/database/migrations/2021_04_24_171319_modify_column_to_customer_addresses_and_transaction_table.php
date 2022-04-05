@@ -8,17 +8,15 @@ class ModifyColumnToCustomerAddressesAndTransactionTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('customer_addresses', function (Blueprint $table) {
+        Schema::table('customer_addresses', function (Blueprint $table): void {
             $table->dropColumn('customer_id');
             $table->unsignedBigInteger('customer_user_id')->nullable()->default(null)->after('id');
         });
 
-        Schema::table('customer_transactions', function (Blueprint $table) {
+        Schema::table('customer_transactions', function (Blueprint $table): void {
             $table->dropColumn('customer_id');
             $table->unsignedBigInteger('customer_user_id')->nullable()->default(null)->after('id');
         });
@@ -26,10 +24,8 @@ class ModifyColumnToCustomerAddressesAndTransactionTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
     }
 }

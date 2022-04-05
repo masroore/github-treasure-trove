@@ -8,14 +8,12 @@ class CreateGoalTrackingsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create(
             'goal_trackings',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->bigIncrements('id');
                 $table->integer('branch');
                 $table->integer('goal_type');
@@ -34,10 +32,8 @@ class CreateGoalTrackingsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('goal_trackings');
     }

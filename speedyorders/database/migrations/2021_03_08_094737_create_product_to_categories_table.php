@@ -8,12 +8,10 @@ class CreateProductToCategoriesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('product_categories', function (Blueprint $table) {
+        Schema::create('product_categories', function (Blueprint $table): void {
             $table->unsignedBigInteger('id')->autoIncrement();
             $table->unsignedInteger('product_id')->default(null)->nullable();
             $table->unsignedInteger('category_id')->default(null)->nullable();
@@ -24,10 +22,8 @@ class CreateProductToCategoriesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('product_categories');
     }

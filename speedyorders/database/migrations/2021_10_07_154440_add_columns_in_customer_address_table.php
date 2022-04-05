@@ -8,12 +8,10 @@ class AddColumnsInCustomerAddressTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('customer_addresses', function (Blueprint $table) {
+        Schema::table('customer_addresses', function (Blueprint $table): void {
             if (!Schema::hasColumn('customer_addresses', 'a_first_name')) {
                 $table->string('a_first_name', 255)->default(null)->nullable()->after('customer_user_id');
             }
@@ -25,13 +23,10 @@ class AddColumnsInCustomerAddressTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('customer_addresses', function (Blueprint $table) {
-
+        Schema::table('customer_addresses', function (Blueprint $table): void {
         });
     }
 }

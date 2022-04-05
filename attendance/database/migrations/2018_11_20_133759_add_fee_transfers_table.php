@@ -9,7 +9,7 @@ class AddFeeTransfersTable extends Migration
 {
     public function up(): void
     {
-        Schema::table($this->table(), function (Blueprint $table) {
+        Schema::table($this->table(), function (Blueprint $table): void {
             $table->decimal('fee', 64, 0)
                 ->default(0)
                 ->after('withdraw_id');
@@ -18,7 +18,7 @@ class AddFeeTransfersTable extends Migration
 
     public function down(): void
     {
-        Schema::table($this->table(), function (Blueprint $table) {
+        Schema::table($this->table(), function (Blueprint $table): void {
             $table->dropColumn('fee');
         });
     }

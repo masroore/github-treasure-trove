@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class AddRelationshipFieldsToCrmCustomersTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::table('crm_customers', function (Blueprint $table) {
+        Schema::table('crm_customers', function (Blueprint $table): void {
             $table->unsignedBigInteger('status_id')->nullable();
             $table->foreign('status_id', 'status_fk_4565084')->references('id')->on('crm_statuses');
             $table->unsignedBigInteger('created_by_id')->nullable();

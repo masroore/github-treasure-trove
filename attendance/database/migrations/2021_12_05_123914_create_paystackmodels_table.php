@@ -8,12 +8,10 @@ class CreatePaystackmodelsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('paystackmodels', function (Blueprint $table) {
+        Schema::create('paystackmodels', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('tid')->nullable();
             $table->string('tistatus')->nullable();
@@ -46,10 +44,8 @@ class CreatePaystackmodelsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('paystackmodels');
     }

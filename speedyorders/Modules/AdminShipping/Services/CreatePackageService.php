@@ -3,6 +3,7 @@
 namespace Modules\AdminShipping\Services;
 
 use App\Models\ShippingPackage;
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Log;
 
@@ -21,7 +22,7 @@ class CreatePackageService
             DB::commit();
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::info('Error' . $e->getMessage());
             DB::rollback();
 

@@ -79,7 +79,7 @@ class CS_REST_Wrapper_Base
     /**
      * The transport to use to send API requests.
      *
-     * @var CS_REST_CurlTransport or CS_REST_SocketTransport or your own custom transport.
+     * @var CS_REST_CurlTransport or CS_REST_SocketTransport or your own custom transport
      */
     public $_transport;
 
@@ -137,8 +137,7 @@ class CS_REST_Wrapper_Base
         $log = null,
         $serialiser = null,
         $transport = null
-    )
-    {
+    ) {
         if (is_string($auth_details)) {
             // If $auth_details is a string, assume it is an API key
             $auth_details = ['api_key' => $auth_details];
@@ -223,7 +222,7 @@ class CS_REST_Wrapper_Base
     }
 
     /**
-     * @return bool True if the wrapper is using SSL.
+     * @return bool true if the wrapper is using SSL
      */
     public function is_secure()
     {
@@ -257,8 +256,7 @@ class CS_REST_Wrapper_Base
         $order_field,
         $order_direction,
         $join_char = '&'
-    )
-    {
+    ) {
         if (null !== $page_number) {
             $route .= $join_char . 'page=' . $page_number;
             $join_char = '&';
@@ -286,7 +284,7 @@ class CS_REST_Wrapper_Base
      * Internal method to make a general API request based on the provided options.
      *
      * @param $call_options
-     * @param mixed|null $data
+     * @param null|mixed $data
      */
     public function _call($call_options, $method, $route, $data = null)
     {

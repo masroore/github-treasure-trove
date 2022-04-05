@@ -8,25 +8,21 @@ class AddComplstatusToStudentinfosTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('studentinfos', function (Blueprint $table) {
+        Schema::table('studentinfos', function (Blueprint $table): void {
             $table->string('completstatus')->nullable();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         if (Schema::hasColumn('studentinfos', 'completstatus')) {
-            Schema::table('studentinfos', function (Blueprint $table) {
+            Schema::table('studentinfos', function (Blueprint $table): void {
                 $table->dropColumn('completstatus');
             });
         }

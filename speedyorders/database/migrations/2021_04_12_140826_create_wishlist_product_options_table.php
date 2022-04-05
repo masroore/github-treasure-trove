@@ -8,12 +8,10 @@ class CreateWishlistProductOptionsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('wishlist_product_options', function (Blueprint $table) {
+        Schema::create('wishlist_product_options', function (Blueprint $table): void {
             $table->unsignedBigInteger('id')->autoIncrement();
             $table->unsignedBigInteger('wishlist_id')->default(null)->nullable();
             $table->unsignedBigInteger('product_option_id')->default(null)->nullable();
@@ -25,10 +23,8 @@ class CreateWishlistProductOptionsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('wishlist_product_options');
     }

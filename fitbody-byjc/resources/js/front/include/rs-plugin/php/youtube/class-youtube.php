@@ -29,7 +29,7 @@ class TP_youtube
      *
      * @since    1.0.0
      *
-     * @param string $api_key Youtube API key.
+     * @param string $api_key youtube API key
      */
     public function __construct($api_key, $channel_id)
     {

@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreatePropertyTagsTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::create('property_tags', function (Blueprint $table) {
+        Schema::create('property_tags', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('name')->unique();
             $table->timestamps();

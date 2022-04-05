@@ -21,8 +21,6 @@ class SendEmail implements ShouldQueue
 
     /**
      * Create a new job instance.
-     *
-     * @return void
      */
     public function __construct($data)
     {
@@ -31,10 +29,8 @@ class SendEmail implements ShouldQueue
 
     /**
      * Execute the job.
-     *
-     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         Mail::to($this->data['email'])
             ->send(new SendMail($this->data));

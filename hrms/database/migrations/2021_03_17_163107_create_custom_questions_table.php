@@ -8,14 +8,12 @@ class CreateCustomQuestionsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create(
             'custom_questions',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->id();
                 $table->string('question');
                 $table->string('is_required')->nullable();
@@ -27,10 +25,8 @@ class CreateCustomQuestionsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('custom_questions');
     }

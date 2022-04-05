@@ -9,6 +9,8 @@ use App\Models\Trainer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
+use Session;
+use Validator;
 
 class TrainerController extends Controller
 {
@@ -37,7 +39,7 @@ class TrainerController extends Controller
     public function store(Request $request)
     {
         if (\Auth::user()->can('Create Trainer')) {
-            $validator = \Validator::make(
+            $validator = Validator::make(
                 $request->all(),
                 [
                     'branch' => 'required',
@@ -89,7 +91,7 @@ class TrainerController extends Controller
     public function update(Request $request, Trainer $trainer)
     {
         if (\Auth::user()->can('Edit Trainer')) {
-            $validator = \Validator::make(
+            $validator = Validator::make(
                 $request->all(),
                 [
                     'branch' => 'required',
@@ -154,7 +156,7 @@ class TrainerController extends Controller
         $rules = [
             'file' => 'required|mimes:csv,txt',
         ];
-        $validator = \Validator::make($request->all(), $rules);
+        $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
             $messages = $validator->getMessageBag();
@@ -167,7 +169,7 @@ class TrainerController extends Controller
         $totaltrainer = \count($trainer) - 1;
         $errorArray = [];
 
-        for ($i = 1; $i <= $totaltrainer; $i++) {
+        for ($i = 1; $i <= $totaltrainer; ++$i) {
             $trainers = $trainer[$i];
 
             $trainersData = Trainer::where('email', $trainers[4] ?? 0)->first();
@@ -209,7 +211,7 @@ class TrainerController extends Controller
                 $errorRecord[] = implode(',', $errorData->toArray());
             }
 
-            \Session::put('errorArray', $errorRecord);
+            Session::put('errorArray', $errorRecord);
         }
 
         return redirect()->back()->with($data['status'], $data['msg']);

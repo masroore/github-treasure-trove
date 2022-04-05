@@ -8,12 +8,10 @@ class CreateProductCouponsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('product_coupons', function (Blueprint $table) {
+        Schema::create('product_coupons', function (Blueprint $table): void {
             $table->unsignedBigInteger('id')->autoIncrement();
             $table->unsignedBigInteger('product_id')->default(null)->nullable();
             $table->unsignedBigInteger('coupon_id')->default(null)->nullable();
@@ -24,10 +22,8 @@ class CreateProductCouponsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('product_coupons');
     }

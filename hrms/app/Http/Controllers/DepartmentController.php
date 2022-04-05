@@ -4,14 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Branch;
 use App\Models\Department;
+use Auth;
 use Illuminate\Http\Request;
+use Validator;
 
 class DepartmentController extends Controller
 {
     public function index()
     {
-        if (\Auth::user()->can('Manage Department')) {
-            $departments = Department::where('created_by', '=', \Auth::user()->creatorId())->get();
+        if (Auth::user()->can('Manage Department')) {
+            $departments = Department::where('created_by', '=', Auth::user()->creatorId())->get();
 
             return view('department.index', compact('departments'));
         }
@@ -21,8 +23,8 @@ class DepartmentController extends Controller
 
     public function create()
     {
-        if (\Auth::user()->can('Create Department')) {
-            $branch = Branch::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        if (Auth::user()->can('Create Department')) {
+            $branch = Branch::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
 
             return view('department.create', compact('branch'));
         }
@@ -32,13 +34,13 @@ class DepartmentController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('Create Department')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Create Department')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'branch_id' => 'required',
-                                   'name' => 'required|max:20',
-                               ]
+                    'branch_id' => 'required',
+                    'name' => 'required|max:20',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -49,7 +51,7 @@ class DepartmentController extends Controller
             $department = new Department();
             $department->branch_id = $request->branch_id;
             $department->name = $request->name;
-            $department->created_by = \Auth::user()->creatorId();
+            $department->created_by = Auth::user()->creatorId();
             $department->save();
 
             return redirect()->route('department.index')->with('success', __('Department  successfully created.'));
@@ -65,9 +67,9 @@ class DepartmentController extends Controller
 
     public function edit(Department $department)
     {
-        if (\Auth::user()->can('Edit Department')) {
-            if ($department->created_by == \Auth::user()->creatorId()) {
-                $branch = Branch::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        if (Auth::user()->can('Edit Department')) {
+            if ($department->created_by == Auth::user()->creatorId()) {
+                $branch = Branch::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
 
                 return view('department.edit', compact('department', 'branch'));
             }
@@ -80,14 +82,14 @@ class DepartmentController extends Controller
 
     public function update(Request $request, Department $department)
     {
-        if (\Auth::user()->can('Edit Department')) {
-            if ($department->created_by == \Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+        if (Auth::user()->can('Edit Department')) {
+            if ($department->created_by == Auth::user()->creatorId()) {
+                $validator = Validator::make(
                     $request->all(),
                     [
-                                       'branch_id' => 'required',
-                                       'name' => 'required|max:20',
-                                   ]
+                        'branch_id' => 'required',
+                        'name' => 'required|max:20',
+                    ]
                 );
                 if ($validator->fails()) {
                     $messages = $validator->getMessageBag();
@@ -110,8 +112,8 @@ class DepartmentController extends Controller
 
     public function destroy(Department $department)
     {
-        if (\Auth::user()->can('Delete Department')) {
-            if ($department->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('Delete Department')) {
+            if ($department->created_by == Auth::user()->creatorId()) {
                 $department->delete();
 
                 return redirect()->route('department.index')->with('success', __('Department successfully deleted.'));

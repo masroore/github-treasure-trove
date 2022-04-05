@@ -12,15 +12,17 @@ class SendOsncode extends Notification implements ShouldQueue
     use Queueable;
 
     private $fullname;
+
     private $osncode;
+
     private $email;
+
     private $phone;
+
     private $prog;
 
     /**
      * Create a new notification instance.
-     *
-     * @return void
      */
     public function __construct($fullname, $osncode, $email, $phone, $prog)
     {

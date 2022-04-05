@@ -8,12 +8,10 @@ class CreateStudentgroupingsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('studentgroupings', function (Blueprint $table) {
+        Schema::create('studentgroupings', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('indexnumber');
             $table->string('studentname')->nullable();
@@ -33,10 +31,8 @@ class CreateStudentgroupingsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('studentgroupings');
     }

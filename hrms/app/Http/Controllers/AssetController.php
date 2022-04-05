@@ -8,6 +8,8 @@ use App\Models\Asset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
+use Session;
+use Validator;
 
 class AssetController extends Controller
 {
@@ -34,14 +36,14 @@ class AssetController extends Controller
     public function store(Request $request)
     {
         if (\Auth::user()->can('Create Assets')) {
-            $validator = \Validator::make(
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'name' => 'required',
-                                   'purchase_date' => 'required',
-                                   'supported_date' => 'required',
-                                   'amount' => 'required',
-                               ]
+                    'name' => 'required',
+                    'purchase_date' => 'required',
+                    'supported_date' => 'required',
+                    'amount' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -64,9 +66,8 @@ class AssetController extends Controller
         return redirect()->back()->with('error', __('Permission denied.'));
     }
 
-    public function show(Asset $asset)
+    public function show(Asset $asset): void
     {
-
     }
 
     public function edit($id)
@@ -85,14 +86,14 @@ class AssetController extends Controller
         if (\Auth::user()->can('Edit Assets')) {
             $asset = Asset::find($id);
             if ($asset->created_by == \Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+                $validator = Validator::make(
                     $request->all(),
                     [
-                                       'name' => 'required',
-                                       'purchase_date' => 'required',
-                                       'supported_date' => 'required',
-                                       'amount' => 'required',
-                                   ]
+                        'name' => 'required',
+                        'purchase_date' => 'required',
+                        'supported_date' => 'required',
+                        'amount' => 'required',
+                    ]
                 );
                 if ($validator->fails()) {
                     $messages = $validator->getMessageBag();
@@ -151,7 +152,7 @@ class AssetController extends Controller
         $rules = [
             'file' => 'required|mimes:csv,txt',
         ];
-        $validator = \Validator::make($request->all(), $rules);
+        $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
             $messages = $validator->getMessageBag();
@@ -164,7 +165,7 @@ class AssetController extends Controller
         $totalassets = \count($assets) - 1;
         $errorArray = [];
 
-        for ($i = 1; $i <= $totalassets; $i++) {
+        for ($i = 1; $i <= $totalassets; ++$i) {
             $asset = $assets[$i];
 
             $assetsData = Asset::where('name', $asset[0])->where('purchase_date', $asset[1])->first();
@@ -194,7 +195,7 @@ class AssetController extends Controller
                 $errorRecord[] = implode(',', $errorData->toArray());
             }
 
-            \Session::put('errorArray', $errorRecord);
+            Session::put('errorArray', $errorRecord);
         }
 
         return redirect()->back()->with($data['status'], $data['msg']);

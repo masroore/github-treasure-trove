@@ -12,12 +12,11 @@ class NewstudentrevertMail extends Notification implements ShouldQueue
     use Queueable;
 
     public $fullname;
+
     public $regemail;
 
     /**
      * Create a new notification instance.
-     *
-     * @return void
      */
     public function __construct($fullname, $regemail)
     {

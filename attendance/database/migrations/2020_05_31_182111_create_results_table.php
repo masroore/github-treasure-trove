@@ -8,12 +8,10 @@ class CreateResultsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('results', function (Blueprint $table) {
+        Schema::create('results', function (Blueprint $table): void {
             $table->increments('id');
             $table->integer('osncode_id')->nullable();
             $table->string('resulttype')->nullable();
@@ -44,10 +42,8 @@ class CreateResultsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('results');
     }

@@ -3,6 +3,7 @@
 namespace Modules\AdminProductOption\Http\Controllers;
 
 use App\Models\Option;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
@@ -155,7 +156,7 @@ class AdminProductOptionController extends Controller
         try {
             Option::find($id)->delete();
             session()->flash('success_message', 'Product Option deleted successfully.');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             session()->flash('error_message', 'Product Option could not be deleted.');
         }
 

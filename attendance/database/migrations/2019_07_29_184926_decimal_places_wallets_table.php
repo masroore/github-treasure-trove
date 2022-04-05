@@ -9,7 +9,7 @@ class DecimalPlacesWalletsTable extends Migration
 {
     public function up(): void
     {
-        Schema::table($this->table(), function (Blueprint $table) {
+        Schema::table($this->table(), function (Blueprint $table): void {
             $table->smallInteger('decimal_places')
                 ->default(2)
                 ->after('balance');
@@ -18,7 +18,7 @@ class DecimalPlacesWalletsTable extends Migration
 
     public function down(): void
     {
-        Schema::table($this->table(), function (Blueprint $table) {
+        Schema::table($this->table(), function (Blueprint $table): void {
             $table->dropColumn('decimal_places');
         });
     }

@@ -7,9 +7,11 @@ use App\Models\Employee;
 use App\Models\Termination;
 use App\Models\TerminationType;
 use App\Models\Utility;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Validator;
 
 class TerminationController extends Controller
 {
@@ -44,14 +46,14 @@ class TerminationController extends Controller
     public function store(Request $request)
     {
         if (\Auth::user()->can('Create Termination')) {
-            $validator = \Validator::make(
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'employee_id' => 'required',
-                                   'termination_type' => 'required',
-                                   'notice_date' => 'required',
-                                   'termination_date' => 'required',
-                               ]
+                    'employee_id' => 'required',
+                    'termination_type' => 'required',
+                    'notice_date' => 'required',
+                    'termination_date' => 'required',
+                ]
             );
 
             if ($validator->fails()) {
@@ -78,7 +80,7 @@ class TerminationController extends Controller
 
                 try {
                     Mail::to($termination->email)->send(new TerminationSend($termination));
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     $smtp_error = __('E-Mail has been not sent due to SMTP configuration');
                 }
 
@@ -115,14 +117,14 @@ class TerminationController extends Controller
     {
         if (\Auth::user()->can('Edit Termination')) {
             if ($termination->created_by == \Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+                $validator = Validator::make(
                     $request->all(),
                     [
-                                       'employee_id' => 'required',
-                                       'termination_type' => 'required',
-                                       'notice_date' => 'required',
-                                       'termination_date' => 'required',
-                                   ]
+                        'employee_id' => 'required',
+                        'termination_type' => 'required',
+                        'notice_date' => 'required',
+                        'termination_date' => 'required',
+                    ]
                 );
 
                 if ($validator->fails()) {

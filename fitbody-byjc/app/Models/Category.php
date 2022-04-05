@@ -55,16 +55,16 @@ class Category extends Model
         $parent = (!$top && isset($request->parent) && 'on' == $request->parent) ? (int) ($request->parent) : 0;
 
         $id = self::insertGetId([
-            'name'             => $request->name,
-            'description'      => $request->description,
+            'name' => $request->name,
+            'description' => $request->description,
             'meta_description' => $request->meta_description,
-            'meta_keyword'     => $request->meta_keyword,
-            'parent_id'        => $parent,
-            'top'              => $top,
-            'status'           => (isset($request->status) && 'on' == $request->status) ? 1 : 0,
-            'slug'             => Str::slug($request->name),
-            'created_at'       => Carbon::now(),
-            'updated_at'       => Carbon::now(),
+            'meta_keyword' => $request->meta_keyword,
+            'parent_id' => $parent,
+            'top' => $top,
+            'status' => (isset($request->status) && 'on' == $request->status) ? 1 : 0,
+            'slug' => Str::slug($request->name),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
 
         if ($id) {
@@ -85,15 +85,15 @@ class Category extends Model
         $parent = (!$top && isset($request->parent) && 'on' == $request->parent) ? (int) ($request->parent) : 0;
 
         $updated = self::where('id', $category->id)->update([
-            'name'             => $request->name,
-            'description'      => $request->description,
+            'name' => $request->name,
+            'description' => $request->description,
             'meta_description' => $request->meta_description,
-            'meta_keyword'     => $request->meta_keyword,
-            'parent_id'        => $parent,
-            'top'              => $top,
-            'status'           => (isset($request->status) && 'on' == $request->status) ? 1 : 0,
-            'slug'             => Str::slug($request->name),
-            'updated_at'       => Carbon::now(),
+            'meta_keyword' => $request->meta_keyword,
+            'parent_id' => $parent,
+            'top' => $top,
+            'status' => (isset($request->status) && 'on' == $request->status) ? 1 : 0,
+            'slug' => Str::slug($request->name),
+            'updated_at' => Carbon::now(),
         ]);
 
         if ($updated) {

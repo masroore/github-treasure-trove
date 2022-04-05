@@ -20,15 +20,15 @@ class CourseController extends Controller
             ->where('level', 'Level 100')->get();
         //dd($code);
         return view('course_management.new_level_1course', [
-            'program'=>$program,
-            'course'=> $course, ]);
+            'program' => $program,
+            'course' => $course, ]);
     }
 
     public function pro_degree_update1($id)
     {
         $course = Course::where('id', $id)->first();
 
-        return view('course_management.edit_level_1course', ['course'=> $course]);
+        return view('course_management.edit_level_1course', ['course' => $course]);
     }
 
     public function pro_degree_update1_save(Request $Request)
@@ -62,15 +62,15 @@ class CourseController extends Controller
             ->where('level', 'Level 200')->get();
         //dd($code);
         return view('course_management.new_level_2course', [
-            'program'=>$program,
-            'course'=> $course, ]);
+            'program' => $program,
+            'course' => $course, ]);
     }
 
     public function pro_degree_update2($id)
     {
         $course = Course::where('id', $id)->first();
 
-        return view('course_management.edit_level_2course', ['course'=> $course]);
+        return view('course_management.edit_level_2course', ['course' => $course]);
     }
 
     public function pro_degree_update2_save(Request $Request)
@@ -103,15 +103,15 @@ class CourseController extends Controller
             ->where('level', 'Level 300')->get();
         //dd($code);
         return view('course_management.new_level_3course', [
-            'program'=>$program,
-            'course'=> $course, ]);
+            'program' => $program,
+            'course' => $course, ]);
     }
 
     public function pro_degree_update3($id)
     {
         $course = Course::where('id', $id)->first();
 
-        return view('course_management.edit_level_3course', ['course'=> $course]);
+        return view('course_management.edit_level_3course', ['course' => $course]);
     }
 
     public function pro_degree_update3_save(Request $Request)
@@ -144,15 +144,15 @@ class CourseController extends Controller
             ->where('level', 'Level 400')->get();
         //dd($code);
         return view('course_management.new_level_4course', [
-            'program'=>$program,
-            'course'=> $course, ]);
+            'program' => $program,
+            'course' => $course, ]);
     }
 
     public function pro_degree_update4($id)
     {
         $course = Course::where('id', $id)->first();
 
-        return view('course_management.edit_level_4course', ['course'=> $course]);
+        return view('course_management.edit_level_4course', ['course' => $course]);
     }
 
     public function pro_degree_update4_save(Request $Request)
@@ -184,15 +184,15 @@ class CourseController extends Controller
             ->where('level', 'Level 100')->get();
         //dd($code);
         return view('course_management.new_level_1dcourse', [
-            'program'=>$program,
-            'course'=> $course, ]);
+            'program' => $program,
+            'course' => $course, ]);
     }
 
     public function pro_diploma_update1($id)
     {
         $course = Course::where('id', $id)->first();
 
-        return view('course_management.edit_level_1dcourse', ['course'=> $course]);
+        return view('course_management.edit_level_1dcourse', ['course' => $course]);
     }
 
     public function pro_diploma_update1_save(Request $Request)
@@ -225,15 +225,15 @@ class CourseController extends Controller
             ->where('level', 'Level 200')->get();
         //dd($code);
         return view('course_management.new_level_2dcourse', [
-            'program'=>$program,
-            'course'=> $course, ]);
+            'program' => $program,
+            'course' => $course, ]);
     }
 
     public function pro_diploma_update2($id)
     {
         $course = Course::where('id', $id)->first();
 
-        return view('course_management.edit_level_2dcourse', ['course'=> $course]);
+        return view('course_management.edit_level_2dcourse', ['course' => $course]);
     }
 
     public function pro_diploma_update2_save(Request $Request)
@@ -273,7 +273,7 @@ class CourseController extends Controller
             ->where('level', 'Level 100')->get();
 
         return view('course_management.first_semester_bprm', [
-            'course'=>$course,
+            'course' => $course,
             'procode' => $prog,
             'procourse' => $procourse, ]);
     }
@@ -287,7 +287,7 @@ class CourseController extends Controller
 
         $count = \count($courses);
 
-        for ($i = 0; $i < $count; $i++) {
+        for ($i = 0; $i < $count; ++$i) {
             $id = $courses[$i];
 
             //fetch cousre from database first
@@ -300,14 +300,14 @@ class CourseController extends Controller
             // echo $cousertitle." | ".$cousecode." | ".$courech."<br>";
 
             //insert values Into Database
-            $data = ['programme'=> $prog,
-                     'progcode' =>$progcode,
-                     'semester' => $semester,
-                     'coursetitle' => $cousertitle,
-                     'coursecode' => $cousecode,
-                     'credithours' => $courech,
-                     'level'=> 'Level 100',
-                    ];
+            $data = ['programme' => $prog,
+                'progcode' => $progcode,
+                'semester' => $semester,
+                'coursetitle' => $cousertitle,
+                'coursecode' => $cousecode,
+                'credithours' => $courech,
+                'level' => 'Level 100',
+            ];
 
             $progcourse = new Programmecourse($data);
             $progcourse->save();
@@ -340,8 +340,8 @@ class CourseController extends Controller
             ->where('level', 'Level 100')->get();
 
         return view('course_management.second_semester_bprm', [
-            'course'=>$course,
-            'procode'=>$prog,
+            'course' => $course,
+            'procode' => $prog,
             'procourse' => $procourse, ]);
     }
 
@@ -354,7 +354,7 @@ class CourseController extends Controller
 
         $count = \count($courses);
 
-        for ($i = 0; $i < $count; $i++) {
+        for ($i = 0; $i < $count; ++$i) {
             $id = $courses[$i];
 
             //fetch cousre from database first
@@ -367,14 +367,14 @@ class CourseController extends Controller
             // echo $cousertitle." | ".$cousecode." | ".$courech."<br>";
 
             //insert values Into Database
-            $data = ['programme'=> $prog,
-                     'progcode' =>$progcode,
-                     'semester' => $semester,
-                     'coursetitle' => $cousertitle,
-                     'coursecode' => $cousecode,
-                     'credithours' => $courech,
-                     'level'=> 'Level 100',
-                    ];
+            $data = ['programme' => $prog,
+                'progcode' => $progcode,
+                'semester' => $semester,
+                'coursetitle' => $cousertitle,
+                'coursecode' => $cousecode,
+                'credithours' => $courech,
+                'level' => 'Level 100',
+            ];
 
             $progcourse = new Programmecourse($data);
             $progcourse->save();
@@ -410,8 +410,8 @@ class CourseController extends Controller
             ->where('level', 'Level 200')->get();
 
         return view('course_management.first_semester_bprml2', [
-            'course'=>$course,
-            'procode'=>$prog,
+            'course' => $course,
+            'procode' => $prog,
             'procourse' => $procourse, ]);
     }
 
@@ -424,7 +424,7 @@ class CourseController extends Controller
 
         $count = \count($courses);
 
-        for ($i = 0; $i < $count; $i++) {
+        for ($i = 0; $i < $count; ++$i) {
             $id = $courses[$i];
 
             //fetch cousre from database first
@@ -437,14 +437,14 @@ class CourseController extends Controller
             // echo $cousertitle." | ".$cousecode." | ".$courech."<br>";
 
             //insert values Into Database
-            $data = ['programme'=> $prog,
-                     'progcode' =>$progcode,
-                     'semester' => $semester,
-                     'coursetitle' => $cousertitle,
-                     'coursecode' => $cousecode,
-                     'credithours' => $courech,
-                     'level'=> 'Level 200',
-                    ];
+            $data = ['programme' => $prog,
+                'progcode' => $progcode,
+                'semester' => $semester,
+                'coursetitle' => $cousertitle,
+                'coursecode' => $cousecode,
+                'credithours' => $courech,
+                'level' => 'Level 200',
+            ];
 
             $progcourse = new Programmecourse($data);
             $progcourse->save();
@@ -478,8 +478,8 @@ class CourseController extends Controller
             ->where('level', 'Level 200')->get();
 
         return view('course_management.second_semester_bprml2', [
-            'course'=>$course,
-            'procode'=>$prog,
+            'course' => $course,
+            'procode' => $prog,
             'procourse' => $procourse, ]);
     }
 
@@ -492,7 +492,7 @@ class CourseController extends Controller
 
         $count = \count($courses);
 
-        for ($i = 0; $i < $count; $i++) {
+        for ($i = 0; $i < $count; ++$i) {
             $id = $courses[$i];
 
             //fetch cousre from database first
@@ -505,14 +505,14 @@ class CourseController extends Controller
             // echo $cousertitle." | ".$cousecode." | ".$courech."<br>";
 
             //insert values Into Database
-            $data = ['programme'=> $prog,
-                     'progcode' =>$progcode,
-                     'semester' => $semester,
-                     'coursetitle' => $cousertitle,
-                     'coursecode' => $cousecode,
-                     'credithours' => $courech,
-                     'level'=> 'Level 200',
-                    ];
+            $data = ['programme' => $prog,
+                'progcode' => $progcode,
+                'semester' => $semester,
+                'coursetitle' => $cousertitle,
+                'coursecode' => $cousecode,
+                'credithours' => $courech,
+                'level' => 'Level 200',
+            ];
 
             $progcourse = new Programmecourse($data);
             $progcourse->save();
@@ -546,8 +546,8 @@ class CourseController extends Controller
             ->where('level', 'Level 300')->get();
 
         return view('course_management.first_semester_bprml3', [
-            'course'=>$course,
-            'procode'=>$prog,
+            'course' => $course,
+            'procode' => $prog,
             'procourse' => $procourse, ]);
     }
 
@@ -560,7 +560,7 @@ class CourseController extends Controller
 
         $count = \count($courses);
 
-        for ($i = 0; $i < $count; $i++) {
+        for ($i = 0; $i < $count; ++$i) {
             $id = $courses[$i];
 
             //fetch cousre from database first
@@ -573,14 +573,14 @@ class CourseController extends Controller
             // echo $cousertitle." | ".$cousecode." | ".$courech."<br>";
 
             //insert values Into Database
-            $data = ['programme'=> $prog,
-                     'progcode' =>$progcode,
-                     'semester' => $semester,
-                     'coursetitle' => $cousertitle,
-                     'coursecode' => $cousecode,
-                     'credithours' => $courech,
-                     'level'=> 'Level 300',
-                    ];
+            $data = ['programme' => $prog,
+                'progcode' => $progcode,
+                'semester' => $semester,
+                'coursetitle' => $cousertitle,
+                'coursecode' => $cousecode,
+                'credithours' => $courech,
+                'level' => 'Level 300',
+            ];
 
             $progcourse = new Programmecourse($data);
             $progcourse->save();
@@ -614,8 +614,8 @@ class CourseController extends Controller
             ->where('level', 'Level 300')->get();
 
         return view('course_management.second_semester_bprml3', [
-            'course'=>$course,
-            'procode'=>$prog,
+            'course' => $course,
+            'procode' => $prog,
             'procourse' => $procourse, ]);
     }
 
@@ -628,7 +628,7 @@ class CourseController extends Controller
 
         $count = \count($courses);
 
-        for ($i = 0; $i < $count; $i++) {
+        for ($i = 0; $i < $count; ++$i) {
             $id = $courses[$i];
 
             //fetch cousre from database first
@@ -641,14 +641,14 @@ class CourseController extends Controller
             // echo $cousertitle." | ".$cousecode." | ".$courech."<br>";
 
             //insert values Into Database
-            $data = ['programme'=> $prog,
-                     'progcode' =>$progcode,
-                     'semester' => $semester,
-                     'coursetitle' => $cousertitle,
-                     'coursecode' => $cousecode,
-                     'credithours' => $courech,
-                     'level'=> 'Level 300',
-                    ];
+            $data = ['programme' => $prog,
+                'progcode' => $progcode,
+                'semester' => $semester,
+                'coursetitle' => $cousertitle,
+                'coursecode' => $cousecode,
+                'credithours' => $courech,
+                'level' => 'Level 300',
+            ];
 
             $progcourse = new Programmecourse($data);
             $progcourse->save();
@@ -682,8 +682,8 @@ class CourseController extends Controller
             ->where('level', 'Level 400')->get();
 
         return view('course_management.first_semester_bprml4', [
-            'course'=>$course,
-            'procode'=>$prog,
+            'course' => $course,
+            'procode' => $prog,
             'procourse' => $procourse, ]);
     }
 
@@ -696,7 +696,7 @@ class CourseController extends Controller
 
         $count = \count($courses);
 
-        for ($i = 0; $i < $count; $i++) {
+        for ($i = 0; $i < $count; ++$i) {
             $id = $courses[$i];
 
             //fetch cousre from database first
@@ -709,14 +709,14 @@ class CourseController extends Controller
             // echo $cousertitle." | ".$cousecode." | ".$courech."<br>";
 
             //insert values Into Database
-            $data = ['programme'=> $prog,
-                     'progcode' =>$progcode,
-                     'semester' => $semester,
-                     'coursetitle' => $cousertitle,
-                     'coursecode' => $cousecode,
-                     'credithours' => $courech,
-                     'level'=> 'Level 400',
-                    ];
+            $data = ['programme' => $prog,
+                'progcode' => $progcode,
+                'semester' => $semester,
+                'coursetitle' => $cousertitle,
+                'coursecode' => $cousecode,
+                'credithours' => $courech,
+                'level' => 'Level 400',
+            ];
 
             $progcourse = new Programmecourse($data);
             $progcourse->save();
@@ -751,8 +751,8 @@ class CourseController extends Controller
             ->where('level', 'Level 400')->get();
 
         return view('course_management.second_semester_bprml4', [
-            'course'=>$course,
-            'procode'=>$prog,
+            'course' => $course,
+            'procode' => $prog,
             'procourse' => $procourse, ]);
     }
 
@@ -765,7 +765,7 @@ class CourseController extends Controller
 
         $count = \count($courses);
 
-        for ($i = 0; $i < $count; $i++) {
+        for ($i = 0; $i < $count; ++$i) {
             $id = $courses[$i];
 
             //fetch cousre from database first
@@ -778,14 +778,14 @@ class CourseController extends Controller
             // echo $cousertitle." | ".$cousecode." | ".$courech."<br>";
 
             //insert values Into Database
-            $data = ['programme'=> $prog,
-                     'progcode' =>$progcode,
-                     'semester' => $semester,
-                     'coursetitle' => $cousertitle,
-                     'coursecode' => $cousecode,
-                     'credithours' => $courech,
-                     'level'=> 'Level 400',
-                    ];
+            $data = ['programme' => $prog,
+                'progcode' => $progcode,
+                'semester' => $semester,
+                'coursetitle' => $cousertitle,
+                'coursecode' => $cousecode,
+                'credithours' => $courech,
+                'level' => 'Level 400',
+            ];
 
             $progcourse = new Programmecourse($data);
             $progcourse->save();
@@ -811,14 +811,14 @@ class CourseController extends Controller
     {
         $course = Course::where('program', 'Degree')->get();
 
-        return view('course_management.all_degree_courses', ['degree'=>$course]);
+        return view('course_management.all_degree_courses', ['degree' => $course]);
     }
 
     public function alldiplomacourse()
     {
         $course = Course::where('program', 'Diploma')->get();
 
-        return view('course_management.all_diploma_courses', ['degree'=>$course]);
+        return view('course_management.all_diploma_courses', ['degree' => $course]);
     }
 
     public function delcourse($id)
@@ -846,7 +846,7 @@ class CourseController extends Controller
 
         return view(
             'course_management.assign-course-staff',
-            ['lectid'=> $id, 'staff' => $staff, 'leccources' => $lectcorse, 'courses'=>$courses]
+            ['lectid' => $id, 'staff' => $staff, 'leccources' => $lectcorse, 'courses' => $courses]
         );
     }
 }

@@ -7,9 +7,11 @@ use App\Models\Designation;
 use App\Models\Employee;
 use App\Models\Promotion;
 use App\Models\Utility;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Validator;
 
 class PromotionController extends Controller
 {
@@ -44,14 +46,14 @@ class PromotionController extends Controller
     public function store(Request $request)
     {
         if (\Auth::user()->can('Create Promotion')) {
-            $validator = \Validator::make(
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'employee_id' => 'required',
-                                   'designation_id' => 'required',
-                                   'promotion_title' => 'required',
-                                   'promotion_date' => 'required',
-                               ]
+                    'employee_id' => 'required',
+                    'designation_id' => 'required',
+                    'promotion_title' => 'required',
+                    'promotion_date' => 'required',
+                ]
             );
 
             if ($validator->fails()) {
@@ -79,7 +81,7 @@ class PromotionController extends Controller
 
                 try {
                     Mail::to($promotion->email)->send(new PromotionSend($promotion));
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     $smtp_error = __('E-Mail has been not sent due to SMTP configuration');
                 }
 
@@ -116,14 +118,14 @@ class PromotionController extends Controller
     {
         if (\Auth::user()->can('Edit Promotion')) {
             if ($promotion->created_by == \Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+                $validator = Validator::make(
                     $request->all(),
                     [
-                                       'employee_id' => 'required',
-                                       'designation_id' => 'required',
-                                       'promotion_title' => 'required',
-                                       'promotion_date' => 'required',
-                                   ]
+                        'employee_id' => 'required',
+                        'designation_id' => 'required',
+                        'promotion_title' => 'required',
+                        'promotion_date' => 'required',
+                    ]
                 );
 
                 if ($validator->fails()) {

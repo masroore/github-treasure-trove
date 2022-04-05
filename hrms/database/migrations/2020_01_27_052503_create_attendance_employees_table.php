@@ -8,12 +8,10 @@ class CreateAttendanceEmployeesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('attendance_employees', function (Blueprint $table) {
+        Schema::create('attendance_employees', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->integer('employee_id');
             $table->date('date');
@@ -31,10 +29,8 @@ class CreateAttendanceEmployeesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('attendance_employees');
     }

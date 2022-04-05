@@ -8,12 +8,10 @@ class CreateLecturersTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('lecturers', function (Blueprint $table) {
+        Schema::create('lecturers', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('user_id')->nullable();
             $table->string('fullname')->nullable();
@@ -30,10 +28,8 @@ class CreateLecturersTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('lecturers');
     }

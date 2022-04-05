@@ -8,12 +8,10 @@ class CreateGenratePayslipOptionsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('genrate_payslip_options', function (Blueprint $table) {
+        Schema::create('genrate_payslip_options', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->timestamps();
         });
@@ -21,10 +19,8 @@ class CreateGenratePayslipOptionsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('genrate_payslip_options');
     }

@@ -8,7 +8,7 @@ class Osncode extends Model
 {
     protected $fillable = [
         'firstname', 'lastname', 'othernames',
-         'email', 'phone', 'programme', 'amount', 'status', 'year', ];
+        'email', 'phone', 'programme', 'amount', 'status', 'year', ];
 
     public function personinfos()
     {

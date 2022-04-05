@@ -16,13 +16,13 @@ class Sendsmslecturersjob implements ShouldQueue
     use SerializesModels;
 
     public $lecturer;
+
     public $html;
+
     public $fullpath;
 
     /**
      * Create a new job instance.
-     *
-     * @return void
      */
     public function __construct($lecturer, $html, $fullpath)
     {
@@ -33,10 +33,8 @@ class Sendsmslecturersjob implements ShouldQueue
 
     /**
      * Execute the job.
-     *
-     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         foreach ($this->lecturer as $lect) {
             $user = User::where('id', $lect->user_id)->first();

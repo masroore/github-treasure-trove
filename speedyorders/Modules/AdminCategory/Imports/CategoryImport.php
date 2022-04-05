@@ -11,18 +11,18 @@ use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class CategoryImport implements ToModel, WithHeadingRow, WithBatchInserts, WithChunkReading, ShouldQueue
+class CategoryImport implements ShouldQueue, ToModel, WithBatchInserts, WithChunkReading, WithHeadingRow
 {
-    public function model(array $row)
+    public function model(array $row): void
     {
         try {
             Category::create([
-                'id'             => $row['category_id'],
-                'image'          => $row['image'],
-                'category_id'    => $row['parent_id'],
-                'sort_order'     => $row['sort_order'],
-                'status'         => $row['status'],
-                ]);
+                'id' => $row['category_id'],
+                'image' => $row['image'],
+                'category_id' => $row['parent_id'],
+                'sort_order' => $row['sort_order'],
+                'status' => $row['status'],
+            ]);
         } catch (Exception $e) {
             Log::info('Category File Import data:' . json_encode($row) . ' error:' . json_encode($e->getMessage()));
         }

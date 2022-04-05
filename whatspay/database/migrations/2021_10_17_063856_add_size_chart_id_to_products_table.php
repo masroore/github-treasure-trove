@@ -8,12 +8,10 @@ class AddSizeChartIdToProductsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('products', function (Blueprint $table) {
+        Schema::table('products', function (Blueprint $table): void {
             $table->bigInteger('size_chart_id')->unsigned()->index('product_size_chart_id_index')->comment('Belongs to size_charts table');
             $table->foreign('size_chart_id')
                 ->references('id')
@@ -25,13 +23,10 @@ class AddSizeChartIdToProductsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('products', function (Blueprint $table) {
-
+        Schema::table('products', function (Blueprint $table): void {
         });
     }
 }

@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateStudentProfilesTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::create('student_profiles', function (Blueprint $table) {
+        Schema::create('student_profiles', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('student_name');
             $table->string('matric_number')->unique();

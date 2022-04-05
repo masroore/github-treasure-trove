@@ -8,12 +8,10 @@ class UpdateShippingsTableAddForeignKey extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('shippings', function (Blueprint $table) {
+        Schema::table('shippings', function (Blueprint $table): void {
             $table->foreign('parent_id')
                 ->constrained()
                 ->nullable()
@@ -26,13 +24,10 @@ class UpdateShippingsTableAddForeignKey extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('shippings', function (Blueprint $table) {
-
+        Schema::table('shippings', function (Blueprint $table): void {
         });
     }
 }

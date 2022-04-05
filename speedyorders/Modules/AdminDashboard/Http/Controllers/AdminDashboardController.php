@@ -37,22 +37,22 @@ class AdminDashboardController extends Controller
             ->where('status', '!=', 'completed')
             ->whereYear('created_at', date('Y'))
             ->when('Week' == $frequency, function ($query) {
-            return $query->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
-        })
+                return $query->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
+            })
             ->when('Month' == $frequency, function ($query) {
-            return $query->whereMonth('created_at', Carbon::now()->month);
-        })
+                return $query->whereMonth('created_at', Carbon::now()->month);
+            })
             ->get()
             ->when('Month' == $frequency, function ($query) {
-            return $query->groupBy(function ($date) {
-                return Carbon::parse($date->created_at)->format('d'); // grouping by month day
-            });
-        })
+                return $query->groupBy(function ($date) {
+                    return Carbon::parse($date->created_at)->format('d'); // grouping by month day
+                });
+            })
             ->when('Week' == $frequency, function ($query) {
-            return $query->groupBy(function ($date) {
-                return Carbon::parse($date->created_at)->format('w'); // grouping by week day
-            });
-        })
+                return $query->groupBy(function ($date) {
+                    return Carbon::parse($date->created_at)->format('w'); // grouping by week day
+                });
+            })
             ->when('Year' == $frequency, function ($query) {
                 return $query->groupBy(function ($date) {
                     return Carbon::parse($date->created_at)->format('n'); // grouping by months
@@ -63,17 +63,17 @@ class AdminDashboardController extends Controller
             ->where('status', 'completed')
             ->whereYear('created_at', date('Y'))
             ->when('Week' == $frequency, function ($query) {
-            return $query->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
-        })
+                return $query->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
+            })
             ->when('Month' == $frequency, function ($query) {
-            return $query->whereMonth('created_at', Carbon::now()->month);
-        })
+                return $query->whereMonth('created_at', Carbon::now()->month);
+            })
             ->get()
             ->when('Month' == $frequency, function ($query) {
-            return $query->groupBy(function ($date) {
-                return Carbon::parse($date->created_at)->format('d'); // grouping by day
-            });
-        })
+                return $query->groupBy(function ($date) {
+                    return Carbon::parse($date->created_at)->format('d'); // grouping by day
+                });
+            })
             ->when('Week' == $frequency, function ($query) {
                 return $query->groupBy(function ($date) {
                     return Carbon::parse($date->created_at)->format('w'); // grouping by week day

@@ -3,6 +3,7 @@
 namespace Modules\AdminCategory\Http\Controllers;
 
 use App\Models\Category;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
@@ -112,7 +113,7 @@ class AdminCategoryController extends Controller
         $category = Category::findOrFail($id);
         $categories = Category::latest()->get();
 
-        return view('admincategory::edit', ['category'=>$category, 'categories'=>$categories], $data);
+        return view('admincategory::edit', ['category' => $category, 'categories' => $categories], $data);
     }
 
     /**
@@ -150,7 +151,7 @@ class AdminCategoryController extends Controller
         try {
             Category::destroy($id);
             session()->flash('success_message', 'Product deleted successfully.');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             session()->flash('error_message', 'Product could not be deleted.');
         }
 
@@ -168,7 +169,7 @@ class AdminCategoryController extends Controller
             }
             Category::where('id', $id)->first()->update(['status' => $status]);
             session()->flash('success_message', 'Category updated successfully.');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             session()->flash('error_message', 'Category could not be updated.');
         }
 

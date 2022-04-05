@@ -2,6 +2,8 @@
 
 namespace App\pdf;
 
-class Drawpdf extends \FPDF
+use FPDF;
+
+class Drawpdf extends FPDF
 {
 }

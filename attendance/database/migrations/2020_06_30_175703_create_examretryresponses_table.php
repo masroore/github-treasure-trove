@@ -8,12 +8,10 @@ class CreateExamretryresponsesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('examretryresponses', function (Blueprint $table) {
+        Schema::create('examretryresponses', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('user_id')->nullable();
             $table->string('exam_id')->nullable();
@@ -27,10 +25,8 @@ class CreateExamretryresponsesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('examretryresponses');
     }

@@ -148,13 +148,16 @@ class CS_REST_CurlTransport extends CS_REST_BaseTransport
                 curl_setopt($ch, \CURLOPT_CUSTOMREQUEST, CS_REST_PUT);
                 $headers[] = 'Content-Length: ' . strlen($call_options['data']);
                 curl_setopt($ch, \CURLOPT_POSTFIELDS, $call_options['data']);
+
                 break;
             case CS_REST_POST:
                 curl_setopt($ch, \CURLOPT_POST, true);
                 curl_setopt($ch, \CURLOPT_POSTFIELDS, $call_options['data'] ?? '');
+
                 break;
             case CS_REST_DELETE:
                 curl_setopt($ch, \CURLOPT_CUSTOMREQUEST, CS_REST_DELETE);
+
                 break;
         }
 
@@ -215,7 +218,7 @@ class CS_REST_SocketWrapper
         return true;
     }
 
-    public function write($data)
+    public function write($data): void
     {
         fwrite($this->socket, $data);
     }
@@ -228,7 +231,7 @@ class CS_REST_SocketWrapper
         return ob_get_clean();
     }
 
-    public function close()
+    public function close(): void
     {
         fclose($this->socket);
     }

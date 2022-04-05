@@ -8,12 +8,10 @@ class AddWorkingDaysToStoresTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('stores', function (Blueprint $table) {
+        Schema::table('stores', function (Blueprint $table): void {
             $table->bigInteger('parent_branch_id')->unsigned()->comment('Belongs to stores table PK')->after('user_id');
             $table->renameColumn('cash_on_delivery', 'cod_status');
             $table->renameColumn('service_charges', 'service_charges_status');
@@ -26,12 +24,10 @@ class AddWorkingDaysToStoresTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('stores', function (Blueprint $table) {
+        Schema::table('stores', function (Blueprint $table): void {
             $table->renameColumn('cod_status', 'cash_on_delivery');
             $table->renameColumn('service_charges_status', 'service_charges');
             $table->renameColumn('service_charges_amount', 'store_service_charges');

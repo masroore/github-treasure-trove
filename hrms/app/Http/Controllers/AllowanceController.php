@@ -5,13 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Allowance;
 use App\Models\AllowanceOption;
 use App\Models\Employee;
+use Auth;
 use Illuminate\Http\Request;
+use Validator;
 
 class AllowanceController extends Controller
 {
     public function allowanceCreate($id)
     {
-        $allowance_options = AllowanceOption::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        $allowance_options = AllowanceOption::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
         $employee = Employee::find($id);
 
         return view('allowance.create', compact('employee', 'allowance_options'));
@@ -19,15 +21,15 @@ class AllowanceController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('Create Allowance')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Create Allowance')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'employee_id' => 'required',
-                                   'allowance_option' => 'required',
-                                   'title' => 'required',
-                                   'amount' => 'required',
-                               ]
+                    'employee_id' => 'required',
+                    'allowance_option' => 'required',
+                    'title' => 'required',
+                    'amount' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -40,7 +42,7 @@ class AllowanceController extends Controller
             $allowance->allowance_option = $request->allowance_option;
             $allowance->title = $request->title;
             $allowance->amount = $request->amount;
-            $allowance->created_by = \Auth::user()->creatorId();
+            $allowance->created_by = Auth::user()->creatorId();
             $allowance->save();
 
             return redirect()->back()->with('success', __('Allowance  successfully created.'));
@@ -57,9 +59,9 @@ class AllowanceController extends Controller
     public function edit($allowance)
     {
         $allowance = Allowance::find($allowance);
-        if (\Auth::user()->can('Edit Allowance')) {
-            if ($allowance->created_by == \Auth::user()->creatorId()) {
-                $allowance_options = AllowanceOption::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        if (Auth::user()->can('Edit Allowance')) {
+            if ($allowance->created_by == Auth::user()->creatorId()) {
+                $allowance_options = AllowanceOption::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
 
                 return view('allowance.edit', compact('allowance', 'allowance_options'));
             }
@@ -72,16 +74,16 @@ class AllowanceController extends Controller
 
     public function update(Request $request, Allowance $allowance)
     {
-        if (\Auth::user()->can('Edit Allowance')) {
-            if ($allowance->created_by == \Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+        if (Auth::user()->can('Edit Allowance')) {
+            if ($allowance->created_by == Auth::user()->creatorId()) {
+                $validator = Validator::make(
                     $request->all(),
                     [
 
-                                       'allowance_option' => 'required',
-                                       'title' => 'required',
-                                       'amount' => 'required',
-                                   ]
+                        'allowance_option' => 'required',
+                        'title' => 'required',
+                        'amount' => 'required',
+                    ]
                 );
                 if ($validator->fails()) {
                     $messages = $validator->getMessageBag();
@@ -105,8 +107,8 @@ class AllowanceController extends Controller
 
     public function destroy(Allowance $allowance)
     {
-        if (\Auth::user()->can('Delete Allowance')) {
-            if ($allowance->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('Delete Allowance')) {
+            if ($allowance->created_by == Auth::user()->creatorId()) {
                 $allowance->delete();
 
                 return redirect()->back()->with('success', __('Allowance successfully deleted.'));

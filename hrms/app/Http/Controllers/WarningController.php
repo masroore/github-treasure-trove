@@ -6,9 +6,11 @@ use App\Mail\WarningSend;
 use App\Models\Employee;
 use App\Models\Utility;
 use App\Models\Warning;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Validator;
 
 class WarningController extends Controller
 {
@@ -51,21 +53,21 @@ class WarningController extends Controller
     {
         if (\Auth::user()->can('Create Warning')) {
             if ('employee' != \Auth::user()->type) {
-                $validator = \Validator::make(
+                $validator = Validator::make(
                     $request->all(),
                     [
-                                       'warning_by' => 'required',
-                                   ]
+                        'warning_by' => 'required',
+                    ]
                 );
             }
 
-            $validator = \Validator::make(
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'warning_to' => 'required',
-                                   'subject' => 'required',
-                                   'warning_date' => 'required',
-                               ]
+                    'warning_to' => 'required',
+                    'subject' => 'required',
+                    'warning_date' => 'required',
+                ]
             );
 
             if ($validator->fails()) {
@@ -93,9 +95,10 @@ class WarningController extends Controller
                 $employee = Employee::find($warning->warning_to);
                 $warning->name = $employee->name;
                 $warning->email = $employee->email;
+
                 try {
                     Mail::to($warning->email)->send(new WarningSend($warning));
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     $smtp_error = __('E-Mail has been not sent due to SMTP configuration');
                 }
 
@@ -140,21 +143,21 @@ class WarningController extends Controller
         if (\Auth::user()->can('Edit Warning')) {
             if ($warning->created_by == \Auth::user()->creatorId()) {
                 if ('employee' != \Auth::user()->type) {
-                    $validator = \Validator::make(
+                    $validator = Validator::make(
                         $request->all(),
                         [
-                                           'warning_by' => 'required',
-                                       ]
+                            'warning_by' => 'required',
+                        ]
                     );
                 }
 
-                $validator = \Validator::make(
+                $validator = Validator::make(
                     $request->all(),
                     [
-                                       'warning_to' => 'required',
-                                       'subject' => 'required',
-                                       'warning_date' => 'required',
-                                   ]
+                        'warning_to' => 'required',
+                        'subject' => 'required',
+                        'warning_date' => 'required',
+                    ]
                 );
 
                 if ($validator->fails()) {

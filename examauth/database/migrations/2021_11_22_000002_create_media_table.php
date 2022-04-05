@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateMediaTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::create('media', function (Blueprint $table) {
+        Schema::create('media', function (Blueprint $table): void {
             $table->bigIncrements('id');
 
             $table->morphs('model');

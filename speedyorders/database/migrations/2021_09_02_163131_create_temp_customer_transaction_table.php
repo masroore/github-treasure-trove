@@ -8,12 +8,10 @@ class CreateTempCustomerTransactionTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('temp_customer_transaction', function (Blueprint $table) {
+        Schema::create('temp_customer_transaction', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('php_session_id', 255)->default(null)->nullable();
             $table->text('description')->default(null)->nullable();
@@ -26,10 +24,8 @@ class CreateTempCustomerTransactionTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('temp_customer_transaction');
     }

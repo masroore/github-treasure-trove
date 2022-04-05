@@ -8,12 +8,10 @@ class CreateStudentAttendancesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('student_attendances', function (Blueprint $table) {
+        Schema::create('student_attendances', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('indexnumber')->nullable();
             $table->string('attendance')->nullable();
@@ -34,10 +32,8 @@ class CreateStudentAttendancesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('student_attendances');
     }

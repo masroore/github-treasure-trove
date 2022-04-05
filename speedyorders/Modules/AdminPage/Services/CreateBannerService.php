@@ -3,6 +3,7 @@
 namespace Modules\AdminPage\Services;
 
 use App\Models\Banner;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class CreateBannerService
@@ -34,7 +35,7 @@ class CreateBannerService
             DB::commit();
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollback();
             dd($e);
 

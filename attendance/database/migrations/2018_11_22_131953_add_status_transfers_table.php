@@ -10,7 +10,7 @@ class AddStatusTransfersTable extends Migration
 {
     public function up(): void
     {
-        Schema::table($this->table(), function (Blueprint $table) {
+        Schema::table($this->table(), function (Blueprint $table): void {
             $enums = [
                 Transfer::STATUS_PAID,
                 Transfer::STATUS_REFUND,
@@ -40,7 +40,7 @@ class AddStatusTransfersTable extends Migration
             ->where('status', Transfer::STATUS_REFUND)
             ->update(['refund' => true]);
 
-        Schema::table($this->table(), function (Blueprint $table) {
+        Schema::table($this->table(), function (Blueprint $table): void {
             $table->dropColumn(['status', 'status_last']);
         });
     }

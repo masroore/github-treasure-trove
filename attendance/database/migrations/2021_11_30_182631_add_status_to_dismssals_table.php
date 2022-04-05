@@ -8,25 +8,21 @@ class AddStatusToDismssalsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('dismssals', function (Blueprint $table) {
+        Schema::table('dismssals', function (Blueprint $table): void {
             $table->string('status')->nullable();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         if (Schema::hasColumn('dismssals', 'status')) {
-            Schema::table('dismssals', function (Blueprint $table) {
+            Schema::table('dismssals', function (Blueprint $table): void {
                 $table->dropColumn('status');
             });
         }

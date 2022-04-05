@@ -6,11 +6,11 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateEventsTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
         Schema::create(
             'events',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->bigIncrements('id');
                 $table->integer('branch_id');
                 $table->longText('department_id');
@@ -26,7 +26,7 @@ class CreateEventsTable extends Migration
         );
     }
 
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('events');
     }

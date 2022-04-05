@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateUserUserAlertPivotTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::create('user_user_alert', function (Blueprint $table) {
+        Schema::create('user_user_alert', function (Blueprint $table): void {
             $table->unsignedBigInteger('user_alert_id');
             $table->foreign('user_alert_id', 'user_alert_id_fk_3555374')->references('id')->on('user_alerts')->onDelete('cascade');
             $table->unsignedBigInteger('user_id');

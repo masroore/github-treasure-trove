@@ -8,12 +8,10 @@ class CreateShippingCompaniesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('shipping_companies', function (Blueprint $table) {
+        Schema::create('shipping_companies', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->bigInteger('store_id')->unsigned()->index('shipping_companies_store_id_index')->comment('Belongs to stores table');
             $table->string('image', '255')->nullable();
@@ -40,10 +38,8 @@ class CreateShippingCompaniesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('shipping_companies');
     }

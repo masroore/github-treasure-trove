@@ -90,7 +90,7 @@ class Chart extends Model
      */
     public $age_stats = [
         'from' => [0, 16, 26, 36, 46, 61],
-        'to'   => [15, 25, 35, 45, 60, 100],
+        'to' => [15, 25, 35, 45, 60, 100],
     ];
 
     /**
@@ -184,10 +184,10 @@ class Chart extends Model
         }
 
         return [
-            'from'     => $from,
-            'to'       => $to,
+            'from' => $from,
+            'to' => $to,
             'iterator' => $iterator,
-            'group'    => $group,
+            'group' => $group,
         ];
     }
 
@@ -253,7 +253,7 @@ class Chart extends Model
 
             foreach ($temp as $age => $value) {
                 //Log::info(now()->year - $age);
-                for ($i = 0; $i < \count($this->age_stats['from']); $i++) {
+                for ($i = 0; $i < \count($this->age_stats['from']); ++$i) {
                     if ((now()->year - $age) >= $this->age_stats['from'][$i] && (now()->year - $age) <= $this->age_stats['to'][$i]) {
                         $birth_temp[$this->age_stats['from'][$i] . '/' . $this->age_stats['to'][$i]] = \count($value);
                     }
@@ -277,9 +277,9 @@ class Chart extends Model
         $widgets = $this->stats->getPieWidgets($data, $column);
 
         return [
-            'labels'  => $labels,
-            'data'    => $chartdata,
-            'colors'  => \array_slice($this->pie_colors, 0, \count($temp) + 1),
+            'labels' => $labels,
+            'data' => $chartdata,
+            'colors' => \array_slice($this->pie_colors, 0, \count($temp) + 1),
             'widgets' => $widgets,
         ];
     }
@@ -311,8 +311,8 @@ class Chart extends Model
         }
 
         return [
-            'labels'  => $labels,
-            'data'    => $chartdata,
+            'labels' => $labels,
+            'data' => $chartdata,
             'widgets' => $this->stats->setWidgetsData($chartdata),
             'presets' => $this->stats->setPresetsData(),
         ];
@@ -330,7 +330,7 @@ class Chart extends Model
     {
         $temp = $this->setBarChartData($data, $column);
 
-        for ($i = 0; $i < \count($temp['labels']); $i++) {
+        for ($i = 0; $i < \count($temp['labels']); ++$i) {
             $test[$temp['data'][$i]] = $temp['labels'][$i];
         }
 
@@ -348,13 +348,13 @@ class Chart extends Model
                 $response['labels'][] = $value;
                 $response['data'][] = $index;
 
-                $count++;
+                ++$count;
             }
         }
 
         return [
-            'labels'  => $response['labels'],
-            'data'    => $response['data'],
+            'labels' => $response['labels'],
+            'data' => $response['data'],
             'widgets' => $this->stats->setWidgetsData($temp['data']),
             'presets' => $this->stats->setPresetsData(),
         ];

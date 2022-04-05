@@ -22,14 +22,16 @@ class AdminProductAjaxController extends Controller
         switch ($option_data->type) {
             case 'select':
                 $returnHTML .= view('adminproduct::htmlelement.select', compact('option_data', 'counter'))->render();
+
             break;
 
             case 'input':
                 $returnHTML .= view('adminproduct::htmlelement.input', compact('option_data', 'counter'))->render();
+
             break;
         }
 
-        return response()->json(['success' => true, 'html'=>$returnHTML]);
+        return response()->json(['success' => true, 'html' => $returnHTML]);
     }
 
     public function group(Request $request)
@@ -41,7 +43,7 @@ class AdminProductAjaxController extends Controller
 
         $returnHTML = view('adminproduct::htmlelement.input', compact('option', 'counter'))->render();
 
-        return response()->json(['success' => true, 'html'=>$returnHTML]);
+        return response()->json(['success' => true, 'html' => $returnHTML]);
     }
 
     public function optionValue(Request $request)
@@ -58,7 +60,8 @@ class AdminProductAjaxController extends Controller
             case 'select':
                 $returnHTML = view('adminproduct::htmlelement.select-value', compact('option', 'counter'))->render();
 
-                return response()->json(['success' => true, 'html'=>$returnHTML]);
+                return response()->json(['success' => true, 'html' => $returnHTML]);
+
                 break;
         }
     }
@@ -79,6 +82,6 @@ class AdminProductAjaxController extends Controller
 
         $returnHTML = view('adminproduct::htmlelement.deliverytime', compact('zone_prices', 'deliverArr'))->render();
 
-        return response()->json(['success' => true, 'html'=>$returnHTML]);
+        return response()->json(['success' => true, 'html' => $returnHTML]);
     }
 }

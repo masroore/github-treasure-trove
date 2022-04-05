@@ -8,12 +8,10 @@ class AddColumnsToCustomerUsersTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('customer_users', function (Blueprint $table) {
+        Schema::table('customer_users', function (Blueprint $table): void {
             $table->string('token')->default(null)->nullbale()->after('password');
             $table->string('password_reset_at')->default(null)->nullbale()->after('password');
         });
@@ -21,12 +19,10 @@ class AddColumnsToCustomerUsersTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('customer_users', function (Blueprint $table) {
+        Schema::table('customer_users', function (Blueprint $table): void {
             $table->dropColumn('token');
             $table->dropColumn('password_reset_at');
         });

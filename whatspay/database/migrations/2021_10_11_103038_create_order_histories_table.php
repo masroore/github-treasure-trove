@@ -8,12 +8,10 @@ class CreateOrderHistoriesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('order_histories', function (Blueprint $table) {
+        Schema::create('order_histories', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->enum('action', ['create_order_from_payment_page', 'create_order', 'cancel_order', 'confirm_order', 'create_shipment', 'update_status', 'refund', 'cancel_shipment', 'confirm_payment', 'create_order_from_seeder', 'create_from_order', 'update_cod_status', 'shipping_update_status'])->default('create_order');
             $table->string('description', 255)->nullable();
@@ -36,10 +34,8 @@ class CreateOrderHistoriesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('order_histories');
     }

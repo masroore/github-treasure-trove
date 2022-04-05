@@ -64,7 +64,6 @@ class SliderController extends Controller
      */
     public function show($id)
     {
-
     }
 
     /**

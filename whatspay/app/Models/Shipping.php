@@ -37,7 +37,7 @@ class Shipping extends Model
     public function cities()
     {
         return $this->hasMany(self::class, 'parent_id')
-            ->with(['config' => function ($query) {
+            ->with(['config' => function ($query): void {
                 $query->select('id', 'shipping_id', 'min', 'max', 'charges');
             }]);
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Spatie\Permission\Models\Permission;
@@ -11,8 +12,8 @@ class RoleController extends Controller
 {
     public function index()
     {
-        if (\Auth::user()->can('Manage Role')) {
-            $roles = Role::where('created_by', '=', \Auth::user()->creatorId())->get();
+        if (Auth::user()->can('Manage Role')) {
+            $roles = Role::where('created_by', '=', Auth::user()->creatorId())->get();
 
             return view('role.index')->with('roles', $roles);
         }
@@ -22,8 +23,8 @@ class RoleController extends Controller
 
     public function create()
     {
-        if (\Auth::user()->can('Create Role')) {
-            $user = \Auth::user();
+        if (Auth::user()->can('Create Role')) {
+            $user = Auth::user();
             if ('super admin' == $user->type || 'company' == $user->type) {
                 $permissions = Permission::all()->pluck('name', 'id')->toArray();
             } else {
@@ -43,7 +44,7 @@ class RoleController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('Create Role')) {
+        if (Auth::user()->can('Create Role')) {
             $role = Role::where('name', '=', $request->name)->first();
             if (isset($role)) {
                 return redirect()->back()->with('error', __('The Role has Already Been Taken.'));
@@ -52,15 +53,15 @@ class RoleController extends Controller
             $this->validate(
                 $request,
                 [
-                                'name' => 'required|max:100|unique:roles,name,NULL,id,created_by,' . \Auth::user()->creatorId(),
-                                'permissions' => 'required',
-                            ]
+                    'name' => 'required|max:100|unique:roles,name,NULL,id,created_by,' . Auth::user()->creatorId(),
+                    'permissions' => 'required',
+                ]
             );
 
             $name = $request['name'];
             $role = new Role();
             $role->name = $name;
-            $role->created_by = \Auth::user()->creatorId();
+            $role->created_by = Auth::user()->creatorId();
             $permissions = $request['permissions'];
             $role->save();
 
@@ -78,8 +79,8 @@ class RoleController extends Controller
 
     public function edit(Role $role)
     {
-        if (\Auth::user()->can('Edit Role')) {
-            $user = \Auth::user();
+        if (Auth::user()->can('Edit Role')) {
+            $user = Auth::user();
             if ('super admin' == $user->type || 'company' == $user->type) {
                 $permissions = Permission::all()->pluck('name', 'id')->toArray();
             } else {
@@ -98,21 +99,21 @@ class RoleController extends Controller
 
     public function update(Request $request, Role $role)
     {
-        if (\Auth::user()->can('Edit Role')) {
+        if (Auth::user()->can('Edit Role')) {
             if ('employee' == $role->name) {
                 $this->validate(
                     $request,
                     [
-                                'permissions' => 'required',
-                            ]
+                        'permissions' => 'required',
+                    ]
                 );
             } else {
                 $this->validate(
                     $request,
                     [
-                                'name' => 'required|max:100|unique:roles,name,' . $role['id'] . ',id,created_by,' . \Auth::user()->creatorId(),
-                                'permissions' => 'required',
-                            ]
+                        'name' => 'required|max:100|unique:roles,name,' . $role['id'] . ',id,created_by,' . Auth::user()->creatorId(),
+                        'permissions' => 'required',
+                    ]
                 );
             }
 
@@ -139,7 +140,7 @@ class RoleController extends Controller
 
     public function destroy(Role $role)
     {
-        if (\Auth::user()->can('Delete Role')) {
+        if (Auth::user()->can('Delete Role')) {
             $role->delete();
 
             return redirect()->route('roles.index')->with(

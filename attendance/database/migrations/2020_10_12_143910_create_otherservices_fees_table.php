@@ -8,12 +8,10 @@ class CreateOtherservicesFeesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('otherservices_fees', function (Blueprint $table) {
+        Schema::create('otherservices_fees', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('title');
             $table->string('feecode');
@@ -24,10 +22,8 @@ class CreateOtherservicesFeesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('otherservices_fees');
     }

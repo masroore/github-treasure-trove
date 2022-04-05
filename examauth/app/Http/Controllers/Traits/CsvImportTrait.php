@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Traits;
 
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
@@ -57,7 +58,7 @@ trait CsvImportTrait
             session()->flash('message', trans('global.app_imported_rows_to_table', ['rows' => $rows, 'table' => $table]));
 
             return redirect($request->input('redirect'));
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
             throw $ex;
         }
     }
@@ -79,7 +80,7 @@ trait CsvImportTrait
         $i = 0;
         while (false !== $reader->next() && $i < 5) {
             $lines[] = $reader->current();
-            $i++;
+            ++$i;
         }
 
         $filename = Str::random(10) . '.csv';

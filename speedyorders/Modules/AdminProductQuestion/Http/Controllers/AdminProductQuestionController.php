@@ -153,16 +153,16 @@ class AdminProductQuestionController extends Controller
     public function answer(Request $request, $id)
     {
         $request->validate([
-            'answer'=>'nullable|string',
+            'answer' => 'nullable|string',
         ]);
 
         ProductQuestionAnswer::create([
-            'product_question_id'=>$id,
-            'answer'=>$request->answer,
-            'status'=>1,
+            'product_question_id' => $id,
+            'answer' => $request->answer,
+            'status' => 1,
         ]);
 
-        ProductQuestion::where('id', $id)->first()->update(['status'=>0]);
+        ProductQuestion::where('id', $id)->first()->update(['status' => 0]);
 
         return redirect('admin/product-question')->with('flash_message', 'ProductQuestion updated!');
     }

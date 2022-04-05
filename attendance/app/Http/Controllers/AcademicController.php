@@ -14,7 +14,6 @@ class AcademicController extends Controller
      */
     public function index()
     {
-
     }
 
     /**
@@ -26,7 +25,7 @@ class AcademicController extends Controller
     {
         $academic = Academicyear::all();
 
-        return view('Academicyear.new_academic_year', ['academic'=>$academic]);
+        return view('Academicyear.new_academic_year', ['academic' => $academic]);
     }
 
     public function updatestatus(Request $request)
@@ -54,7 +53,7 @@ class AcademicController extends Controller
 
             $msg = 'Status Updated Successfully!';
 
-            return response()->json(['msg'=> $msg], 200);
+            return response()->json(['msg' => $msg], 200);
         }
         //create new ststus
         $academic = Academicyear::where('id', $id)->first();
@@ -63,7 +62,7 @@ class AcademicController extends Controller
 
         $msg = 'Status Updated Successfully!';
 
-        return response()->json(['msg'=> $msg], 200);
+        return response()->json(['msg' => $msg], 200);
     }
 
     /**
@@ -77,7 +76,7 @@ class AcademicController extends Controller
     {
         $academic = Academicyear::where('id', $id)->first();
 
-        return view('Academicyear.academic_year_edit', ['academic'=>$academic]);
+        return view('Academicyear.academic_year_edit', ['academic' => $academic]);
     }
 
     /**
@@ -93,7 +92,7 @@ class AcademicController extends Controller
 
         $this->validate($request, [
             'academic' => 'required|min:9',
-            'semester'=> 'required',
+            'semester' => 'required',
         ]);
 
         $acdemi = Academicyear::where('id', $id)->first();
@@ -115,6 +114,5 @@ class AcademicController extends Controller
      */
     public function destroy($id)
     {
-
     }
 }

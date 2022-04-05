@@ -27,7 +27,7 @@ class AdminInventryController extends Controller
         return view('admininventry::admininventry.index', compact('inventries'), $data);
     }
 
-    public function addSetAvailability(Request $request)
+    public function addSetAvailability(Request $request): void
     {
         $type_inventry = ($request->type && 'true' == $request->type) ? 1 : 0;
         $product_id = $request->product_id;

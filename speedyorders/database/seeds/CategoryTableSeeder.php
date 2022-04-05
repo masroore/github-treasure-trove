@@ -7,10 +7,8 @@ class CategoryTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         factory(Category::class, 20)->create();
     }

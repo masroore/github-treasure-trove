@@ -8,12 +8,10 @@ class AddNewColumnsToStoresTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('stores', function (Blueprint $table) {
+        Schema::table('stores', function (Blueprint $table): void {
             $table->string('area', 100)->after('postal_code')->nullable();
             $table->tinyInteger('is_online')->default(0)->after('country');
             $table->string('phone_number', 16)->after('is_online')->nullable();
@@ -27,13 +25,10 @@ class AddNewColumnsToStoresTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('stores', function (Blueprint $table) {
-
+        Schema::table('stores', function (Blueprint $table): void {
         });
     }
 }

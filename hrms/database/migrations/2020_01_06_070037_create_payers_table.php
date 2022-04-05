@@ -8,12 +8,10 @@ class CreatePayersTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('payers', function (Blueprint $table) {
+        Schema::create('payers', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('payer_name');
             $table->string('contact_number');
@@ -24,10 +22,8 @@ class CreatePayersTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('payers');
     }

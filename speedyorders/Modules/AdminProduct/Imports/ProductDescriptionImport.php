@@ -11,18 +11,18 @@ use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class ProductDescriptionImport implements ToModel, WithHeadingRow, WithBatchInserts, WithChunkReading, ShouldQueue
+class ProductDescriptionImport implements ShouldQueue, ToModel, WithBatchInserts, WithChunkReading, WithHeadingRow
 {
-    public function model(array $row)
+    public function model(array $row): void
     {
         try {
             $product = Product::where('id', $row['product_id'])->first();
             if ($product) {
                 $product->update([
-                    'name'              => $row['name'],
-                    'description'       => $row['description'],
-                    'meta_title'        => $row['meta_title'],
-                    'meta_description'  => $row['meta_description'],
+                    'name' => $row['name'],
+                    'description' => $row['description'],
+                    'meta_title' => $row['meta_title'],
+                    'meta_description' => $row['meta_description'],
                 ]);
             }
         } catch (Exception $e) {

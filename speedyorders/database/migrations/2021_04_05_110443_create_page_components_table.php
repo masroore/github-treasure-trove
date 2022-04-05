@@ -8,12 +8,10 @@ class CreatePageComponentsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('page_components', function (Blueprint $table) {
+        Schema::create('page_components', function (Blueprint $table): void {
             $table->unsignedBigInteger('id')->autoIncrement();
             $table->string('page_id')->default(null)->nullable();
             $table->text('content')->default(null)->nullable();
@@ -24,10 +22,8 @@ class CreatePageComponentsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('page_components');
     }

@@ -7,6 +7,7 @@ use App\Examcancel;
 use App\Examresults;
 use App\Studentinfo;
 use DB;
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -21,16 +22,19 @@ class RevertSessionCancelJob implements ShouldQueue
     use SerializesModels;
 
     public $level;
+
     public $session;
+
     public $programme;
+
     public $coursecode;
+
     public $semester;
+
     public $academicyear;
 
     /**
      * Create a new job instance.
-     *
-     * @return void
      */
     public function __construct($level, $session, $programme, $coursecode, $semester, $academicyear)
     {
@@ -44,10 +48,8 @@ class RevertSessionCancelJob implements ShouldQueue
 
     /**
      * Execute the job.
-     *
-     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         $students = Studentinfo::where('currentlevel', $this->level)->get();
 
@@ -60,6 +62,7 @@ class RevertSessionCancelJob implements ShouldQueue
 
             if ($creg) {
                 DB::beginTransaction();
+
                 try {
                     $id = $creg->id;
                     $coursecode = $creg->cource_code;
@@ -330,7 +333,7 @@ class RevertSessionCancelJob implements ShouldQueue
                     }
 
                     DB::commit();
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     DB::rollback();
                 }
             }

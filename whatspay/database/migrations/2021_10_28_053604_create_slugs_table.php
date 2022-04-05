@@ -8,12 +8,10 @@ class CreateSlugsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('slugs', function (Blueprint $table) {
+        Schema::create('slugs', function (Blueprint $table): void {
             $table->id();
             $table->morphs('slugable');
             $table->string('slug')->unique();
@@ -24,10 +22,8 @@ class CreateSlugsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('slugs');
     }

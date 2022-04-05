@@ -47,5 +47,5 @@ return [
         'encrypt_cookies' => App\Http\Middleware\EncryptCookies::class,
     ],
 
-    'guard'=>'api',
+    'guard' => 'api',
 ];

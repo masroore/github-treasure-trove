@@ -6,6 +6,7 @@ use App\Models\Customer;
 use App\Models\CustomerAddress;
 use App\Models\CustomerIpAddress;
 use App\Models\CustomerTransaction;
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Log;
 
@@ -53,7 +54,7 @@ class UpdateCustomerService
                 }
             }
 
-            if (isset($validatedData['description']) && isset($validatedData['transaction_id'])) {
+            if (isset($validatedData['description'], $validatedData['transaction_id'])) {
                 if (isset($validatedData['transaction_id']) && '' != $validatedData['transaction_id']) {
                     $transaction_data = CustomerTransaction::find($validatedData['transaction_id']);
                 } else {
@@ -68,7 +69,7 @@ class UpdateCustomerService
                 }
             }
 
-            if (isset($validatedData['ip']) && isset($validatedData['total_accounts'])) {
+            if (isset($validatedData['ip'], $validatedData['total_accounts'])) {
                 if (isset($validatedData['ip_id']) && '' != $validatedData['ip_id']) {
                     $ip_data = CustomerIpAddress::find($validatedData['ip_id']);
                 } else {
@@ -86,7 +87,7 @@ class UpdateCustomerService
             DB::commit();
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::info('Exception : ' . $e->getMessage());
             DB::rollback();
 

@@ -15,6 +15,7 @@ class BrandsService
      * @var
      */
     protected $brandsRepository;
+
     protected $storeRepository;
 
     /**

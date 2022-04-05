@@ -18,19 +18,23 @@ use App\Models\JobOnBoard;
 use App\Models\JobStage;
 use App\Models\User;
 use App\Models\Utility;
+use Auth;
+use Exception;
+use File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Validator;
 
 class JobApplicationController extends Controller
 {
     public function index(Request $request)
     {
-        if (\Auth::user()->can('Manage Job Application')) {
-            $stages = JobStage::where('created_by', '=', \Auth::user()->creatorId())->orderBy('order', 'asc')->get();
+        if (Auth::user()->can('Manage Job Application')) {
+            $stages = JobStage::where('created_by', '=', Auth::user()->creatorId())->orderBy('order', 'asc')->get();
 
-            $jobs = Job::where('created_by', \Auth::user()->creatorId())->get()->pluck('title', 'id');
+            $jobs = Job::where('created_by', Auth::user()->creatorId())->get()->pluck('title', 'id');
             $jobs->prepend('All', '');
 
             if (isset($request->start_date) && !empty($request->start_date)) {
@@ -59,27 +63,27 @@ class JobApplicationController extends Controller
 
     public function create()
     {
-        $jobs = Job::where('created_by', \Auth::user()->creatorId())->get()->pluck('title', 'id');
+        $jobs = Job::where('created_by', Auth::user()->creatorId())->get()->pluck('title', 'id');
         $jobs->prepend('--', '');
 
-        $questions = CustomQuestion::where('created_by', \Auth::user()->creatorId())->get();
+        $questions = CustomQuestion::where('created_by', Auth::user()->creatorId())->get();
 
         return view('jobApplication.create', compact('jobs', 'questions'));
     }
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('Create Job Application')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Create Job Application')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'job' => 'required',
-                                   'name' => 'required',
-                                   'email' => 'required',
-                                   'phone' => 'required',
-                                   'profile' => 'mimes:jpeg,png,jpg,gif,svg|max:20480',
-                                   'resume' => 'mimes:jpeg,png,jpg,gif,svg,pdf,doc,zip|max:20480',
-                               ]
+                    'job' => 'required',
+                    'name' => 'required',
+                    'email' => 'required',
+                    'phone' => 'required',
+                    'profile' => 'mimes:jpeg,png,jpg,gif,svg|max:20480',
+                    'resume' => 'mimes:jpeg,png,jpg,gif,svg,pdf,doc,zip|max:20480',
+                ]
             );
 
             if ($validator->fails()) {
@@ -97,8 +101,8 @@ class JobApplicationController extends Controller
                 $dir = storage_path('uploads/job/profile');
                 $image_path = $dir . $filenameWithExt;
 
-                if (\File::exists($image_path)) {
-                    \File::delete($image_path);
+                if (File::exists($image_path)) {
+                    File::delete($image_path);
                 }
                 if (!file_exists($dir)) {
                     mkdir($dir, 0777, true);
@@ -115,15 +119,15 @@ class JobApplicationController extends Controller
                 $dir = storage_path('uploads/job/resume');
                 $image_path = $dir . $filenameWithExt1;
 
-                if (\File::exists($image_path)) {
-                    \File::delete($image_path);
+                if (File::exists($image_path)) {
+                    File::delete($image_path);
                 }
                 if (!file_exists($dir)) {
                     mkdir($dir, 0777, true);
                 }
                 $path = $request->file('resume')->storeAs('uploads/job/resume/', $fileNameToStore1);
             }
-            $stage = JobStage::where('created_by', \Auth::user()->creatorId())->first();
+            $stage = JobStage::where('created_by', Auth::user()->creatorId())->first();
 
             $job = new JobApplication();
             $job->job = $request->job;
@@ -140,7 +144,7 @@ class JobApplicationController extends Controller
             $job->stage = $stage->id;
             $job->city = $request->city;
             $job->custom_question = json_encode($request->question);
-            $job->created_by = \Auth::user()->creatorId();
+            $job->created_by = Auth::user()->creatorId();
             $job->save();
 
             return redirect()->route('job-application.index')->with('success', __('Job application successfully created.'));
@@ -151,13 +155,13 @@ class JobApplicationController extends Controller
 
     public function show($ids)
     {
-        if (\Auth::user()->can('Show Job Application')) {
+        if (Auth::user()->can('Show Job Application')) {
             $id = Crypt::decrypt($ids);
             $jobApplication = JobApplication::find($id);
 
             $notes = JobApplicationNote::where('application_id', $id)->get();
 
-            $stages = JobStage::where('created_by', \Auth::user()->creatorId())->get();
+            $stages = JobStage::where('created_by', Auth::user()->creatorId())->get();
 
             return view('jobApplication.show', compact('jobApplication', 'notes', 'stages'));
         }
@@ -167,7 +171,7 @@ class JobApplicationController extends Controller
 
     public function destroy(JobApplication $jobApplication)
     {
-        if (\Auth::user()->can('Delete Job Application')) {
+        if (Auth::user()->can('Delete Job Application')) {
             $jobApplication->delete();
 
             return redirect()->route('job-application.index')->with('success', __('Job application   successfully deleted.'));
@@ -178,7 +182,7 @@ class JobApplicationController extends Controller
 
     public function order(Request $request)
     {
-        if (\Auth::user()->can('Move Job Application')) {
+        if (Auth::user()->can('Move Job Application')) {
             $post = $request->all();
             foreach ($post['order'] as $key => $item) {
                 $application = JobApplication::where('id', '=', $item)->first();
@@ -193,12 +197,12 @@ class JobApplicationController extends Controller
 
     public function addSkill(Request $request, $id)
     {
-        if (\Auth::user()->can('Add Job Application Skill')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Add Job Application Skill')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'skill' => 'required',
-                               ]
+                    'skill' => 'required',
+                ]
             );
 
             if ($validator->fails()) {
@@ -219,12 +223,12 @@ class JobApplicationController extends Controller
 
     public function addNote(Request $request, $id)
     {
-        if (\Auth::user()->can('Add Job Application Note')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Add Job Application Note')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'note' => 'required',
-                               ]
+                    'note' => 'required',
+                ]
             );
 
             if ($validator->fails()) {
@@ -236,8 +240,8 @@ class JobApplicationController extends Controller
             $note = new JobApplicationNote();
             $note->application_id = $id;
             $note->note = $request->note;
-            $note->note_created = \Auth::user()->id;
-            $note->created_by = \Auth::user()->creatorId();
+            $note->note_created = Auth::user()->id;
+            $note->created_by = Auth::user()->creatorId();
             $note->save();
 
             return redirect()->back()->with('success', __('Job application notes successfully added.'));
@@ -248,7 +252,7 @@ class JobApplicationController extends Controller
 
     public function destroyNote($id)
     {
-        if (\Auth::user()->can('Delete Job Application Note')) {
+        if (Auth::user()->can('Delete Job Application Note')) {
             $note = JobApplicationNote::find($id);
             $note->delete();
 
@@ -258,7 +262,7 @@ class JobApplicationController extends Controller
         return redirect()->route('job-application.index')->with('error', __('Permission denied.'));
     }
 
-    public function rating(Request $request, $id)
+    public function rating(Request $request, $id): void
     {
         $jobApplication = JobApplication::find($id);
         $jobApplication->rating = $request->rating;
@@ -283,8 +287,8 @@ class JobApplicationController extends Controller
 
     public function candidate()
     {
-        if (\Auth::user()->can('Manage Job OnBoard')) {
-            $archive_application = JobApplication::where('created_by', \Auth::user()->creatorId())->where('is_archive', 1)->get();
+        if (Auth::user()->can('Manage Job OnBoard')) {
+            $archive_application = JobApplication::where('created_by', Auth::user()->creatorId())->where('is_archive', 1)->get();
 
             return view('jobApplication.candidate', compact('archive_application'));
         }
@@ -297,7 +301,7 @@ class JobApplicationController extends Controller
     public function jobBoardCreate($id)
     {
         $status = JobOnBoard::$status;
-        $applications = InterviewSchedule::select('interview_schedules.*', 'job_applications.name')->join('job_applications', 'interview_schedules.candidate', '=', 'job_applications.id')->where('interview_schedules.created_by', \Auth::user()->creatorId())->get()->pluck('name', 'candidate');
+        $applications = InterviewSchedule::select('interview_schedules.*', 'job_applications.name')->join('job_applications', 'interview_schedules.candidate', '=', 'job_applications.id')->where('interview_schedules.created_by', Auth::user()->creatorId())->get()->pluck('name', 'candidate');
         $applications->prepend('-', '');
 
         return view('jobApplication.onboardCreate', compact('id', 'status', 'applications'));
@@ -305,8 +309,8 @@ class JobApplicationController extends Controller
 
     public function jobOnBoard()
     {
-        if (\Auth::user()->can('Manage Job OnBoard')) {
-            $jobOnBoards = JobOnBoard::where('created_by', \Auth::user()->creatorId())->get();
+        if (Auth::user()->can('Manage Job OnBoard')) {
+            $jobOnBoards = JobOnBoard::where('created_by', Auth::user()->creatorId())->get();
 
             return view('jobApplication.onboard', compact('jobOnBoards'));
         }
@@ -316,12 +320,12 @@ class JobApplicationController extends Controller
 
     public function jobBoardStore(Request $request, $id)
     {
-        $validator = \Validator::make(
+        $validator = Validator::make(
             $request->all(),
             [
-                               'joining_date' => 'required',
-                               'status' => 'required',
-                           ]
+                'joining_date' => 'required',
+                'status' => 'required',
+            ]
         );
 
         if ($validator->fails()) {
@@ -336,7 +340,7 @@ class JobApplicationController extends Controller
         $jobBoard->application = $id;
         $jobBoard->joining_date = $request->joining_date;
         $jobBoard->status = $request->status;
-        $jobBoard->created_by = \Auth::user()->creatorId();
+        $jobBoard->created_by = Auth::user()->creatorId();
         $jobBoard->save();
 
         $interview = InterviewSchedule::where('candidate', $id)->first();
@@ -349,12 +353,12 @@ class JobApplicationController extends Controller
 
     public function jobBoardUpdate(Request $request, $id)
     {
-        $validator = \Validator::make(
+        $validator = Validator::make(
             $request->all(),
             [
-                               'joining_date' => 'required',
-                               'status' => 'required',
-                           ]
+                'joining_date' => 'required',
+                'status' => 'required',
+            ]
         );
 
         if ($validator->fails()) {
@@ -391,32 +395,32 @@ class JobApplicationController extends Controller
     {
         $jobOnBoard = JobOnBoard::find($id);
         $company_settings = Utility::settings();
-        $documents = Document::where('created_by', \Auth::user()->creatorId())->get();
-        $branches = Branch::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-        $departments = Department::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-        $designations = Designation::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-        $employees = User::where('created_by', \Auth::user()->creatorId())->get();
-        $employeesId = \Auth::user()->employeeIdFormat($this->employeeNumber());
+        $documents = Document::where('created_by', Auth::user()->creatorId())->get();
+        $branches = Branch::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
+        $departments = Department::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
+        $designations = Designation::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
+        $employees = User::where('created_by', Auth::user()->creatorId())->get();
+        $employeesId = Auth::user()->employeeIdFormat($this->employeeNumber());
 
         return view('jobApplication.convert', compact('jobOnBoard', 'employees', 'employeesId', 'departments', 'designations', 'documents', 'branches', 'company_settings'));
     }
 
     public function jobBoardConvertData(Request $request, $id)
     {
-        $validator = \Validator::make(
+        $validator = Validator::make(
             $request->all(),
             [
-                               'name' => 'required',
-                               'dob' => 'required',
-                               'gender' => 'required',
-                               'phone' => 'required',
-                               'address' => 'required',
-                               'email' => 'required|unique:users',
-                               'password' => 'required',
-                               'department_id' => 'required',
-                               'designation_id' => 'required',
-                               'document.*' => 'mimes:jpeg,png,jpg,gif,svg,pdf,doc,zip|max:20480',
-                           ]
+                'name' => 'required',
+                'dob' => 'required',
+                'gender' => 'required',
+                'phone' => 'required',
+                'address' => 'required',
+                'email' => 'required|unique:users',
+                'password' => 'required',
+                'department_id' => 'required',
+                'designation_id' => 'required',
+                'document.*' => 'mimes:jpeg,png,jpg,gif,svg,pdf,doc,zip|max:20480',
+            ]
         );
         if ($validator->fails()) {
             $messages = $validator->getMessageBag();
@@ -424,7 +428,7 @@ class JobApplicationController extends Controller
             return redirect()->back()->withInput()->with('error', $messages->first());
         }
 
-        $objUser = User::find(\Auth::user()->creatorId());
+        $objUser = User::find(Auth::user()->creatorId());
 
         $user = User::create(
             [
@@ -433,7 +437,7 @@ class JobApplicationController extends Controller
                 'password' => \Hash::make($request['password']),
                 'type' => 'employee',
                 'lang' => 'en',
-                'created_by' => \Auth::user()->creatorId(),
+                'created_by' => Auth::user()->creatorId(),
             ]
         );
         $user->save();
@@ -467,7 +471,7 @@ class JobApplicationController extends Controller
                 'bank_identifier_code' => $request['bank_identifier_code'],
                 'branch_location' => $request['branch_location'],
                 'tax_payer_id' => $request['tax_payer_id'],
-                'created_by' => \Auth::user()->creatorId(),
+                'created_by' => Auth::user()->creatorId(),
             ]
         );
 
@@ -485,8 +489,8 @@ class JobApplicationController extends Controller
                 $dir = storage_path('uploads/document/');
                 $image_path = $dir . $filenameWithExt;
 
-                if (\File::exists($image_path)) {
-                    \File::delete($image_path);
+                if (File::exists($image_path)) {
+                    File::delete($image_path);
                 }
 
                 if (!file_exists($dir)) {
@@ -498,7 +502,7 @@ class JobApplicationController extends Controller
                         'employee_id' => $employee['employee_id'],
                         'document_id' => $key,
                         'document_value' => $fileNameToStore,
-                        'created_by' => \Auth::user()->creatorId(),
+                        'created_by' => Auth::user()->creatorId(),
                     ]
                 );
                 $employee_document->save();
@@ -509,9 +513,10 @@ class JobApplicationController extends Controller
         if (1 == $setings['employee_create']) {
             $user->type = 'Employee';
             $user->password = $request['password'];
+
             try {
                 Mail::to($user->email)->send(new UserCreate($user));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $smtp_error = __('E-Mail has been not sent due to SMTP configuration');
             }
 
@@ -523,7 +528,7 @@ class JobApplicationController extends Controller
 
     public function employeeNumber()
     {
-        $latest = Employee::where('created_by', '=', \Auth::user()->creatorId())->latest()->first();
+        $latest = Employee::where('created_by', '=', Auth::user()->creatorId())->latest()->first();
         if (!$latest) {
             return 1;
         }

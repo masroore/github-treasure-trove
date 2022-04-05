@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App;
 use App\Models\Branch;
 use App\Models\CustomQuestion;
 use App\Models\Job;
@@ -9,18 +10,24 @@ use App\Models\JobApplication;
 use App\Models\JobApplicationNote;
 use App\Models\JobCategory;
 use App\Models\User;
+use Auth;
+use DB;
+use File;
 use Illuminate\Http\Request;
+use Session;
+use Utility;
+use Validator;
 
 class JobController extends Controller
 {
     public function index()
     {
-        if (\Auth::user()->can('Manage Job Category')) {
-            $jobs = Job::where('created_by', '=', \Auth::user()->creatorId())->get();
+        if (Auth::user()->can('Manage Job Category')) {
+            $jobs = Job::where('created_by', '=', Auth::user()->creatorId())->get();
 
-            $data['total'] = Job::where('created_by', '=', \Auth::user()->creatorId())->count();
-            $data['active'] = Job::where('status', 'active')->where('created_by', '=', \Auth::user()->creatorId())->count();
-            $data['in_active'] = Job::where('status', 'in_active')->where('created_by', '=', \Auth::user()->creatorId())->count();
+            $data['total'] = Job::where('created_by', '=', Auth::user()->creatorId())->count();
+            $data['active'] = Job::where('status', 'active')->where('created_by', '=', Auth::user()->creatorId())->count();
+            $data['in_active'] = Job::where('status', 'in_active')->where('created_by', '=', Auth::user()->creatorId())->count();
 
             return view('job.index', compact('jobs', 'data'));
         }
@@ -30,35 +37,35 @@ class JobController extends Controller
 
     public function create()
     {
-        $categories = JobCategory::where('created_by', \Auth::user()->creatorId())->get()->pluck('title', 'id');
+        $categories = JobCategory::where('created_by', Auth::user()->creatorId())->get()->pluck('title', 'id');
         $categories->prepend('--', '');
 
-        $branches = Branch::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        $branches = Branch::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
         $branches->prepend('All', 0);
 
         $status = Job::$status;
 
-        $customQuestion = CustomQuestion::where('created_by', \Auth::user()->creatorId())->get();
+        $customQuestion = CustomQuestion::where('created_by', Auth::user()->creatorId())->get();
 
         return view('job.create', compact('categories', 'status', 'branches', 'customQuestion'));
     }
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('Create Job')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Create Job')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'title' => 'required',
-                                   'branch' => 'required',
-                                   'category' => 'required',
-                                   'skill' => 'required',
-                                   'position' => 'required',
-                                   'start_date' => 'required',
-                                   'end_date' => 'required',
-                                   'description' => 'required',
-                                   'requirement' => 'required',
-                               ]
+                    'title' => 'required',
+                    'branch' => 'required',
+                    'category' => 'required',
+                    'skill' => 'required',
+                    'position' => 'required',
+                    'start_date' => 'required',
+                    'end_date' => 'required',
+                    'description' => 'required',
+                    'requirement' => 'required',
+                ]
             );
 
             if ($validator->fails()) {
@@ -82,7 +89,7 @@ class JobController extends Controller
             $job->applicant = !empty($request->applicant) ? implode(',', $request->applicant) : '';
             $job->visibility = !empty($request->visibility) ? implode(',', $request->visibility) : '';
             $job->custom_question = !empty($request->custom_question) ? implode(',', $request->custom_question) : '';
-            $job->created_by = \Auth::user()->creatorId();
+            $job->created_by = Auth::user()->creatorId();
             $job->save();
 
             return redirect()->route('job.index')->with('success', __('Job  successfully created.'));
@@ -103,10 +110,10 @@ class JobController extends Controller
 
     public function edit(Job $job)
     {
-        $categories = JobCategory::where('created_by', \Auth::user()->creatorId())->get()->pluck('title', 'id');
+        $categories = JobCategory::where('created_by', Auth::user()->creatorId())->get()->pluck('title', 'id');
         $categories->prepend('--', '');
 
-        $branches = Branch::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        $branches = Branch::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
         $branches->prepend('All', 0);
 
         $status = Job::$status;
@@ -115,27 +122,27 @@ class JobController extends Controller
         $job->visibility = explode(',', $job->visibility);
         $job->custom_question = explode(',', $job->custom_question);
 
-        $customQuestion = CustomQuestion::where('created_by', \Auth::user()->creatorId())->get();
+        $customQuestion = CustomQuestion::where('created_by', Auth::user()->creatorId())->get();
 
         return view('job.edit', compact('categories', 'status', 'branches', 'job', 'customQuestion'));
     }
 
     public function update(Request $request, Job $job)
     {
-        if (\Auth::user()->can('Edit Job')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Edit Job')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'title' => 'required',
-                                   'branch' => 'required',
-                                   'category' => 'required',
-                                   'skill' => 'required',
-                                   'position' => 'required',
-                                   'start_date' => 'required',
-                                   'end_date' => 'required',
-                                   'description' => 'required',
-                                   'requirement' => 'required',
-                               ]
+                    'title' => 'required',
+                    'branch' => 'required',
+                    'category' => 'required',
+                    'skill' => 'required',
+                    'position' => 'required',
+                    'start_date' => 'required',
+                    'end_date' => 'required',
+                    'description' => 'required',
+                    'requirement' => 'required',
+                ]
             );
 
             if ($validator->fails()) {
@@ -179,22 +186,22 @@ class JobController extends Controller
     {
         $jobs = Job::where('created_by', $id)->get();
 
-        \Session::put('lang', $lang);
+        Session::put('lang', $lang);
 
-        \App::setLocale($lang);
+        App::setLocale($lang);
 
-        $companySettings['title_text'] = \DB::table('settings')->where('created_by', $id)->where('name', 'title_text')->first();
-        $companySettings['footer_text'] = \DB::table('settings')->where('created_by', $id)->where('name', 'footer_text')->first();
+        $companySettings['title_text'] = DB::table('settings')->where('created_by', $id)->where('name', 'title_text')->first();
+        $companySettings['footer_text'] = DB::table('settings')->where('created_by', $id)->where('name', 'footer_text')->first();
         // echo "<pre>";
         // print_r($companySettings['footer_text']);
         // die();
-        $companySettings['company_favicon'] = \DB::table('settings')->where('created_by', $id)->where('name', 'company_favicon')->first();
-        $companySettings['company_logo'] = \DB::table('settings')->where('created_by', $id)->where('name', 'company_logo')->first();
-        $companySettings['metakeyword'] = \DB::table('settings')->where('created_by', $id)->where('name', 'metakeyword')->first();
-        $companySettings['metadesc'] = \DB::table('settings')->where('created_by', $id)->where('name', 'metadesc')->first();
-        $languages = \Utility::languages();
+        $companySettings['company_favicon'] = DB::table('settings')->where('created_by', $id)->where('name', 'company_favicon')->first();
+        $companySettings['company_logo'] = DB::table('settings')->where('created_by', $id)->where('name', 'company_logo')->first();
+        $companySettings['metakeyword'] = DB::table('settings')->where('created_by', $id)->where('name', 'metakeyword')->first();
+        $companySettings['metadesc'] = DB::table('settings')->where('created_by', $id)->where('name', 'metadesc')->first();
+        $languages = Utility::languages();
 
-        $currantLang = \Session::get('lang');
+        $currantLang = Session::get('lang');
         if (empty($currantLang)) {
             $user = User::find($id);
             $currantLang = !empty($user) && !empty($user->lang) ? $user->lang : 'en';
@@ -210,19 +217,19 @@ class JobController extends Controller
             return redirect()->back()->with('error', __('Permission Denied.'));
         }
 
-        \Session::put('lang', $lang);
+        Session::put('lang', $lang);
 
-        \App::setLocale($lang);
+        App::setLocale($lang);
 
-        $companySettings['title_text'] = \DB::table('settings')->where('created_by', $job->created_by)->where('name', 'title_text')->first();
-        $companySettings['footer_text'] = \DB::table('settings')->where('created_by', $job->created_by)->where('name', 'footer_text')->first();
-        $companySettings['company_favicon'] = \DB::table('settings')->where('created_by', $job->created_by)->where('name', 'company_favicon')->first();
-        $companySettings['company_logo'] = \DB::table('settings')->where('created_by', $job->created_by)->where('name', 'company_logo')->first();
-        $companySettings['metakeyword'] = \DB::table('settings')->where('created_by', $job->created_by)->where('name', 'metakeyword')->first();
-        $companySettings['metadesc'] = \DB::table('settings')->where('created_by', $job->created_by)->where('name', 'metadesc')->first();
-        $languages = \Utility::languages();
+        $companySettings['title_text'] = DB::table('settings')->where('created_by', $job->created_by)->where('name', 'title_text')->first();
+        $companySettings['footer_text'] = DB::table('settings')->where('created_by', $job->created_by)->where('name', 'footer_text')->first();
+        $companySettings['company_favicon'] = DB::table('settings')->where('created_by', $job->created_by)->where('name', 'company_favicon')->first();
+        $companySettings['company_logo'] = DB::table('settings')->where('created_by', $job->created_by)->where('name', 'company_logo')->first();
+        $companySettings['metakeyword'] = DB::table('settings')->where('created_by', $job->created_by)->where('name', 'metakeyword')->first();
+        $companySettings['metadesc'] = DB::table('settings')->where('created_by', $job->created_by)->where('name', 'metadesc')->first();
+        $languages = Utility::languages();
 
-        $currantLang = \Session::get('lang');
+        $currantLang = Session::get('lang');
         if (empty($currantLang)) {
             $currantLang = !empty($job->createdBy) ? $job->createdBy->lang : 'en';
         }
@@ -232,23 +239,23 @@ class JobController extends Controller
 
     public function jobApply($code, $lang)
     {
-        \Session::put('lang', $lang);
+        Session::put('lang', $lang);
 
-        \App::setLocale($lang);
+        App::setLocale($lang);
 
         $job = Job::where('code', $code)->first();
-        $companySettings['title_text'] = \DB::table('settings')->where('created_by', $job->created_by)->where('name', 'title_text')->first();
-        $companySettings['footer_text'] = \DB::table('settings')->where('created_by', $job->created_by)->where('name', 'footer_text')->first();
-        $companySettings['company_favicon'] = \DB::table('settings')->where('created_by', $job->created_by)->where('name', 'company_favicon')->first();
-        $companySettings['company_logo'] = \DB::table('settings')->where('created_by', $job->created_by)->where('name', 'company_logo')->first();
+        $companySettings['title_text'] = DB::table('settings')->where('created_by', $job->created_by)->where('name', 'title_text')->first();
+        $companySettings['footer_text'] = DB::table('settings')->where('created_by', $job->created_by)->where('name', 'footer_text')->first();
+        $companySettings['company_favicon'] = DB::table('settings')->where('created_by', $job->created_by)->where('name', 'company_favicon')->first();
+        $companySettings['company_logo'] = DB::table('settings')->where('created_by', $job->created_by)->where('name', 'company_logo')->first();
 
         $que = !empty($job->custom_question) ? explode(',', $job->custom_question) : [];
 
         $questions = CustomQuestion::wherein('id', $que)->get();
 
-        $languages = \Utility::languages();
+        $languages = Utility::languages();
 
-        $currantLang = \Session::get('lang');
+        $currantLang = Session::get('lang');
         if (empty($currantLang)) {
             $currantLang = !empty($job->createdBy) ? $job->createdBy->lang : 'en';
         }
@@ -258,15 +265,15 @@ class JobController extends Controller
 
     public function jobApplyData(Request $request, $code)
     {
-        $validator = \Validator::make(
+        $validator = Validator::make(
             $request->all(),
             [
-                               'name' => 'required',
-                               'email' => 'required',
-                               'phone' => 'required',
-                               'profile' => 'mimes:jpeg,png,jpg,gif,svg|max:20480',
-                               'resume' => 'mimes:jpeg,png,jpg,gif,svg,pdf,doc,zip|max:20480',
-                           ]
+                'name' => 'required',
+                'email' => 'required',
+                'phone' => 'required',
+                'profile' => 'mimes:jpeg,png,jpg,gif,svg|max:20480',
+                'resume' => 'mimes:jpeg,png,jpg,gif,svg,pdf,doc,zip|max:20480',
+            ]
         );
 
         if ($validator->fails()) {
@@ -286,8 +293,8 @@ class JobController extends Controller
             $dir = storage_path('uploads/job/profile');
             $image_path = $dir . $filenameWithExt;
 
-            if (\File::exists($image_path)) {
-                \File::delete($image_path);
+            if (File::exists($image_path)) {
+                File::delete($image_path);
             }
             if (!file_exists($dir)) {
                 mkdir($dir, 0777, true);
@@ -304,8 +311,8 @@ class JobController extends Controller
             $dir = storage_path('uploads/job/resume');
             $image_path = $dir . $filenameWithExt1;
 
-            if (\File::exists($image_path)) {
-                \File::delete($image_path);
+            if (File::exists($image_path)) {
+                File::delete($image_path);
             }
             if (!file_exists($dir)) {
                 mkdir($dir, 0777, true);

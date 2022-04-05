@@ -62,16 +62,19 @@ class StoreController extends BaseController
                     $stores = $this->storeService
                         ->updateBasic($request, $id);
                     $update_mesg = 'Store Updated.';
+
                     break;
                 case 'contact':
                     $stores = $this->storeService
                         ->updateContact($request, $id);
                     $update_mesg = 'Store contact info updated.';
+
                     break;
                 case 'bank':
                     $stores = $this->storeService
                         ->updateBank($request, $id);
                     $update_mesg = 'Store bank info updated.';
+
                     break;
             }
         } catch (Exception $e) {
@@ -359,6 +362,7 @@ class StoreController extends BaseController
 
                 return $this->sendError('Store(s) not deleted.', []);
             }
+
             throw new InvalidArgumentException(__('user.error.empty', ['attribute' => 'Store']));
         } catch (Exception $e) {
             return $this->sendError($e->getMessage(), []);

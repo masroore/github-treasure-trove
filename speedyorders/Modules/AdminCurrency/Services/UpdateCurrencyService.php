@@ -2,6 +2,7 @@
 
 namespace Modules\AdminCurrency\Services;
 
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class UpdateCurrencyService
@@ -14,7 +15,7 @@ class UpdateCurrencyService
             DB::commit();
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollback();
 
             return false;

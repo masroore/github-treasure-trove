@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -32,8 +33,8 @@ class PermissionController extends Controller
         $this->validate(
             $request,
             [
-                        'name' => 'required|max:40',
-                    ]
+                'name' => 'required|max:40',
+            ]
         );
 
         $name = $request['name'];
@@ -62,7 +63,7 @@ class PermissionController extends Controller
     {
 //        return redirect()->back();
 
-        $roles = Role::where('created_by', '=', \Auth::user()->creatorId())->get();
+        $roles = Role::where('created_by', '=', Auth::user()->creatorId())->get();
 
         return view('permission.edit', compact('roles', 'permission'));
     }
@@ -74,8 +75,8 @@ class PermissionController extends Controller
         $this->validate(
             $request,
             [
-                        'name' => 'required|max:40',
-                    ]
+                'name' => 'required|max:40',
+            ]
         );
         $input = $request->all();
         $permission->fill($input)->save();

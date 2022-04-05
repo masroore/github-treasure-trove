@@ -2,6 +2,7 @@
 
 namespace Modules\AdminRbac\Services;
 
+use Exception;
 use Modules\AdminRbac\Models\AdminGroup;
 use Modules\AdminRbac\Models\AdminPermissionGroup;
 
@@ -37,7 +38,7 @@ class UpdatePermissionService
             }
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
     }

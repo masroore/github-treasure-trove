@@ -3,6 +3,9 @@
 namespace App\Traits;
 
 use App\Models\Utility;
+use Auth;
+use DateTime;
+use Exception;
 use GuzzleHttp\Client;
 use Log;
 
@@ -12,8 +15,11 @@ use Log;
 trait ZoomMeetingTrait
 {
     public $client;
+
     public $jwt;
+
     public $headers;
+
     public $meeting_url = 'https://api.zoom.us/v2/';
 
     public function __construct()
@@ -24,10 +30,10 @@ trait ZoomMeetingTrait
     public function toZoomTimeFormat(string $dateTime)
     {
         try {
-            $date = new \DateTime($dateTime);
+            $date = new DateTime($dateTime);
 
             return $date->format('Y-m-d\TH:i:s');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('ZoomJWT->toZoomTimeFormat : ' . $e->getMessage());
 
             return '';
@@ -41,18 +47,18 @@ trait ZoomMeetingTrait
 
         $body = [
             'headers' => $this->getHeader(),
-            'body'    => json_encode([
-                'topic'      => $data['topic'],
-                'type'       => self::MEETING_TYPE_SCHEDULE,
+            'body' => json_encode([
+                'topic' => $data['topic'],
+                'type' => self::MEETING_TYPE_SCHEDULE,
                 'start_time' => $this->toZoomTimeFormat($data['start_time']),
-                'duration'   => $data['duration'],
+                'duration' => $data['duration'],
                 'password' => $data['password'],
-                'agenda'     => (!empty($data['agenda'])) ? $data['agenda'] : null,
-                'timezone'     => 'Asia/Kolkata',
-                'settings'   => [
-                    'host_video'        => ('1' == $data['host_video']) ? true : false,
+                'agenda' => (!empty($data['agenda'])) ? $data['agenda'] : null,
+                'timezone' => 'Asia/Kolkata',
+                'settings' => [
+                    'host_video' => ('1' == $data['host_video']) ? true : false,
                     'participant_video' => ('1' == $data['participant_video']) ? true : false,
-                    'waiting_room'      => true,
+                    'waiting_room' => true,
                 ],
             ]),
         ];
@@ -61,7 +67,7 @@ trait ZoomMeetingTrait
 
         return [
             'success' => 201 === $response->getStatusCode(),
-            'data'    => json_decode($response->getBody(), true),
+            'data' => json_decode($response->getBody(), true),
         ];
     }
 
@@ -72,17 +78,17 @@ trait ZoomMeetingTrait
 
         $body = [
             'headers' => $this->getHeader(),
-            'body'    => json_encode([
-                'topic'      => $data['topic'],
-                'type'       => self::MEETING_TYPE_SCHEDULE,
+            'body' => json_encode([
+                'topic' => $data['topic'],
+                'type' => self::MEETING_TYPE_SCHEDULE,
                 'start_time' => $this->toZoomTimeFormat($data['start_time']),
-                'duration'   => $data['duration'],
-                'agenda'     => (!empty($data['agenda'])) ? $data['agenda'] : null,
-                'timezone'     => config('app.timezone'),
-                'settings'   => [
-                    'host_video'        => ('1' == $data['host_video']) ? true : false,
+                'duration' => $data['duration'],
+                'agenda' => (!empty($data['agenda'])) ? $data['agenda'] : null,
+                'timezone' => config('app.timezone'),
+                'settings' => [
+                    'host_video' => ('1' == $data['host_video']) ? true : false,
                     'participant_video' => ('1' == $data['participant_video']) ? true : false,
-                    'waiting_room'      => true,
+                    'waiting_room' => true,
                 ],
             ]),
         ];
@@ -90,7 +96,7 @@ trait ZoomMeetingTrait
 
         return [
             'success' => 204 === $response->getStatusCode(),
-            'data'    => json_decode($response->getBody(), true),
+            'data' => json_decode($response->getBody(), true),
         ];
     }
 
@@ -101,15 +107,15 @@ trait ZoomMeetingTrait
 
         $body = [
             'headers' => $this->getHeader(),
-            'body'    => json_encode([]),
+            'body' => json_encode([]),
         ];
 
         $response = $this->client->get($url . $path, $body);
 
         return [
-                'success' => 204 === $response->getStatusCode(),
-                'data'    => json_decode($response->getBody(), true),
-            ];
+            'success' => 204 === $response->getStatusCode(),
+            'data' => json_decode($response->getBody(), true),
+        ];
     }
 
     /**
@@ -123,7 +129,7 @@ trait ZoomMeetingTrait
         $url = $this->retrieveZoomUrl();
         $body = [
             'headers' => $this->headers,
-            'body'    => json_encode([]),
+            'body' => json_encode([]),
         ];
 
         $response = $this->client->delete($url . $path, $body);
@@ -137,14 +143,14 @@ trait ZoomMeetingTrait
     {
         return [
             'Authorization' => 'Bearer ' . $this->getToken(),
-            'Content-Type'  => 'application/json',
-            'Accept'        => 'application/json',
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
         ];
     }
 
     public function getToken()
     {
-        $settings = Utility::settings(\Auth::user()->id);
+        $settings = Utility::settings(Auth::user()->id);
         if ((isset($settings['zoom_apikey']) && !empty($settings['zoom_apikey'])) && (isset($settings['zoom_secret_key']) && !empty($settings['zoom_secret_key']))) {
             $key = $settings['zoom_apikey'];
             $secret = $settings['zoom_secret_key'];

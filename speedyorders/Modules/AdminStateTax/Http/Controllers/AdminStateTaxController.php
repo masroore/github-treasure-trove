@@ -3,6 +3,7 @@
 namespace Modules\AdminStateTax\Http\Controllers;
 
 use App\Models\StateTaxManager;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
@@ -107,7 +108,7 @@ class AdminStateTaxController extends Controller
 
         $tax = StateTaxManager::findOrFail($id);
 
-        return view('adminstatetax::edit', ['tax'=>$tax], $data);
+        return view('adminstatetax::edit', ['tax' => $tax], $data);
     }
 
     /**
@@ -145,7 +146,7 @@ class AdminStateTaxController extends Controller
         try {
             StateTaxManager::destroy($id);
             session()->flash('success_message', 'State Tax deleted successfully.');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             session()->flash('error_message', 'State Tax could not be deleted.');
         }
 
@@ -163,7 +164,7 @@ class AdminStateTaxController extends Controller
             }
             StateTaxManager::where('id', $id)->first()->update(['status' => $status]);
             session()->flash('success_message', 'State Tax updated successfully.');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             session()->flash('error_message', 'State Tax could not be updated.');
         }
 

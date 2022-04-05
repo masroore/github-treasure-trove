@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AccountList;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Validator;
 
 class AccountListController extends Controller
 {
@@ -31,15 +32,15 @@ class AccountListController extends Controller
     public function store(Request $request)
     {
         if (\Auth::user()->can('Create Account List')) {
-            $validator = \Validator::make(
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'account_name' => 'required',
-                                   'initial_balance' => 'required',
-                                   'account_number' => 'required',
-                                   'branch_code' => 'required',
-                                   'bank_branch' => 'required',
-                               ]
+                    'account_name' => 'required',
+                    'initial_balance' => 'required',
+                    'account_number' => 'required',
+                    'branch_code' => 'required',
+                    'bank_branch' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -84,15 +85,15 @@ class AccountListController extends Controller
     {
         if (\Auth::user()->can('Edit Account List')) {
             if ($accountlist->created_by == \Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+                $validator = Validator::make(
                     $request->all(),
                     [
-                                       'account_name' => 'required',
-                                       'initial_balance' => 'required',
-                                       'account_number' => 'required',
-                                       'branch_code' => 'required',
-                                       'bank_branch' => 'required',
-                                   ]
+                        'account_name' => 'required',
+                        'initial_balance' => 'required',
+                        'account_number' => 'required',
+                        'branch_code' => 'required',
+                        'bank_branch' => 'required',
+                    ]
                 );
                 if ($validator->fails()) {
                     $messages = $validator->getMessageBag();

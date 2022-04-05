@@ -19,10 +19,8 @@ class AuthServiceProvider extends ServiceProvider
 
     /**
      * Register any authentication / authorization services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->registerPolicies();
 
@@ -34,15 +32,15 @@ class AuthServiceProvider extends ServiceProvider
         $this->authorizeAdminRoutes();
     }
 
-    private function authenticateRoutes()
+    private function authenticateRoutes(): void
     {
     }
 
-    private function validateRequests()
+    private function validateRequests(): void
     {
     }
 
-    private function authorizeAdminRoutes()
+    private function authorizeAdminRoutes(): void
     {
         Gate::define('isAdmin', function ($user) {
             return $user->isAdmin();
@@ -117,7 +115,7 @@ class AuthServiceProvider extends ServiceProvider
             ->thisGateShouldAllow('islecturer', 'isAdmin')->otherwise()->abort(403, 'You do not have permission to perform this action.');
     }
 
-    private function authorizeEloquentModels()
+    private function authorizeEloquentModels(): void
     {
     }
 }

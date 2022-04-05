@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 class AttributeController extends BaseController
 {
     use ImagesTrait;
+
     protected $attributeService;
 
     public function __construct(AttributeService $attributeService)
@@ -39,7 +40,6 @@ class AttributeController extends BaseController
      */
     public function create()
     {
-
     }
 
     /**
@@ -85,7 +85,6 @@ class AttributeController extends BaseController
      */
     public function edit($id)
     {
-
     }
 
     /**

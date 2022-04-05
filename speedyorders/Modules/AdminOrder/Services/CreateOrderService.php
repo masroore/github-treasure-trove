@@ -13,6 +13,7 @@ use App\Models\OrderProductOption;
 use App\Models\Product;
 use App\Models\ProductOptionValue;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use LaravelShipStation\Models\Address;
@@ -140,13 +141,13 @@ class CreateOrderService
 
                                     $total_amt += $updatedPrice;
                                     $orderProduct->update([
-                                            'price' => $updatedPrice,
-                                            'quantity'=> $validatedData['product_quantity'][$pkey],
-                                        ]);
+                                        'price' => $updatedPrice,
+                                        'quantity' => $validatedData['product_quantity'][$pkey],
+                                    ]);
 
                                     if (isset($productOptionValue->subtract_from_stock)) {
                                         $orderProduct->product->update([
-                                            'quantity'=>$orderProduct->product->quantity - $validatedData['product_quantity'][$pkey],
+                                            'quantity' => $orderProduct->product->quantity - $validatedData['product_quantity'][$pkey],
                                         ]);
                                     }
                                 }
@@ -167,13 +168,13 @@ class CreateOrderService
                 'amount' => $total_amt,
                 'currency' => $validatedData['currency_code'],
                 'status' => 'initialize',
-                'remarks' =>  $validatedData['comment'],
+                'remarks' => $validatedData['comment'],
             ]);
 
             DB::commit();
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::info('Exception Message : ' . json_encode($e->getMessage()));
             dd($e);
             DB::rollback();

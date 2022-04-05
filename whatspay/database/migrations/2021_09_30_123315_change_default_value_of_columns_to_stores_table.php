@@ -8,19 +8,17 @@ class ChangeDefaultValueOfColumnsToStoresTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('stores', function (Blueprint $table) {
+        Schema::table('stores', function (Blueprint $table): void {
             $table->dropColumn('service_charges_status');
             $table->dropColumn('cod_status');
             $table->dropColumn('disount_type');
             $table->dropColumn('auto_subscription');
             $table->dropColumn('orders_accept_status');
         });
-        Schema::table('stores', function (Blueprint $table) {
+        Schema::table('stores', function (Blueprint $table): void {
             // $table->dropColumn('service_charges_status');
             // $table->dropColumn('cod_status');
             // $table->dropColumn('disount_type');
@@ -40,13 +38,10 @@ class ChangeDefaultValueOfColumnsToStoresTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('stores', function (Blueprint $table) {
-
+        Schema::table('stores', function (Blueprint $table): void {
         });
     }
 }

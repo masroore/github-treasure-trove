@@ -8,12 +8,10 @@ class CreateWallettopsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('wallettops', function (Blueprint $table) {
+        Schema::create('wallettops', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('tr_id');
             $table->string('fullname');
@@ -26,10 +24,8 @@ class CreateWallettopsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('wallettops');
     }

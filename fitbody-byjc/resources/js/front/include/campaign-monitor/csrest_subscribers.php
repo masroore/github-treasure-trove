@@ -45,8 +45,7 @@ class csrest_subscribers extends CS_REST_Wrapper_Base
         $log = null,
         $serialiser = null,
         $transport = null
-    )
-    {
+    ) {
         parent::__construct($auth_details, $protocol, $debug_level, $host, $log, $serialiser, $transport);
         $this->set_list_id($list_id);
     }
@@ -56,7 +55,7 @@ class csrest_subscribers extends CS_REST_Wrapper_Base
      *
      * @param $list_id
      */
-    public function set_list_id($list_id)
+    public function set_list_id($list_id): void
     {
         $this->_subscribers_base_route = $this->_base_route . 'subscribers/' . $list_id;
     }

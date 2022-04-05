@@ -223,8 +223,8 @@ class AdminController extends Controller
 
             User::find($user->id)
                 ->update([
-                'password' => bcrypt($request->new_password),
-            ]);
+                    'password' => bcrypt($request->new_password),
+                ]);
 
             session()->flash('success_message', 'Password reset successfully, please re-login.');
 

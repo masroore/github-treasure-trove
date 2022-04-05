@@ -40,7 +40,6 @@ class DiscountVoucherController extends BaseController
      */
     public function create()
     {
-
     }
 
     /**
@@ -94,7 +93,6 @@ class DiscountVoucherController extends BaseController
      */
     public function edit(DiscountVoucher $discountVoucher)
     {
-
     }
 
     /**

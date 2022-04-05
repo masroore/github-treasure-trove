@@ -11,7 +11,7 @@
 |
 */
 
-Route::group(['prefix' => 'admin/reviews', 'middleware' => 'auth:admin', 'as'=>'admin.reviews.'], function () {
+Route::group(['prefix' => 'admin/reviews', 'middleware' => 'auth:admin', 'as' => 'admin.reviews.'], function (): void {
     Route::get('/', 'AdminReviewController@index')->name('index')->middleware('can:list-product-review');
     Route::get('/create', 'AdminReviewController@create')->name('create')->middleware('can:create-product-review');
     Route::post('/store', 'AdminReviewController@store')->name('store')->middleware('can:store-product-review');

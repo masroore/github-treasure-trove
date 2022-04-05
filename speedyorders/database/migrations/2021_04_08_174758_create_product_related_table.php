@@ -8,40 +8,36 @@ class CreateProductRelatedTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('categories', function (Blueprint $table) {
+        Schema::table('categories', function (Blueprint $table): void {
             $table->dropColumn('description');
         });
 
-        Schema::table('categories', function (Blueprint $table) {
+        Schema::table('categories', function (Blueprint $table): void {
             $table->longText('description')->nullable()->after('image');
         });
 
-        Schema::table('product_option_values', function (Blueprint $table) {
+        Schema::table('product_option_values', function (Blueprint $table): void {
             $table->dropColumn('price_prefix');
         });
 
-        Schema::table('product_option_values', function (Blueprint $table) {
+        Schema::table('product_option_values', function (Blueprint $table): void {
             $table->string('price_prefix', 1)->nullable()->after('price');
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('product_option_values', function (Blueprint $table) {
+        Schema::table('product_option_values', function (Blueprint $table): void {
             $table->dropColumn('price_prefix');
         });
 
-        Schema::table('categories', function (Blueprint $table) {
+        Schema::table('categories', function (Blueprint $table): void {
             $table->dropColumn('description');
         });
     }

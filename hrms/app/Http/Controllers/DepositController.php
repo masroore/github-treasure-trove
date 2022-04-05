@@ -11,6 +11,7 @@ use App\Models\PaymentType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
+use Validator;
 
 class DepositController extends Controller
 {
@@ -43,16 +44,16 @@ class DepositController extends Controller
     public function store(Request $request)
     {
         if (\Auth::user()->can('Create Deposit')) {
-            $validator = \Validator::make(
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'account_id' => 'required',
-                                   'amount' => 'required|numeric',
-                                   'date' => 'required',
-                                   'income_category_id' => 'required',
-                                   'payer_id' => 'required',
-                                   'payment_type_id' => 'required',
-                               ]
+                    'account_id' => 'required',
+                    'amount' => 'required|numeric',
+                    'date' => 'required',
+                    'income_category_id' => 'required',
+                    'payer_id' => 'required',
+                    'payment_type_id' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -108,16 +109,16 @@ class DepositController extends Controller
     {
         if (\Auth::user()->can('Edit Deposit')) {
             if ($deposit->created_by == \Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+                $validator = Validator::make(
                     $request->all(),
                     [
-                                       'account_id' => 'required',
-                                       'amount' => 'required|numeric',
-                                       'date' => 'required',
-                                       'income_category_id' => 'required',
-                                       'payer_id' => 'required',
-                                       'payment_type_id' => 'required',
-                                   ]
+                        'account_id' => 'required',
+                        'amount' => 'required|numeric',
+                        'date' => 'required',
+                        'income_category_id' => 'required',
+                        'payer_id' => 'required',
+                        'payment_type_id' => 'required',
+                    ]
                 );
                 if ($validator->fails()) {
                     $messages = $validator->getMessageBag();

@@ -8,14 +8,12 @@ class CreateTimeSheetsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create(
             'time_sheets',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->bigIncrements('id');
                 $table->integer('employee_id')->default(0);
                 $table->date('date');
@@ -29,10 +27,8 @@ class CreateTimeSheetsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('time_sheets');
     }

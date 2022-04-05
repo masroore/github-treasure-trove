@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\PaymentType;
+use Auth;
 use Illuminate\Http\Request;
+use Validator;
 
 class PaymentTypeController extends Controller
 {
     public function index()
     {
-        if (\Auth::user()->can('Manage Payment Type')) {
-            $paymenttypes = PaymentType::where('created_by', '=', \Auth::user()->creatorId())->get();
+        if (Auth::user()->can('Manage Payment Type')) {
+            $paymenttypes = PaymentType::where('created_by', '=', Auth::user()->creatorId())->get();
 
             return view('paymenttype.index', compact('paymenttypes'));
         }
@@ -20,7 +22,7 @@ class PaymentTypeController extends Controller
 
     public function create()
     {
-        if (\Auth::user()->can('Create Payment Type')) {
+        if (Auth::user()->can('Create Payment Type')) {
             return view('paymenttype.create');
         }
 
@@ -29,12 +31,12 @@ class PaymentTypeController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('Create Payment Type')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Create Payment Type')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'name' => 'required',
-                               ]
+                    'name' => 'required',
+                ]
             );
 
             if ($validator->fails()) {
@@ -45,7 +47,7 @@ class PaymentTypeController extends Controller
 
             $paymenttype = new PaymentType();
             $paymenttype->name = $request->name;
-            $paymenttype->created_by = \Auth::user()->creatorId();
+            $paymenttype->created_by = Auth::user()->creatorId();
             $paymenttype->save();
 
             return redirect()->route('paymenttype.index')->with('success', __('PaymentType  successfully created.'));
@@ -61,8 +63,8 @@ class PaymentTypeController extends Controller
 
     public function edit(PaymentType $paymenttype)
     {
-        if (\Auth::user()->can('Edit Payment Type')) {
-            if ($paymenttype->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('Edit Payment Type')) {
+            if ($paymenttype->created_by == Auth::user()->creatorId()) {
                 return view('paymenttype.edit', compact('paymenttype'));
             }
 
@@ -74,14 +76,14 @@ class PaymentTypeController extends Controller
 
     public function update(Request $request, PaymentType $paymenttype)
     {
-        if (\Auth::user()->can('Edit Payment Type')) {
-            if ($paymenttype->created_by == \Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+        if (Auth::user()->can('Edit Payment Type')) {
+            if ($paymenttype->created_by == Auth::user()->creatorId()) {
+                $validator = Validator::make(
                     $request->all(),
                     [
-                                       'name' => 'required|max:20',
+                        'name' => 'required|max:20',
 
-                                   ]
+                    ]
                 );
                 if ($validator->fails()) {
                     $messages = $validator->getMessageBag();
@@ -102,8 +104,8 @@ class PaymentTypeController extends Controller
 
     public function destroy(PaymentType $paymenttype)
     {
-        if (\Auth::user()->can('Delete Payment Type')) {
-            if ($paymenttype->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('Delete Payment Type')) {
+            if ($paymenttype->created_by == Auth::user()->creatorId()) {
                 $paymenttype->delete();
 
                 return redirect()->route('paymenttype.index')->with('success', __('PaymentType successfully deleted.'));

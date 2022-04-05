@@ -64,7 +64,7 @@ class TagsService
         return $tag;
     }
 
-    /**public function show($id) {
+    /*public function show($id) {
         try {
             $category = $this->tagsRepository->findByColumn([
                 'id' => $id,

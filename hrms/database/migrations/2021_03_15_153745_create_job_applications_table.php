@@ -8,14 +8,12 @@ class CreateJobApplicationsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create(
             'job_applications',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->id();
                 $table->integer('job');
                 $table->string('name')->nullable();
@@ -43,10 +41,8 @@ class CreateJobApplicationsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('job_applications');
     }

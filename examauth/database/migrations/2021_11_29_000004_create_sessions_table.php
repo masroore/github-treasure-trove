@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateSessionsTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::create('sessions', function (Blueprint $table) {
+        Schema::create('sessions', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('session');
             $table->timestamps();

@@ -33,7 +33,7 @@ class BlogTag extends Model
             if ($tag_id) {
                 self::firstOrCreate([
                     'blog_id' => $blog_id,
-                    'tag_id'  => $tag_id,
+                    'tag_id' => $tag_id,
                 ]);
             }
         }

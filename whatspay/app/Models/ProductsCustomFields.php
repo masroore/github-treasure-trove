@@ -12,9 +12,10 @@ class ProductsCustomFields extends Model
     use SoftDeletes;
 
     protected $table = 'products_custom_fields';
+
     protected $fillable = [
         'product_id',
         'label',
         'value',
-            ];
+    ];
 }

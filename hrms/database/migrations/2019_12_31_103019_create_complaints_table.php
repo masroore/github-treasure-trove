@@ -8,12 +8,10 @@ class CreateComplaintsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('complaints', function (Blueprint $table) {
+        Schema::create('complaints', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->integer('complaint_from');
             $table->integer('complaint_against');
@@ -27,10 +25,8 @@ class CreateComplaintsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('complaints');
     }

@@ -7,16 +7,14 @@ class AddHtmlcontentToTicketitAndComments extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('ticketit', function (Blueprint $table) {
+        Schema::table('ticketit', function (Blueprint $table): void {
             $table->longText('html')->nullable()->after('content');
         });
 
-        Schema::table('ticketit_comments', function (Blueprint $table) {
+        Schema::table('ticketit_comments', function (Blueprint $table): void {
             $table->longText('html')->nullable()->after('content');
             $table->longText('content')->change();
         });
@@ -24,16 +22,14 @@ class AddHtmlcontentToTicketitAndComments extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('ticketit', function (Blueprint $table) {
+        Schema::table('ticketit', function (Blueprint $table): void {
             $table->dropColumn('html');
         });
 
-        Schema::table('ticketit_comments', function (Blueprint $table) {
+        Schema::table('ticketit_comments', function (Blueprint $table): void {
             $table->dropColumn('html');
             $table->text('content')->change();
         });

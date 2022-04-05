@@ -3,11 +3,13 @@
 namespace Modules\AdminRbac\Utils;
 
 use Auth;
+use Exception;
 use Modules\AdminRbac\Models\AdminPermissionReference;
 
 class Permission
 {
     private static $groups;
+
     private static $instance;
 
     private function __construct()
@@ -24,7 +26,7 @@ class Permission
         return self::$instance;
     }
 
-    private function __loadPermissions()
+    private function __loadPermissions(): void
     {
         $permissionRefs = AdminPermissionReference::with('permissionGroups')->get();
         $groupIds = [];
@@ -64,7 +66,7 @@ class Permission
             $userGrpIds = Auth::guard('admin')->user()->user_group ? Auth::guard('admin')->user()->user_group->pluck('group_id')->toArray() : [];
 
             return \count(array_intersect($permissionGroupIds, $userGrpIds)) > 0 ? true : false;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             dd($e);
 
             return false;

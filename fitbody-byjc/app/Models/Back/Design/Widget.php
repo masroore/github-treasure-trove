@@ -79,16 +79,16 @@ class Widget extends Model
     public function store()
     {
         $id = $this->insertGetId([
-            'group_id'      => Str::upper($this->request->group),
-            'title'      => $this->request->title,
-            'subtitle'   => $this->request->subtitle,
-            'link'       => $this->request->link ? $this->request->link : null,
-            'link_id'    => $this->request->link_id ? $this->request->link_id : null,
-            'url'        => $this->url,
-            'badge'      => $this->request->badge ? $this->request->badge : null,
-            'width'      => $this->request->width ? $this->request->width : null,
+            'group_id' => Str::upper($this->request->group),
+            'title' => $this->request->title,
+            'subtitle' => $this->request->subtitle,
+            'link' => $this->request->link ? $this->request->link : null,
+            'link_id' => $this->request->link_id ? $this->request->link_id : null,
+            'url' => $this->url,
+            'badge' => $this->request->badge ? $this->request->badge : null,
+            'width' => $this->request->width ? $this->request->width : null,
             'sort_order' => $this->request->sort_order ? $this->request->sort_order : 0,
-            'status'     => (isset($this->request->status) && 'on' == $this->request->status) ? 1 : 0,
+            'status' => (isset($this->request->status) && 'on' == $this->request->status) ? 1 : 0,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
@@ -104,16 +104,16 @@ class Widget extends Model
     public function edit($id)
     {
         $ok = $this->where('id', $id)->update([
-            'group_id'      => Str::upper($this->request->group),
-            'title'      => $this->request->title,
-            'subtitle'   => $this->request->subtitle,
-            'link'       => $this->request->link ? $this->request->link : null,
-            'link_id'    => $this->request->link_id ? $this->request->link_id : null,
-            'url'        => $this->url,
-            'badge'      => $this->request->badge ? $this->request->badge : null,
-            'width'      => $this->request->width ? $this->request->width : null,
+            'group_id' => Str::upper($this->request->group),
+            'title' => $this->request->title,
+            'subtitle' => $this->request->subtitle,
+            'link' => $this->request->link ? $this->request->link : null,
+            'link_id' => $this->request->link_id ? $this->request->link_id : null,
+            'url' => $this->url,
+            'badge' => $this->request->badge ? $this->request->badge : null,
+            'width' => $this->request->width ? $this->request->width : null,
             'sort_order' => $this->request->sort_order ? $this->request->sort_order : 0,
-            'status'     => (isset($this->request->status) && 'on' == $this->request->status) ? 1 : 0,
+            'status' => (isset($this->request->status) && 'on' == $this->request->status) ? 1 : 0,
             'created_at' => Carbon::now(),
         ]);
 
@@ -206,7 +206,7 @@ class Widget extends Model
      *
      * @param $request
      */
-    private function setRequest($request)
+    private function setRequest($request): void
     {
         $this->request = $request;
     }

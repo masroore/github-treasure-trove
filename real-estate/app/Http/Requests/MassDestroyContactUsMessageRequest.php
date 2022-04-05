@@ -18,7 +18,7 @@ class MassDestroyContactUsMessageRequest extends FormRequest
     public function rules()
     {
         return [
-            'ids'   => 'required|array',
+            'ids' => 'required|array',
             'ids.*' => 'exists:contact_us_messages,id',
         ];
     }

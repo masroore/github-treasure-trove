@@ -7,12 +7,10 @@ class CreateAdminPagesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('pages', function (Blueprint $table) {
+        Schema::create('pages', function (Blueprint $table): void {
             $table->unsignedBigInteger('id')->autoIncrement();
             $table->unsignedBigInteger('parent_id')->default(null)->nullable();
             $table->string('slug')->default(null)->nullable();
@@ -30,10 +28,8 @@ class CreateAdminPagesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop('pages');
     }

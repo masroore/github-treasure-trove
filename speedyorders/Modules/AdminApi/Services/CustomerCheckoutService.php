@@ -10,6 +10,7 @@ use App\Models\OrderProductOption;
 use App\Models\Product;
 use App\Models\ProductOption;
 use App\Models\ProductOptionValue;
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -66,14 +67,14 @@ class CustomerCheckoutService
                 $total_amt += $priceTax['amtWithTax'];
                 $orderProduct = OrderProduct::create([
 
-                                'quantity' => $cart['quantity'],
-                                'price' => $priceTax['price'],
-                                'tax'   => $priceTax['tax'],
-                                'order_id' => $order->id,
-                                'product_id' => $product->id,
-                                'created_at' => now(),
-                                'updated_at' => now(),
-                            ]);
+                    'quantity' => $cart['quantity'],
+                    'price' => $priceTax['price'],
+                    'tax' => $priceTax['tax'],
+                    'order_id' => $order->id,
+                    'product_id' => $product->id,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
 
                 if (isset($cart['options']) && \count($cart['options']) > 0) {
                     foreach ($cart['options'] as $option_id => $option_value) {
@@ -82,53 +83,54 @@ class CustomerCheckoutService
                         $type = $product_option->option->type;
 
                         OrderProductOption::create([
-                                            'order_id' => $order->id,
-                                            'order_product_id' => $orderProduct->id,
-                                            'product_option_id' => $option_id,
-                                            'product_option_value_id' => ('select' == $type) ? $option_value : null,
-                                            'value' => ('select' == $type) ? null : $option_value,
-                                            'type' => $type,
-                                        ]);
+                            'order_id' => $order->id,
+                            'order_product_id' => $orderProduct->id,
+                            'product_option_id' => $option_id,
+                            'product_option_value_id' => ('select' == $type) ? $option_value : null,
+                            'value' => ('select' == $type) ? null : $option_value,
+                            'type' => $type,
+                        ]);
                     }
                 }
             }
 
             $customerTransaction = CustomerTransaction::create([
-                            'order_id' => $order->id,
-                            'customer_user_id' => $request->user()->id,
-                            'type' => 'debit',
-                            'amount' => number_format($total_amt, 2),
-                            'currency' => 'usd',
-                            'status' => 'initialize',
-                            'remarks' =>  'new order placed',
-                        ]);
+                'order_id' => $order->id,
+                'customer_user_id' => $request->user()->id,
+                'type' => 'debit',
+                'amount' => number_format($total_amt, 2),
+                'currency' => 'usd',
+                'status' => 'initialize',
+                'remarks' => 'new order placed',
+            ]);
 
             Stripe::setApiKey(env('STRIPE_SECRET', 'sk_test_51IpSxXA0PwlsNEoFo3XkzbOpXA4o4CZr811SFtAyc6wUxPnvmCodVoSR09TfDityMt02biQ2gkWvIoTwOz6a9DYk00DyjBCmh3'));
+
             try {
                 $charge = Charge::create([
-                               'amount' => number_format($total_amt, 2) * 100,
-                               'currency' => 'usd',
-                               'source' => $request->stripeToken,
-                               'description' => 'Making test payment.',
-                               'receipt_email' => $request->email,
-                               'metadata' => [
-                                   'order_id' => $order->id,
-                               ],
-                           ]);
+                    'amount' => number_format($total_amt, 2) * 100,
+                    'currency' => 'usd',
+                    'source' => $request->stripeToken,
+                    'description' => 'Making test payment.',
+                    'receipt_email' => $request->email,
+                    'metadata' => [
+                        'order_id' => $order->id,
+                    ],
+                ]);
                 if ('succeeded' == $charge->status) {
                     $customerTransaction->status = 'completed';
                 } else {
                     $customerTransaction->status = 'pending';
                 }
                 $customerTransaction->save();
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 DB::rollback();
                 Log::info('checkout : ' . $e->getMessage());
 
                 return response()->json([
-                                'status'=>'stripeError',
-                                'msg'   => $e->getMessage(),
-                            ]);
+                    'status' => 'stripeError',
+                    'msg' => $e->getMessage(),
+                ]);
             }
 
             DB::commit();
@@ -137,24 +139,24 @@ class CustomerCheckoutService
                 $pdf = PDF::loadView('emails.ordermail', compact('order'));
 
                 event(new SendOrderMail($pdf, $request->email));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 Log::info('order-mail : ' . $e->getMessage());
             }
 
             return response()->json([
-                            'status'=>200,
-                            'msg'   => 'Your order has been placed successfully !',
-                            'order_id'  => 'speedy-order-' . $order->invoice_number,
-                        ]);
-        } catch (\Exception $e) {
+                'status' => 200,
+                'msg' => 'Your order has been placed successfully !',
+                'order_id' => 'speedy-order-' . $order->invoice_number,
+            ]);
+        } catch (Exception $e) {
             // dd($e);
             DB::rollback();
             Log::info('checkout : ' . $e->getMessage());
 
             return response()->json([
-                            'status'=>500,
-                            'msg'   => 'something went wrong',
-                        ]);
+                'status' => 500,
+                'msg' => 'something went wrong',
+            ]);
         }
     }
 
@@ -182,7 +184,7 @@ class CustomerCheckoutService
                     // updating variant stock
                     if ($productOptionValue->subtract_from_stock) {
                         $productOptionValue->update([
-                            'quantity'=>$productOptionValue->quantity - $cart['quantity'],
+                            'quantity' => $productOptionValue->quantity - $cart['quantity'],
                         ]);
                     }
                 }
@@ -191,7 +193,7 @@ class CustomerCheckoutService
             // updating product without variant stock
             if ($product->subtract_from_stock) {
                 $product->update([
-                    'quantity'=>$product->quantity - $cart['quantity'],
+                    'quantity' => $product->quantity - $cart['quantity'],
                 ]);
             }
         }
@@ -203,8 +205,8 @@ class CustomerCheckoutService
         }
 
         return [
-                'price' => $productPrice,
-                'tax'   => $taxAmt,
+            'price' => $productPrice,
+            'tax' => $taxAmt,
             'amtWithTax' => $totalPrice + $taxAmt,
         ];
     }

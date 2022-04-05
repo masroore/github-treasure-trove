@@ -10,20 +10,15 @@ class SendNotificationMessageToUser
 {
     /**
      * Create the event listener.
-     *
-     * @return void
      */
     public function __construct()
     {
-
     }
 
     /**
      * Handle the event.
-     *
-     * @return void
      */
-    public function handle(MessageSent $event)
+    public function handle(MessageSent $event): void
     {
         Notification::send($event->message->recipient, new MessageReceived($event->message));
     }

@@ -12,6 +12,7 @@ class Products extends Model
     use HasFactory;
     use Sluggable;
     use SoftDeletes;
+
 //        protected $with=['variations','productAttributeSets','productLabels'];
     protected $fillable = [
         'name', 'description', 'status', 'sku',

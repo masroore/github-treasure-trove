@@ -17,20 +17,16 @@ class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         Schema::defaultStringLength(191);
     }
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $ttl = 60 * 60 * 2;
         //
@@ -58,7 +54,7 @@ class AppServiceProvider extends ServiceProvider
         //
         //
         // USER SETTINGS
-        view()->composer('*', function ($view) {
+        view()->composer('*', function ($view): void {
             if (Auth::check()) {
                 $view->with('settings', Profile::settings(Auth::user()->id));
             }

@@ -7,12 +7,10 @@ class CreateProductQuestionAnswersTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('product_question_answers', function (Blueprint $table) {
+        Schema::create('product_question_answers', function (Blueprint $table): void {
             $table->unsignedBigInteger('id')->autoIncrement();
             $table->unsignedBigInteger('product_question_id')->default(null)->nullable();
             $table->string('answer')->default(null)->nullable();
@@ -23,10 +21,8 @@ class CreateProductQuestionAnswersTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop('product_question_answers');
     }

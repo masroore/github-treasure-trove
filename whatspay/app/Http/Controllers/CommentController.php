@@ -27,9 +27,8 @@ class CommentController extends BaseController
         $this->commentService = $commentService;
     }
 
-    public function index()
+    public function index(): void
     {
-
     }
 
     /**
@@ -39,7 +38,6 @@ class CommentController extends BaseController
      */
     public function create()
     {
-
     }
 
     /**
@@ -105,7 +103,6 @@ class CommentController extends BaseController
      */
     public function edit(Comment $comment)
     {
-
     }
 
     /**

@@ -3,25 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Models\DucumentUpload;
+use Auth;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use Validator;
 
 class DucumentUploadController extends Controller
 {
     public function index()
     {
-        if (\Auth::user()->can('Manage Document')) {
-            if ('company' == \Auth::user()->type) {
-                $documents = DucumentUpload::where('created_by', \Auth::user()->creatorId())->get();
+        if (Auth::user()->can('Manage Document')) {
+            if ('company' == Auth::user()->type) {
+                $documents = DucumentUpload::where('created_by', Auth::user()->creatorId())->get();
             } else {
-                $userRole = \Auth::user()->roles->first();
+                $userRole = Auth::user()->roles->first();
                 $documents = DucumentUpload::whereIn(
                     'role',
                     [
-                              $userRole->id,
-                              0,
-                          ]
-                )->where('created_by', \Auth::user()->creatorId())->get();
+                        $userRole->id,
+                        0,
+                    ]
+                )->where('created_by', Auth::user()->creatorId())->get();
             }
 
             return view('documentUpload.index', compact('documents'));
@@ -32,8 +34,8 @@ class DucumentUploadController extends Controller
 
     public function create()
     {
-        if (\Auth::user()->can('Create Document')) {
-            $roles = Role::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        if (Auth::user()->can('Create Document')) {
+            $roles = Role::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
             $roles->prepend('All', '0');
 
             return view('documentUpload.create', compact('roles'));
@@ -44,13 +46,13 @@ class DucumentUploadController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('Create Document')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Create Document')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'name' => 'required',
-                                   'document' => 'mimes:jpeg,png,jpg,svg,pdf,doc,zip|max:20480',
-                               ]
+                    'name' => 'required',
+                    'document' => 'mimes:jpeg,png,jpg,svg,pdf,doc,zip|max:20480',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -76,7 +78,7 @@ class DucumentUploadController extends Controller
             $document->document = !empty($request->document) ? $fileNameToStore : '';
             $document->role = $request->role;
             $document->description = $request->description;
-            $document->created_by = \Auth::user()->creatorId();
+            $document->created_by = Auth::user()->creatorId();
             $document->save();
 
             return redirect()->route('document-upload.index')->with('success', __('Document successfully uploaded.'));
@@ -85,15 +87,14 @@ class DucumentUploadController extends Controller
         return redirect()->back()->with('error', __('Permission denied.'));
     }
 
-    public function show(DucumentUpload $ducumentUpload)
+    public function show(DucumentUpload $ducumentUpload): void
     {
-
     }
 
     public function edit($id)
     {
-        if (\Auth::user()->can('Edit Document')) {
-            $roles = Role::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        if (Auth::user()->can('Edit Document')) {
+            $roles = Role::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
             $roles->prepend('All', '0');
 
             $ducumentUpload = DucumentUpload::find($id);
@@ -106,13 +107,13 @@ class DucumentUploadController extends Controller
 
     public function update(Request $request, $id)
     {
-        if (\Auth::user()->can('Edit Document')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Edit Document')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'name' => 'required',
-                                   'document' => 'mimes:jpeg,png,jpg,svg,pdf,doc,zip|max:20480',
-                               ]
+                    'name' => 'required',
+                    'document' => 'mimes:jpeg,png,jpg,svg,pdf,doc,zip|max:20480',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -155,9 +156,9 @@ class DucumentUploadController extends Controller
 
     public function destroy($id)
     {
-        if (\Auth::user()->can('Delete Document')) {
+        if (Auth::user()->can('Delete Document')) {
             $document = DucumentUpload::find($id);
-            if ($document->created_by == \Auth::user()->creatorId()) {
+            if ($document->created_by == Auth::user()->creatorId()) {
                 $document->delete();
 
                 $dir = storage_path('uploads/documentUpload/');

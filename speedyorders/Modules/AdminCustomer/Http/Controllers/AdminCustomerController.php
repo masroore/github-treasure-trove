@@ -6,6 +6,7 @@ use App\Models\Customer;
 use App\Models\CustomerAddress;
 use App\Models\CustomerIpAddress;
 use App\Models\CustomerTransaction;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
@@ -131,7 +132,7 @@ class AdminCustomerController extends Controller
         try {
             Customer::find($id)->delete();
             session()->flash('success_message', 'Customer deleted successfully.');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             session()->flash('error_message', 'Customer could not be deleted.');
         }
 
@@ -173,7 +174,7 @@ class AdminCustomerController extends Controller
             }
             Customer::where('id', $id)->first()->update(['status' => $status]);
             session()->flash('success_message', 'Customer updated successfully.');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             session()->flash('error_message', 'Customer could not be updated.');
         }
 
@@ -197,7 +198,7 @@ class AdminCustomerController extends Controller
             }
 
             return response()->json(['status' => true, 'message' => 'Customer could not be deleted.'], 200);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['status' => true, 'message' => 'Customer could not be deleted.'], 200);
         }
     }

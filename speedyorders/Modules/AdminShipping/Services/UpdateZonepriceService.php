@@ -3,6 +3,7 @@
 namespace Modules\AdminShipping\Services;
 
 use App\Models\ShippingZonePrice;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class UpdateZonepriceService
@@ -17,7 +18,7 @@ class UpdateZonepriceService
             DB::commit();
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollback();
 
             return false;

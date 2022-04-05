@@ -8,9 +8,11 @@ use App\Models\Ticket;
 use App\Models\TicketReply;
 use App\Models\User;
 use App\Models\Utility;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Validator;
 
 class TicketController extends Controller
 {
@@ -45,7 +47,7 @@ class TicketController extends Controller
     {
         // dd($request->all());
         if (\Auth::user()->can('Create Ticket')) {
-            $validator = \Validator::make(
+            $validator = Validator::make(
                 $request->all(),
                 [
                     'priority' => 'required',
@@ -106,9 +108,10 @@ class TicketController extends Controller
                 $employee = Employee::where('user_id', '=', $ticket->employee_id)->first();
                 $ticket->name = $employee->name;
                 $ticket->email = $employee->email;
+
                 try {
                     Mail::to($ticket->email)->send(new TicketSend($ticket));
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     $smtp_error = __('E-Mail has been not sent due to SMTP configuration');
                 }
 
@@ -142,7 +145,7 @@ class TicketController extends Controller
     {
         $ticket = Ticket::find($ticket);
         if (\Auth::user()->can('Edit Ticket')) {
-            $validator = \Validator::make(
+            $validator = Validator::make(
                 $request->all(),
                 [
                     'priority' => 'required',
@@ -205,7 +208,7 @@ class TicketController extends Controller
 
     public function changereply(Request $request)
     {
-        $validator = \Validator::make(
+        $validator = Validator::make(
             $request->all(),
             [
                 'description' => 'required',

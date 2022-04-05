@@ -83,14 +83,14 @@ class DashboardController extends Controller
             $curl = curl_init();
 
             curl_setopt_array($curl, [
-              \CURLOPT_URL => 'https://apps.mnotify.net/smsapi/balance?key=H5gTSQ85AuKA6OqpMu242y66U',
-              \CURLOPT_RETURNTRANSFER => true,
-              \CURLOPT_ENCODING => '',
-              \CURLOPT_MAXREDIRS => 10,
-              \CURLOPT_TIMEOUT => 0,
-              \CURLOPT_FOLLOWLOCATION => true,
-              \CURLOPT_HTTP_VERSION => \CURL_HTTP_VERSION_1_1,
-              \CURLOPT_CUSTOMREQUEST => 'GET',
+                \CURLOPT_URL => 'https://apps.mnotify.net/smsapi/balance?key=H5gTSQ85AuKA6OqpMu242y66U',
+                \CURLOPT_RETURNTRANSFER => true,
+                \CURLOPT_ENCODING => '',
+                \CURLOPT_MAXREDIRS => 10,
+                \CURLOPT_TIMEOUT => 0,
+                \CURLOPT_FOLLOWLOCATION => true,
+                \CURLOPT_HTTP_VERSION => \CURL_HTTP_VERSION_1_1,
+                \CURLOPT_CUSTOMREQUEST => 'GET',
             ]);
 
             $sms = curl_exec($curl);
@@ -167,7 +167,7 @@ class DashboardController extends Controller
                 '' => '',
                 '' => '',
 
-                ]);
+            ]);
         }
         if ($user->hasRole('Lecturer')) {
             $totalstaff = Staff::all()->count();
@@ -218,14 +218,14 @@ class DashboardController extends Controller
             $curl = curl_init();
 
             curl_setopt_array($curl, [
-              \CURLOPT_URL => 'https://apps.mnotify.net/smsapi/balance?key=H5gTSQ85AuKA6OqpMu242y66U',
-              \CURLOPT_RETURNTRANSFER => true,
-              \CURLOPT_ENCODING => '',
-              \CURLOPT_MAXREDIRS => 10,
-              \CURLOPT_TIMEOUT => 0,
-              \CURLOPT_FOLLOWLOCATION => true,
-              \CURLOPT_HTTP_VERSION => \CURL_HTTP_VERSION_1_1,
-              \CURLOPT_CUSTOMREQUEST => 'GET',
+                \CURLOPT_URL => 'https://apps.mnotify.net/smsapi/balance?key=H5gTSQ85AuKA6OqpMu242y66U',
+                \CURLOPT_RETURNTRANSFER => true,
+                \CURLOPT_ENCODING => '',
+                \CURLOPT_MAXREDIRS => 10,
+                \CURLOPT_TIMEOUT => 0,
+                \CURLOPT_FOLLOWLOCATION => true,
+                \CURLOPT_HTTP_VERSION => \CURL_HTTP_VERSION_1_1,
+                \CURLOPT_CUSTOMREQUEST => 'GET',
             ]);
 
             $sms = curl_exec($curl);
@@ -308,7 +308,7 @@ class DashboardController extends Controller
                 '' => '',
                 '' => '',
 
-                ]);
+            ]);
         }
         if ($user->hasRole('Front_desk_help')) {
             $totalstaff = Staff::all()->count();
@@ -359,14 +359,14 @@ class DashboardController extends Controller
             $curl = curl_init();
 
             curl_setopt_array($curl, [
-              \CURLOPT_URL => 'https://apps.mnotify.net/smsapi/balance?key=H5gTSQ85AuKA6OqpMu242y66U',
-              \CURLOPT_RETURNTRANSFER => true,
-              \CURLOPT_ENCODING => '',
-              \CURLOPT_MAXREDIRS => 10,
-              \CURLOPT_TIMEOUT => 0,
-              \CURLOPT_FOLLOWLOCATION => true,
-              \CURLOPT_HTTP_VERSION => \CURL_HTTP_VERSION_1_1,
-              \CURLOPT_CUSTOMREQUEST => 'GET',
+                \CURLOPT_URL => 'https://apps.mnotify.net/smsapi/balance?key=H5gTSQ85AuKA6OqpMu242y66U',
+                \CURLOPT_RETURNTRANSFER => true,
+                \CURLOPT_ENCODING => '',
+                \CURLOPT_MAXREDIRS => 10,
+                \CURLOPT_TIMEOUT => 0,
+                \CURLOPT_FOLLOWLOCATION => true,
+                \CURLOPT_HTTP_VERSION => \CURL_HTTP_VERSION_1_1,
+                \CURLOPT_CUSTOMREQUEST => 'GET',
             ]);
 
             $sms = curl_exec($curl);
@@ -446,7 +446,7 @@ class DashboardController extends Controller
                 '' => '',
                 '' => '',
 
-                ]);
+            ]);
         }
         if ($user->hasRole('Admission committee')) {
             $totalstaff = Staff::all()->count();
@@ -497,14 +497,14 @@ class DashboardController extends Controller
             $curl = curl_init();
 
             curl_setopt_array($curl, [
-              \CURLOPT_URL => 'https://apps.mnotify.net/smsapi/balance?key=H5gTSQ85AuKA6OqpMu242y66U',
-              \CURLOPT_RETURNTRANSFER => true,
-              \CURLOPT_ENCODING => '',
-              \CURLOPT_MAXREDIRS => 10,
-              \CURLOPT_TIMEOUT => 0,
-              \CURLOPT_FOLLOWLOCATION => true,
-              \CURLOPT_HTTP_VERSION => \CURL_HTTP_VERSION_1_1,
-              \CURLOPT_CUSTOMREQUEST => 'GET',
+                \CURLOPT_URL => 'https://apps.mnotify.net/smsapi/balance?key=H5gTSQ85AuKA6OqpMu242y66U',
+                \CURLOPT_RETURNTRANSFER => true,
+                \CURLOPT_ENCODING => '',
+                \CURLOPT_MAXREDIRS => 10,
+                \CURLOPT_TIMEOUT => 0,
+                \CURLOPT_FOLLOWLOCATION => true,
+                \CURLOPT_HTTP_VERSION => \CURL_HTTP_VERSION_1_1,
+                \CURLOPT_CUSTOMREQUEST => 'GET',
             ]);
 
             $sms = curl_exec($curl);
@@ -584,7 +584,7 @@ class DashboardController extends Controller
                 '' => '',
                 '' => '',
 
-                ]);
+            ]);
         }
         if ($user->hasRole('Academic Committee')) {
             $totalstaff = Staff::all()->count();
@@ -635,14 +635,14 @@ class DashboardController extends Controller
             $curl = curl_init();
 
             curl_setopt_array($curl, [
-              \CURLOPT_URL => 'https://apps.mnotify.net/smsapi/balance?key=H5gTSQ85AuKA6OqpMu242y66U',
-              \CURLOPT_RETURNTRANSFER => true,
-              \CURLOPT_ENCODING => '',
-              \CURLOPT_MAXREDIRS => 10,
-              \CURLOPT_TIMEOUT => 0,
-              \CURLOPT_FOLLOWLOCATION => true,
-              \CURLOPT_HTTP_VERSION => \CURL_HTTP_VERSION_1_1,
-              \CURLOPT_CUSTOMREQUEST => 'GET',
+                \CURLOPT_URL => 'https://apps.mnotify.net/smsapi/balance?key=H5gTSQ85AuKA6OqpMu242y66U',
+                \CURLOPT_RETURNTRANSFER => true,
+                \CURLOPT_ENCODING => '',
+                \CURLOPT_MAXREDIRS => 10,
+                \CURLOPT_TIMEOUT => 0,
+                \CURLOPT_FOLLOWLOCATION => true,
+                \CURLOPT_HTTP_VERSION => \CURL_HTTP_VERSION_1_1,
+                \CURLOPT_CUSTOMREQUEST => 'GET',
             ]);
 
             $sms = curl_exec($curl);
@@ -722,7 +722,7 @@ class DashboardController extends Controller
                 '' => '',
                 '' => '',
 
-                ]);
+            ]);
         }
         if ($user->hasRole('Accounts')) {
             $totalstaff = Staff::all()->count();
@@ -773,14 +773,14 @@ class DashboardController extends Controller
             $curl = curl_init();
 
             curl_setopt_array($curl, [
-              \CURLOPT_URL => 'https://apps.mnotify.net/smsapi/balance?key=H5gTSQ85AuKA6OqpMu242y66U',
-              \CURLOPT_RETURNTRANSFER => true,
-              \CURLOPT_ENCODING => '',
-              \CURLOPT_MAXREDIRS => 10,
-              \CURLOPT_TIMEOUT => 0,
-              \CURLOPT_FOLLOWLOCATION => true,
-              \CURLOPT_HTTP_VERSION => \CURL_HTTP_VERSION_1_1,
-              \CURLOPT_CUSTOMREQUEST => 'GET',
+                \CURLOPT_URL => 'https://apps.mnotify.net/smsapi/balance?key=H5gTSQ85AuKA6OqpMu242y66U',
+                \CURLOPT_RETURNTRANSFER => true,
+                \CURLOPT_ENCODING => '',
+                \CURLOPT_MAXREDIRS => 10,
+                \CURLOPT_TIMEOUT => 0,
+                \CURLOPT_FOLLOWLOCATION => true,
+                \CURLOPT_HTTP_VERSION => \CURL_HTTP_VERSION_1_1,
+                \CURLOPT_CUSTOMREQUEST => 'GET',
             ]);
 
             $sms = curl_exec($curl);
@@ -860,7 +860,7 @@ class DashboardController extends Controller
                 '' => '',
                 '' => '',
 
-                ]);
+            ]);
         }
         if ($user->hasRole('Human Resource')) {
             $totalstaff = Staff::all()->count();
@@ -911,14 +911,14 @@ class DashboardController extends Controller
             $curl = curl_init();
 
             curl_setopt_array($curl, [
-              \CURLOPT_URL => 'https://apps.mnotify.net/smsapi/balance?key=H5gTSQ85AuKA6OqpMu242y66U',
-              \CURLOPT_RETURNTRANSFER => true,
-              \CURLOPT_ENCODING => '',
-              \CURLOPT_MAXREDIRS => 10,
-              \CURLOPT_TIMEOUT => 0,
-              \CURLOPT_FOLLOWLOCATION => true,
-              \CURLOPT_HTTP_VERSION => \CURL_HTTP_VERSION_1_1,
-              \CURLOPT_CUSTOMREQUEST => 'GET',
+                \CURLOPT_URL => 'https://apps.mnotify.net/smsapi/balance?key=H5gTSQ85AuKA6OqpMu242y66U',
+                \CURLOPT_RETURNTRANSFER => true,
+                \CURLOPT_ENCODING => '',
+                \CURLOPT_MAXREDIRS => 10,
+                \CURLOPT_TIMEOUT => 0,
+                \CURLOPT_FOLLOWLOCATION => true,
+                \CURLOPT_HTTP_VERSION => \CURL_HTTP_VERSION_1_1,
+                \CURLOPT_CUSTOMREQUEST => 'GET',
             ]);
 
             $sms = curl_exec($curl);
@@ -998,7 +998,7 @@ class DashboardController extends Controller
                 '' => '',
                 '' => '',
 
-                ]);
+            ]);
         }
         if ($user->hasRole('Student')) {
             return Redirect()->route('students-profile-info-view');

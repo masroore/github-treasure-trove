@@ -18,10 +18,10 @@ class Page extends Model
      */
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
-    /*******************************************************************************
+    /*
      *                                Copyright : AGmedia                           *
      *                              email: filip@agmedia.hr                         *
-     *******************************************************************************/
+     */
     // Static functions
 
     public static function getMenu()
@@ -37,8 +37,6 @@ class Page extends Model
     /**
      * @param $request
      *
-     * @throws \Exception
-     *
      * @return bool
      */
     public static function store($request, $id = 0)
@@ -50,16 +48,16 @@ class Page extends Model
 
         // Insert new action
         $_id = self::insertGetId([
-            'name'             => $request->name,
-            'slug'             => isset($request->slug) ? Str::slug($request->slug) : Str::slug($request->name),
-            'description'      => $request->description,
-            'seo_title'        => $request->seo_title,
+            'name' => $request->name,
+            'slug' => isset($request->slug) ? Str::slug($request->slug) : Str::slug($request->name),
+            'description' => $request->description,
+            'seo_title' => $request->seo_title,
             'meta_description' => $request->meta_description,
-            'meta_keywords'    => $request->meta_keywords,
-            'group'            => $request->group,
-            'status'           => (isset($request->status) && 'on' == $request->status) ? 1 : 0,
-            'created_at'       => Carbon::now(),
-            'updated_at'       => Carbon::now(),
+            'meta_keywords' => $request->meta_keywords,
+            'group' => $request->group,
+            'status' => (isset($request->status) && 'on' == $request->status) ? 1 : 0,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
 
         if ($_id) {

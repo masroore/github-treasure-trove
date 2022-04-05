@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Traits;
 
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
@@ -21,7 +22,7 @@ trait CsvImportTrait
             $fields = array_flip(array_filter($fields));
 
             $modelName = $request->input('modelName', false);
-            $model = "App\Models\\" . $modelName;
+            $model = 'App\\Models\\' . $modelName;
 
             $reader = new SpreadsheetReader($path);
             $insert = [];
@@ -58,7 +59,7 @@ trait CsvImportTrait
             session()->flash('message', trans('global.app_imported_rows_to_table', ['rows' => $rows, 'table' => $table]));
 
             return redirect($request->input('redirect'));
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
             throw $ex;
         }
     }
@@ -83,7 +84,7 @@ trait CsvImportTrait
         $file->storeAs('csv_import', $filename);
 
         $modelName = $request->input('model', false);
-        $fullModelName = "App\Models\\" . $modelName;
+        $fullModelName = 'App\\Models\\' . $modelName;
 
         $model = new $fullModelName();
         $fillables = $model->getFillable();

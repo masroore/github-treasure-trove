@@ -7,18 +7,19 @@ use Illuminate\Database\Eloquent\Model;
     class ProductOption extends Model
     {
         protected $hidden = ['created_at', 'updated_at'];
-        protected $fillable = [
-        'id',
-        'required',
-        'product_id',
-        'option_id',
-    ];
 
-        public static function boot()
+        protected $fillable = [
+            'id',
+            'required',
+            'product_id',
+            'option_id',
+        ];
+
+        public static function boot(): void
         {
             parent::boot();
 
-            static::deleting(function ($option) { // before delete() method call this
+            static::deleting(function ($option): void { // before delete() method call this
                 $option->optionValues()->delete();
             });
         }

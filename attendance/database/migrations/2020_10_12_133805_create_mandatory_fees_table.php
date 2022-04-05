@@ -8,12 +8,10 @@ class CreateMandatoryFeesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('mandatory_fees', function (Blueprint $table) {
+        Schema::create('mandatory_fees', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('title');
             $table->string('feecode');
@@ -23,10 +21,8 @@ class CreateMandatoryFeesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('mandatory_fees');
     }

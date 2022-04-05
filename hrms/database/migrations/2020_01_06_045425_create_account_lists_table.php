@@ -8,12 +8,10 @@ class CreateAccountListsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('account_lists', function (Blueprint $table) {
+        Schema::create('account_lists', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('account_name');
             $table->integer('initial_balance');
@@ -27,10 +25,8 @@ class CreateAccountListsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('account_lists');
     }

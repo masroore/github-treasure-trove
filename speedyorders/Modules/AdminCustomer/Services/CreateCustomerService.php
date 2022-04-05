@@ -4,6 +4,7 @@ namespace Modules\AdminCustomer\Services;
 
 use App\Models\Customer;
 use App\Models\CustomerAddress;
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Log;
@@ -15,7 +16,7 @@ class CreateCustomerService
         try {
             DB::beginTransaction();
 
-            $validatedData['password'] = Hash::make(rand());
+            $validatedData['password'] = Hash::make(mt_rand());
 
             $customer = Customer::create($validatedData);
             if ($validatedData['a_first_name']) {
@@ -55,7 +56,7 @@ class CreateCustomerService
             DB::commit();
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             //dd($e);
             Log::info('Error:' . $e->getMessage());
             DB::rollback();

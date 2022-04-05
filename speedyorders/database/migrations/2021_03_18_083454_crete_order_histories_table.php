@@ -8,12 +8,10 @@ class CreteOrderHistoriesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('order_histories', function (Blueprint $table) {
+        Schema::create('order_histories', function (Blueprint $table): void {
             $table->unsignedBigInteger('id')->autoIncrement();
             $table->unsignedBigInteger('order_id')->default(null)->nullable();
             $table->text('comment')->nullable()->default(null);
@@ -24,10 +22,8 @@ class CreteOrderHistoriesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('order_histories');
     }

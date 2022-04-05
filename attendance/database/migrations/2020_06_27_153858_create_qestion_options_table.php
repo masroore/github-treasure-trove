@@ -8,12 +8,10 @@ class CreateQestionOptionsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('qestion_options', function (Blueprint $table) {
+        Schema::create('qestion_options', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('question_id');
             $table->string('option');
@@ -23,10 +21,8 @@ class CreateQestionOptionsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('qestion_options');
     }

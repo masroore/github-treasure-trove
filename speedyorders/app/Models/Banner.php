@@ -16,11 +16,11 @@ class Banner extends Model
         'id',
     ];
 
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
         // Order by sort order ASC
-        static::addGlobalScope('sort_order', function (Builder $builder) {
+        static::addGlobalScope('sort_order', function (Builder $builder): void {
             $builder->orderBy('sort_order', 'asc');
         });
     }

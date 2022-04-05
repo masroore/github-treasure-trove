@@ -9,17 +9,21 @@ use Illuminate\Notifications\Notification;
 class sendmailwithfile extends Notification
 {
     use Queueable;
+
     public $subject;
+
     public $compose;
+
     public $studntgroup;
+
     public $fullpath;
+
     public $from;
+
     public $fremail;
 
     /**
      * Create a new notification instance.
-     *
-     * @return void
      */
     public function __construct($from, $fremail, $subject, $compose, $studntgroup, $fullpath)
     {

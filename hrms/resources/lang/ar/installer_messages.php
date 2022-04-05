@@ -14,16 +14,16 @@ return [
     // Home page translations.
     'welcome' => [
         'templateTitle' => 'Welcome',
-        'title'   => '',
+        'title' => '',
         'message' => 'Easy Installation and Setup Wizard.',
-        'next'    => 'Check Requirements',
+        'next' => 'Check Requirements',
     ],
 
     // Requirements page translations.
     'requirements' => [
         'templateTitle' => 'Step 1 | Server Requirements',
         'title' => 'Server Requirements',
-        'next'    => 'Check Permissions',
+        'next' => 'Check Permissions',
     ],
 
     // Permissions page translations.
@@ -173,13 +173,13 @@ return [
 
         // Welcome page translations for update feature.
         'welcome' => [
-            'title'   => 'Welcome To The Updater',
+            'title' => 'Welcome To The Updater',
             'message' => 'Welcome to the update wizard.',
         ],
 
         // Welcome page translations for update feature.
         'overview' => [
-            'title'   => 'Overview',
+            'title' => 'Overview',
             'message' => 'There is 1 update.|There are :number updates.',
             'install_updates' => 'Install Updates',
         ],

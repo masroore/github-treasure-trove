@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\CustomQuestion;
+use Auth;
 use Illuminate\Http\Request;
+use Validator;
 
 class CustomQuestionController extends Controller
 {
     public function index()
     {
-        if (\Auth::user()->can('Manage Custom Question')) {
-            $questions = CustomQuestion::where('created_by', \Auth::user()->creatorId())->get();
+        if (Auth::user()->can('Manage Custom Question')) {
+            $questions = CustomQuestion::where('created_by', Auth::user()->creatorId())->get();
 
             return view('customQuestion.index', compact('questions'));
         }
@@ -27,12 +29,12 @@ class CustomQuestionController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('Create Custom Question')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Create Custom Question')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'question' => 'required',
-                               ]
+                    'question' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -43,7 +45,7 @@ class CustomQuestionController extends Controller
             $question = new CustomQuestion();
             $question->question = $request->question;
             $question->is_required = $request->is_required;
-            $question->created_by = \Auth::user()->creatorId();
+            $question->created_by = Auth::user()->creatorId();
             $question->save();
 
             return redirect()->back()->with('success', __('Question successfully created.'));
@@ -52,9 +54,8 @@ class CustomQuestionController extends Controller
         return redirect()->back()->with('error', __('Permission denied.'));
     }
 
-    public function show(CustomQuestion $customQuestion)
+    public function show(CustomQuestion $customQuestion): void
     {
-
     }
 
     public function edit(CustomQuestion $customQuestion)
@@ -66,12 +67,12 @@ class CustomQuestionController extends Controller
 
     public function update(Request $request, CustomQuestion $customQuestion)
     {
-        if (\Auth::user()->can('Edit Custom Question')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Edit Custom Question')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'question' => 'required',
-                               ]
+                    'question' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -91,7 +92,7 @@ class CustomQuestionController extends Controller
 
     public function destroy(CustomQuestion $customQuestion)
     {
-        if (\Auth::user()->can('Delete Custom Question')) {
+        if (Auth::user()->can('Delete Custom Question')) {
             $customQuestion->delete();
 
             return redirect()->back()->with('success', __('Question successfully deleted.'));

@@ -11,16 +11,16 @@ use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class ProductOptionImport implements ToModel, WithHeadingRow, WithBatchInserts, WithChunkReading, ShouldQueue
+class ProductOptionImport implements ShouldQueue, ToModel, WithBatchInserts, WithChunkReading, WithHeadingRow
 {
-    public function model(array $row)
+    public function model(array $row): void
     {
         try {
             ProductOption::create([
-                'id'            => $row['product_option_id'],
-                'product_id'    => $row['product_id'],
-                'option_id'     => $row['option_id'],
-                'required'      => $row['required'],
+                'id' => $row['product_option_id'],
+                'product_id' => $row['product_id'],
+                'option_id' => $row['option_id'],
+                'required' => $row['required'],
             ]);
         } catch (Exception $e) {
             Log::info('Product Option File Import data:' . json_encode($row) . ' error:' . json_encode($e->getMessage()));

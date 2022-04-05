@@ -26,8 +26,11 @@ class UserService
      * @var
      */
     protected $userRepository;
+
     protected $storeRepository;
+
     protected $employeeRepository;
+
     protected $favoritesRepository;
 
     /**
@@ -63,13 +66,13 @@ class UserService
 
             // validate request
             $validator = Validator::make($request->input(), [
-                'name'      => 'required|string',
-                'email'     => 'required|string|unique:users,email',
-                'password'  => 'required|string',
+                'name' => 'required|string',
+                'email' => 'required|string|unique:users,email',
+                'password' => 'required|string',
                 'user_type' => 'required|string|in:visitor,company',
                 'store_name' => 'required_if:user_type,company|unique:stores,store_name',
                 'country_code' => 'required',
-                'whatsapp'  => 'required|string|unique:users,wp_num_inc_code',
+                'whatsapp' => 'required|string|unique:users,wp_num_inc_code',
                 'checkbox' => 'accepted',
             ]);
 
@@ -83,30 +86,30 @@ class UserService
 
             // create user
             $user = $this->userRepository->create([
-                'name'            => $name,
-                'email'           => $request['email'],
-                'password'        => bcrypt($request['password']),
-                'user_type'       => $request['user_type'],
+                'name' => $name,
+                'email' => $request['email'],
+                'password' => bcrypt($request['password']),
+                'user_type' => $request['user_type'],
                 'activation_code' => Hash::make($otp),
-                'activation_key'  => $hash,
-                'country_code'    => $request['country_code'],
+                'activation_key' => $hash,
+                'country_code' => $request['country_code'],
                 'wp_num_inc_code' => $whatsapp,
                 'wp_num_exc_code' => $without_cc,
-                'otp_expiry'      => strtotime('now') + (60 * 10),
+                'otp_expiry' => strtotime('now') + (60 * 10),
             ]);
 
             // create a store for company user
             if ('company' == $request['user_type'] && $user) {
                 $create_store = $this->storeRepository->create([
-                    'user_id'		=> $user->id,
-                    'store_name' 	=> $request['store_name'],
-                    'email' 		=> $request['email'],
-                    'whatsapp_num' 	=> $request['whatsapp'],
+                    'user_id' => $user->id,
+                    'store_name' => $request['store_name'],
+                    'email' => $request['email'],
+                    'whatsapp_num' => $request['whatsapp'],
                 ]);
                 $this->employeeRepository->create([
-                    'user_id'   => $user->id,
-                    'store_id' 	=> $create_store->id,
-                    'is_admin' 	=> 1,
+                    'user_id' => $user->id,
+                    'store_id' => $create_store->id,
+                    'is_admin' => 1,
                 ]);
             }
 
@@ -163,8 +166,8 @@ class UserService
         try {
             // validate request
             $validator = Validator::make($request->input(), [
-                'username'  => ['required',
-                    function ($attribute, $value, $fail) {
+                'username' => ['required',
+                    function ($attribute, $value, $fail): void {
                         if (!filter_var($value, \FILTER_VALIDATE_EMAIL) && 'WP-' != strtoupper(substr($value, 0, 3))) {
                             $value = (int) (str_replace(' ', '', $value));
                             if ($value <= 0) {
@@ -174,7 +177,7 @@ class UserService
                     },
 
                 ],
-                'password'  => 'required|string',
+                'password' => 'required|string',
             ]);
 
             if ($validator->fails()) {
@@ -199,7 +202,7 @@ class UserService
                 'is_user_deactivated',
                 'user_type',
             ], ['stores',
-            /*=> function($query) {
+                /*=> function($query) {
                 $query->select('stores.id as store_id', 'store_name', 'business_url', 'store_logo', 'whatsapp_num', 'stores.status');
             }*/
             ]);
@@ -284,7 +287,7 @@ class UserService
                 'user_type',
                 'otp_expiry',
             ], ['stores',
-            /*=> function($query) {
+                /*=> function($query) {
                 $query->select('stores.id as store_id', 'store_name', 'business_url', 'store_logo', 'whatsapp_num', 'stores.status');
             }*/
             ]);
@@ -340,7 +343,7 @@ class UserService
                 'user_type',
                 'otp_expiry',
             ], ['stores',
-            /*=> function($query) {
+                /*=> function($query) {
                 $query->select('stores.id as store_id', 'store_name', 'store_logo', 'business_url', 'whatsapp_num', 'stores.status');
             }*/
             ]);
@@ -376,7 +379,7 @@ class UserService
         try {
             // validate request
             $validator = Validator::make($request->input(), [
-                'username' => ['required', 'string', function ($attribute, $value, $fail) {
+                'username' => ['required', 'string', function ($attribute, $value, $fail): void {
                     if (!filter_var($value, \FILTER_VALIDATE_EMAIL)) {
                         $value = (int) Str::remove(' ', $value);
                         if ($value <= 0) {
@@ -418,8 +421,8 @@ class UserService
 
             $this->userRepository->update($user->id, [
                 'activation_code' => Hash::make($otp),
-                'activation_key'  => $hash,
-                'otp_expiry' =>  strtotime('now') + (60 * 10),
+                'activation_key' => $hash,
+                'otp_expiry' => strtotime('now') + (60 * 10),
             ]);
 
             $activation_link = 'https://whatspays.org/user/verify_link/?code=' . urlencode($hash);
@@ -470,7 +473,7 @@ class UserService
         try {
             // validate request
             $validator = Validator::make($request->input(), [
-                'username' => ['required', 'string', function ($attribute, $value, $fail) {
+                'username' => ['required', 'string', function ($attribute, $value, $fail): void {
                     if (!filter_var($value, \FILTER_VALIDATE_EMAIL)) {
                         $value = (int) Str::remove(' ', $value);
                         if ($value <= 0) {
@@ -508,31 +511,32 @@ class UserService
                 $otp_expiry = strtotime('now') + (60 * 10);
 
                 $whatsapp_msg = get_whatsapp_message('customer_support', [
-                        'name' => $name,
-                    ]);
+                    'name' => $name,
+                ]);
 
                 $result = $this->userRepository->update($user->id, [
-                        'activation_code' => Hash::make($otp),
-                        'otp_expiry' => $otp_expiry,
-                    ]);
+                    'activation_code' => Hash::make($otp),
+                    'otp_expiry' => $otp_expiry,
+                ]);
 
                 $email_subject = get_email_subject('resendcode', $name);
 
                 // send email in queue
                 $email_job = new SendEmail([
-                        'view' => 'email.resendcode',
-                        'email' => $user_email,
-                        'subject' => $email_subject,
-                        'name' => $name,
-                        'activation_code' => $otp,
-                        'whatsapp_link' => $whatsapp_msg,
-                    ]);
+                    'view' => 'email.resendcode',
+                    'email' => $user_email,
+                    'subject' => $email_subject,
+                    'name' => $name,
+                    'activation_code' => $otp,
+                    'whatsapp_link' => $whatsapp_msg,
+                ]);
 
                 // dispatch job
                 dispatch($email_job);
 
                 return $result;
             }
+
             throw new InvalidArgumentException(__('user.error.active'));
         } catch (Exception $e) {
             throw new InvalidArgumentException($e->getMessage());
@@ -550,7 +554,7 @@ class UserService
     {
         try {
             $validator = Validator::make($request->input(), [
-                'username' => ['required', 'string', function ($attribute, $value, $fail) {
+                'username' => ['required', 'string', function ($attribute, $value, $fail): void {
                     if (!filter_var($value, \FILTER_VALIDATE_EMAIL)) {
                         $value = (int) (str_replace(' ', '', $value));
                         if ($value <= 0) {
@@ -646,7 +650,7 @@ class UserService
             $validator = Validator::make($request->input(), [
                 'password' => 'required|confirmed|min:6',
                 'activation_code' => 'required|string',
-                'username' => ['required', 'string', function ($attribute, $value, $fail) {
+                'username' => ['required', 'string', function ($attribute, $value, $fail): void {
                     if (!filter_var($value, \FILTER_VALIDATE_EMAIL)) {
                         $value = (int) (str_replace(' ', '', $value));
                         if ($value <= 0) {
@@ -697,7 +701,7 @@ class UserService
         try {
             // validate request
             $validator = Validator::make($request->input(), [
-                'password'  => 'required|confirmed|min:6',
+                'password' => 'required|confirmed|min:6',
                 'password_confirmation' => 'required',
             ]);
 
@@ -738,8 +742,8 @@ class UserService
         try {
             $validator = Validator::make($request->input(), [
                 'old_password' => 'required',
-                'password'  => 'required|confirmed|min:6',
-                'password_confirmation'  => 'required|min:6',
+                'password' => 'required|confirmed|min:6',
+                'password_confirmation' => 'required|min:6',
             ]);
 
             if ($validator->fails()) {
@@ -942,7 +946,7 @@ class UserService
         $user_id = Auth::id();
 
         return Notification::where('notifiable_id', $user_id)
-                  ->where('notifiable_type', 'App\Models\User')
-                  ->get();
+            ->where('notifiable_type', 'App\Models\User')
+            ->get();
     }
 }

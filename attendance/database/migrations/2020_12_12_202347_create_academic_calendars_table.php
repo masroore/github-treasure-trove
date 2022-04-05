@@ -8,12 +8,10 @@ class CreateAcademicCalendarsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('academic_calendars', function (Blueprint $table) {
+        Schema::create('academic_calendars', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('title')->nullable();
             $table->string('startdate')->nullable();
@@ -31,10 +29,8 @@ class CreateAcademicCalendarsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('academic_calendars');
     }

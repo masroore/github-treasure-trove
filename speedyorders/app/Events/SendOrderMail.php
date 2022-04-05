@@ -14,12 +14,11 @@ class SendOrderMail
     use SerializesModels;
 
     public $pdf;
+
     public $email;
 
     /**
      * Create a new event instance.
-     *
-     * @return void
      */
     public function __construct($pdf, $email)
     {

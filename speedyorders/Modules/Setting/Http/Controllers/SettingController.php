@@ -4,6 +4,7 @@ namespace Modules\Setting\Http\Controllers;
 
 use App\Utils\Helper;
 use App\Utils\Option;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
@@ -79,7 +80,7 @@ class SettingController extends Controller
             session()->flash('success_message', 'Ticket setting updated successfully.');
 
             return redirect()->route('settings.ticket');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             session()->flash('error_message', 'Ticket setting could not be updated.');
 
             return redirect()->route('settings.ticket');
@@ -186,7 +187,7 @@ class SettingController extends Controller
             Helper::fileUploadToCloud(config('minio.public.assets') . $name, file_get_contents($file), 'minio-public');
 
             return $name;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return;
         }
     }

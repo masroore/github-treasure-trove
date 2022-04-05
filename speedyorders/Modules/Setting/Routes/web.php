@@ -11,7 +11,7 @@
 |
 */
 
-Route::group(['prefix' => 'settings', 'middleware' => 'auth:admin'], function () {
+Route::group(['prefix' => 'settings', 'middleware' => 'auth:admin'], function (): void {
     Route::get('/', function () {
         return redirect()->route('settings.general');
     })->name('settings.index');

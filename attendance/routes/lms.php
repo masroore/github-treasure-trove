@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/OSMS/LMS/login', [
-        'uses' => 'LMS\LMSController@login',
-        'as' => 'lms-home',
+    'uses' => 'LMS\LMSController@login',
+    'as' => 'lms-home',
 ]);
 
 Route::post('/OSMS/LMS/login-check', [
@@ -23,7 +23,7 @@ Route::post('/OSMS/LMS/login-check', [
     'as' => 'lms-login-check',
 ]);
 
-Route::group(['prefix'=> 'OSMS/LMS/LMSLECTURER/', 'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'OSMS/LMS/LMSLECTURER/', 'middleware' => 'auth'], function (): void {
     Route::get('/{code}/overview', [
         'uses' => 'LMS\LMSController@lec_overview',
         'as' => 'lms-lec-overview',
@@ -290,7 +290,7 @@ Route::group(['prefix'=> 'OSMS/LMS/LMSLECTURER/', 'middleware' => 'auth'], funct
     ]);
 });
 
-Route::group(['prefix'=> 'OSMS/LMS', 'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'OSMS/LMS', 'middleware' => 'auth'], function (): void {
     Route::get('/home', [
         'uses' => 'LMS\LMSController@main',
         'as' => 'lms-main',

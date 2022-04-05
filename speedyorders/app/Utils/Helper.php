@@ -4,6 +4,7 @@ namespace App\Utils;
 
 use App\Jobs\SendEmail;
 use App\Models\EmailTemplate;
+use Exception;
 
 class Helper
 {
@@ -51,7 +52,7 @@ class Helper
             SendEmail::dispatch($email_job);
 
             return true;
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             return false;
         }
     }

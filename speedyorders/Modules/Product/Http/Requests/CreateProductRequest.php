@@ -27,7 +27,7 @@ class CreateProductRequest extends FormRequest
             'meta_description' => 'nullable|string',
             'image' => 'required|image|mimes:jpg,jpeg,png|max:4096',
             'video' => 'nullable|string|max:255',
-            'file.*'=>'nullable|numeric',
+            'file.*' => 'nullable|numeric',
         ];
     }
 

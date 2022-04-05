@@ -8,14 +8,12 @@ class CreateJobStagesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create(
             'job_stages',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->id();
                 $table->string('title');
                 $table->integer('order')->default(0);
@@ -27,10 +25,8 @@ class CreateJobStagesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('job_stages');
     }

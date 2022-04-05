@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\ShippingPackage;
 use App\Models\ShippingZonePrice;
 use DB;
+use Exception;
 use LaravelShipStation\Models\Address;
 use LaravelShipStation\Models\Dimensions;
 use LaravelShipStation\Models\Order as ProductOrder;
@@ -86,13 +87,13 @@ class CreateShipstationOrderService
                 'amount' => $total_amt,
                 'currency' => $orderData['currency_code'],
                 'status' => 'initialize',
-                'remarks' =>  $orderData['comment'],
+                'remarks' => $orderData['comment'],
             ]);
 
             DB::commit();
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::info('Exception Message : ' . json_encode($e->getMessage()));
             dd($e);
             DB::rollback();
@@ -101,7 +102,7 @@ class CreateShipstationOrderService
         }
     }
 
-    public function handle_single($orderData, $orderId, $productPackageArr, $deliveryTimesArr, $singleProducts, $singleDeliveryTimes)
+    public function handle_single($orderData, $orderId, $productPackageArr, $deliveryTimesArr, $singleProducts, $singleDeliveryTimes): void
     {
         $orderuuid = (string) Str::uuid();
 
@@ -224,11 +225,11 @@ class CreateShipstationOrderService
                 $orderProductData->save();
             }
 
-            $indexv++;
+            ++$indexv;
         }
     }
 
-    public function handle_combo($validatedData, $orderData, $orderId, $productPackageArr, $deliveryTimesArr, $comboProducts, $singleDeliveryTimes)
+    public function handle_combo($validatedData, $orderData, $orderId, $productPackageArr, $deliveryTimesArr, $comboProducts, $singleDeliveryTimes): void
     {
 
     //dd("combo");
@@ -377,13 +378,13 @@ class CreateShipstationOrderService
                     $orderProductData->save();
                 }
 
-                $indexv++;
+                ++$indexv;
             }
 
             DB::commit();
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::info('Exception Message : ' . json_encode($e->getMessage()));
             dd($e);
             DB::rollback();

@@ -19,10 +19,10 @@ Route::get('/login-as', 'Front\HomeController@loginAs')->name('login.as');
 // BACK routes.
 Auth::routes();
 
-Route::middleware('auth', 'noCustomers')->group(function () {
+Route::middleware('auth', 'noCustomers')->group(function (): void {
     //
     // Admin Group
-    Route::prefix('admin')->group(function () {
+    Route::prefix('admin')->group(function (): void {
         //Dashboard
         Route::get('/dashboard', 'Back\DashboardController@index')->name('dashboard');
         Route::get('/dashboard/test', 'Back\DashboardController@test')->name('dashboard.test');
@@ -30,23 +30,23 @@ Route::middleware('auth', 'noCustomers')->group(function () {
         Route::get('/dashboard/test3', 'Back\DashboardController@testThree')->name('dashboard.test3');
         // Categories
         Route::get('categories', 'Back\CategoryController@index')->name('categories');
-        Route::middleware('strike.editor')->group(function () {
+        Route::middleware('strike.editor')->group(function (): void {
             Route::get('category/create', 'Back\CategoryController@create')->name('category.create');
             Route::post('category', 'Back\CategoryController@store')->name('category.store');
             Route::get('category/{category}/edit', 'Back\CategoryController@edit')->name('category.edit');
             Route::patch('category/{category}', 'Back\CategoryController@update')->name('category.update');
         });
         // MARKETING Group
-        Route::prefix('marketing')->group(function () {
+        Route::prefix('marketing')->group(function (): void {
             // Sliders
-            Route::prefix('sliders')->group(function () {
+            Route::prefix('sliders')->group(function (): void {
                 Route::get('/', 'Back\Marketing\SliderController@index')->name('sliders');
                 Route::get('create', 'Back\Marketing\SliderController@create')->name('slider.create');
                 Route::post('/', 'Back\Marketing\SliderController@store')->name('slider.store');
                 Route::get('{id}/edit', 'Back\Marketing\SliderController@edit')->name('slider.edit');
                 Route::patch('{id}', 'Back\Marketing\SliderController@update')->name('slider.update');
 
-                Route::prefix('{id}/edit')->group(function () {
+                Route::prefix('{id}/edit')->group(function (): void {
                     Route::get('individual/create', 'Back\Marketing\SliderIndividualController@create')->name('slider.individual.create');
                     Route::post('individual/', 'Back\Marketing\SliderIndividualController@store')->name('slider.individual.store');
                     Route::get('individual/{sid}/edit', 'Back\Marketing\SliderIndividualController@edit')->name('slider.individual.edit');
@@ -55,7 +55,7 @@ Route::middleware('auth', 'noCustomers')->group(function () {
             });
             // CUSTOM - PRICES
             Route::get('prices', 'Back\Custom\PricesController@index')->name('prices');
-            Route::middleware('strike.editor')->group(function () {
+            Route::middleware('strike.editor')->group(function (): void {
                 Route::get('price/create', 'Back\Custom\PricesController@create')->name('price.create');
                 Route::post('price', 'Back\Custom\PricesController@store')->name('price.store');
                 Route::get('price/{price}/edit', 'Back\Custom\PricesController@edit')->name('price.edit');
@@ -71,7 +71,7 @@ Route::middleware('auth', 'noCustomers')->group(function () {
             Route::patch('blog/{blog}', 'Back\Marketing\BlogController@update')->name('blog.update');
         });
         // USERS Group
-        Route::prefix('users')->group(function () {
+        Route::prefix('users')->group(function (): void {
             // Users
             Route::get('users', 'Back\Users\UserController@index')->name('users');
             Route::get('user/create', 'Back\Users\UserController@create')->name('user.create');
@@ -89,17 +89,17 @@ Route::middleware('auth', 'noCustomers')->group(function () {
         //
         // APP SETTINGS
         // DESIGN GROUP
-        Route::prefix('design')->group(function () {
+        Route::prefix('design')->group(function (): void {
             //
             // WIDGETS
-            Route::prefix('widgets')->group(function () {
+            Route::prefix('widgets')->group(function (): void {
                 Route::get('/', 'Back\Design\WidgetController@index')->name('widgets');
                 Route::get('create', 'Back\Design\WidgetController@create')->name('widget.create');
                 Route::post('/', 'Back\Design\WidgetController@store')->name('widget.store');
                 Route::get('{widget}/edit', 'Back\Design\WidgetController@edit')->name('widget.edit');
                 Route::patch('{widget}', 'Back\Design\WidgetController@update')->name('widget.update');
                 // GROUP
-                Route::prefix('groups')->group(function () {
+                Route::prefix('groups')->group(function (): void {
                     Route::get('create', 'Back\Design\WidgetGroupController@create')->name('widget.group.create');
                     Route::post('/', 'Back\Design\WidgetGroupController@store')->name('widget.group.store');
                     Route::get('{widget}/edit', 'Back\Design\WidgetGroupController@edit')->name('widget.group.edit');
@@ -109,7 +109,7 @@ Route::middleware('auth', 'noCustomers')->group(function () {
         });
         //
         // SETTINGS Group
-        Route::prefix('settings')->group(function () {
+        Route::prefix('settings')->group(function (): void {
             // Profile
             Route::get('profile', 'Back\Settings\ProfileController@index')->name('profile');
             Route::patch('profile/{profile}', 'Back\Settings\ProfileController@update')->name('profile.update');
@@ -120,7 +120,7 @@ Route::middleware('auth', 'noCustomers')->group(function () {
             Route::get('page/{id}/edit', 'Back\Settings\PageController@edit')->name('page.edit');
             Route::patch('page/{page}', 'Back\Settings\PageController@update')->name('page.update');
             // APPLICATION
-            Route::prefix('application')->group(function () {
+            Route::prefix('application')->group(function (): void {
                 // THEME
                 Route::get('theme', 'Back\Settings\ThemeController@index')->name('theme');
                 // INFO DATA
@@ -130,8 +130,8 @@ Route::middleware('auth', 'noCustomers')->group(function () {
         });
         //
         // Back API routes.
-        Route::prefix('apiv1')->group(function () {
-            Route::prefix('pages')->group(function () {
+        Route::prefix('apiv1')->group(function (): void {
+            Route::prefix('pages')->group(function (): void {
                 Route::post('gallery/image/destroy', 'Back\Settings\PageController@galleryUpload')->name('page.gallery.image.destroy');
 
                 Route::post('block/destroy', 'Back\Settings\PageController@blockDestroy')->name('page.block.destroy');
@@ -144,7 +144,7 @@ Route::middleware('auth', 'noCustomers')->group(function () {
             Route::post('page/destroy', 'Back\Settings\PageController@destroy')->name('page.destroy');
             Route::post('price/destroy', 'Back\Custom\PricesController@destroy')->name('price.destroy');
             // WIDGET
-            Route::prefix('widget')->group(function () {
+            Route::prefix('widget')->group(function (): void {
                 Route::post('destroy', 'Back\Design\WidgetController@destroy')->name('widget.destroy');
                 Route::get('get-links', 'Back\Design\WidgetController@getLinks')->name('widget.api.get-links');
             });
@@ -156,30 +156,30 @@ Route::middleware('auth', 'noCustomers')->group(function () {
             // Notifications
             Route::post('notifications/read', 'Back\Api1\UserController@notificationsRead')->name('notifications.read');
             // Charts
-            Route::prefix('chart')->group(function () {
+            Route::prefix('chart')->group(function (): void {
                 Route::post('orders/bar', 'Back\Api1\ChartController@orders')->name('chart.bar.orders');
                 Route::post('products/bar/horizontal', 'Back\Api1\ChartController@products')->name('chart.bar.products');
                 Route::post('orders/pie/status', 'Back\Api1\ChartController@ordersStatus')->name('chart.pie.order.status');
                 Route::get('stats/totals', 'Back\Api1\ChartController@totals')->name('stats.total');
             });
             // Clear Cache
-            Route::prefix('cache')->group(function () {
+            Route::prefix('cache')->group(function (): void {
                 Route::get('/', 'Back\Api1\SettingController@cache')->name('cache');
                 Route::get('config', 'Back\Api1\SettingController@clearConfigCache')->name('config.clear');
                 Route::get('views', 'Back\Api1\SettingController@clearViewsCache')->name('views.clear');
                 Route::get('routes', 'Back\Api1\SettingController@clearRoutesCache')->name('routes.clear');
             });
             // Maintenance Mode
-            Route::prefix('maintenance')->group(function () {
+            Route::prefix('maintenance')->group(function (): void {
                 Route::get('on', 'Back\Api1\SettingController@maintenanceModeON')->name('maintenance.on');
                 Route::get('off', 'Back\Api1\SettingController@maintenanceModeOFF')->name('maintenance.off');
             });
             // Maintenance Mode
-            Route::prefix('settings')->group(function () {
+            Route::prefix('settings')->group(function (): void {
                 Route::get('on', 'Back\Api1\SettingController@sidebarInverseToggle')->name('sidebar.inverse.toggle');
             });
             // Images Upload
-            Route::prefix('images')->group(function () {
+            Route::prefix('images')->group(function (): void {
                 Route::post('/upload/temporary', 'Back\Api1\ImagesController@imagesUploadTemporary')->name('images.upload.temp');
                 Route::post('/upload', 'Back\Api1\ImagesController@imagesUpload')->name('images.upload');
                 Route::post('/upload/edited', 'Back\Api1\ImagesController@imagesUploadEdited')->name('images.upload.edited');
@@ -193,7 +193,7 @@ Route::middleware('auth', 'noCustomers')->group(function () {
 //
 // FRONT API routes
 //
-Route::prefix('api/v1')->group(function () {
+Route::prefix('api/v1')->group(function (): void {
     Route::get('/user', 'Api\v1\CartController@getUser')->name('api.user');
     Route::get('trazi', 'Api\v1\SearchController@index')->name('api.search');
 });
@@ -220,6 +220,6 @@ Route::get('lista-projekata', 'Front\PageController@projectList')->name('project
 Route::get('{cat}/{subcat?}/{page?}', 'Front\PageController@index')->name('page');
 
 // Front TEST routes.
-Route::prefix('temp')->group(function () {
+Route::prefix('temp')->group(function (): void {
     Route::get('/customer/dashboard', 'Back\DashboardController@tempCustomerDashboard')->name('customer.dashboard');
 });

@@ -8,25 +8,21 @@ class AddStatusToRasticatesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('rasticates', function (Blueprint $table) {
+        Schema::table('rasticates', function (Blueprint $table): void {
             $table->string('status')->nullable();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         if (Schema::hasColumn('rasticates', 'status')) {
-            Schema::table('rasticates', function (Blueprint $table) {
+            Schema::table('rasticates', function (Blueprint $table): void {
                 $table->dropColumn('status');
             });
         }

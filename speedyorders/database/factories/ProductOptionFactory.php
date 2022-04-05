@@ -10,7 +10,7 @@ $factory->define(ProductOption::class, function (Faker $faker) {
     $optionIds = Option::all()->pluck('id');
 
     return [
-        'option_id'=>$faker->randomElement($optionIds),
-        'required'=>$faker->boolean(100),
+        'option_id' => $faker->randomElement($optionIds),
+        'required' => $faker->boolean(100),
     ];
 });

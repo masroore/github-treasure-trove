@@ -13,7 +13,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix' => 'admin/customers', 'middleware' => 'auth:admin', 'as'=>'admin.customers.'], function () {
+Route::group(['prefix' => 'admin/customers', 'middleware' => 'auth:admin', 'as' => 'admin.customers.'], function (): void {
     Route::get('/', 'AdminCustomerController@index')->name('index')->middleware('can:list-customer');
     Route::get('/create', 'AdminCustomerController@create')->name('create')->middleware('can:create-customer');
     Route::post('/store', 'AdminCustomerController@store')->name('store')->middleware('can:store-customer');

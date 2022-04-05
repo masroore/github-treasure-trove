@@ -12,7 +12,7 @@
 */
 use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix' => 'admin/inventry', 'middleware' => 'auth:admin', 'as'=>'admin.inventry.'], function () {
+Route::group(['prefix' => 'admin/inventry', 'middleware' => 'auth:admin', 'as' => 'admin.inventry.'], function (): void {
     Route::get('/list', 'AdminInventryController@index')->name('index')->middleware('can:list-inventry');
 
     Route::post('/addSetProductAvailibility', 'AdminInventryController@addSetAvailability')->name('add.set')->middleware('can:edit-inventry');

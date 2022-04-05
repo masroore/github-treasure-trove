@@ -26,15 +26,15 @@ class CustomerAuthController extends Controller
         // check if user of given email exists
         if (!$user) {
             return response()->json([
-                'status'=>false,
-                'error'=>'Invalid email or password provided.',
+                'status' => false,
+                'error' => 'Invalid email or password provided.',
             ], 200);
         }
 
         if (!Hash::check($request->password, $user->password)) {
             return response()->json([
-                'status'=>false,
-                'error'=>'Invalid email or password provided.',
+                'status' => false,
+                'error' => 'Invalid email or password provided.',
             ], 200);
         }
 
@@ -45,7 +45,7 @@ class CustomerAuthController extends Controller
             $user->status = 'inactive';
         }
         $response = [
-            'status'=>true,
+            'status' => true,
             'user' => $user,
             'token' => $token,
         ];
@@ -76,7 +76,7 @@ class CustomerAuthController extends Controller
     {
         if (!isset($request->email)) {
             return response([
-                'status'=>false,
+                'status' => false,
                 'msg' => 'Please enter email',
 
             ], 200);
@@ -84,7 +84,7 @@ class CustomerAuthController extends Controller
 
         if (!filter_var($request->email, \FILTER_VALIDATE_EMAIL)) {
             return response([
-                'status'=>false,
+                'status' => false,
                 'msg' => 'Invalid email',
 
             ], 200);
@@ -94,7 +94,7 @@ class CustomerAuthController extends Controller
 
         if (!$customerUser) {
             return response([
-                'status'=>false,
+                'status' => false,
                 'msg' => 'Sorry,Email address not found on our database',
 
             ], 200);
@@ -106,13 +106,13 @@ class CustomerAuthController extends Controller
             ['token' => $token, 'password_reset_at' => Carbon::now()]
         );
 
-        Mail::send('emails.reset-password', ['token' => $token, 'email' => $request->email], function ($message) use ($request) {
+        Mail::send('emails.reset-password', ['token' => $token, 'email' => $request->email], function ($message) use ($request): void {
             $message->to($request->email);
             $message->subject('Reset Password Notification');
         });
 
         return response([
-            'status'=>true,
+            'status' => true,
             'msg' => 'Password reset link sent successfully.Please check your email.',
         ], 200);
     }
@@ -132,7 +132,7 @@ class CustomerAuthController extends Controller
     {
         if (!isset($request->email)) {
             return response([
-                'status'=>false,
+                'status' => false,
                 'msg' => 'Please enter email',
 
             ], 200);
@@ -140,7 +140,7 @@ class CustomerAuthController extends Controller
 
         if (!filter_var($request->email, \FILTER_VALIDATE_EMAIL)) {
             return response([
-                'status'=>false,
+                'status' => false,
                 'msg' => 'Invalid email',
 
             ], 200);
@@ -148,7 +148,7 @@ class CustomerAuthController extends Controller
 
         if ($request->newPassword != $request->confirmNewPassword) {
             return response([
-                'status'=>false,
+                'status' => false,
                 'msg' => 'Both password must match',
 
             ], 200);
@@ -158,7 +158,7 @@ class CustomerAuthController extends Controller
 
         if (!$customerUser) {
             return response([
-                'status'=>false,
+                'status' => false,
                 'msg' => 'Sorry,Email address not found on our database',
 
             ], 200);
@@ -166,7 +166,7 @@ class CustomerAuthController extends Controller
 
         if ($customerUser->token != $request->token) {
             return response([
-                'status'=>false,
+                'status' => false,
                 'msg' => "Sorry,Token doesn't match.",
 
             ], 200);
@@ -175,15 +175,15 @@ class CustomerAuthController extends Controller
         $now = Carbon::now();
         if ($now->diffInMinutes(Carbon::parse($customerUser->password_reset_at)) > 60) {
             return response([
-                'status'=>false,
+                'status' => false,
                 'msg' => 'Sorry,Session has expired try resetting again',
             ], 200);
         }
 
-        $customerUser->update(['password'=>Hash::make($request->newPassword)]);
+        $customerUser->update(['password' => Hash::make($request->newPassword)]);
 
         return response([
-            'status'=>true,
+            'status' => true,
             'msg' => 'Password reset completed.Login to continue.',
         ], 200);
     }
@@ -194,14 +194,14 @@ class CustomerAuthController extends Controller
 
         if (!$user->tokens()->where('id', $user->currentAccessToken()->id)->delete()) {
             return response()->json([
-                'status'=>false,
-                'error'=>'Couldnot logout with the token provided for the user.',
+                'status' => false,
+                'error' => 'Couldnot logout with the token provided for the user.',
             ], 200);
         }
 
         return response([
-            'status'=>true,
-            'message'=>'Logout successfully',
+            'status' => true,
+            'message' => 'Logout successfully',
         ], 200);
     }
 
@@ -209,8 +209,8 @@ class CustomerAuthController extends Controller
     {
         if (!$this->validateParams($request)) {
             return response([
-                'status'=>false,
-                'error'=>$this->errors,
+                'status' => false,
+                'error' => $this->errors,
                 'msg' => 'please Check Your Details !',
 
             ], 200);
@@ -222,39 +222,38 @@ class CustomerAuthController extends Controller
 
             $customerUser = CustomerUser::create([
 
-                'email'=>$request->email,
-                'password'=>Hash::make($request->password),
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
                 'status' => 1,
-                ]);
+            ]);
 
             $customer = Customer::create([
-                    'customer_user_id'  => $customerUser->id,
-                    'first_name'        => $request->first_name,
-                    'last_name'         => $request->last_name,
-                    'phone'             => $request->phone,
-                    'date_of_birth'     => $dob,
-                    'newsletter'        => $request->subscribe,
-                ]);
+                'customer_user_id' => $customerUser->id,
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'phone' => $request->phone,
+                'date_of_birth' => $dob,
+                'newsletter' => $request->subscribe,
+            ]);
 
             CustomerAddress::create([
-                    'customer_user_id'=> $customerUser->id,
-                    'country'   => $request->country,
-                    'state'     => $request->state,
-                    'city'      => $request->city,
-                    'postcode'  => $request->postcode,
-                    'address_1' => $request->address_1,
-                    'address_2' => $request->address_2,
-                ]);
+                'customer_user_id' => $customerUser->id,
+                'country' => $request->country,
+                'state' => $request->state,
+                'city' => $request->city,
+                'postcode' => $request->postcode,
+                'address_1' => $request->address_1,
+                'address_2' => $request->address_2,
+            ]);
 
             DB::commit();
-            unset($customer['id']);
-            unset($customer['customer_user_id']);
+            unset($customer['id'], $customer['customer_user_id']);
 
             return response([
-                    'status'=>true,
-                    'data'=>$customer,
-                    'msg' => 'New Customer Registered Successfully !',
-                ], 200);
+                'status' => true,
+                'data' => $customer,
+                'msg' => 'New Customer Registered Successfully !',
+            ], 200);
         } catch (Exception $e) {
             DB::rollback();
 

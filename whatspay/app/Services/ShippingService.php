@@ -44,9 +44,9 @@ class ShippingService
                 'id',
                 'title',
                 'country',
-            ], ['config' => function ($query) {
+            ], ['config' => function ($query): void {
                 $query->select('shipping_id', 'id', 'min', 'max', 'charges');
-            }, 'cities' => function ($query) {
+            }, 'cities' => function ($query): void {
                 $query->select('id', 'parent_id', 'city', 'radius');
             }]);
         } catch (Exception $e) {
@@ -122,9 +122,9 @@ class ShippingService
             throw new InvalidArgumentException($e->getMessage());
         }
 
-        return $shipping->fresh(['config' => function ($query) {
+        return $shipping->fresh(['config' => function ($query): void {
             $query->select('shipping_id', 'id', 'min', 'max', 'charges');
-        }, 'cities' => function ($query) {
+        }, 'cities' => function ($query): void {
             $query->select('parent_id', 'id', 'city', 'radius', 'latitude', 'longitude', 'status');
         }])->only(['id', 'title', 'country', 'status', 'config', 'cities']);
     }
@@ -140,7 +140,7 @@ class ShippingService
                 'title',
                 'country',
                 'status',
-            ], ['config', 'cities' => function ($query) {
+            ], ['config', 'cities' => function ($query): void {
                 $query->select('id', 'parent_id', 'city', 'radius');
             }]);
         } catch (Exception $e) {
@@ -174,7 +174,7 @@ class ShippingService
             // validate request
             $validator = Validator::make($request->input(), [
                 'rules.*.country' => 'required|string',
-//                'rules.*.id' => 'required',
+                //                'rules.*.id' => 'required',
                 'rules.*.config.*.min' => 'required',
             ], [
                 'rules.*.country.required' => 'The country field is required',
@@ -259,9 +259,9 @@ class ShippingService
                         }
                     }
 
-                    $return[] = $shipping->fresh(['config' => function ($query) {
+                    $return[] = $shipping->fresh(['config' => function ($query): void {
                         $query->select('shipping_id', 'id', 'min', 'max', 'charges');
-                    }, 'cities' => function ($query) {
+                    }, 'cities' => function ($query): void {
                         $query->select('parent_id', 'id', 'city', 'radius', 'latitude', 'longitude', 'status');
                     }])->only(['id', 'title', 'country', 'status', 'config', 'cities']);
                 }

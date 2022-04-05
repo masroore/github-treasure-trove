@@ -8,16 +8,18 @@ use App\Models\Employee;
 use App\Models\Trainer;
 use App\Models\Training;
 use App\Models\TrainingType;
+use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Maatwebsite\Excel\Facades\Excel;
+use Validator;
 
 class TrainingController extends Controller
 {
     public function index()
     {
-        if (\Auth::user()->can('Manage Training')) {
-            $trainings = Training::where('created_by', '=', \Auth::user()->creatorId())->get();
+        if (Auth::user()->can('Manage Training')) {
+            $trainings = Training::where('created_by', '=', Auth::user()->creatorId())->get();
             $status = Training::$Status;
             // dd($status);
 
@@ -29,11 +31,11 @@ class TrainingController extends Controller
 
     public function create()
     {
-        if (\Auth::user()->can('Create Training')) {
-            $branches = Branch::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-            $trainingTypes = TrainingType::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-            $trainers = Trainer::where('created_by', \Auth::user()->creatorId())->get()->pluck('firstname', 'id');
-            $employees = Employee::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        if (Auth::user()->can('Create Training')) {
+            $branches = Branch::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $trainingTypes = TrainingType::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $trainers = Trainer::where('created_by', Auth::user()->creatorId())->get()->pluck('firstname', 'id');
+            $employees = Employee::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
             $options = Training::$options;
 
             return view('training.create', compact('branches', 'trainingTypes', 'trainers', 'employees', 'options'));
@@ -44,17 +46,17 @@ class TrainingController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('Create Training')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Create Training')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'branch' => 'required',
-                                   'training_type' => 'required',
-                                   'training_cost' => 'required',
-                                   'employee' => 'required',
-                                   'start_date' => 'required',
-                                   'end_date' => 'required',
-                               ]
+                    'branch' => 'required',
+                    'training_type' => 'required',
+                    'training_cost' => 'required',
+                    'employee' => 'required',
+                    'start_date' => 'required',
+                    'end_date' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -72,7 +74,7 @@ class TrainingController extends Controller
             $training->start_date = $request->start_date;
             $training->end_date = $request->end_date;
             $training->description = $request->description;
-            $training->created_by = \Auth::user()->creatorId();
+            $training->created_by = Auth::user()->creatorId();
             $training->save();
 
             return redirect()->route('training.index')->with('success', __('Training successfully created.'));
@@ -93,11 +95,11 @@ class TrainingController extends Controller
 
     public function edit(Training $training)
     {
-        if (\Auth::user()->can('Create Training')) {
-            $branches = Branch::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-            $trainingTypes = TrainingType::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-            $trainers = Trainer::where('created_by', \Auth::user()->creatorId())->get()->pluck('firstname', 'id');
-            $employees = Employee::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        if (Auth::user()->can('Create Training')) {
+            $branches = Branch::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $trainingTypes = TrainingType::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $trainers = Trainer::where('created_by', Auth::user()->creatorId())->get()->pluck('firstname', 'id');
+            $employees = Employee::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
             $options = Training::$options;
 
             return view('training.edit', compact('branches', 'trainingTypes', 'trainers', 'employees', 'options', 'training'));
@@ -108,17 +110,17 @@ class TrainingController extends Controller
 
     public function update(Request $request, Training $training)
     {
-        if (\Auth::user()->can('Edit Training')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Edit Training')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'branch' => 'required',
-                                   'training_type' => 'required',
-                                   'training_cost' => 'required',
-                                   'employee' => 'required',
-                                   'start_date' => 'required',
-                                   'end_date' => 'required',
-                               ]
+                    'branch' => 'required',
+                    'training_type' => 'required',
+                    'training_cost' => 'required',
+                    'employee' => 'required',
+                    'start_date' => 'required',
+                    'end_date' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -145,8 +147,8 @@ class TrainingController extends Controller
 
     public function destroy(Training $training)
     {
-        if (\Auth::user()->can('Delete Training')) {
-            if ($training->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('Delete Training')) {
+            if ($training->created_by == Auth::user()->creatorId()) {
                 $training->delete();
 
                 return redirect()->route('training.index')->with('success', __('Training successfully deleted.'));

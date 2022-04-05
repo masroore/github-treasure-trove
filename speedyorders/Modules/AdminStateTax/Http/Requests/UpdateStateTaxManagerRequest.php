@@ -14,9 +14,9 @@ class UpdateStateTaxManagerRequest extends FormRequest
     public function rules()
     {
         return [
-            'state_code'=>'required|nullable',
-            'tax_percentage'=>'required',
-            'is_default'=>'required|in:1,0',
+            'state_code' => 'required|nullable',
+            'tax_percentage' => 'required',
+            'is_default' => 'required|in:1,0',
         ];
     }
 

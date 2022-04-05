@@ -28,7 +28,7 @@ class LecturerController extends Controller
         $courses = Course::all();
 
         //dd($courses);
-        return view('Lecturer.add_lecturer', ['faculty'=>$faculty, 'courses'=> $courses]);
+        return view('Lecturer.add_lecturer', ['faculty' => $faculty, 'courses' => $courses]);
     }
 
     public function register_lecturer_save(Request $request)
@@ -39,17 +39,17 @@ class LecturerController extends Controller
         //$total = count($courses);
 
         $this->validate($request, [
-    'fullname'=> 'required',
-    'gender'=> 'required',
-    'dateofbirth'=> 'required',
-    'faculty'=> 'required',
-    'religion'=> 'required',
-    'mobile'=> 'required|min:10',
-    'qualification'=> 'required',
-    'email'=> 'required|email',
-    'image'=> 'required',
-    'address'=>'required',
-  ]);
+            'fullname' => 'required',
+            'gender' => 'required',
+            'dateofbirth' => 'required',
+            'faculty' => 'required',
+            'religion' => 'required',
+            'mobile' => 'required|min:10',
+            'qualification' => 'required',
+            'email' => 'required|email',
+            'image' => 'required',
+            'address' => 'required',
+        ]);
 
         $maxcode = DB::table('users')->where('indexnumber', 'like', '%LEC%')->max('indexnumber');
         if ($maxcode) {
@@ -67,12 +67,12 @@ class LecturerController extends Controller
             //dd($img);
 
             $user = User::create([
-    'name' => $request->input('fullname'),
-    'email' => $request->input('email'),
-    'indexnumber'=> $code,
-    'pro_pic'=> $request->file('image')->store('profileimage', 'public'),
-    'password' => Hash::make($request->input('email')),
-  ]);
+                'name' => $request->input('fullname'),
+                'email' => $request->input('email'),
+                'indexnumber' => $code,
+                'pro_pic' => $request->file('image')->store('profileimage', 'public'),
+                'password' => Hash::make($request->input('email')),
+            ]);
         }
 
         $user->assignRole('Lecturer');
@@ -80,16 +80,16 @@ class LecturerController extends Controller
         //create user
 
         $data = [
- 'user_id'=>$user->id,
- 'fullname'=>$request->input('fullname'),
- 'dateofbirth'=>$request->input('dateofbirth'),
- 'address'=>$request->input('address'),
- 'faculty'=>$request->input('faculty'),
- 'gender'=>$request->input('gender'),
- 'religion'=>$request->input('religion'),
- 'qualification'=>$request->input('qualification'),
- 'number'=>$request->input('mobile'),
-];
+            'user_id' => $user->id,
+            'fullname' => $request->input('fullname'),
+            'dateofbirth' => $request->input('dateofbirth'),
+            'address' => $request->input('address'),
+            'faculty' => $request->input('faculty'),
+            'gender' => $request->input('gender'),
+            'religion' => $request->input('religion'),
+            'qualification' => $request->input('qualification'),
+            'number' => $request->input('mobile'),
+        ];
 
         $Lecturer = new Lecturer($data);
         $Lecturer->save();
@@ -98,17 +98,17 @@ class LecturerController extends Controller
 
         $total = \count($courses);
 
-        for ($i = 0; $i < $total; $i++) {
+        for ($i = 0; $i < $total; ++$i) {
             $acode = $courses[$i];
             $course = Course::where('code', $acode)->first();
             $titlec = $course->title;
 
             $lecdata = [
-    'lecturer_id' => $lecid,
-    'lec_name' => $request->input('fullname'),
-    'course' => $titlec,
-    'code' => $acode,
-  ];
+                'lecturer_id' => $lecid,
+                'lec_name' => $request->input('fullname'),
+                'course' => $titlec,
+                'code' => $acode,
+            ];
 
             $leccourse = new LecCource($lecdata);
             $leccourse->save();
@@ -126,7 +126,7 @@ class LecturerController extends Controller
 
         //dd($lecure);
 
-        return view('Lecturer.all_lecturers', ['user'=>$users, 'lecturer'=>$lecurer]);
+        return view('Lecturer.all_lecturers', ['user' => $users, 'lecturer' => $lecurer]);
     }
 
     public function edit_lecturer($id)
@@ -138,7 +138,7 @@ class LecturerController extends Controller
         $lecourses = LecCource::where('lecturer_id', $id)->get();
         $courses = Course::all();
         //dd($lecourses);
-        return view('Lecturer.edit_lecture', ['lectid'=> $id, 'courses'=>$courses, 'leccources'=>$lecourses, 'faculty'=>$faculty, 'lecturer'=>$lecurer, 'user'=>$user]);
+        return view('Lecturer.edit_lecture', ['lectid' => $id, 'courses' => $courses, 'leccources' => $lecourses, 'faculty' => $faculty, 'lecturer' => $lecurer, 'user' => $user]);
     }
 
     public function register_lecturer_update(Request $request)
@@ -197,35 +197,35 @@ class LecturerController extends Controller
 
           //no resit
                 $data = [
-    'fullname'=> $user->name,
-    'IA' => $couser->IA_mark,
-    'exam' => $couser->exams_mark,
-    'msg' => true,
-  ];
+                    'fullname' => $user->name,
+                    'IA' => $couser->IA_mark,
+                    'exam' => $couser->exams_mark,
+                    'msg' => true,
+                ];
             } else {
                 $data = [
-  'fullname'=> $user->name,
-  'IA' => '0',
-  'exam' => '0',
-  'msg' => true,
-];
+                    'fullname' => $user->name,
+                    'IA' => '0',
+                    'exam' => '0',
+                    'msg' => true,
+                ];
             }
 
             return response()->json($data, 200);
         }
 
-        return response()->json(['error'=> 'Index Number or Course Code Dont Exist'], 200);
+        return response()->json(['error' => 'Index Number or Course Code Dont Exist'], 200);
     }
 
     public function lecturer_save_results(Request $request)
     {
         $this->validate($request, [
-  'indexnumber'=> 'required',
-  'iamarks'=> 'required|integer',
-  'exmasmarks'=> 'required|integer',
-  'courcecode'=> 'required',
+            'indexnumber' => 'required',
+            'iamarks' => 'required|integer',
+            'exmasmarks' => 'required|integer',
+            'courcecode' => 'required',
 
-]);
+        ]);
 
         $stdid = $request->input('indexnumber');
         $ia = $request->input('iamarks');
@@ -339,13 +339,13 @@ class LecturerController extends Controller
                     //$credithours = $credithours + $credithours;
 
                     $data = [
-        'user_id'=> $couser->user_id,
-        'semester'=> $couser->semester,
-        'year'=> $couser->academic_year,
-        'totalgp'=> $totgradepoint,
-        'credithours'=> $credithours,
-        'gpa'=> $gpa,
-      ];
+                        'user_id' => $couser->user_id,
+                        'semester' => $couser->semester,
+                        'year' => $couser->academic_year,
+                        'totalgp' => $totgradepoint,
+                        'credithours' => $credithours,
+                        'gpa' => $gpa,
+                    ];
 
                     $examresults = new Examresults($data);
                     $examresults->save();
@@ -372,13 +372,13 @@ class LecturerController extends Controller
                     $gpa = $totgradepoint / $credithours;
 
                     $data = [
-        'user_id'=> $couser->user_id,
-        'semester'=> $couser->semester,
-        'year'=> $couser->academic_year,
-        'totalgp'=> $totgradepoint,
-        'credithours'=> $credithours,
-        'gpa'=> $gpa,
-      ];
+                        'user_id' => $couser->user_id,
+                        'semester' => $couser->semester,
+                        'year' => $couser->academic_year,
+                        'totalgp' => $totgradepoint,
+                        'credithours' => $credithours,
+                        'gpa' => $gpa,
+                    ];
 
                     $examresults = new Examresults($data);
                     $examresults->save();
@@ -651,12 +651,12 @@ class LecturerController extends Controller
     public function lecturer_resave_results(Request $request)
     {
         $this->validate($request, [
-    'indexnumber'=> 'required',
-    'iamarks'=> 'required|integer',
-    'exmasmarks'=> 'required|integer',
-    'courcecode'=> 'required',
+            'indexnumber' => 'required',
+            'iamarks' => 'required|integer',
+            'exmasmarks' => 'required|integer',
+            'courcecode' => 'required',
 
-  ]);
+        ]);
 
         $stdid = $request->input('indexnumber');
         $ia = $request->input('iamarks');
@@ -723,7 +723,7 @@ class LecturerController extends Controller
         $prog = Programme::all();
         $assingment = Assignment::where('lecturer_id', auth()->user()->id)->get();
 
-        return view('Lecturer.post_assignment', ['prog'=>$prog, 'assingment'=> $assingment]);
+        return view('Lecturer.post_assignment', ['prog' => $prog, 'assingment' => $assingment]);
     }
 
     public function lecturer_assignment_save(Request $request)
@@ -734,29 +734,29 @@ class LecturerController extends Controller
         $lecname = auth()->user()->name;
 
         $this->validate($request, [
-    'coursecode'=>'required|max:7',
-    'assignmenttitle'=>'required|min:8|max:50',
-    'assignmentdesc'=>'required',
-    'deadline' => 'required',
-    'assingmentdoc'=>'required|mimes:pdf,docx,txt',
-  ]);
+            'coursecode' => 'required|max:7',
+            'assignmenttitle' => 'required|min:8|max:50',
+            'assignmentdesc' => 'required',
+            'deadline' => 'required',
+            'assingmentdoc' => 'required|mimes:pdf,docx,txt',
+        ]);
 
         $academicyear = Academicyear::where('status', '1')->first();
         $year = $academicyear->acdemicyear;
         $semester = $academicyear->semester;
 
         $data = [
-    'lecturer_id'=> $lectid,
-    'lname'=> $lecname,
-    'course_code'=> $request->input('coursecode'),
-    'programme'=> $request->input('programme'),
-    'assignment_title'=> $request->input('assignmenttitle'),
-    'assignment_description'=> $request->input('assignmentdesc'),
-    'subenddate' => $request->input('deadline'),
-    'academicyear' => $year,
-    'semester' => $semester,
-    'lecdoc'=>  $request->file('assingmentdoc')->store('Assignments', 'public'),
-  ];
+            'lecturer_id' => $lectid,
+            'lname' => $lecname,
+            'course_code' => $request->input('coursecode'),
+            'programme' => $request->input('programme'),
+            'assignment_title' => $request->input('assignmenttitle'),
+            'assignment_description' => $request->input('assignmentdesc'),
+            'subenddate' => $request->input('deadline'),
+            'academicyear' => $year,
+            'semester' => $semester,
+            'lecdoc' => $request->file('assingmentdoc')->store('Assignments', 'public'),
+        ];
 
         //dd($data);
 
@@ -770,7 +770,7 @@ class LecturerController extends Controller
     {
         $assingment = Assignment::where('lecturer_id', auth()->user()->id)->orderBy('id', 'Desc')->get();
 
-        return view('Lecturer.view_assignments', ['assingment'=> $assingment]);
+        return view('Lecturer.view_assignments', ['assingment' => $assingment]);
     }
 
     public function lecturer_assignment_edit($id)
@@ -778,7 +778,7 @@ class LecturerController extends Controller
         $assingment = Assignment::where('id', $id)->first();
         $prog = Programme::all();
 
-        return view('Lecturer.edit_assignment', ['assingment'=> $assingment, 'prog'=>$prog]);
+        return view('Lecturer.edit_assignment', ['assingment' => $assingment, 'prog' => $prog]);
     }
 
     public function lecturer_assignment_update(Request $request)
@@ -787,11 +787,11 @@ class LecturerController extends Controller
         $assingment = Assignment::where('id', $id)->first();
 
         $this->validate($request, [
-    'coursecode'=>'required|max:7',
-    'assignmenttitle'=>'required|min:8|max:50',
-    'assignmentdesc'=>'required',
-    'deadline' => 'required',
-  ]);
+            'coursecode' => 'required|max:7',
+            'assignmenttitle' => 'required|min:8|max:50',
+            'assignmentdesc' => 'required',
+            'deadline' => 'required',
+        ]);
 
         $assingment->course_code = $request->input('coursecode');
         $assingment->assignment_title = $request->input('assignmenttitle');
@@ -826,10 +826,10 @@ class LecturerController extends Controller
         $user = Studentinfo::all();
 
         //dd($assingment);
-        return view('Lecturer.submitted_assignment', ['assingment'=> $assingment, 'user'=> $user]);
+        return view('Lecturer.submitted_assignment', ['assingment' => $assingment, 'user' => $user]);
     }
 
-    public function lecturer_assign_course(Request $request)
+    public function lecturer_assign_course(Request $request): void
     {
         $lecid = $request->post('lecid');
         $code = $request->post('cid');
@@ -847,11 +847,11 @@ class LecturerController extends Controller
    ';
         } else {
             $lecdata = [
-    'lecturer_id' => $lecid,
-    'lec_name' => $lecurer->fullname,
-    'course' => $titlec,
-    'code' => $code,
-  ];
+                'lecturer_id' => $lecid,
+                'lec_name' => $lecurer->fullname,
+                'course' => $titlec,
+                'code' => $code,
+            ];
 
             $leccourse = new LecCource($lecdata);
             $leccourse->save();
@@ -860,7 +860,7 @@ class LecturerController extends Controller
         }
     }
 
-    public function lecturer_remove_assign_course(Request $request)
+    public function lecturer_remove_assign_course(Request $request): void
     {
         $id = $request->post('cid');
 

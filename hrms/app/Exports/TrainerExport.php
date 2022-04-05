@@ -15,10 +15,10 @@ class TrainerExport implements FromCollection, WithHeadings
     public function collection()
     {
         $data = Trainer::get();
-        foreach ($data as $k=>$trainer) {
+        foreach ($data as $k => $trainer) {
             $data[$k]['branch'] = !empty($trainer->branches) ? $trainer->branches->name : '';
             $data[$k]['created_by'] = Employee::login_user($trainer->created_by);
-            unset($trainer->created_at,$trainer->updated_at);
+            $trainer->created_at = null; $trainer->updated_at = null;
         }
 
         return $data;

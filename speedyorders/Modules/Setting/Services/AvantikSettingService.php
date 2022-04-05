@@ -3,6 +3,7 @@
 namespace Modules\Setting\Services;
 
 use App\Utils\Option;
+use Exception;
 
 class AvantikSettingService
 {
@@ -16,7 +17,7 @@ class AvantikSettingService
             Option::set('avantik_agent_code', $data['avantik_agent_code']);
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
     }

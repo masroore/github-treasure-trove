@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Auth;
 use Illuminate\Database\Eloquent\Model;
 
 class Ticket extends Model
@@ -20,11 +21,11 @@ class Ticket extends Model
 
     public function ticketUnread()
     {
-        if ('employee' == \Auth::user()->type) {
-            return TicketReply::where('ticket_id', $this->id)->where('is_read', 0)->where('created_by', '!=', \Auth::user()->id)->count('id');
+        if ('employee' == Auth::user()->type) {
+            return TicketReply::where('ticket_id', $this->id)->where('is_read', 0)->where('created_by', '!=', Auth::user()->id)->count('id');
         }
 
-        return TicketReply::where('ticket_id', $this->id)->where('is_read', 0)->where('created_by', '!=', \Auth::user()->creatorId())->count('id');
+        return TicketReply::where('ticket_id', $this->id)->where('is_read', 0)->where('created_by', '!=', Auth::user()->creatorId())->count('id');
     }
 
     public function createdBy()

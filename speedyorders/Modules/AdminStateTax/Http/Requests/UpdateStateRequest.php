@@ -14,14 +14,14 @@ class UpdateStateRequest extends FormRequest
     public function rules()
     {
         return [
-            'category_id'=>'nullable|exists:categories,id',
-            'name'=>'required|string|max:255',
-            'slug'=>'nullable|string|max:255|unique:categories,slug,' . $this->id,
-            'description'=>'required|string',
-            'return_policy'=>'required|string',
-            'status'=>'required|in:1,0',
-            'is_featured'=>'required|in:1,0',
-            'show_on_homepage'=>'required|in:1,0',
+            'category_id' => 'nullable|exists:categories,id',
+            'name' => 'required|string|max:255',
+            'slug' => 'nullable|string|max:255|unique:categories,slug,' . $this->id,
+            'description' => 'required|string',
+            'return_policy' => 'required|string',
+            'status' => 'required|in:1,0',
+            'is_featured' => 'required|in:1,0',
+            'show_on_homepage' => 'required|in:1,0',
             'sort_order' => 'nullable|numeric',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:4096',
         ];

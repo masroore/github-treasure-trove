@@ -26,7 +26,7 @@ class SystemCalendarController extends Controller
                     'title' => trim($source['prefix'] . ' ' . $model->{$source['field']}
                         . ' ' . $source['suffix']),
                     'start' => $crudFieldValue,
-                    'url'   => route($source['route'], $model->id),
+                    'url' => route($source['route'], $model->id),
                 ];
             }
         }

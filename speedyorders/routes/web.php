@@ -14,7 +14,7 @@ Route::get('/', function () {
     return redirect()->route('admin.login');
 });
 
-Route::get('clear_cache', function () {
+Route::get('clear_cache', function (): void {
     \Artisan::call('optimize:clear');
     \Artisan::call('cache:clear');
     \Artisan::call('config:clear');
@@ -63,7 +63,7 @@ Route::get('/categories', [ProductController::class, 'getCategories'])->name('ca
  Route::get('/promotions', [PageController::class, 'promotions'])->name('promotions');
  Route::get('/b2b_home', [PageController::class, 'b2b_home'])->name('b2b_home');
 
-Route::group(['prefix' => '/pages/'], function () {
+Route::group(['prefix' => '/pages/'], function (): void {
     Route::get('/{slug}', [PageController::class, 'getCmsPageDetails']);
 });
 

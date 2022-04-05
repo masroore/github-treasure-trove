@@ -15,9 +15,9 @@ class AssetExport implements FromCollection, WithHeadings
     public function collection()
     {
         $data = Asset::get();
-        foreach ($data as $k=>$assets) {
+        foreach ($data as $k => $assets) {
             $data[$k]['created_by'] = Employee::login_user($assets->created_by);
-            unset($assets->created_at,$assets->updated_at);
+            $assets->created_at = null; $assets->updated_at = null;
         }
 
         return $data;

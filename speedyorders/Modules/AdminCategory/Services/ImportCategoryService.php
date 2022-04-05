@@ -4,6 +4,7 @@ namespace Modules\AdminCategory\Services;
 
 use App\Models\Category;
 use domDocument;
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Log;
 
@@ -28,7 +29,7 @@ class ImportCategoryService
 
             // Now parse the csv and store all values in DB
             $filename = public_path('images/products/' . $fileName);
-            $file = fopen($filename, 'r');
+            $file = fopen($filename, 'rb');
             $all_data = [];
 
             $count_header = 0;
@@ -91,13 +92,13 @@ class ImportCategoryService
                     $category->save();
                 }
 
-                $count_header++;
+                ++$count_header;
             }
 
             DB::commit();
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::info('Error' . $e->getMessage());
             Log::info('Line Number' . $e->getLine());
             DB::rollback();
@@ -111,8 +112,8 @@ class ImportCategoryService
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = \strlen($characters);
         $randomString = '';
-        for ($i = 0; $i < $length; $i++) {
-            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        for ($i = 0; $i < $length; ++$i) {
+            $randomString .= $characters[mt_rand(0, $charactersLength - 1)];
         }
 
         return $randomString;

@@ -20,8 +20,11 @@ class DiscountVoucherService
      * @var DiscountVoucherRepositoryInterface
      */
     protected $discountvoucherRepository;
+
     protected $voucherassigneesRepository;
+
     protected $voucherdetailsRepository;
+
     protected $voucherusageRepository;
 
     public function __construct(
@@ -39,6 +42,7 @@ class DiscountVoucherService
     public function store(Request $request)
     {
         DB::beginTransaction();
+
         try {
             $request['code'] = promoCode();
             if ('fixed_amount' == $request->discount_type) {
@@ -62,8 +66,8 @@ class DiscountVoucherService
             $voucher = $this->discountvoucherRepository->create($request->input());
             $voucher_id = $voucher->id;
             $voucher_store = $this->voucherassigneesRepository->create([
-                'voucher_id'=>$voucher_id,
-                'store_id'=>$request->store_id,
+                'voucher_id' => $voucher_id,
+                'store_id' => $request->store_id,
             ]);
             if (isset($request['voucherdetails']) && '' != $request['voucherdetails'][0]) {
                 $voucherable_type = '';
@@ -71,31 +75,36 @@ class DiscountVoucherService
 
                     case 'entire':
                         $voucherable_type = 'App\Models\Orders';
+
                         break;
 
                     case 'over':
                         $voucherable_type = 'App\Models\Orders';
+
                         break;
 
                     case 'product':
                         $voucherable_type = 'App\Models\Products';
+
                         break;
 
                     case 'category':
                         $voucherable_type = 'App\Models\Categories';
+
                         break;
                 }
                 foreach ($request['voucherdetails'] as $detail) {
                     $this->voucherdetailsRepository->create([
-                             'voucher_id'=>$voucher_id,
-                             'voucherable_type'=>$voucherable_type,
-                             'voucherable_id'=>$detail['voucherable_id'],
-                         ]);
+                        'voucher_id' => $voucher_id,
+                        'voucherable_type' => $voucherable_type,
+                        'voucherable_id' => $detail['voucherable_id'],
+                    ]);
                 }
             }
             DB::commit();
         } catch (Exception $e) {
             DB::rollback();
+
             throw new InvalidArgumentException($e->getMessage());
         }
 
@@ -106,28 +115,28 @@ class DiscountVoucherService
     {
         try {
             $voucher_details = DiscountVoucher::where('code', $voucher)
-                  ->where('status', '=', 1)
-                  ->where(
-                      'start_date',
-                      '<=',
-                      gmdate(now())
-                  )
-                  ->where(function ($q) {
-                $q->where('never_expires', 1);
-                $q->Orwhere('end_date', '>=', gmdate(now()));
-            })
-                  ->Where(
-                      function ($k) {
-                    $k->where('everytime', 1);
+                ->where('status', '=', 1)
+                ->where(
+                    'start_date',
+                    '<=',
+                    gmdate(now())
+                )
+                ->where(function ($q): void {
+                      $q->where('never_expires', 1);
+                      $q->Orwhere('end_date', '>=', gmdate(now()));
+                  })
+                ->Where(
+                    function ($k): void {
+                          $k->where('everytime', 1);
 
-                    $k->orWhere(function ($r) {
-                        $r->where('start_time', '<', gmdate('H:i:s'));
-                        $r->Where('end_time', '>', gmdate('H:i:s'));
-                    });
-                }
-                  )
-                  ->withCount('usage', 'usagetotal')
-                  ->first();
+                          $k->orWhere(function ($r): void {
+                              $r->where('start_time', '<', gmdate('H:i:s'));
+                              $r->Where('end_time', '>', gmdate('H:i:s'));
+                          });
+                      }
+                )
+                ->withCount('usage', 'usagetotal')
+                ->first();
             if (!('unlimited' == $voucher_details->limit_type)) {
                 if (('per_customer' == $voucher_details->limit_type && !($voucher_details->usage_count < $voucher_details->limit_value))
                  || ('total' == $voucher_details->limit_type && !($voucher_details->usagetotal_count < $voucher_details->limit_value))) {
@@ -177,6 +186,7 @@ class DiscountVoucherService
     public function updateVoucher(Request $request, $id)
     {
         DB::beginTransaction();
+
         try {
             if ('fixed_amount' == $request->discount_type) {
                 if ('category' == $request->voucher_type) {
@@ -198,26 +208,26 @@ class DiscountVoucherService
                 }
             }
             $voucher = $this->discountvoucherRepository->updateByColumn(
-                ['id'=>$id],
+                ['id' => $id],
                 [
-                    'name'=>$request->name,
-                    'code'=>$request->code,
-                    'discount_type'=>$request->discount_type,
-                    'discount_value'=>$request->discount_value,
-                    'payment_method'=>$request->payment_method,
-                    'countries'=>$request->countries,
-                    'limit_type'=>$request->limit_type,
-                    'limit_value'=>$request->limit_value,
-                    'with_promotion'=>$request->with_promotion,
-                    'created_by'=>$request->created_by,
-                    'never_expires'=>$request->never_expires,
-                    'status'=>$request->status,
-                    'start_date'=>$request->start_date,
-                    'end_date'=>$request->end_date,
-                    'start_time'=>$request->start_time,
-                    'end_time'=>$request->end_time,
-                    'everytime'=>$request->everytime_time,
-                    'min_order'=>$request->min_order,
+                    'name' => $request->name,
+                    'code' => $request->code,
+                    'discount_type' => $request->discount_type,
+                    'discount_value' => $request->discount_value,
+                    'payment_method' => $request->payment_method,
+                    'countries' => $request->countries,
+                    'limit_type' => $request->limit_type,
+                    'limit_value' => $request->limit_value,
+                    'with_promotion' => $request->with_promotion,
+                    'created_by' => $request->created_by,
+                    'never_expires' => $request->never_expires,
+                    'status' => $request->status,
+                    'start_date' => $request->start_date,
+                    'end_date' => $request->end_date,
+                    'start_time' => $request->start_time,
+                    'end_time' => $request->end_time,
+                    'everytime' => $request->everytime_time,
+                    'min_order' => $request->min_order,
                 ]
             );
             $voucher_id = $id;
@@ -227,18 +237,22 @@ class DiscountVoucherService
 
                     case 'entire':
                         $voucherable_type = 'App\Models\Orders';
+
                         break;
 
                     case 'over':
                         $voucherable_type = 'App\Models\Orders';
+
                         break;
 
                     case 'product':
                         $voucherable_type = 'App\Models\Products';
+
                         break;
 
                     case 'category':
                         $voucherable_type = 'App\Models\Categories';
+
                         break;
                 }
                 foreach ($request['voucherdetails'] as $detail) {
@@ -248,20 +262,21 @@ class DiscountVoucherService
 
                     $this->voucherdetailsRepository->updateGetModel(
                         [
-                            'id'=>$detail['id'],
-                            'voucher_id'=>$id,
+                            'id' => $detail['id'],
+                            'voucher_id' => $id,
                         ],
                         [
 
-                        'voucherable_type'=>$voucherable_type,
-                        'voucherable_id'=>$detail['voucherable_id'],
-                    ]
+                            'voucherable_type' => $voucherable_type,
+                            'voucherable_id' => $detail['voucherable_id'],
+                        ]
                     );
                 }
             }
             DB::commit();
         } catch (Exception $e) {
             DB::rollback();
+
             throw new InvalidArgumentException($e->getMessage());
         }
 

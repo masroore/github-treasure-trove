@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateSubscribersTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::create('subscribers', function (Blueprint $table) {
+        Schema::create('subscribers', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('email');
             $table->timestamps();

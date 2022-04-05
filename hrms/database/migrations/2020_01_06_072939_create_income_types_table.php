@@ -8,12 +8,10 @@ class CreateIncomeTypesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('income_types', function (Blueprint $table) {
+        Schema::create('income_types', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('name');
             $table->integer('created_by');
@@ -23,10 +21,8 @@ class CreateIncomeTypesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('income_types');
     }

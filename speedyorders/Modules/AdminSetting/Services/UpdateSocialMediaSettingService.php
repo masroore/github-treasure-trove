@@ -3,6 +3,7 @@
 namespace Modules\AdminSetting\Services;
 
 use App\Utils\Option;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class UpdateSocialMediaSettingService
@@ -20,7 +21,7 @@ class UpdateSocialMediaSettingService
             DB::commit();
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollback();
 
             return false;

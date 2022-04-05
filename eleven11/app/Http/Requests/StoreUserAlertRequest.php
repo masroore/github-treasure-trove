@@ -23,10 +23,10 @@ class StoreUserAlertRequest extends FormRequest
                 'string',
                 'nullable',
             ],
-            'users.*'    => [
+            'users.*' => [
                 'integer',
             ],
-            'users'      => [
+            'users' => [
                 'array',
             ],
         ];

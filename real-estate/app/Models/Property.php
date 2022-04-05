@@ -23,7 +23,7 @@ class Property extends Model implements HasMedia
 
     public const PER_SELECT = [
         'month' => 'Month',
-        'year'  => 'Year',
+        'year' => 'Year',
     ];
 
     public const STATUS_SELECT = [
@@ -95,7 +95,7 @@ class Property extends Model implements HasMedia
         return $value ? Carbon::parse($value)->format(config('panel.date_format')) : null;
     }
 
-    public function setYearBuiltAttribute($value)
+    public function setYearBuiltAttribute($value): void
     {
         $this->attributes['year_built'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
@@ -103,7 +103,7 @@ class Property extends Model implements HasMedia
     public function getPropertyPhotosAttribute()
     {
         $files = $this->getMedia('property_photos');
-        $files->each(function ($item) {
+        $files->each(function ($item): void {
             $item->url = $item->getUrl();
             $item->thumbnail = $item->getUrl('thumb');
             $item->preview = $item->getUrl('preview');

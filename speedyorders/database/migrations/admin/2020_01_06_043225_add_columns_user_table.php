@@ -8,12 +8,10 @@ class AddColumnsUserTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('admin_users', function (Blueprint $table) {
+        Schema::table('admin_users', function (Blueprint $table): void {
             $table->dropColumn('name');
             $table->string('username')->nullable()->after('id')->default(null);
             $table->string('first_name')->nullable()->after('username')->default(null);
@@ -26,12 +24,10 @@ class AddColumnsUserTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('admin_users', function (Blueprint $table) {
+        Schema::table('admin_users', function (Blueprint $table): void {
             $table->string('name')->nullable()->default(null);
             $table->dropColumn('username');
             $table->dropColumn('first_name');

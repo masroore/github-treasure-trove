@@ -25,12 +25,12 @@ class PageBlock extends Model
     public function insertImageBlock($page_id, $path, $image)
     {
         return $this->insertGetId([
-            'page_id'    => $page_id,
-            'type'       => 'image',
-            'path'       => $path,
-            'thumb'      => '',
-            'title'      => '',
-            'group'      => '',
+            'page_id' => $page_id,
+            'type' => 'image',
+            'path' => $path,
+            'thumb' => '',
+            'title' => '',
+            'group' => '',
             'sort_order' => $image['sort_order'],
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
@@ -44,16 +44,16 @@ class PageBlock extends Model
     public function insertDocBlock($page_id, $doc)
     {
         return $this->insertGetId([
-            'page_id'     => $page_id,
-            'type'        => 'pdf',
-            'path'        => $doc['paths']['path'],
-            'thumb'       => $doc['paths']['thumb'],
-            'title'       => $doc['title'],
+            'page_id' => $page_id,
+            'type' => 'pdf',
+            'path' => $doc['paths']['path'],
+            'thumb' => $doc['paths']['thumb'],
+            'title' => $doc['title'],
             'description' => $doc['description'],
-            'group'       => '',
-            'sort_order'  => $doc['sort_order'],
-            'created_at'  => Carbon::now(),
-            'updated_at'  => Carbon::now(),
+            'group' => '',
+            'sort_order' => $doc['sort_order'],
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
     }
 
@@ -64,13 +64,13 @@ class PageBlock extends Model
     public function updateDocBlock($doc)
     {
         return $this->where('id', $doc['id'])->update([
-            'path'        => $doc['paths']['path'],
-            'thumb'       => $doc['paths']['thumb'],
-            'title'       => $doc['title'],
+            'path' => $doc['paths']['path'],
+            'thumb' => $doc['paths']['thumb'],
+            'title' => $doc['title'],
             'description' => $doc['description'],
-            'group'       => '',
-            'sort_order'  => $doc['sort_order'],
-            'updated_at'  => Carbon::now(),
+            'group' => '',
+            'sort_order' => $doc['sort_order'],
+            'updated_at' => Carbon::now(),
         ]);
     }
 

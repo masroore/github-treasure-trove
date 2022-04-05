@@ -10,6 +10,7 @@ use App\Models\Employee;
 use App\Models\Utility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Validator;
 
 class AnnouncementController extends Controller
 {
@@ -19,7 +20,7 @@ class AnnouncementController extends Controller
             if ('employee' == Auth::user()->type) {
                 $current_employee = Employee::where('user_id', '=', \Auth::user()->id)->first();
                 $announcements = Announcement::orderBy('announcements.id', 'desc')->leftjoin('announcement_employees', 'announcements.id', '=', 'announcement_employees.announcement_id')->where('announcement_employees.employee_id', '=', $current_employee->id)->orWhere(
-                    function ($q) {
+                    function ($q): void {
                         $q->where('announcements.department_id', '["0"]')->where('announcements.employee_id', '["0"]');
                     }
                 )->get();
@@ -52,7 +53,7 @@ class AnnouncementController extends Controller
     public function store(Request $request)
     {
         if (\Auth::user()->can('Create Announcement')) {
-            $validator = \Validator::make(
+            $validator = Validator::make(
                 $request->all(),
                 [
                     'title' => 'required',
@@ -161,7 +162,7 @@ class AnnouncementController extends Controller
     {
         if (\Auth::user()->can('Edit Announcement')) {
             if ($announcement->created_by == \Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+                $validator = Validator::make(
                     $request->all(),
                     [
                         'title' => 'required',

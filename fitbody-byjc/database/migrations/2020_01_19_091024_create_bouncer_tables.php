@@ -9,12 +9,10 @@ class CreateBouncerTables extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create(Models::table('abilities'), function (Blueprint $table) {
+        Schema::create(Models::table('abilities'), function (Blueprint $table): void {
             $table->increments('id');
             $table->string('name');
             $table->string('title')->nullable();
@@ -26,7 +24,7 @@ class CreateBouncerTables extends Migration
             $table->timestamps();
         });
 
-        Schema::create(Models::table('roles'), function (Blueprint $table) {
+        Schema::create(Models::table('roles'), function (Blueprint $table): void {
             $table->increments('id');
             $table->string('name');
             $table->string('title')->nullable();
@@ -40,7 +38,7 @@ class CreateBouncerTables extends Migration
             );
         });
 
-        Schema::create(Models::table('assigned_roles'), function (Blueprint $table) {
+        Schema::create(Models::table('assigned_roles'), function (Blueprint $table): void {
             $table->increments('id');
             $table->integer('role_id')->unsigned()->index();
             $table->integer('entity_id')->unsigned();
@@ -59,7 +57,7 @@ class CreateBouncerTables extends Migration
                 ->onUpdate('cascade')->onDelete('cascade');
         });
 
-        Schema::create(Models::table('permissions'), function (Blueprint $table) {
+        Schema::create(Models::table('permissions'), function (Blueprint $table): void {
             $table->increments('id');
             $table->integer('ability_id')->unsigned()->index();
             $table->integer('entity_id')->unsigned()->nullable();
@@ -80,10 +78,8 @@ class CreateBouncerTables extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop(Models::table('permissions'));
         Schema::drop(Models::table('assigned_roles'));

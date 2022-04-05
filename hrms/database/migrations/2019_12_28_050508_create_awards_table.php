@@ -8,12 +8,10 @@ class CreateAwardsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('awards', function (Blueprint $table) {
+        Schema::create('awards', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->integer('employee_id');
             $table->string('award_type');
@@ -27,10 +25,8 @@ class CreateAwardsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('awards');
     }

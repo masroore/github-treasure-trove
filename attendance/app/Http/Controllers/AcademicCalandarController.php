@@ -13,7 +13,7 @@ class AcademicCalandarController extends Controller
         return view('Calendar.create_event');
     }
 
-    public function create_event_save(Request $request)
+    public function create_event_save(Request $request): void
     {
         $academicyear = Academicyear::where('status', '1')->first();
         $year = $academicyear->acdemicyear;
@@ -51,7 +51,7 @@ class AcademicCalandarController extends Controller
         return view('Calendar.edit_event', ['data' => $data]);
     }
 
-    public function fetch_events()
+    public function fetch_events(): void
     {
         $academicyear = Academicyear::where('status', '1')->first();
         $year = $academicyear->acdemicyear;

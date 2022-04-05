@@ -180,10 +180,10 @@ class PageController extends Controller
         }
     }
 
-    /*******************************************************************************
+    /*
     *                                Copyright : AGmedia                           *
     *                              email: filip@agmedia.hr                         *
-    *******************************************************************************/
+    */
 
     public function blockDestroy(Request $request)
     {

@@ -8,12 +8,10 @@ class CreateDismssalsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('dismssals', function (Blueprint $table) {
+        Schema::create('dismssals', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('user_id');
             $table->string('studendid');
@@ -24,10 +22,8 @@ class CreateDismssalsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('dismssals');
     }

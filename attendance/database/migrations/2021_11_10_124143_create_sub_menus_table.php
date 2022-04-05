@@ -8,12 +8,10 @@ class CreateSubMenusTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('sub_menus', function (Blueprint $table) {
+        Schema::create('sub_menus', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('menu_id');
             $table->string('sub_menu');
@@ -23,10 +21,8 @@ class CreateSubMenusTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('sub_menus');
     }

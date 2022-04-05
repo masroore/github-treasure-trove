@@ -10,6 +10,7 @@ use App\Models\OrderProduct;
 use App\Models\OrderProductOption;
 use App\Models\Product;
 use App\Models\ProductOptionValue;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class UpdateOrderService
@@ -69,11 +70,11 @@ class UpdateOrderService
                         'product_id' => $product->id,
                         'created_at' => now(),
                         'updated_at' => now(),
-                        ];
+                    ];
 
                     $orderProduct = OrderProduct::create($orderProductData);
                     if (\count($product->options) > 0) {
-                        if (isset($orderProduct->id) && isset($validatedData['option'][$pkey])) {
+                        if (isset($orderProduct->id, $validatedData['option'][$pkey])) {
                             foreach ($validatedData['option'][$pkey] as $type => $options) {
                                 foreach ($options as $okey => $option) {
                                     $orderProductOptionData = [
@@ -83,7 +84,7 @@ class UpdateOrderService
                                         'product_option_value_id' => ('select' == $type && $option) ? $option : null,
                                         'value' => ('select' == $type) ? null : $option,
                                         'type' => $type,
-                                        ];
+                                    ];
 
                                     OrderProductOption::create($orderProductOptionData);
 
@@ -101,13 +102,13 @@ class UpdateOrderService
                                         $total_amt += $updatedPrice;
                                         $orderProduct->update([
                                             'price' => $updatedPrice,
-                                            'quantity'=> $validatedData['product_quantity'][$pkey],
-                                            ]);
+                                            'quantity' => $validatedData['product_quantity'][$pkey],
+                                        ]);
 
                                         if ($productOptionValue->subtract_from_stock) {
                                             $orderProduct->product->update([
-                                                    'quantity'=>$orderProduct->product->quantity - $validatedData['product_quantity'][$pkey],
-                                                    ]);
+                                                'quantity' => $orderProduct->product->quantity - $validatedData['product_quantity'][$pkey],
+                                            ]);
                                         }
                                     }
                                 }
@@ -125,14 +126,14 @@ class UpdateOrderService
                     'amount' => $total_amt,
                     'currency' => $validatedData['currency_code'],
                     'status' => 'initialize',
-                    'remarks' =>  $validatedData['comment'],
-                    ]);
+                    'remarks' => $validatedData['comment'],
+                ]);
             }
 
             DB::commit();
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollback();
 
             return false;

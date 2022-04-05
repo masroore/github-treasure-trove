@@ -23,8 +23,6 @@ class LoginController extends Controller
 
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -42,12 +40,15 @@ class LoginController extends Controller
         switch ($role) {
         case 'admin':
             return '/home';
+
             break;
         case 'user':
             return '/';
+
             break;
         default:
             return '/';
+
         break;
         }
     }

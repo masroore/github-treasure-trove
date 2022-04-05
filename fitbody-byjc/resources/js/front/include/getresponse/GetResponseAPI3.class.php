@@ -11,20 +11,22 @@ class GetResponse
     public $http_status;
 
     private $api_key;
+
     private $api_url = 'https://api.getresponse.com/v3';
+
     private $timeout = 8;
 
     /**
      * X-Domain header value if empty header will be not provided.
      *
-     * @var string|null
+     * @var null|string
      */
     private $enterprise_domain;
 
     /**
      * X-APP-ID header value if empty header will be not provided.
      *
-     * @var string|null
+     * @var null|string
      */
     private $app_id;
 
@@ -49,7 +51,7 @@ class GetResponse
      * @param $key
      * @param $value
      */
-    public function __set($key, $value)
+    public function __set($key, $value): void
     {
         $this->{$key} = $value;
     }
@@ -98,7 +100,7 @@ class GetResponse
     /**
      * list all RSS newsletters.
      */
-    public function getRSSNewsletters()
+    public function getRSSNewsletters(): void
     {
         $this->call('rss-newsletters', 'GET', null);
     }
@@ -304,8 +306,6 @@ class GetResponse
      * @param null   $api_method
      * @param string $http_method
      * @param array  $params
-     *
-     * @throws Exception
      */
     private function call($api_method = null, $http_method = 'GET', $params = [])
     {

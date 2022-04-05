@@ -8,12 +8,10 @@ class CreateProductAttributeSetsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('product_attribute_sets', function (Blueprint $table) {
+        Schema::create('product_attribute_sets', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->bigInteger('store_id')->unsigned()->index('p_attr_sets_store_id_index');
             $table->string('title', 120)->nullable();
@@ -33,13 +31,11 @@ class CreateProductAttributeSetsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('product_attribute_sets');
-        Schema::table('product_attribute_sets', function (Blueprint $table) {
+        Schema::table('product_attribute_sets', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
     }

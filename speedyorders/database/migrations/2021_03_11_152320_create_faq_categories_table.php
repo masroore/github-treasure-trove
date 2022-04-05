@@ -7,12 +7,10 @@ class CreateFaqCategoriesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('faq_categories', function (Blueprint $table) {
+        Schema::create('faq_categories', function (Blueprint $table): void {
             $table->unsignedBigInteger('id')->autoIncrement();
             $table->string('name')->default(null)->nullable();
             $table->string('meta_tag')->default(null)->nullable();
@@ -24,10 +22,8 @@ class CreateFaqCategoriesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop('faq_categories');
     }

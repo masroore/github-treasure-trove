@@ -8,25 +8,21 @@ class AddDepertmentToSupportTicketsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('support_tickets', function (Blueprint $table) {
+        Schema::table('support_tickets', function (Blueprint $table): void {
             $table->string('role')->nullable();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         if (Schema::hasColumn('support_tickets', 'role')) {
-            Schema::table('support_tickets', function (Blueprint $table) {
+            Schema::table('support_tickets', function (Blueprint $table): void {
                 $table->dropColumn('role');
             });
         }

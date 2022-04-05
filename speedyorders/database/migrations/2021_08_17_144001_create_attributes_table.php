@@ -8,12 +8,10 @@ class CreateAttributesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('attributes', function (Blueprint $table) {
+        Schema::create('attributes', function (Blueprint $table): void {
             $table->unsignedBigInteger('id')->autoIncrement();
             $table->string('attribute_label')->nullable()->default(null);
             $table->string('input_type')->default('0')->comment('1=>Multiple Selection,0=>Single Selection')->nullable();
@@ -26,10 +24,8 @@ class CreateAttributesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('attributes');
     }

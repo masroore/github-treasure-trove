@@ -13,7 +13,7 @@ use Modules\AdminLogin\Http\Controllers\AdminLoginController;
 |
 */
 
-Route::group(['middleware' => 'guest:admin'], function () {
+Route::group(['middleware' => 'guest:admin'], function (): void {
     Route::get('/admin/login', [AdminLoginController::class, 'login'])->name('admin.login');
     Route::post('/admin/login', [AdminLoginController::class, 'submit'])->name('admin.login.submit');
 });

@@ -20,25 +20,23 @@ class Slider extends Model
     /**
      * @param $request
      *
-     * @throws \Exception
-     *
      * @return bool
      */
     public static function store($request, $group)
     {
         return self::insert([
-            'group_id'       => $group,
-            'image'          => $request['image'],
-            'message'        => $request['message_title'],
-            'title'          => $request['title'],
-            'subtitle'       => $request['subtitle'],
-            'button'         => $request['button'],
-            'url'            => $request['url'],
-            'text_color'     => $request['text_color'],
+            'group_id' => $group,
+            'image' => $request['image'],
+            'message' => $request['message_title'],
+            'title' => $request['title'],
+            'subtitle' => $request['subtitle'],
+            'button' => $request['button'],
+            'url' => $request['url'],
+            'text_color' => $request['text_color'],
             'text_placement' => $request['text_placement'],
-            'sort_order'     => 0,
-            'created_at'     => Carbon::now(),
-            'updated_at'     => Carbon::now(),
+            'sort_order' => 0,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
     }
 }

@@ -6,6 +6,7 @@ use App\Models\CustomerCompareProduct;
 use App\Models\CustomerCompareProductOption;
 use App\Models\Product;
 use App\Models\ProductOption;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class AddToCompareService
@@ -32,8 +33,8 @@ class AddToCompareService
 
         if ($this->checkProductAlredyExistInComparelist($request, $customer_id, $options, $optionsLength)) {
             return response()->json([
-                'status'=>200,
-                'msg'   => 'Product Already Exist In Your Compare List !',
+                'status' => 200,
+                'msg' => 'Product Already Exist In Your Compare List !',
             ]);
         }
 
@@ -44,9 +45,9 @@ class AddToCompareService
 
             if ($product) {
                 $compareProduct = CustomerCompareProduct::create([
-                        'customer_id' => $customer_id,
-                        'product_id' => $product->id,
-                        ]);
+                    'customer_id' => $customer_id,
+                    'product_id' => $product->id,
+                ]);
 
                 if (isset($request->options) && \count($request->options) > 0) {
                     foreach ($request->options as $option_id => $option_value) {
@@ -55,34 +56,34 @@ class AddToCompareService
                         $product_option_type = $product_option->option->type;
 
                         CustomerCompareProductOption::create([
-                                    'customer_compare_product_id' => $compareProduct->id,
-                                    'product_option_id'           => $option_id,
-                                    'product_option_value_id'     => ('select' == $product_option_type) ? $option_value : null,
-                                    'product_option_value'        => ('select' == $product_option_type) ? null : $option_value,
+                            'customer_compare_product_id' => $compareProduct->id,
+                            'product_option_id' => $option_id,
+                            'product_option_value_id' => ('select' == $product_option_type) ? $option_value : null,
+                            'product_option_value' => ('select' == $product_option_type) ? null : $option_value,
 
-                                    ]);
+                        ]);
                     }
                 }
                 DB::commit();
 
                 return response()->json([
-                                'status'=>200,
-                                'msg'   => 'Product Added To Your Compare List !',
-                            ]);
+                    'status' => 200,
+                    'msg' => 'Product Added To Your Compare List !',
+                ]);
             }
 
             return response()->json([
-                            'status'=>200,
-                            'msg'   => 'Product Not Found !',
-                        ]);
-        } catch (\Exception $e) {
+                'status' => 200,
+                'msg' => 'Product Not Found !',
+            ]);
+        } catch (Exception $e) {
             dd($e);
             DB::rollback();
 
             return response()->json([
-                            'status'=>200,
-                            'msg'   => 'Something Went Wrong !',
-                        ]);
+                'status' => 200,
+                'msg' => 'Something Went Wrong !',
+            ]);
         }
     }
 

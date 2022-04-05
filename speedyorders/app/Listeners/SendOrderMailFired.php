@@ -10,20 +10,15 @@ class SendOrderMailFired
 {
     /**
      * Create the event listener.
-     *
-     * @return void
      */
     public function __construct()
     {
-
     }
 
     /**
      * Handle the event.
-     *
-     * @return void
      */
-    public function handle(SendOrderMail $event)
+    public function handle(SendOrderMail $event): void
     {
         Mail::to($event->email)->send(new OrderMail($event->pdf));
     }

@@ -8,12 +8,10 @@ class CreateCountyRegions extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('county_regions', function (Blueprint $table) {
+        Schema::create('county_regions', function (Blueprint $table): void {
             $table->unsignedBigInteger('id')->autoIncrement();
             $table->unsignedBigInteger('country_id')->default(1);
             $table->string('name')->nullable()->default(null);
@@ -23,10 +21,8 @@ class CreateCountyRegions extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('county_regions');
     }

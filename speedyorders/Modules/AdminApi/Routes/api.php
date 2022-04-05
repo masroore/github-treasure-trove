@@ -24,7 +24,7 @@ use Modules\AdminApi\Http\Controllers\v1\StateController;
 |
 */
 
-Route::group(['prefix'=>'/v1', 'as'=>'api.v1.'], function () {
+Route::group(['prefix' => '/v1', 'as' => 'api.v1.'], function (): void {
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
     Route::get('/categories/navbar/{isFeatured?}', [CategoryController::class, 'navbarCategories'])->name('navbar.categories');
     Route::get('/categories/parent/homepage/{showOnHomePage?}', [CategoryController::class, 'homePageParentCategories'])->name('homepage.parent.categories');
@@ -53,7 +53,7 @@ Route::group(['prefix'=>'/v1', 'as'=>'api.v1.'], function () {
 
     //  authenticated customer routes
 
-    Route::group(['middleware'=>['auth:sanctum']], function () {
+    Route::group(['middleware' => ['auth:sanctum']], function (): void {
 
     // customer info
         Route::get('/user', [CustomerAuthController::class, 'user'])->name('user');

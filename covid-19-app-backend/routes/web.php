@@ -11,7 +11,7 @@ Route::get('/home', function () {
 
 Auth::routes();
 
-Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'middleware' => ['auth']], function (): void {
     Route::get('/', 'HomeController@index')->name('home');
     // Permissions
     Route::delete('permissions/destroy', 'PermissionsController@massDestroy')->name('permissions.massDestroy');
@@ -40,7 +40,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 
     Route::get('global-search', 'GlobalSearchController@search')->name('globalSearch');
 });
-Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 'middleware' => ['auth']], function (): void {
     // Change password
     if (file_exists(app_path('Http/Controllers/Auth/ChangePasswordController.php'))) {
         Route::get('password', 'ChangePasswordController@edit')->name('password.edit');
@@ -62,7 +62,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/notification', function () {
+Route::get('/notification', function (): void {
     $SERVER_API_KEY = 'AAAAvO9kHo4:APA91bGbCVzLul_wWug7zPJHi3YIyCVYrbcBQHB04fZoMp3Mh-SZwQceFLgSVW-CFOqSyZQuOs7crQKWHyOQGqFR6Hwj1UmDuMmmyDnxtgeQVhZJJBM4_JdwQ-OctjfeEpm-9D0E4cOt';
 
     $token_1 = 'cIYh2AhvTEmsa807rMXQrs:APA91bFd1tiNLQvtsZ08IUrNdqEGljGxxtGxEMm6O2yEVqa7TZokjQbOI8ksk-1_TKOrpIRbiovefRhPJ-vTX-P7NtaYwQAPpuoFC0RZACS6XXdGyh21jRvnLhFLJdE_CdygkPklPfKX';
@@ -79,7 +79,7 @@ Route::get('/notification', function () {
 
             'body' => 'Description',
 
-            'sound'=> 'default', // required for sound on ios
+            'sound' => 'default', // required for sound on ios
 
         ],
 

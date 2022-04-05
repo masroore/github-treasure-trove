@@ -11,7 +11,7 @@
 |
 */
 
-Route::group(['prefix' => 'admin/page', 'middleware' => 'auth:admin', 'as'=>'admin.pages.'], function () {
+Route::group(['prefix' => 'admin/page', 'middleware' => 'auth:admin', 'as' => 'admin.pages.'], function (): void {
     Route::get('/', 'AdminPageController@index')->name('index')->middleware('can:list-product-option');
     Route::get('/create', 'AdminPageController@create')->name('create')->middleware('can:create-product-option');
     Route::post('/store', 'AdminPageController@store')->name('store')->middleware('can:store-product-option');

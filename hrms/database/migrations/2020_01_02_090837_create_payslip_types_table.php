@@ -8,12 +8,10 @@ class CreatePayslipTypesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('payslip_types', function (Blueprint $table) {
+        Schema::create('payslip_types', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('name');
             $table->integer('created_by');
@@ -23,10 +21,8 @@ class CreatePayslipTypesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('payslip_types');
     }

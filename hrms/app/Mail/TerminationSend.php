@@ -15,8 +15,6 @@ class TerminationSend extends Mailable
 
     /**
      * Create a new message instance.
-     *
-     * @return void
      */
     public function __construct($termination)
     {

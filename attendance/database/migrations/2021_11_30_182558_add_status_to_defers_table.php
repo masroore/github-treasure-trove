@@ -8,25 +8,21 @@ class AddStatusToDefersTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('defers', function (Blueprint $table) {
+        Schema::table('defers', function (Blueprint $table): void {
             $table->string('status')->nullable();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         if (Schema::hasColumn('defers', 'status')) {
-            Schema::table('defers', function (Blueprint $table) {
+            Schema::table('defers', function (Blueprint $table): void {
                 $table->dropColumn('status');
             });
         }

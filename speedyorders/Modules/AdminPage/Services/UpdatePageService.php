@@ -3,6 +3,7 @@
 namespace Modules\AdminPage\Services;
 
 use App\Models\Page;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class UpdatePageService
@@ -16,7 +17,7 @@ class UpdatePageService
             DB::commit();
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollback();
 
             return false;

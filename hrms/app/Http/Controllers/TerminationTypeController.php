@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\TerminationType;
+use Auth;
 use Illuminate\Http\Request;
+use Validator;
 
 class TerminationTypeController extends Controller
 {
     public function index()
     {
-        if (\Auth::user()->can('Manage Termination Type')) {
-            $terminationtypes = TerminationType::where('created_by', '=', \Auth::user()->creatorId())->get();
+        if (Auth::user()->can('Manage Termination Type')) {
+            $terminationtypes = TerminationType::where('created_by', '=', Auth::user()->creatorId())->get();
 
             return view('terminationtype.index', compact('terminationtypes'));
         }
@@ -20,7 +22,7 @@ class TerminationTypeController extends Controller
 
     public function create()
     {
-        if (\Auth::user()->can('Create Termination Type')) {
+        if (Auth::user()->can('Create Termination Type')) {
             return view('terminationtype.create');
         }
 
@@ -29,12 +31,12 @@ class TerminationTypeController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('Create Termination Type')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Create Termination Type')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'name' => 'required',
-                               ]
+                    'name' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -44,7 +46,7 @@ class TerminationTypeController extends Controller
 
             $terminationtype = new TerminationType();
             $terminationtype->name = $request->name;
-            $terminationtype->created_by = \Auth::user()->creatorId();
+            $terminationtype->created_by = Auth::user()->creatorId();
             $terminationtype->save();
 
             return redirect()->route('terminationtype.index')->with('success', __('TerminationType  successfully created.'));
@@ -60,8 +62,8 @@ class TerminationTypeController extends Controller
 
     public function edit(TerminationType $terminationtype)
     {
-        if (\Auth::user()->can('Edit Termination Type')) {
-            if ($terminationtype->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('Edit Termination Type')) {
+            if ($terminationtype->created_by == Auth::user()->creatorId()) {
                 return view('terminationtype.edit', compact('terminationtype'));
             }
 
@@ -73,14 +75,14 @@ class TerminationTypeController extends Controller
 
     public function update(Request $request, TerminationType $terminationtype)
     {
-        if (\Auth::user()->can('Edit Termination Type')) {
-            if ($terminationtype->created_by == \Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+        if (Auth::user()->can('Edit Termination Type')) {
+            if ($terminationtype->created_by == Auth::user()->creatorId()) {
+                $validator = Validator::make(
                     $request->all(),
                     [
-                                       'name' => 'required|max:20',
+                        'name' => 'required|max:20',
 
-                                   ]
+                    ]
                 );
 
                 $terminationtype->name = $request->name;
@@ -97,8 +99,8 @@ class TerminationTypeController extends Controller
 
     public function destroy(TerminationType $terminationtype)
     {
-        if (\Auth::user()->can('Delete Termination Type')) {
-            if ($terminationtype->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('Delete Termination Type')) {
+            if ($terminationtype->created_by == Auth::user()->creatorId()) {
                 $terminationtype->delete();
 
                 return redirect()->route('terminationtype.index')->with('success', __('TerminationType successfully deleted.'));

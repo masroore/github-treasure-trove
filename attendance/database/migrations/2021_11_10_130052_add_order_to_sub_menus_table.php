@@ -8,25 +8,21 @@ class AddOrderToSubMenusTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('sub_menus', function (Blueprint $table) {
+        Schema::table('sub_menus', function (Blueprint $table): void {
             $table->integer('order')->nullable();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         if (Schema::hasColumn('sub_menus', 'order')) {
-            Schema::table('sub_menus', function (Blueprint $table) {
+            Schema::table('sub_menus', function (Blueprint $table): void {
                 $table->dropColumn('order');
             });
         }

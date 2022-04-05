@@ -8,12 +8,10 @@ class CreateLoansTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('loans', function (Blueprint $table) {
+        Schema::create('loans', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->integer('employee_id');
             $table->integer('loan_option');
@@ -29,10 +27,8 @@ class CreateLoansTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('loans');
     }

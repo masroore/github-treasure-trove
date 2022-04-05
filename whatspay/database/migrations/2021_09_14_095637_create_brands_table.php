@@ -8,12 +8,10 @@ class CreateBrandsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('brands', function (Blueprint $table) {
+        Schema::create('brands', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('name', 191)->nullable();
             $table->text('description')->nullable();
@@ -28,13 +26,11 @@ class CreateBrandsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('brands');
-        Schema::table('brands', function (Blueprint $table) {
+        Schema::table('brands', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
     }

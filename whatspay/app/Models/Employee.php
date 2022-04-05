@@ -14,6 +14,7 @@ class Employee extends Model
     use HasFactory;
     use Notifiable;
     use SoftDeletes;
+
     protected $dates = ['deleted_at'];
 
     /**

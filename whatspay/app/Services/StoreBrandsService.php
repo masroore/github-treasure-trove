@@ -15,6 +15,7 @@ class StoreBrandsService
      * @var StoreBrandsRepository
      */
     protected $storeBrandsRepository;
+
     protected $storeRepository;
 
     public function __construct(

@@ -38,7 +38,6 @@ class EmailTemplateController extends Controller
      */
     public function store(Request $request)
     {
-
     }
 
     /**
@@ -74,7 +73,6 @@ class EmailTemplateController extends Controller
      */
     public function update(Request $request, $id)
     {
-
     }
 
     /**
@@ -86,6 +84,5 @@ class EmailTemplateController extends Controller
      */
     public function destroy($id)
     {
-
     }
 }

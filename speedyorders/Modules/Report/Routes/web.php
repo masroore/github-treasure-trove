@@ -11,7 +11,7 @@
 |
 */
 
-Route::group(['prefix' => 'reports', 'middleware' => 'auth:admin', 'as' => 'admin.'], function () {
+Route::group(['prefix' => 'reports', 'middleware' => 'auth:admin', 'as' => 'admin.'], function (): void {
     Route::any('/', 'ReportController@index')->name('reports.index');
 
     Route::any('statements', 'ReportController@statements')->name('reports.statements');

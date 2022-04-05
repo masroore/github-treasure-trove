@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreatePermissionRolePivotTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::create('permission_role', function (Blueprint $table) {
+        Schema::create('permission_role', function (Blueprint $table): void {
             $table->unsignedBigInteger('role_id');
             $table->foreign('role_id', 'role_id_fk_3534999')->references('id')->on('roles')->onDelete('cascade');
             $table->unsignedBigInteger('permission_id');

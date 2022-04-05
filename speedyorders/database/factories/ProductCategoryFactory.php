@@ -10,7 +10,7 @@ $factory->define(ProductCategory::class, function (Faker $faker) {
     $categoryIds = Category::all()->pluck('id');
 
     return [
-        'category_id'=>$faker->randomElement($categoryIds),
-        'status'=>$faker->numberBetween(0, 1),
+        'category_id' => $faker->randomElement($categoryIds),
+        'status' => $faker->numberBetween(0, 1),
     ];
 });

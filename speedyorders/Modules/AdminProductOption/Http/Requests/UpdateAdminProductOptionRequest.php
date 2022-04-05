@@ -14,12 +14,12 @@ class UpdateAdminProductOptionRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required|string|max:255',
-            'type'=>'required|in:option,input,select,radio,date,date_time,checkbox',
-            'sort_order'=>'nullable|numeric',
-            'option_value.name.*'=>'required|string|max:255',
-            'option_value.image.*'=>'nullable|image|mimes:jpg,jpeg,png|max:4096',
-            'option_value.sort_order.*'=>'nullable|numeric|max:255',
+            'name' => 'required|string|max:255',
+            'type' => 'required|in:option,input,select,radio,date,date_time,checkbox',
+            'sort_order' => 'nullable|numeric',
+            'option_value.name.*' => 'required|string|max:255',
+            'option_value.image.*' => 'nullable|image|mimes:jpg,jpeg,png|max:4096',
+            'option_value.sort_order.*' => 'nullable|numeric|max:255',
         ];
     }
 

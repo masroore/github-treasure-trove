@@ -14,7 +14,6 @@ class ShippingRuleController extends Controller
      */
     public function index()
     {
-
     }
 
     /**
@@ -24,7 +23,6 @@ class ShippingRuleController extends Controller
      */
     public function store(Request $request)
     {
-
     }
 
     /**
@@ -34,7 +32,6 @@ class ShippingRuleController extends Controller
      */
     public function show(ShippingRule $shippingRule)
     {
-
     }
 
     /**
@@ -44,7 +41,6 @@ class ShippingRuleController extends Controller
      */
     public function update(Request $request, ShippingRule $shippingRule)
     {
-
     }
 
     /**
@@ -54,6 +50,5 @@ class ShippingRuleController extends Controller
      */
     public function destroy(ShippingRule $shippingRule)
     {
-
     }
 }

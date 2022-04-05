@@ -16,6 +16,7 @@ class BranchService
      * @var BranchRepositoryInterface
      */
     protected $storeRepository;
+
     protected $branchRepository;
 
     public function __construct(StoreRepositoryInterface $storeRepository, BranchRepositoryInterface $branchRepository)
@@ -251,11 +252,11 @@ class BranchService
             // 'delivery_days' => 'required',
             'delivery_hours' => 'integer',
             'delivery_minutes' => 'integer',
-//            'delivery_range' => 'required',
+            //            'delivery_range' => 'required',
             'delivery_radius' => 'in:0,1',
             'disount_type' => 'in:flat,percentage',
             'discount_amount' => 'integer',
-//            'service_options' => 'required',
+            //            'service_options' => 'required',
             'orders_accept_status' => 'in:yes,no',
             'is_tax_enable' => 'in:0,1',
             'tax_rate' => 'integer',

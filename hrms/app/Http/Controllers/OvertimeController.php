@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use App\Models\Overtime;
+use Auth;
 use Illuminate\Http\Request;
+use Validator;
 
 class OvertimeController extends Controller
 {
@@ -17,16 +19,16 @@ class OvertimeController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('Create Overtime')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Create Overtime')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'employee_id' => 'required',
-                                   'title' => 'required',
-                                   'number_of_days' => 'required',
-                                   'hours' => 'required',
-                                   'rate' => 'required',
-                               ]
+                    'employee_id' => 'required',
+                    'title' => 'required',
+                    'number_of_days' => 'required',
+                    'hours' => 'required',
+                    'rate' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -40,7 +42,7 @@ class OvertimeController extends Controller
             $overtime->number_of_days = $request->number_of_days;
             $overtime->hours = $request->hours;
             $overtime->rate = $request->rate;
-            $overtime->created_by = \Auth::user()->creatorId();
+            $overtime->created_by = Auth::user()->creatorId();
             $overtime->save();
 
             return redirect()->back()->with('success', __('Overtime  successfully created.'));
@@ -57,8 +59,8 @@ class OvertimeController extends Controller
     public function edit($overtime)
     {
         $overtime = Overtime::find($overtime);
-        if (\Auth::user()->can('Edit Overtime')) {
-            if ($overtime->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('Edit Overtime')) {
+            if ($overtime->created_by == Auth::user()->creatorId()) {
                 return view('overtime.edit', compact('overtime'));
             }
 
@@ -71,16 +73,16 @@ class OvertimeController extends Controller
     public function update(Request $request, $overtime)
     {
         $overtime = Overtime::find($overtime);
-        if (\Auth::user()->can('Edit Overtime')) {
-            if ($overtime->created_by == \Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+        if (Auth::user()->can('Edit Overtime')) {
+            if ($overtime->created_by == Auth::user()->creatorId()) {
+                $validator = Validator::make(
                     $request->all(),
                     [
-                                       'title' => 'required',
-                                       'number_of_days' => 'required',
-                                       'hours' => 'required',
-                                       'rate' => 'required',
-                                   ]
+                        'title' => 'required',
+                        'number_of_days' => 'required',
+                        'hours' => 'required',
+                        'rate' => 'required',
+                    ]
                 );
                 if ($validator->fails()) {
                     $messages = $validator->getMessageBag();
@@ -105,8 +107,8 @@ class OvertimeController extends Controller
 
     public function destroy(Overtime $overtime)
     {
-        if (\Auth::user()->can('Delete Overtime')) {
-            if ($overtime->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('Delete Overtime')) {
+            if ($overtime->created_by == Auth::user()->creatorId()) {
                 $overtime->delete();
 
                 return redirect()->back()->with('success', __('Overtime successfully deleted.'));

@@ -15,8 +15,6 @@ class NotificationEvent
 
     /**
      * Create a new event instance.
-     *
-     * @return void
      */
     public $data;
 

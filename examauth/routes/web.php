@@ -11,7 +11,7 @@ Route::get('/home', function () {
 
 Auth::routes(['register' => false]);
 
-Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'middleware' => ['auth']], function (): void {
     Route::get('check_status', 'StudentProfileController@check_status')->name('check_status');
     Route::get('confirm', 'StudentProfileController@confirm')->name('confirm');
     Route::get('eligible', 'StudentProfileController@eligible')->name('eligible');
@@ -75,7 +75,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::post('messenger/{topic}/reply', 'MessengerController@replyToTopic')->name('messenger.reply');
     Route::get('messenger/{topic}/reply', 'MessengerController@showReply')->name('messenger.showReply');
 });
-Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 'middleware' => ['auth']], function (): void {
     // Change password
     if (file_exists(app_path('Http/Controllers/Auth/ChangePasswordController.php'))) {
         Route::get('password', 'ChangePasswordController@edit')->name('password.edit');

@@ -34,8 +34,6 @@ class ThemeController extends Controller
      *
      * @param int $id
      *
-     * @throws \Exception
-     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)

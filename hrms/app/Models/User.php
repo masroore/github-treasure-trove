@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use DB;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
@@ -170,7 +171,7 @@ class User extends Authenticatable
             } else {
                 $userCount = 0;
                 foreach ($users as $user) {
-                    $userCount++;
+                    ++$userCount;
                     if ($userCount <= $plan->max_users) {
                         $user->is_active = 1;
                         $user->save();
@@ -189,7 +190,7 @@ class User extends Authenticatable
             } else {
                 $employeeCount = 0;
                 foreach ($employees as $employee) {
-                    $employeeCount++;
+                    ++$employeeCount;
                     if ($employeeCount <= $plan->max_employees) {
                         $employee->is_active = 1;
                         $employee->save();
@@ -204,9 +205,9 @@ class User extends Authenticatable
         }
 
         return [
-                'is_success' => false,
-                'error' => 'Plan is deleted.',
-            ];
+            'is_success' => false,
+            'error' => 'Plan is deleted.',
+        ];
     }
 
     public function countUsers()
@@ -239,9 +240,9 @@ class User extends Authenticatable
         return self::where('type', '=', 'company')->whereNotIn(
             'plan',
             [
-                      0,
-                      1,
-                  ]
+                0,
+                1,
+            ]
         )->where('created_by', '=', \Auth::user()->id)->count();
     }
 
@@ -254,7 +255,7 @@ class User extends Authenticatable
             $userId = $user->created_by;
         }
 
-        return \DB::table('settings')->where('created_by', '=', $userId)->get()->pluck('value', 'name');
+        return DB::table('settings')->where('created_by', '=', $userId)->get()->pluck('value', 'name');
     }
 
     public function currentPlan()

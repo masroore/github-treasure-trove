@@ -6,9 +6,11 @@ use App\Mail\ResignationSend;
 use App\Models\Employee;
 use App\Models\Resignation;
 use App\Models\Utility;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Validator;
 
 class ResignationController extends Controller
 {
@@ -42,13 +44,13 @@ class ResignationController extends Controller
     public function store(Request $request)
     {
         if (\Auth::user()->can('Create Resignation')) {
-            $validator = \Validator::make(
+            $validator = Validator::make(
                 $request->all(),
                 [
 
-                                   'notice_date' => 'required',
-                                   'resignation_date' => 'required',
-                               ]
+                    'notice_date' => 'required',
+                    'resignation_date' => 'required',
+                ]
             );
 
             if ($validator->fails()) {
@@ -76,9 +78,10 @@ class ResignationController extends Controller
                 $employee = Employee::find($resignation->employee_id);
                 $resignation->name = $employee->name;
                 $resignation->email = $employee->email;
+
                 try {
                     Mail::to($resignation->email)->send(new ResignationSend($resignation));
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     $smtp_error = __('E-Mail has been not sent due to SMTP configuration');
                 }
 
@@ -114,13 +117,13 @@ class ResignationController extends Controller
     {
         if (\Auth::user()->can('Edit Resignation')) {
             if ($resignation->created_by == \Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+                $validator = Validator::make(
                     $request->all(),
                     [
 
-                                       'notice_date' => 'required',
-                                       'resignation_date' => 'required',
-                                   ]
+                        'notice_date' => 'required',
+                        'resignation_date' => 'required',
+                    ]
                 );
 
                 if ($validator->fails()) {

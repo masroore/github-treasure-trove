@@ -10,20 +10,15 @@ class SendEmailMessageToUser
 {
     /**
      * Create the event listener.
-     *
-     * @return void
      */
     public function __construct()
     {
-
     }
 
     /**
      * Handle the event.
-     *
-     * @return void
      */
-    public function handle(MessageSent $event)
+    public function handle(MessageSent $event): void
     {
         Mail::to($event->message->recipient)->send(new Message($event->message));
     }

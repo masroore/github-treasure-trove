@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateUsersTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('users', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('name')->nullable();
             $table->string('email')->nullable()->unique();

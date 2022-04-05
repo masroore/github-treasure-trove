@@ -11,7 +11,7 @@ use Spatie\Permission\Models\Role;
 
 class UsersTableSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
         $arrPermissions = [
             [

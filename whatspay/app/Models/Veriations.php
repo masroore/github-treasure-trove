@@ -12,5 +12,6 @@ class Veriations extends Model
     use SoftDeletes;
 
     protected $table = 'product_variations';
+
     protected $fillable = ['configurable_product_id', 'product_id', 'is_default'];
 }

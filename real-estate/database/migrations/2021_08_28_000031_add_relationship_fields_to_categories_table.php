@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class AddRelationshipFieldsToCategoriesTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::table('categories', function (Blueprint $table) {
+        Schema::table('categories', function (Blueprint $table): void {
             $table->unsignedBigInteger('created_by_id')->nullable();
             $table->foreign('created_by_id', 'created_by_fk_4565139')->references('id')->on('users');
         });

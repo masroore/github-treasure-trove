@@ -8,12 +8,10 @@ class CreateVideouploadsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('videouploads', function (Blueprint $table) {
+        Schema::create('videouploads', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('week');
             $table->string('title');
@@ -31,10 +29,8 @@ class CreateVideouploadsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('videouploads');
     }

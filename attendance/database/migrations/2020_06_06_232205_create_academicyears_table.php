@@ -8,12 +8,10 @@ class CreateAcademicyearsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('academicyears', function (Blueprint $table) {
+        Schema::create('academicyears', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('acdemicyear')->nullable();
             $table->string('semester')->nullable();
@@ -24,10 +22,8 @@ class CreateAcademicyearsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('academicyears');
     }

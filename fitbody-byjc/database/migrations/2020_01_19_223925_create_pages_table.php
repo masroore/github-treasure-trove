@@ -8,12 +8,10 @@ class CreatePagesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('pages', function (Blueprint $table) {
+        Schema::create('pages', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->integer('category_id')->unsigned();
             $table->string('name')->index();
@@ -31,7 +29,7 @@ class CreatePagesTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('page_block', function (Blueprint $table) {
+        Schema::create('page_block', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->integer('page_id')->unsigned();
             $table->string('type');
@@ -44,7 +42,7 @@ class CreatePagesTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('page_tag', function (Blueprint $table) {
+        Schema::create('page_tag', function (Blueprint $table): void {
             $table->integer('page_id')->unsigned();
             $table->integer('tag_id')->unsigned();
         });
@@ -52,10 +50,8 @@ class CreatePagesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('pages');
         Schema::dropIfExists('page_tag');

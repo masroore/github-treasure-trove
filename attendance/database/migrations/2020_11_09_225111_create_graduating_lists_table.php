@@ -8,12 +8,10 @@ class CreateGraduatingListsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('graduating_lists', function (Blueprint $table) {
+        Schema::create('graduating_lists', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('user_id')->nullable();
             $table->string('type')->nullable();
@@ -32,10 +30,8 @@ class CreateGraduatingListsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('graduating_lists');
     }

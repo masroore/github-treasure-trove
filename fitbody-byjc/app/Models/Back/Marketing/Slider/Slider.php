@@ -48,15 +48,15 @@ class Slider extends Model
     public function store()
     {
         $id = $this->insertGetId([
-            'group_id'       => $this->request->group,
-            'message'        => '',
-            'title'          => $this->request->title,
-            'subtitle'       => $this->request->subtitle,
-            'text_color'     => (isset($this->request->text_color) && 'on' == $this->request->text_color) ? 'white' : 'black',
+            'group_id' => $this->request->group,
+            'message' => '',
+            'title' => $this->request->title,
+            'subtitle' => $this->request->subtitle,
+            'text_color' => (isset($this->request->text_color) && 'on' == $this->request->text_color) ? 'white' : 'black',
             'text_placement' => (isset($this->request->text_placement) && 'on' == $this->request->text_placement) ? 'center' : 'left',
-            'sort_order'     => !empty($this->request->sort_order) ? $this->request->sort_order : 0,
-            'created_at'     => Carbon::now(),
-            'updated_at'     => Carbon::now(),
+            'sort_order' => !empty($this->request->sort_order) ? $this->request->sort_order : 0,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
 
         if ($id) {
@@ -73,14 +73,14 @@ class Slider extends Model
     {
         //dd($this);
         return $this->where('id', $id)->update([
-            'group_id'       => $this->request->group,
-            'message'        => '',
-            'title'          => $this->request->title,
-            'subtitle'       => $this->request->subtitle,
-            'text_color'     => (isset($this->request->text_color) && 'on' == $this->request->text_color) ? 'white' : 'black',
+            'group_id' => $this->request->group,
+            'message' => '',
+            'title' => $this->request->title,
+            'subtitle' => $this->request->subtitle,
+            'text_color' => (isset($this->request->text_color) && 'on' == $this->request->text_color) ? 'white' : 'black',
             'text_placement' => (isset($this->request->text_placement) && 'on' == $this->request->text_placement) ? 'center' : 'left',
-            'sort_order'     => !empty($this->request->sort_order) ? $this->request->sort_order : 0,
-            'updated_at'     => Carbon::now(),
+            'sort_order' => !empty($this->request->sort_order) ? $this->request->sort_order : 0,
+            'updated_at' => Carbon::now(),
         ]);
     }
 

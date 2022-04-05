@@ -72,7 +72,7 @@ class PageController extends Controller
                 $category->questions = $supports;
             }
 
-            $cat_index++;
+            ++$cat_index;
         }
 
         $activePage = 'support';
@@ -96,7 +96,7 @@ class PageController extends Controller
                 $category->questions = $faqs;
             }
 
-            $cat_index++;
+            ++$cat_index;
         }
 
         $activePage = 'FAQ';

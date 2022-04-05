@@ -3,6 +3,7 @@
 namespace Modules\AdminCoupon\Services;
 
 use App\Models\Coupon;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class CreateCouponService
@@ -18,7 +19,7 @@ class CreateCouponService
             DB::commit();
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollback();
 
             return false;

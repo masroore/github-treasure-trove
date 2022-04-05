@@ -8,27 +8,25 @@ class ChangeRegionToStateToRelatedTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('customer_addresses', function (Blueprint $table) {
+        Schema::table('customer_addresses', function (Blueprint $table): void {
             $table->dropColumn('country');
             $table->dropColumn('region_id');
         });
 
-        Schema::table('customer_addresses', function (Blueprint $table) {
+        Schema::table('customer_addresses', function (Blueprint $table): void {
             $table->unsignedBigInteger('country')->default(null)->nullable();
             $table->string('state')->default(null)->nullable();
         });
 
-        Schema::table('orders', function (Blueprint $table) {
+        Schema::table('orders', function (Blueprint $table): void {
             $table->dropColumn('payment_region');
             $table->dropColumn('shipping_region');
         });
 
-        Schema::table('orders', function (Blueprint $table) {
+        Schema::table('orders', function (Blueprint $table): void {
             $table->string('payment_state')->default(null)->nullable();
             $table->string('shipping_state')->default(null)->nullable();
         });
@@ -36,13 +34,10 @@ class ChangeRegionToStateToRelatedTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('state_to_related', function (Blueprint $table) {
-
+        Schema::table('state_to_related', function (Blueprint $table): void {
         });
     }
 }

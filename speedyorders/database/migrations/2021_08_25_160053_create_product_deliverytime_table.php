@@ -8,12 +8,10 @@ class CreateProductDeliverytimeTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('product_deliverytime', function (Blueprint $table) {
+        Schema::create('product_deliverytime', function (Blueprint $table): void {
             $table->integer('id')->autoIncrement();
             $table->integer('products_id')->default(null)->nullable();
             $table->integer('shipping_delivery_times_id')->default(null)->nullable();
@@ -23,10 +21,8 @@ class CreateProductDeliverytimeTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('product_deliverytime');
     }

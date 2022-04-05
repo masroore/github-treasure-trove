@@ -11,7 +11,7 @@
 |
 */
 
-Route::group(['middleware' => 'auth:admin'], function () {
+Route::group(['middleware' => 'auth:admin'], function (): void {
     Route::get('/users', 'AdminController@index')
         ->name('users')
         ->middleware('can:view-users');

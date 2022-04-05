@@ -4,6 +4,7 @@ namespace Modules\AdminCurrency\Http\Controllers;
 
 use App\Models\Currency;
 use App\Utils\Helper;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
@@ -97,7 +98,7 @@ class AdminCurrencyController extends Controller
             session()->flash('success_message', 'Currency rates updated successfully.');
 
             return redirect()->back();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             dd($e);
             session()->flash('error_message', 'Currency rates could not be updated.');
 
@@ -112,7 +113,6 @@ class AdminCurrencyController extends Controller
      */
     public function store(Request $request)
     {
-
     }
 
     /**
@@ -145,6 +145,5 @@ class AdminCurrencyController extends Controller
      */
     public function update(Request $request, $id)
     {
-
     }
 }

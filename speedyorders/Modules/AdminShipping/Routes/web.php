@@ -12,7 +12,7 @@
 */
 use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix' => 'admin/shipping/package', 'middleware' => 'auth:admin', 'as'=>'admin.package.'], function () {
+Route::group(['prefix' => 'admin/shipping/package', 'middleware' => 'auth:admin', 'as' => 'admin.package.'], function (): void {
     Route::get('/list', 'AdminPackageController@index')->name('index')->middleware('can:list-package');
     Route::get('/create', 'AdminPackageController@create')->name('create')->middleware('can:create-package');
     Route::post('/store', 'AdminPackageController@store')->name('store')->middleware('can:store-package');
@@ -21,7 +21,7 @@ Route::group(['prefix' => 'admin/shipping/package', 'middleware' => 'auth:admin'
     Route::delete('/delete/{id}', 'AdminPackageController@destroy')->name('delete')->middleware('can:delete-package');
 });
 
-Route::group(['prefix' => 'admin/shipping/deliverytime', 'middleware' => 'auth:admin', 'as'=>'admin.deliverytime.'], function () {
+Route::group(['prefix' => 'admin/shipping/deliverytime', 'middleware' => 'auth:admin', 'as' => 'admin.deliverytime.'], function (): void {
     Route::get('/list', 'AdminDeliverytimeController@index')->name('index')->middleware('can:list-deliverytime');
     Route::get('/create', 'AdminDeliverytimeController@create')->name('create')->middleware('can:create-deliverytime');
     Route::post('/store', 'AdminDeliverytimeController@store')->name('store')->middleware('can:store-deliverytime');
@@ -30,7 +30,7 @@ Route::group(['prefix' => 'admin/shipping/deliverytime', 'middleware' => 'auth:a
     Route::delete('/delete/{id}', 'AdminDeliverytimeController@destroy')->name('delete')->middleware('can:delete-deliverytime');
 });
 
-Route::group(['prefix' => 'admin/shipping/zoneprice', 'middleware' => 'auth:admin', 'as'=>'admin.zoneprice.'], function () {
+Route::group(['prefix' => 'admin/shipping/zoneprice', 'middleware' => 'auth:admin', 'as' => 'admin.zoneprice.'], function (): void {
     Route::get('/list', 'AdminZonepriceController@index')->name('index')->middleware('can:list-zoneprice');
     Route::get('/create', 'AdminZonepriceController@create')->name('create')->middleware('can:create-zoneprice');
     Route::post('/store', 'AdminZonepriceController@store')->name('store')->middleware('can:store-zoneprice');

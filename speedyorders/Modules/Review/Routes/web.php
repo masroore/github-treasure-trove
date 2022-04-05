@@ -11,6 +11,6 @@
 |
 */
 
-Route::prefix('review')->group(function () {
+Route::prefix('review')->group(function (): void {
     Route::get('/', 'ReviewController@index');
 });

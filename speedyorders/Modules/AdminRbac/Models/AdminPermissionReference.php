@@ -9,7 +9,7 @@ class AdminPermissionReference extends Model
     protected $table = 'admin_permission_references';
 
     protected $guarded = [
-      'id',
+        'id',
     ];
 
     public function permissionGroups()

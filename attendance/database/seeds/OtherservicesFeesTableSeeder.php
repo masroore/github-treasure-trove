@@ -6,10 +6,8 @@ class OtherservicesFeesTableSeeder extends Seeder
 {
     /**
      * Auto generated seed file.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
 
        // \DB::table('otherservices_fees')->delete();
@@ -113,13 +111,13 @@ class OtherservicesFeesTableSeeder extends Seeder
             ],
             16 => [
                 'id' => 19,
-            'title' => 'Hostel Facility Fee (Local students) 4 occupants (1st semester)',
+                'title' => 'Hostel Facility Fee (Local students) 4 occupants (1st semester)',
                 'feecode' => 'OFEE116',
                 'fee' => '1320',
             ],
             17 => [
                 'id' => 20,
-            'title' => 'Hostel Facility Fee (Local students) 2 occupants (1st semester)',
+                'title' => 'Hostel Facility Fee (Local students) 2 occupants (1st semester)',
                 'feecode' => 'OFEE117',
                 'fee' => '2860',
             ],
@@ -155,13 +153,13 @@ class OtherservicesFeesTableSeeder extends Seeder
             ],
             23 => [
                 'id' => 26,
-            'title' => 'Hostel Facility Fee (Local students) 4 occupants (2nd semester)',
+                'title' => 'Hostel Facility Fee (Local students) 4 occupants (2nd semester)',
                 'feecode' => 'OFEE123',
                 'fee' => '710',
             ],
             24 => [
                 'id' => 27,
-            'title' => 'Hostel Facility Fee (Local students) 2 occupants (2nd semester)',
+                'title' => 'Hostel Facility Fee (Local students) 2 occupants (2nd semester)',
                 'feecode' => 'OFEE124',
                 'fee' => '1540',
             ],

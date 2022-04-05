@@ -16,30 +16,39 @@ class twitteroauth
 {
     // Contains the last HTTP status code returned.
     public $http_code;
+
     // Contains the last API call.
     public $url;
+
     // Set up the API root URL.
     public $host = 'https://api.twitter.com/1.1/';
+
     // Set timeout default.
     public $timeout = 30;
+
     // Set connect timeout.
     public $connecttimeout = 30;
+
     // Verify SSL Cert.
     public $ssl_verifypeer = false;
+
     // Respons format.
     public $format = 'json';
+
     // Decode returned json data.
     public $decode_json = true;
+
     // Contains the last HTTP headers returned.
     public $http_info;
+
     // Set the useragnet.
     public $useragent = 'TwitterOAuth v0.2.0-beta2';
 
     /**
      * construct TwitterOAuth object.
      *
-     * @param mixed|null $oauth_token
-     * @param mixed|null $oauth_token_secret
+     * @param null|mixed $oauth_token
+     * @param null|mixed $oauth_token_secret
      */
     public function __construct($consumer_key, $consumer_secret, $oauth_token = null, $oauth_token_secret = null)
     {
@@ -225,7 +234,7 @@ class twitteroauth
     /**
      * Make an HTTP request.
      *
-     * @param mixed|null $postfields
+     * @param null|mixed $postfields
      *
      * @return API results
      */
@@ -249,6 +258,7 @@ class twitteroauth
                 if (!empty($postfields)) {
                     curl_setopt($ci, \CURLOPT_POSTFIELDS, $postfields);
                 }
+
                 break;
             case 'DELETE':
                 curl_setopt($ci, \CURLOPT_CUSTOMREQUEST, 'DELETE');

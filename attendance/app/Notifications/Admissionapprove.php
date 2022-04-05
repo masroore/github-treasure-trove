@@ -12,15 +12,17 @@ class Admissionapprove extends Notification implements ShouldQueue
     use Queueable;
 
     public $fullname;
+
     public $level;
+
     public $prog;
+
     public $file;
+
     public $session;
 
     /**
      * Create a new notification instance.
-     *
-     * @return void
      */
     public function __construct($fullname, $level, $prog, $session, $file)
     {

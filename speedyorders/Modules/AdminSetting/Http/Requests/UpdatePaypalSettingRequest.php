@@ -14,14 +14,14 @@ class UpdatePaypalSettingRequest extends FormRequest
     public function rules()
     {
         return [
-            'paypal_live_client_id'=>'nullable|string|max:255',
-            'paypal_live_secret_key'=>'nullable|string|max:255',
-            'papapal_live_currency'=>'nullable|string|max:255',
-            'paypal_sandbox_client_id'=>'nullable|string|max:255',
-            'paypal_sandbox_secret_key'=>'nullable|string|max:255',
-            'paypal_sandbox_currency'=>'nullable|string|max:255',
-            'paypal_api_mode'=>'nullable|string',
-            'paypal_enable_status'=>'nullable|string',
+            'paypal_live_client_id' => 'nullable|string|max:255',
+            'paypal_live_secret_key' => 'nullable|string|max:255',
+            'papapal_live_currency' => 'nullable|string|max:255',
+            'paypal_sandbox_client_id' => 'nullable|string|max:255',
+            'paypal_sandbox_secret_key' => 'nullable|string|max:255',
+            'paypal_sandbox_currency' => 'nullable|string|max:255',
+            'paypal_api_mode' => 'nullable|string',
+            'paypal_enable_status' => 'nullable|string',
         ];
     }
 

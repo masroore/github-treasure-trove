@@ -6,13 +6,15 @@ use App\Models\InterviewSchedule;
 use App\Models\JobApplication;
 use App\Models\JobStage;
 use App\Models\User;
+use Auth;
 use Illuminate\Http\Request;
+use Validator;
 
 class InterviewScheduleController extends Controller
 {
     public function index()
     {
-        $schedules = InterviewSchedule::where('created_by', \Auth::user()->creatorId())->get();
+        $schedules = InterviewSchedule::where('created_by', Auth::user()->creatorId())->get();
         $arrSchedule = [];
 
         foreach ($schedules as $schedule) {
@@ -29,10 +31,10 @@ class InterviewScheduleController extends Controller
 
     public function create($candidate = 0)
     {
-        $employees = User::where('created_by', \Auth::user()->creatorId())->where('type', 'employee')->orWhere('id', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        $employees = User::where('created_by', Auth::user()->creatorId())->where('type', 'employee')->orWhere('id', Auth::user()->creatorId())->get()->pluck('name', 'id');
         $employees->prepend('--', '');
 
-        $candidates = JobApplication::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        $candidates = JobApplication::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
         $candidates->prepend('--', '');
 
         return view('interviewSchedule.create', compact('employees', 'candidates', 'candidate'));
@@ -40,15 +42,15 @@ class InterviewScheduleController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('Create Interview Schedule')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Create Interview Schedule')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'candidate' => 'required',
-                                   'employee' => 'required',
-                                   'date' => 'required',
-                                   'time' => 'required',
-                               ]
+                    'candidate' => 'required',
+                    'employee' => 'required',
+                    'date' => 'required',
+                    'time' => 'required',
+                ]
             );
 
             if ($validator->fails()) {
@@ -63,7 +65,7 @@ class InterviewScheduleController extends Controller
             $schedule->date = $request->date;
             $schedule->time = $request->time;
             $schedule->comment = $request->comment;
-            $schedule->created_by = \Auth::user()->creatorId();
+            $schedule->created_by = Auth::user()->creatorId();
             $schedule->save();
 
             return redirect()->back()->with('success', __('Interview schedule successfully created.'));
@@ -74,17 +76,17 @@ class InterviewScheduleController extends Controller
 
     public function show(InterviewSchedule $interviewSchedule)
     {
-        $stages = JobStage::where('created_by', \Auth::user()->creatorId())->get();
+        $stages = JobStage::where('created_by', Auth::user()->creatorId())->get();
 
         return view('interviewSchedule.show', compact('interviewSchedule', 'stages'));
     }
 
     public function edit(InterviewSchedule $interviewSchedule)
     {
-        $employees = User::where('created_by', \Auth::user()->creatorId())->where('type', 'employee')->orWhere('id', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        $employees = User::where('created_by', Auth::user()->creatorId())->where('type', 'employee')->orWhere('id', Auth::user()->creatorId())->get()->pluck('name', 'id');
         $employees->prepend('--', '');
 
-        $candidates = JobApplication::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        $candidates = JobApplication::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
         $candidates->prepend('--', '');
 
         return view('interviewSchedule.edit', compact('employees', 'candidates', 'interviewSchedule'));
@@ -92,15 +94,15 @@ class InterviewScheduleController extends Controller
 
     public function update(Request $request, InterviewSchedule $interviewSchedule)
     {
-        if (\Auth::user()->can('Edit Interview Schedule')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Edit Interview Schedule')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'candidate' => 'required',
-                                   'employee' => 'required',
-                                   'date' => 'required',
-                                   'time' => 'required',
-                               ]
+                    'candidate' => 'required',
+                    'employee' => 'required',
+                    'date' => 'required',
+                    'time' => 'required',
+                ]
             );
 
             if ($validator->fails()) {

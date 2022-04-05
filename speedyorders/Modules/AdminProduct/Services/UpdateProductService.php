@@ -10,13 +10,15 @@ use App\Models\ProductGroup;
 use App\Models\ProductOption;
 use App\Models\ProductOptionValue;
 use App\Models\ProductRelatedProduct;
+use DB;
+use Exception;
 use Log;
 
 class UpdateProductService
 {
     public function handle(array $validatedData, $id)
     {
-        \DB::beginTransaction();
+        DB::beginTransaction();
 
         try {
             $product = Product::find($id);
@@ -54,11 +56,11 @@ class UpdateProductService
                 $time = now();
                 foreach ($validatedData['categories'] as $categroy) {
                     $insertData[] = [
-                        'category_id'=>$categroy,
-                        'product_id'=>$product->id,
-                        'status'=>1,
-                        'created_at'=>$time,
-                        'updated_at'=>$time,
+                        'category_id' => $categroy,
+                        'product_id' => $product->id,
+                        'status' => 1,
+                        'created_at' => $time,
+                        'updated_at' => $time,
                     ];
                 }
 
@@ -80,7 +82,7 @@ class UpdateProductService
                                 $productOption = ProductOption::create([
                                     'product_id' => $product->id,
                                     'option_id' => $key,
-                                    'required' =>$validatedData['option']['required'][$key],
+                                    'required' => $validatedData['option']['required'][$key],
                                 ]);
 
                                 ProductOptionValue::create([
@@ -89,6 +91,7 @@ class UpdateProductService
                                     'input_value' => $optionValue,
                                 ]);
                             }
+
                             break;
 
                         /*case 'select':
@@ -161,10 +164,10 @@ class UpdateProductService
                 $time = now();
                 foreach ($validatedData['delivery_time'] as $rp) {
                     $insertDeliveryTimeData[] = [
-                        'products_id'=>$product->id,
-                        'shipping_delivery_times_id'=>$rp,
-                        'shipping_zone_groups_id'=>$validatedData['shipping_zone_groups_id'],
-                        'shipping_packages_id'=>$validatedData['shipping_packages_id'],
+                        'products_id' => $product->id,
+                        'shipping_delivery_times_id' => $rp,
+                        'shipping_zone_groups_id' => $validatedData['shipping_zone_groups_id'],
+                        'shipping_packages_id' => $validatedData['shipping_packages_id'],
                         'created_at' => $time,
                         'updated_at' => $time,
                     ];
@@ -181,8 +184,8 @@ class UpdateProductService
                 $time = now();
                 foreach ($validatedData['related_products'] as $rp) {
                     $insertRelatedProductData[] = [
-                        'product_id'=>$product->id,
-                        'related_product_id'=>$rp,
+                        'product_id' => $product->id,
+                        'related_product_id' => $rp,
                         'created_at' => $time,
                         'updated_at' => $time,
                     ];
@@ -207,12 +210,12 @@ class UpdateProductService
                 ProductGroup::insert($insertGroupData);
             }*/
 
-            \DB::commit();
+            DB::commit();
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             dd($e);
-            \DB::rollback();
+            DB::rollback();
 
             return false;
         }

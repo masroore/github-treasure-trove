@@ -9,9 +9,9 @@ class CreateRatingsTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('ratings', function (Blueprint $table) {
+        Schema::create('ratings', function (Blueprint $table): void {
             $table->increments('id');
             $table->timestamps();
             $table->integer('rating');
@@ -26,7 +26,7 @@ class CreateRatingsTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop('ratings');
     }

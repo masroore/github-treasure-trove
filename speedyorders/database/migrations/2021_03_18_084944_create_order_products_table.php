@@ -8,12 +8,10 @@ class CreateOrderProductsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('order_products', function (Blueprint $table) {
+        Schema::create('order_products', function (Blueprint $table): void {
             $table->unsignedBigInteger('id')->autoIncrement();
             $table->unsignedBigInteger('order_id')->nullable()->default(null);
             $table->unsignedBigInteger('product_id')->nullable()->default(null);
@@ -29,10 +27,8 @@ class CreateOrderProductsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('order_products');
     }

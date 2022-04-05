@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\Utility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Validator;
 
 class AttendanceEmployeeController extends Controller
 {
@@ -38,9 +39,9 @@ class AttendanceEmployeeController extends Controller
                     $attendanceEmployee->whereBetween(
                         'date',
                         [
-                                  $start_date,
-                                  $end_date,
-                              ]
+                            $start_date,
+                            $end_date,
+                        ]
                     );
                 } elseif ('daily' == $request->type && !empty($request->date)) {
                     $attendanceEmployee->where('date', $request->date);
@@ -53,9 +54,9 @@ class AttendanceEmployeeController extends Controller
                     $attendanceEmployee->whereBetween(
                         'date',
                         [
-                                  $start_date,
-                                  $end_date,
-                              ]
+                            $start_date,
+                            $end_date,
+                        ]
                     );
                 }
                 $attendanceEmployee = $attendanceEmployee->get();
@@ -83,9 +84,9 @@ class AttendanceEmployeeController extends Controller
                     $attendanceEmployee->whereBetween(
                         'date',
                         [
-                                  $start_date,
-                                  $end_date,
-                              ]
+                            $start_date,
+                            $end_date,
+                        ]
                     );
                 } elseif ('daily' == $request->type && !empty($request->date)) {
                     $attendanceEmployee->where('date', $request->date);
@@ -98,9 +99,9 @@ class AttendanceEmployeeController extends Controller
                     $attendanceEmployee->whereBetween(
                         'date',
                         [
-                                  $start_date,
-                                  $end_date,
-                              ]
+                            $start_date,
+                            $end_date,
+                        ]
                     );
                 }
 
@@ -127,14 +128,14 @@ class AttendanceEmployeeController extends Controller
     public function store(Request $request)
     {
         if (\Auth::user()->can('Create Attendance')) {
-            $validator = \Validator::make(
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'employee_id' => 'required',
-                                   'date' => 'required',
-                                   'clock_in' => 'required',
-                                   'clock_out' => 'required',
-                               ]
+                    'employee_id' => 'required',
+                    'date' => 'required',
+                    'clock_in' => 'required',
+                    'clock_out' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();

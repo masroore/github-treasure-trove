@@ -45,7 +45,7 @@ class Device extends Model
         return $value ? Carbon::parse($value)->format(config('panel.date_format')) : null;
     }
 
-    public function setDateTestAttribute($value)
+    public function setDateTestAttribute($value): void
     {
         $this->attributes['date_test'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }

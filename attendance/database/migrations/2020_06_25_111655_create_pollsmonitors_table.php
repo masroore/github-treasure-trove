@@ -8,12 +8,10 @@ class CreatePollsmonitorsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('pollsmonitors', function (Blueprint $table) {
+        Schema::create('pollsmonitors', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('pollstype_id');
             $table->string('user_id');
@@ -23,10 +21,8 @@ class CreatePollsmonitorsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('pollsmonitors');
     }

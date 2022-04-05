@@ -7,13 +7,14 @@ use App\Models\AdminOption;
 class Option
 {
     private static $option;
+
     private static $instance;
 
     private function __construct()
     {
     }
 
-    public static function __init()
+    public static function __init(): void
     {
         if (!isset(self::$option)) {
             self::$instance = new self();
@@ -121,7 +122,7 @@ class Option
         return false;
     }
 
-    private function _loadSetting()
+    private function _loadSetting(): void
     {
         $opt = AdminOption::select('name', 'value')->where('autoload', '1')->get();
 
@@ -133,7 +134,6 @@ class Option
         }
 
         self::$option = $option;
-
     }
 
     private function _maybe_serialize($data)

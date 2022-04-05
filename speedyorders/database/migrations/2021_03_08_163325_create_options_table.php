@@ -8,12 +8,10 @@ class CreateOptionsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('options', function (Blueprint $table) {
+        Schema::create('options', function (Blueprint $table): void {
             $table->unsignedBigInteger('id')->autoIncrement();
             $table->string('name')->nullable()->default(null);
             $table->string('type')->default(null)->nullable();
@@ -24,10 +22,8 @@ class CreateOptionsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('options');
     }

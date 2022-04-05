@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateRandomCodesTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::create('random_codes', function (Blueprint $table) {
+        Schema::create('random_codes', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('code');
             $table->integer('active');

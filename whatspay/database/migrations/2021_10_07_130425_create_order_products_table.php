@@ -8,12 +8,10 @@ class CreateOrderProductsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('order_products', function (Blueprint $table) {
+        Schema::create('order_products', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->bigInteger('order_id')->unsigned()->index('order_product_order_id_index')->comment('Belongs to users table pk');
             $table->bigInteger('product_id')->unsigned()->index('order_product_product_id_index')->comment('Belongs to stores table pk');
@@ -29,10 +27,8 @@ class CreateOrderProductsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('order_products');
     }

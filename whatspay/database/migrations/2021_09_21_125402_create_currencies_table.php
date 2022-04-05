@@ -8,12 +8,10 @@ class CreateCurrenciesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('currencies', function (Blueprint $table) {
+        Schema::create('currencies', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('title', 191)->nullable();
             $table->string('symbol', 10)->nullable();
@@ -29,13 +27,11 @@ class CreateCurrenciesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('currencies');
-        Schema::table('currencies', function (Blueprint $table) {
+        Schema::table('currencies', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
     }

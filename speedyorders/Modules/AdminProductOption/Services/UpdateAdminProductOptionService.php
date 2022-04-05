@@ -4,6 +4,7 @@ namespace Modules\AdminProductOption\Services;
 
 use App\Models\Option;
 use App\Models\OptionValue;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class UpdateAdminProductOptionService
@@ -20,14 +21,14 @@ class UpdateAdminProductOptionService
                 $option->optionValues()->delete();
                 $inserData = [];
                 $time = now();
-                foreach ($data['option_value']['name'] as $key=>$optionValue) {
+                foreach ($data['option_value']['name'] as $key => $optionValue) {
                     $inserData[] = [
-                        'option_id'=>$option->id,
-                        'name'=>$optionValue,
-                        'image'=>$data['option_value']['image'][$key] ?? null,
-                        'sort_order'=>$data['option_value']['sort_order'][$key],
-                        'created_at'=>$time,
-                        'updated_at'=>$time,
+                        'option_id' => $option->id,
+                        'name' => $optionValue,
+                        'image' => $data['option_value']['image'][$key] ?? null,
+                        'sort_order' => $data['option_value']['sort_order'][$key],
+                        'created_at' => $time,
+                        'updated_at' => $time,
                     ];
                 }
 
@@ -37,7 +38,7 @@ class UpdateAdminProductOptionService
             DB::commit();
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             dd($e);
             DB::rollback();
 

@@ -20,6 +20,7 @@ class Appraisal extends Model
         'Intermediate',
         'Advanced',
     ];
+
     protected $fillable = [
         'branch',
         'employee',

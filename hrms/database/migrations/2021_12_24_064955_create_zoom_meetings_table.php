@@ -8,12 +8,10 @@ class CreateZoomMeetingsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('zoom_meetings', function (Blueprint $table) {
+        Schema::create('zoom_meetings', function (Blueprint $table): void {
             $table->id();
             $table->string('title')->nullable();
             $table->string('meeting_id')->default(0);
@@ -31,10 +29,8 @@ class CreateZoomMeetingsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('zoom_meetings');
     }

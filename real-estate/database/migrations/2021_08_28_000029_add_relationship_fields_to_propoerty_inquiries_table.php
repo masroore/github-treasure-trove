@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class AddRelationshipFieldsToPropoertyInquiriesTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::table('propoerty_inquiries', function (Blueprint $table) {
+        Schema::table('propoerty_inquiries', function (Blueprint $table): void {
             $table->unsignedBigInteger('property_id');
             $table->foreign('property_id', 'property_fk_4565271')->references('id')->on('properties');
             $table->unsignedBigInteger('created_by_id')->nullable();

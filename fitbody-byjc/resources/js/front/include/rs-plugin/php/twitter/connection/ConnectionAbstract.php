@@ -85,7 +85,7 @@ abstract class ConnectionAbstract
      *
      * @return array
      */
-    abstract protected function _buildHeaders($url, ?array $parameters = null, $method);
+    abstract protected function _buildHeaders($url, ?array $parameters, $method);
 
     /**
      * Call Twitter api.

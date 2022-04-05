@@ -18,17 +18,17 @@ Route::get('/stores/search', [ProductController::class, 'filterStores']);
 Route::get('/places', [Places::class, 'countries']);
 Route::get('/places/{place}', [Places::class, 'country']);
 
-Route::get('/product/{id}', ['uses'=>'App\Http\Controllers\CommentController@showProductComments']);
+Route::get('/product/{id}', ['uses' => 'App\Http\Controllers\CommentController@showProductComments']);
 
 //Get fount awesome icons
 Route::get('/icons', [Fontawsomeicons::class, 'icons']);
 
-Route::group(['middleware' => 'auth:sanctum'], function () {
+Route::group(['middleware' => 'auth:sanctum'], function (): void {
     // brand routes
     Route::resource('brands', BrandsController::class);
 
     // Tags routes
-    Route::group(['prefix' => 'tags'], function () {
+    Route::group(['prefix' => 'tags'], function (): void {
         // search
         Route::get('/search/{keyword}', [TagsController::class, 'search']);
 

@@ -11,10 +11,8 @@ class LaravelBackupPanelServiceProvider extends LaravelBackupPanelApplicationSer
      * Register the Laravel Backup Panel gate.
      *
      * This gate determines who can access Laravel Backup Panel in non-local environments.
-     *
-     * @return void
      */
-    protected function gate()
+    protected function gate(): void
     {
         Gate::define('viewLaravelBackupPanel', function ($user) {
             return \in_array($user->email, [

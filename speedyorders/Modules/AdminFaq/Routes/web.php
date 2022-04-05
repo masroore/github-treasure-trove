@@ -11,7 +11,7 @@
 |
 */
 
-Route::group(['prefix' => 'admin/faq/categories', 'middleware' => 'auth:admin', 'as'=>'admin.faq.categories.'], function () {
+Route::group(['prefix' => 'admin/faq/categories', 'middleware' => 'auth:admin', 'as' => 'admin.faq.categories.'], function (): void {
     Route::get('/', 'AdminFaqCategoryController@index')->name('index')->middleware('can:list-product-option');
     Route::get('/create', 'AdminFaqCategoryController@create')->name('create')->middleware('can:create-product-option');
     Route::post('/store', 'AdminFaqCategoryController@store')->name('store')->middleware('can:store-product-option');
@@ -24,7 +24,7 @@ Route::group(['prefix' => 'admin/faq/categories', 'middleware' => 'auth:admin', 
     Route::post('/import', 'AdminFaqCategoryController@importFromExcel')->name('import')->middleware('can:delete-product-option');
 });
 
-Route::group(['prefix' => 'admin/faq', 'middleware' => 'auth:admin', 'as'=>'admin.faqs.'], function () {
+Route::group(['prefix' => 'admin/faq', 'middleware' => 'auth:admin', 'as' => 'admin.faqs.'], function (): void {
     Route::get('/', 'AdminFaqController@index')->name('index')->middleware('can:list-product-option');
     Route::get('/create', 'AdminFaqController@create')->name('create')->middleware('can:create-product-option');
     Route::post('/store', 'AdminFaqController@store')->name('store')->middleware('can:store-product-option');

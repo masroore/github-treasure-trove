@@ -8,6 +8,7 @@ use App\Models\Back\Users\Message;
 use App\Models\Front\Page;
 use App\Models\Front\Slider;
 use App\Models\Recaptcha;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -52,8 +53,8 @@ class HomeController extends Controller
         }
 
         $request->validate([
-            'name'    => 'required',
-            'email'   => 'required|email',
+            'name' => 'required',
+            'email' => 'required|email',
             'message' => 'required',
         ]);
 
@@ -67,7 +68,7 @@ class HomeController extends Controller
             Mail::to(config('mail.admin_default'))->send(new \App\Mail\Message($request));
 
             return redirect()->back()->with(['success' => 'Vaša poruka je uspješno poslana..! Netko će vas ubrzo kontaktirati.']);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::debug($e->getMessage());
 
             return redirect()->back()->with(['error' => 'Whoops..! Došlo je do greške sa slanjem poruke. Molimo pokušajte kasnije!']);

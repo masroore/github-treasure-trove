@@ -44,14 +44,14 @@ class AdminReportController extends Controller
             return $query->where('created_at', '>=', $data['startDate'])->where('created_at', '<=', $data['endDate']);
         })
             ->when(isset($data['customer_id']), function ($query) use ($orderProductsId) {
-            return $query->whereIn('order_id', $orderProductsId);
-        })
+                return $query->whereIn('order_id', $orderProductsId);
+            })
             ->when(isset($data['invoice_number']), function ($query) use ($orderProductsId) {
-            return $query->whereIn('order_id', $orderProductsId);
-        })
+                return $query->whereIn('order_id', $orderProductsId);
+            })
             ->when(isset($data['status']), function ($query) use ($data) {
-            return $query->where('status', $data['status']);
-        })
+                return $query->where('status', $data['status']);
+            })
             ->get();
 
         return view('adminreport::order-index', compact('orderProducts', 'customers', 'data'), $sdata);
@@ -78,11 +78,11 @@ class AdminReportController extends Controller
             return $query->where('created_at', '>=', $data['startDate'])->where('created_at', '<=', $data['endDate']);
         })
             ->when(isset($data['customer_id']), function ($query) use ($data) {
-            return $query->where('customer_user_id', $data['customer_id']);
-        })
+                return $query->where('customer_user_id', $data['customer_id']);
+            })
             ->when(isset($data['type']), function ($query) use ($data) {
-            return $query->where('type', $data['type']);
-        })
+                return $query->where('type', $data['type']);
+            })
             ->select('description', 'amount', 'customer_user_id', 'type')
             ->get();
 

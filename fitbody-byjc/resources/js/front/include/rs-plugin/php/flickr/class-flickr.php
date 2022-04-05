@@ -38,15 +38,15 @@ class TP_flickr
      *
      * @since    1.0.0
      *
-     * @param string $api_key flickr API key.
+     * @param string $api_key flickr API key
      */
     public function __construct($api_key)
     {
         $this->api_key = $api_key;
         $this->api_param_defaults = [
-          'api_key' => $this->api_key,
-          'format' => 'json',
-          'nojsoncallback' => 1,
+            'api_key' => $this->api_key,
+            'format' => 'json',
+            'nojsoncallback' => 1,
         ];
     }
 
@@ -61,7 +61,7 @@ class TP_flickr
     {
         //gallery params
         $user_params = $this->api_param_defaults + [
-            'method'  => 'flickr.urls.lookupUser',
+            'method' => 'flickr.urls.lookupUser',
             'url' => $user_url,
         ];
 
@@ -85,7 +85,7 @@ class TP_flickr
     {
         //gallery params
         $group_params = $this->api_param_defaults + [
-            'method'  => 'flickr.urls.lookupGroup',
+            'method' => 'flickr.urls.lookupGroup',
             'url' => $group_url,
         ];
 
@@ -110,10 +110,10 @@ class TP_flickr
     {
         //public photos params
         $public_photo_params = $this->api_param_defaults + [
-            'method'  => 'flickr.people.getPublicPhotos',
+            'method' => 'flickr.people.getPublicPhotos',
             'user_id' => $user_id,
-            'extras'  => 'description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_q, url_m, url_n, url_z, url_c, url_l, url_o',
-            'per_page'=> $item_count,
+            'extras' => 'description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_q, url_m, url_n, url_z, url_c, url_l, url_o',
+            'per_page' => $item_count,
             'page' => 1,
         ];
 
@@ -135,10 +135,10 @@ class TP_flickr
     {
         //photoset params
         $photo_set_params = $this->api_param_defaults + [
-            'method'  => 'flickr.photosets.getList',
+            'method' => 'flickr.photosets.getList',
             'user_id' => $user_id,
-            'per_page'=> $item_count,
-            'page'    => 1,
+            'per_page' => $item_count,
+            'page' => 1,
         ];
 
         //get photoset list
@@ -159,11 +159,11 @@ class TP_flickr
     {
         //photoset photos params
         $photo_set_params = $this->api_param_defaults + [
-            'method'  		=> 'flickr.photosets.getPhotos',
-            'photoset_id' 	=> $photo_set_id,
-            'per_page'		=> $item_count,
-            'page'    		=> 1,
-            'extras'		=> 'license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_q, url_m, url_n, url_z, url_c, url_l, url_o',
+            'method' => 'flickr.photosets.getPhotos',
+            'photoset_id' => $photo_set_id,
+            'per_page' => $item_count,
+            'page' => 1,
+            'extras' => 'license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_q, url_m, url_n, url_z, url_c, url_l, url_o',
         ];
 
         //get photo list
@@ -184,11 +184,11 @@ class TP_flickr
     {
         //photoset photos params
         $group_pool_params = $this->api_param_defaults + [
-            'method'  		=> 'flickr.groups.pools.getPhotos',
-            'group_id' 	=> $group_id,
-            'per_page'		=> $item_count,
-            'page'    		=> 1,
-            'extras'		=> 'license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_q, url_m, url_n, url_z, url_c, url_l, url_o',
+            'method' => 'flickr.groups.pools.getPhotos',
+            'group_id' => $group_id,
+            'per_page' => $item_count,
+            'page' => 1,
+            'extras' => 'license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_q, url_m, url_n, url_z, url_c, url_l, url_o',
         ];
 
         //get photo list
@@ -208,7 +208,7 @@ class TP_flickr
     {
         //gallery params
         $gallery_params = $this->api_param_defaults + [
-            'method'  => 'flickr.urls.lookupGallery',
+            'method' => 'flickr.urls.lookupGallery',
             'url' => $gallery_url,
         ];
 
@@ -230,10 +230,10 @@ class TP_flickr
     {
         //gallery photos params
         $gallery_photo_params = $this->api_param_defaults + [
-            'method'  => 'flickr.galleries.getPhotos',
+            'method' => 'flickr.galleries.getPhotos',
             'gallery_id' => $gallery_id,
-            'extras'  => 'description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_q, url_m, url_n, url_z, url_c, url_l, url_o',
-            'per_page'=> $item_count,
+            'extras' => 'description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_q, url_m, url_n, url_z, url_c, url_l, url_o',
+            'per_page' => $item_count,
             'page' => 1,
         ];
 

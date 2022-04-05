@@ -16,6 +16,7 @@ class EmployeeService
      * @var
      */
     protected $employeeRepository;
+
     protected $userRepository;
 
     /**
@@ -40,7 +41,7 @@ class EmployeeService
                 'phones',
                 'addresses',
                 'role_id',
-            ], ['user' => function ($query) {
+            ], ['user' => function ($query): void {
                 $query->select('id', 'name', 'email AS username');
             }]);
         } catch (Exception $e) {
@@ -56,9 +57,9 @@ class EmployeeService
 
             //Validate request
             $validator = Validator::make($request->input(), [
-                'username'  => 'required|string|unique:users,email',
-                'name'      => 'required|string',
-                'password'  => 'required|string',
+                'username' => 'required|string|unique:users,email',
+                'name' => 'required|string',
+                'password' => 'required|string',
             ]);
 
             if ($validator->fails()) {
@@ -73,21 +74,21 @@ class EmployeeService
 
             // create user
             $user = $this->userRepository->create([
-                'name'            => $request['name'],
-                'email'           => $request['username'],
-                'password'        => bcrypt($request['password']),
-                'user_type'       => 'employee',
+                'name' => $request['name'],
+                'email' => $request['username'],
+                'password' => bcrypt($request['password']),
+                'user_type' => 'employee',
                 'wp_num_inc_code' => $request['username'],
                 'wp_num_exc_code' => $request['username'],
-                'user_status'     => 1,
+                'user_status' => 1,
             ]);
 
             //$employee = $request->input()
             $new_employee = $this->employeeRepository->create([
-                'user_id'   => $user->id,
-                'store_id' 	=> $request['store_id'],
-                'role_id' 	=> $request['role_id'],
-                'is_admin' 	=> 0,
+                'user_id' => $user->id,
+                'store_id' => $request['store_id'],
+                'role_id' => $request['role_id'],
+                'is_admin' => 0,
             ]);
 
             $employee['id'] = $new_employee->id;
@@ -112,7 +113,7 @@ class EmployeeService
                 'phones',
                 'addresses',
                 'role_id',
-            ], ['user' => function ($query) {
+            ], ['user' => function ($query): void {
                 $query->select('id', 'name', 'email AS username');
             }]);
         } catch (Exception $e) {
@@ -178,7 +179,7 @@ class EmployeeService
                 'is_admin' => 0,
             ], ['user_id']);
 
-            $employee = $this->employeeRepository->deleteByColumn(['id'=>$id, 'store_id'=>$request['store_id']]);
+            $employee = $this->employeeRepository->deleteByColumn(['id' => $id, 'store_id' => $request['store_id']]);
             if (true === $employee) {
                 $this->userRepository->deleteById($user->user_id);
             }

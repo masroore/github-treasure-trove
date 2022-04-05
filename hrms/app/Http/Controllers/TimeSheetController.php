@@ -9,6 +9,8 @@ use App\Models\TimeSheet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
+use Session;
+use Validator;
 
 class TimeSheetController extends Controller
 {
@@ -81,9 +83,8 @@ class TimeSheetController extends Controller
         return redirect()->back()->with('error', 'Permission denied.');
     }
 
-    public function show(TimeSheet $timeSheet)
+    public function show(TimeSheet $timeSheet): void
     {
-
     }
 
     public function edit(TimeSheet $timeSheet, $id)
@@ -156,7 +157,7 @@ class TimeSheetController extends Controller
         $rules = [
             'file' => 'required|mimes:csv,txt',
         ];
-        $validator = \Validator::make($request->all(), $rules);
+        $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
             $messages = $validator->getMessageBag();
@@ -167,7 +168,7 @@ class TimeSheetController extends Controller
 
         $totalTimesheet = \count($timesheet) - 1;
         $errorArray = [];
-        for ($i = 1; $i <= $totalTimesheet; $i++) {
+        for ($i = 1; $i <= $totalTimesheet; ++$i) {
             $timesheets = $timesheet[$i];
             $timesheetData = TimeSheet::where('employee_id', $timesheets[1])->where('date', $timesheets[0])->first();
 
@@ -196,7 +197,7 @@ class TimeSheetController extends Controller
                 $errorRecord[] = implode(',', $errorData->toArray());
             }
 
-            \Session::put('errorArray', $errorRecord);
+            Session::put('errorArray', $errorRecord);
         }
 
         return redirect()->back()->with($data['status'], $data['msg']);

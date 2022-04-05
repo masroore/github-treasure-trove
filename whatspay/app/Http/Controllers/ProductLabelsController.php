@@ -39,7 +39,6 @@ class ProductLabelsController extends BaseController
      */
     public function create()
     {
-
     }
 
     /**
@@ -85,7 +84,6 @@ class ProductLabelsController extends BaseController
      */
     public function edit($id)
     {
-
     }
 
     /**

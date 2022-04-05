@@ -12,7 +12,7 @@
 */
 use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix' => 'admin/coupons', 'middleware' => 'auth:admin', 'as'=>'admin.coupons.'], function () {
+Route::group(['prefix' => 'admin/coupons', 'middleware' => 'auth:admin', 'as' => 'admin.coupons.'], function (): void {
     Route::get('/', 'AdminCouponController@index')->name('index')->middleware('can:list-coupon');
     Route::get('/create', 'AdminCouponController@create')->name('create')->middleware('can:create-coupon');
     Route::post('/store', 'AdminCouponController@store')->name('store')->middleware('can:store-coupon');
@@ -22,7 +22,7 @@ Route::group(['prefix' => 'admin/coupons', 'middleware' => 'auth:admin', 'as'=>'
 
     Route::get('/change/status/{id}', 'AdminCouponController@updateCouponStatus')->name('update.status')->middleware('can:edit-product-option');
 
-    Route::group(['prefix' => '/histories', 'as'=>'histories.'], function () {
+    Route::group(['prefix' => '/histories', 'as' => 'histories.'], function (): void {
         Route::get('/', 'AdminCouponHistoryController@index')->name('index')->middleware('can:list-coupon-history');
         Route::get('/details/{coupon}', 'AdminCouponHistoryController@couponHistoryDetails')->name('details')->middleware('can:list-coupon-history');
     });

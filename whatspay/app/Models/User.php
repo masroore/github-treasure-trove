@@ -113,7 +113,7 @@ class User extends Authenticatable
             ->where([
                 'favorable_type' => \get_class($products),
                 'favorites.user_id' => Auth::id(),
-//                'favorites.deleted_at' => null
+                //                'favorites.deleted_at' => null
             ])->get();
     }
 

@@ -6,6 +6,7 @@ use App\Models\AgentLicense;
 use App\Utils\License;
 use App\Utils\Option;
 use Closure;
+use Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthAgentSDK
@@ -41,7 +42,7 @@ class AuthAgentSDK
             if ($agentDetails) {
                 return $next($request);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
 
            /* return response()->json([
                 'success' => false,

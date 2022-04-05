@@ -3,6 +3,7 @@
 namespace Modules\AdminFaq\Http\Controllers;
 
 use App\Models\FaqCategory;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Maatwebsite\Excel\Facades\Excel;
@@ -161,7 +162,7 @@ class AdminFaqCategoryController extends Controller
             }
             FaqCategory::where('id', $id)->first()->update(['status' => $status]);
             session()->flash('success_message', 'Faq Category updated successfully.');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             session()->flash('error_message', 'Faq Category could not be updated.');
         }
 
@@ -171,7 +172,7 @@ class AdminFaqCategoryController extends Controller
     public function importFromExcel(Request $request)
     {
         $request->validate([
-            'faq_category_file'=>'required|file||mimes:csv,xlsx|max:4096',
+            'faq_category_file' => 'required|file||mimes:csv,xlsx|max:4096',
         ]);
 
         if ($request->hasFile('faq_category_file')) {

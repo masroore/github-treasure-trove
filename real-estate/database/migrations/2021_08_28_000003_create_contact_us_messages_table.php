@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateContactUsMessagesTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::create('contact_us_messages', function (Blueprint $table) {
+        Schema::create('contact_us_messages', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('email')->nullable();

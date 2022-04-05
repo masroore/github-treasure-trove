@@ -8,12 +8,10 @@ class CreateStatesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('states', function (Blueprint $table) {
+        Schema::create('states', function (Blueprint $table): void {
             $table->integer('id')->autoIncrement();
             $table->string('state')->default(null)->nullable();
             $table->string('short_name')->default(null)->nullable();
@@ -24,10 +22,8 @@ class CreateStatesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('states');
     }

@@ -15,8 +15,8 @@ class ImportCategoryRequest extends FormRequest
     public function rules(Request $request)
     {
         return [
-                'file_name' => 'required',
-            ];
+            'file_name' => 'required',
+        ];
     }
 
     /**

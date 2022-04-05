@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateRoleUserPivotTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::create('role_user', function (Blueprint $table) {
+        Schema::create('role_user', function (Blueprint $table): void {
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id', 'user_id_fk_5378894')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('role_id');

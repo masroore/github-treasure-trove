@@ -2,6 +2,7 @@
 
 namespace Modules\AdminRbac\Http\Controllers;
 
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
@@ -118,7 +119,7 @@ class GroupController extends Controller
             session()->flash('success_message', 'Group deleted successfully.');
 
             return back();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             session()->flash('error_message', 'Group could not be deleted.');
 
             return back();

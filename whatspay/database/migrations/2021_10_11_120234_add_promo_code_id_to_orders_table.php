@@ -8,12 +8,10 @@ class AddPromoCodeIdToOrdersTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('orders', function (Blueprint $table) {
+        Schema::table('orders', function (Blueprint $table): void {
             $table->bigInteger('promo_code_id')->unsigned()->index('order_promo_code_id_index')->comment('Belongs to promo codes table');
             $table->foreign('promo_code_id')
                 ->references('id')
@@ -25,13 +23,10 @@ class AddPromoCodeIdToOrdersTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('orders', function (Blueprint $table) {
-
+        Schema::table('orders', function (Blueprint $table): void {
         });
     }
 }

@@ -6,7 +6,7 @@ return [
         'view',
         'edit',
         'delete',
-        ],
+    ],
     'categories' => [
         'add',
         'view',
@@ -44,4 +44,4 @@ return [
         'updateBranch',
         'destroyBranch',
     ],
-    ];
+];

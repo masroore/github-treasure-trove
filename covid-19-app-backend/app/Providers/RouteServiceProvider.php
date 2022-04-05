@@ -24,7 +24,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * When present, controller route declarations will automatically be prefixed with this namespace.
      *
-     * @var string|null
+     * @var null|string
      */
     protected $namespace = 'App\\Http\\Controllers';
 
@@ -35,7 +35,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         $this->configureRateLimiting();
 
-        $this->routes(function () {
+        $this->routes(function (): void {
             Route::prefix('api')
                 ->middleware('api')
                 ->namespace($this->namespace)

@@ -8,14 +8,12 @@ class CreateJobOnBoardsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create(
             'job_on_boards',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->id();
                 $table->integer('application');
                 $table->date('joining_date')->nullable();
@@ -29,10 +27,8 @@ class CreateJobOnBoardsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('job_on_boards');
     }

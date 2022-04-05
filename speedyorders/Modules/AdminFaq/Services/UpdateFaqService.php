@@ -3,6 +3,7 @@
 namespace Modules\AdminFaq\Services;
 
 use App\Models\Faq;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class UpdateFaqService
@@ -16,7 +17,7 @@ class UpdateFaqService
             DB::commit();
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollback();
 
             return false;

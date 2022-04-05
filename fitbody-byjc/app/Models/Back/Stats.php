@@ -42,19 +42,19 @@ class Stats extends Model
         return [
             'total' => [
                 'label' => __('layout.charts.total'),
-                'data'  => number_format($total_sum, 2, ',', '.'),
+                'data' => number_format($total_sum, 2, ',', '.'),
             ],
-            'avg'   => [
+            'avg' => [
                 'label' => __('layout.charts.avg'),
-                'data'  => number_format($avg, 2, ',', '.'),
+                'data' => number_format($avg, 2, ',', '.'),
             ],
-            'min'   => [
+            'min' => [
                 'label' => __('layout.charts.min'),
-                'data'  => number_format($min, 2, ',', '.'),
+                'data' => number_format($min, 2, ',', '.'),
             ],
-            'max'   => [
+            'max' => [
                 'label' => __('layout.charts.max'),
-                'data'  => number_format($max, 2, ',', '.'),
+                'data' => number_format($max, 2, ',', '.'),
             ],
         ];
     }
@@ -69,19 +69,19 @@ class Stats extends Model
         return [
             0 => [
                 'label' => __('layout.charts.yearly'),
-                'data'  => 'y',
+                'data' => 'y',
             ],
             1 => [
                 'label' => __('layout.charts.current_year'),
-                'data'  => 'Y',
+                'data' => 'Y',
             ],
             2 => [
                 'label' => __('layout.charts.current_month'),
-                'data'  => 'M',
+                'data' => 'M',
             ],
             3 => [
                 'label' => __('layout.charts.today'),
-                'data'  => 'T',
+                'data' => 'T',
             ],
         ];
     }
@@ -100,15 +100,15 @@ class Stats extends Model
 
         if ('gender' == $column) {
             $widgets = [
-                'title'    => __('user.chart_gender_title'),
+                'title' => __('user.chart_gender_title'),
                 'subtitle' => __('user.chart_gender_subtitle'),
-                'count'    => \count($data),
+                'count' => \count($data),
             ];
         } elseif ('birth_date' == $column) {
             $widgets = [
-                'title'    => __('user.chart_age_title'),
+                'title' => __('user.chart_age_title'),
                 'subtitle' => __('user.chart_age_subtitle'),
-                'count'    => \count($data),
+                'count' => \count($data),
             ];
         }
 
@@ -125,12 +125,12 @@ class Stats extends Model
         return [
             'products' => ProductStats::count(),
             //'actions'  => ProductStats::actionsCount(),
-            'orders'   => OrderStats::count(),
-            'users'    => [
-                'qty'   => User::where('status', 1)->count(),
-                'href'  => route('users'),
+            'orders' => OrderStats::count(),
+            'users' => [
+                'qty' => User::where('status', 1)->count(),
+                'href' => route('users'),
                 'label' => 'Korisnici',
-                'icon'  => 'si si-user',
+                'icon' => 'si si-user',
             ],
         ];
     }

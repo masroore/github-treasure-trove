@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Back\Api1;
 use App\Http\Controllers\Controller;
 use App\Models\Back\Photo;
 use App\Models\Back\Product\ProductImage;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -78,7 +79,7 @@ class ImagesController extends Controller
             Storage::disk($request->type)->putFileAs($request->type_id, $request->image, $request->name);
 
             return response()->json(['success' => 'Fotografija uspješno uređena!']);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage()]);
         }
 
@@ -168,7 +169,7 @@ class ImagesController extends Controller
             if ('products' == $request->type) {
                 ProductImage::destroy($request->id);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage()]);
         }
 

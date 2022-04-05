@@ -46,7 +46,6 @@ class CardSessionController extends BaseController
      */
     public function create()
     {
-
     }
 
     /**
@@ -56,7 +55,6 @@ class CardSessionController extends BaseController
      */
     public function store(Request $request)
     {
-
     }
 
     /**
@@ -68,7 +66,6 @@ class CardSessionController extends BaseController
      */
     public function show($id)
     {
-
     }
 
     /**
@@ -80,7 +77,6 @@ class CardSessionController extends BaseController
      */
     public function edit($id)
     {
-
     }
 
     /**

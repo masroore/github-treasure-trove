@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class ModifyCustomersAndRelatedTablesToAllcustomerTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::table('customer_users', function (Blueprint $table) {
+        Schema::table('customer_users', function (Blueprint $table): void {
             $table->dropColumn('username');
             $table->dropColumn('first_name');
             $table->dropColumn('middle_name');
@@ -21,7 +21,7 @@ class ModifyCustomersAndRelatedTablesToAllcustomerTable extends Migration
             $table->dropColumn('phone');
         });
 
-        Schema::table('customers', function (Blueprint $table) {
+        Schema::table('customers', function (Blueprint $table): void {
             $table->dropColumn('email');
             $table->dropColumn('postal_code');
             $table->dropColumn('address2');
@@ -29,16 +29,16 @@ class ModifyCustomersAndRelatedTablesToAllcustomerTable extends Migration
             $table->date('date_of_birth')->default(null)->nullable()->after('last_name');
         });
 
-        Schema::table('customer_addresses', function (Blueprint $table) {
+        Schema::table('customer_addresses', function (Blueprint $table): void {
             $table->dropColumn('c_first_name');
             $table->dropColumn('c_last_name');
             $table->dropColumn('c_telephone');
         });
     }
 
-    public function down()
+    public function down(): void
     {
-        Schema::table('customer_users', function (Blueprint $table) {
+        Schema::table('customer_users', function (Blueprint $table): void {
             $table->string('username')->default(null)->nullable();
             $table->string('first_name')->default(null)->nullable();
             $table->string('middle_name')->default(null)->nullable();
@@ -51,14 +51,14 @@ class ModifyCustomersAndRelatedTablesToAllcustomerTable extends Migration
             $table->string('phone')->default(null)->nullable();
         });
 
-        Schema::table('customers', function (Blueprint $table) {
+        Schema::table('customers', function (Blueprint $table): void {
             $table->string('email')->default(null)->nullable();
             $table->string('postal_code')->default(null)->nullable();
             $table->string('address2')->default(null)->nullable();
             $table->string('address1')->default(null)->nullable();
         });
 
-        Schema::table('customer_addresses', function (Blueprint $table) {
+        Schema::table('customer_addresses', function (Blueprint $table): void {
             $table->string('c_first_name');
             $table->string('c_last_name');
             $table->string('c_telephone');

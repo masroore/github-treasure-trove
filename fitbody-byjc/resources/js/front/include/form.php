@@ -24,18 +24,18 @@ require 'phpmailer/src/SMTP.php';
 $toemails = [];
 
 $toemails[] = [
-                'email' => 'your-email@website.com', // Your Email Address
-                'name' => 'Your Name', // Your Name
-            ];
+    'email' => 'your-email@website.com', // Your Email Address
+    'name' => 'Your Name', // Your Name
+];
 
 /*-------------------------------------------------
     Sender's Email
 ---------------------------------------------------*/
 
 $fromemail = [
-                'email' => 'no-reply@website.com', // Company's Email Address (preferably currently used Domain Name)
-                'name' => 'Company Name', // Company Name
-            ];
+    'email' => 'no-reply@website.com', // Company's Email Address (preferably currently used Domain Name)
+    'name' => 'Company Name', // Company Name
+];
 
 /*-------------------------------------------------
     reCaptcha
@@ -59,12 +59,12 @@ $mail = new PHPMailer();
 ---------------------------------------------------*/
 
 $message = [
-    'success'			=> 'We have <strong>successfully</strong> received your Message and will get Back to you as soon as possible.',
-    'error'				=> 'Email <strong>could not</strong> be sent due to some Unexpected Error. Please Try Again later.',
-    'error_bot'			=> 'Bot Detected! Form could not be processed! Please Try Again!',
-    'error_unexpected'	=> 'An <strong>unexpected error</strong> occured. Please Try Again later.',
-    'recaptcha_invalid'	=> 'Captcha not Validated! Please Try Again!',
-    'recaptcha_error'	=> 'Captcha not Submitted! Please Try Again.',
+    'success' => 'We have <strong>successfully</strong> received your Message and will get Back to you as soon as possible.',
+    'error' => 'Email <strong>could not</strong> be sent due to some Unexpected Error. Please Try Again later.',
+    'error_bot' => 'Bot Detected! Form could not be processed! Please Try Again!',
+    'error_unexpected' => 'An <strong>unexpected error</strong> occured. Please Try Again later.',
+    'recaptcha_invalid' => 'Captcha not Validated! Please Try Again!',
+    'recaptcha_error' => 'Captcha not Submitted! Please Try Again.',
 ];
 
 /*-------------------------------------------------
@@ -204,7 +204,7 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
         if (is_array($filevalue['name'])) {
             $filecount = count($filevalue['name']);
 
-            for ($f = 0; $f < $filecount; $f++) {
+            for ($f = 0; $f < $filecount; ++$f) {
                 if (isset($_FILES[$file]) && \UPLOAD_ERR_OK == $_FILES[$file]['error'][$f]) {
                     $mail->IsHTML(true);
                     $mail->AddAttachment($_FILES[$file]['tmp_name'][$f], $_FILES[$file]['name'][$f]);

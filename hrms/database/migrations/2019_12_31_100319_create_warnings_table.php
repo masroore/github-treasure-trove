@@ -8,12 +8,10 @@ class CreateWarningsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('warnings', function (Blueprint $table) {
+        Schema::create('warnings', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->integer('warning_to');
             $table->integer('warning_by');
@@ -27,10 +25,8 @@ class CreateWarningsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('warnings');
     }

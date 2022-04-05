@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateQaMessagesTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::create('qa_messages', function (Blueprint $table) {
+        Schema::create('qa_messages', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('topic_id');
             $table->foreign('topic_id')->references('id')->on('qa_topics')->onDelete('cascade');

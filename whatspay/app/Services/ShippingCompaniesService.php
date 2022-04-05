@@ -16,6 +16,7 @@ class ShippingCompaniesService
      * @var
      */
     protected $shippingcompaniesRepository;
+
     protected $storeRepository;
 
     /**

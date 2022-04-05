@@ -2,6 +2,7 @@
 
 namespace Modules\Dashboard\Providers;
 
+use Config;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\ServiceProvider;
 
@@ -16,10 +17,8 @@ class DashboardServiceProvider extends ServiceProvider
 
     /**
      * Boot the application events.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->registerTranslations();
         $this->registerConfig();
@@ -30,20 +29,16 @@ class DashboardServiceProvider extends ServiceProvider
 
     /**
      * Register the service provider.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->app->register(RouteServiceProvider::class);
     }
 
     /**
      * Register views.
-     *
-     * @return void
      */
-    public function registerViews()
+    public function registerViews(): void
     {
         $viewPath = resource_path('views/modules/dashboard');
 
@@ -55,15 +50,13 @@ class DashboardServiceProvider extends ServiceProvider
 
         $this->loadViewsFrom(array_merge(array_map(function ($path) {
             return $path . '/modules/dashboard';
-        }, \Config::get('view.paths')), [$sourcePath]), 'dashboard');
+        }, Config::get('view.paths')), [$sourcePath]), 'dashboard');
     }
 
     /**
      * Register translations.
-     *
-     * @return void
      */
-    public function registerTranslations()
+    public function registerTranslations(): void
     {
         $langPath = resource_path('lang/modules/dashboard');
 
@@ -76,10 +69,8 @@ class DashboardServiceProvider extends ServiceProvider
 
     /**
      * Register an additional directory of factories.
-     *
-     * @return void
      */
-    public function registerFactories()
+    public function registerFactories(): void
     {
         if (!app()->environment('production')) {
             app(Factory::class)->load(__DIR__ . '/../Database/factories');
@@ -98,10 +89,8 @@ class DashboardServiceProvider extends ServiceProvider
 
     /**
      * Register config.
-     *
-     * @return void
      */
-    protected function registerConfig()
+    protected function registerConfig(): void
     {
         $this->publishes([
             __DIR__ . '/../Config/config.php' => config_path('dashboard.php'),

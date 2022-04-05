@@ -14,7 +14,7 @@ class log
         $this->_level = $level;
     }
 
-    public function log_message($message, $module, $level)
+    public function log_message($message, $module, $level): void
     {
         if ($this->_level >= $level) {
             echo date('G:i:s') . ' - ' . $module . ': ' . $message . "<br />\n";

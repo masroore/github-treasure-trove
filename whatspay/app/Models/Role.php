@@ -10,7 +10,9 @@ class Role extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
     protected $fillable = ['name', 'permissions', 'store_id'];
+
     protected $table = 'roles';
 
     /*public function roleusers() {

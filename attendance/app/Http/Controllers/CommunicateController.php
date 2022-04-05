@@ -28,7 +28,7 @@ class CommunicateController extends Controller
     {
         $program = Programme::all();
 
-        return view('Communicate.send_mail', ['program'=>$program]);
+        return view('Communicate.send_mail', ['program' => $program]);
     }
 
     public function send_mail_now(Request $request)
@@ -153,7 +153,7 @@ class CommunicateController extends Controller
     {
         $program = Programme::all();
 
-        return view('Communicate.send_sms', ['program'=>$program]);
+        return view('Communicate.send_sms', ['program' => $program]);
     }
 
     public function send_sms_now(Request $request)

@@ -46,12 +46,12 @@ class AdmissionController extends Controller
     public function purchase_osn(Request $request)
     {
         $this->validate($request, [
-        'fname'=>'required',
-        'lname'=>'required',
-        'email'=>'required|email',
-        'pnumber'=>'required',
-        'prog'=>'required',
-      ]);
+            'fname' => 'required',
+            'lname' => 'required',
+            'email' => 'required|email',
+            'pnumber' => 'required',
+            'prog' => 'required',
+        ]);
 
         $amount = 0;
 
@@ -62,15 +62,15 @@ class AdmissionController extends Controller
         }
 
         $data = [
-        'firstname'=>$request->input('fname'),
-        'lastname'=>$request->input('lname'),
-        'othernames'=>$request->input('oname'),
-        'email'=>$request->input('email'),
-        'phone'=>$request->input('pnumber'),
-        'programme'=>$request->input('prog'),
-        'amount'=>  $amount,
-        'year'=>$request->input('pyear'),
-      ];
+            'firstname' => $request->input('fname'),
+            'lastname' => $request->input('lname'),
+            'othernames' => $request->input('oname'),
+            'email' => $request->input('email'),
+            'phone' => $request->input('pnumber'),
+            'programme' => $request->input('prog'),
+            'amount' => $amount,
+            'year' => $request->input('pyear'),
+        ];
 
         $osn = new Osncode($data);
         $osn->save();
@@ -96,7 +96,7 @@ class AdmissionController extends Controller
         // dd($osn);
         // exit();
 
-        return view('web.osnpayment', ['osn'=>$osn]);
+        return view('web.osnpayment', ['osn' => $osn]);
     }
 
     public function osn_code_gen(Request $request)
@@ -140,8 +140,8 @@ class AdmissionController extends Controller
     public function admission_loign(Request $request)
     {
         $this->validate($request, [
-              'osncode'=> 'required',
-            ]);
+            'osncode' => 'required',
+        ]);
 
         $code = $request->input('osncode');
         $osncode = Osncode::whereRaw('BINARY `code` = ?', [$code])->first();
@@ -173,7 +173,7 @@ class AdmissionController extends Controller
         $progra = Personalinfo::where('osncode_id', $id)->first();
         // dd($progra);
         // exit();
-        return view('web.admission_personal_info', ['info'=>$progra]);
+        return view('web.admission_personal_info', ['info' => $progra]);
     }
 
     public function save_per_info(Request $request)
@@ -208,25 +208,25 @@ class AdmissionController extends Controller
             //insert data
             $data = [
                 'title' => $request->input('title'),
-                'surname'=> $request->input('Sname'),
-                'middlename'=> $request->input('mname'),
-                'firstnames'=> $request->input('fname'),
-                'gender'=> $request->input('gender'),
-                'dateofbirth'=> $request->input('dateofb'),
-                'religion'=> $request->input('relig'),
-                'denomination'=> $request->input('denomina'),
-                'placeofbirth'=> $request->input('plofbir'),
-                'nationality'=> $request->input('national'),
-                'hometown'=> $request->input('hometwn'),
-                'region'=> $request->input('region'),
-                'disability'=> $request->input('disble'),
-                'postcode'=> $request->input('pcode'),
-                'address'=> $request->input('residnadd'),
-                'email'=> $request->input('Email'),
-                'phone'=> $request->input('Phone'),
+                'surname' => $request->input('Sname'),
+                'middlename' => $request->input('mname'),
+                'firstnames' => $request->input('fname'),
+                'gender' => $request->input('gender'),
+                'dateofbirth' => $request->input('dateofb'),
+                'religion' => $request->input('relig'),
+                'denomination' => $request->input('denomina'),
+                'placeofbirth' => $request->input('plofbir'),
+                'nationality' => $request->input('national'),
+                'hometown' => $request->input('hometwn'),
+                'region' => $request->input('region'),
+                'disability' => $request->input('disble'),
+                'postcode' => $request->input('pcode'),
+                'address' => $request->input('residnadd'),
+                'email' => $request->input('Email'),
+                'phone' => $request->input('Phone'),
                 'year' => $academic->acdemicyear,
-                'maritalstutus'=> $request->input('mstatus'),
-              ];
+                'maritalstutus' => $request->input('mstatus'),
+            ];
 
             $osdcode = Osncode::find($request->session()->get('id'));
             $personalinfo = new Personalinfo($data);
@@ -259,10 +259,10 @@ class AdmissionController extends Controller
         // dd($result1);
         // exit();
         return view('web.admission_results', [
-              'result1'=>$result1,
-              'result2'=>$result2,
-              'result3'=>$result3,
-            ]);
+            'result1' => $result1,
+            'result2' => $result2,
+            'result3' => $result3,
+        ]);
     }
 
     public function save_results(Request $request)
@@ -460,29 +460,29 @@ class AdmissionController extends Controller
             //insert
 
             $data = [
-  'resulttype'=>$request->input('result'),
-  'examtype'=>$request->input('extype'),
-  'examyear'=>$request->input('exyr'),
-  'indexnumber'=>$request->input('indexnember'),
-  'subject1'=>$request->input('subject1'),
-  'grade1'=>$request->input('grade1'),
-  'grad1' => $grade1,
-  'subject2'=>$request->input('subject2'),
-  'grade2'=>$request->input('grade2'),
-  'grad2' =>$grade2,
-  'subject3' =>$request->input('subject3'),
-  'grade3' =>$request->input('grade3'),
-  'grad3' =>$grade3,
-  'subject4' =>$request->input('subject4'),
-  'grade4' =>$request->input('grade4'),
-  'grad4' => $grade4,
-  'subject5' =>$request->input('subject5'),
-  'grade5' =>$request->input('grade5'),
-  'grad5' =>$grade5,
-  'subject6' =>$request->input('subject6'),
-  'grade6' =>$request->input('grade6'),
-  'grad6' =>$grade6,
-];
+                'resulttype' => $request->input('result'),
+                'examtype' => $request->input('extype'),
+                'examyear' => $request->input('exyr'),
+                'indexnumber' => $request->input('indexnember'),
+                'subject1' => $request->input('subject1'),
+                'grade1' => $request->input('grade1'),
+                'grad1' => $grade1,
+                'subject2' => $request->input('subject2'),
+                'grade2' => $request->input('grade2'),
+                'grad2' => $grade2,
+                'subject3' => $request->input('subject3'),
+                'grade3' => $request->input('grade3'),
+                'grad3' => $grade3,
+                'subject4' => $request->input('subject4'),
+                'grade4' => $request->input('grade4'),
+                'grad4' => $grade4,
+                'subject5' => $request->input('subject5'),
+                'grade5' => $request->input('grade5'),
+                'grad5' => $grade5,
+                'subject6' => $request->input('subject6'),
+                'grade6' => $request->input('grade6'),
+                'grad6' => $grade6,
+            ];
 
             //dd($data);
 
@@ -701,29 +701,29 @@ class AdmissionController extends Controller
             //insert
 
             $data = [
-  'resulttype'=>$request->input('result'),
-  'examtype'=>$request->input('extype'),
-  'examyear'=>$request->input('exyr'),
-  'indexnumber'=>$request->input('indexnember'),
-  'subject1'=>$request->input('subject1'),
-  'grade1'=>$request->input('grade1'),
-  'grad1' => $grade1,
-  'subject2'=>$request->input('subject2'),
-  'grade2'=>$request->input('grade2'),
-  'grad2' =>$grade2,
-  'subject3' =>$request->input('subject3'),
-  'grade3' =>$request->input('grade3'),
-  'grad3' =>$grade3,
-  'subject4' =>$request->input('subject4'),
-  'grade4' =>$request->input('grade4'),
-  'grad4' => $grade4,
-  'subject5' =>$request->input('subject5'),
-  'grade5' =>$request->input('grade5'),
-  'grad5' =>$grade5,
-  'subject6' =>$request->input('subject6'),
-  'grade6' =>$request->input('grade6'),
-  'grad6' =>$grade6,
-];
+                'resulttype' => $request->input('result'),
+                'examtype' => $request->input('extype'),
+                'examyear' => $request->input('exyr'),
+                'indexnumber' => $request->input('indexnember'),
+                'subject1' => $request->input('subject1'),
+                'grade1' => $request->input('grade1'),
+                'grad1' => $grade1,
+                'subject2' => $request->input('subject2'),
+                'grade2' => $request->input('grade2'),
+                'grad2' => $grade2,
+                'subject3' => $request->input('subject3'),
+                'grade3' => $request->input('grade3'),
+                'grad3' => $grade3,
+                'subject4' => $request->input('subject4'),
+                'grade4' => $request->input('grade4'),
+                'grad4' => $grade4,
+                'subject5' => $request->input('subject5'),
+                'grade5' => $request->input('grade5'),
+                'grad5' => $grade5,
+                'subject6' => $request->input('subject6'),
+                'grade6' => $request->input('grade6'),
+                'grad6' => $grade6,
+            ];
 
             $osdcode = Osncode::find($request->session()->get('id'));
             $result = new Result($data);
@@ -938,29 +938,29 @@ class AdmissionController extends Controller
             //insert
 
             $data = [
-  'resulttype'=>$request->input('result'),
-  'examtype'=>$request->input('extype'),
-  'examyear'=>$request->input('exyr'),
-  'indexnumber'=>$request->input('indexnember'),
-  'subject1'=>$request->input('subject1'),
-  'grade1'=>$request->input('grade1'),
-  'grad1' => $grade1,
-  'subject2'=>$request->input('subject2'),
-  'grade2'=>$request->input('grade2'),
-  'grad2' =>$grade2,
-  'subject3' =>$request->input('subject3'),
-  'grade3' =>$request->input('grade3'),
-  'grad3' =>$grade3,
-  'subject4' =>$request->input('subject4'),
-  'grade4' =>$request->input('grade4'),
-  'grad4' => $grade4,
-  'subject5' =>$request->input('subject5'),
-  'grade5' =>$request->input('grade5'),
-  'grad5' =>$grade5,
-  'subject6' =>$request->input('subject6'),
-  'grade6' =>$request->input('grade6'),
-  'grad6' =>$grade6,
-];
+                'resulttype' => $request->input('result'),
+                'examtype' => $request->input('extype'),
+                'examyear' => $request->input('exyr'),
+                'indexnumber' => $request->input('indexnember'),
+                'subject1' => $request->input('subject1'),
+                'grade1' => $request->input('grade1'),
+                'grad1' => $grade1,
+                'subject2' => $request->input('subject2'),
+                'grade2' => $request->input('grade2'),
+                'grad2' => $grade2,
+                'subject3' => $request->input('subject3'),
+                'grade3' => $request->input('grade3'),
+                'grad3' => $grade3,
+                'subject4' => $request->input('subject4'),
+                'grade4' => $request->input('grade4'),
+                'grad4' => $grade4,
+                'subject5' => $request->input('subject5'),
+                'grade5' => $request->input('grade5'),
+                'grad5' => $grade5,
+                'subject6' => $request->input('subject6'),
+                'grade6' => $request->input('grade6'),
+                'grad6' => $grade6,
+            ];
 
             // print_r($data);
 
@@ -995,7 +995,7 @@ class AdmissionController extends Controller
         // dd($school);
         // exit();
 
-        return view('web.admission_school', ['school'=>$school]);
+        return view('web.admission_school', ['school' => $school]);
     }
 
     public function admission_personal_school_save(Request $request)
@@ -1023,13 +1023,13 @@ class AdmissionController extends Controller
         } else {
             //insert
             $data = [
-    'name' => $request->input('iname1'),
-    'schstart' => $request->input('stdate1'),
-    'schend' => $request->input('eddate1'),
-    'name2' => $request->input('iname2'),
-    'schstart2' => $request->input('stdate2'),
-    'schend2' => $request->input('eddate2'),
-  ];
+                'name' => $request->input('iname1'),
+                'schstart' => $request->input('stdate1'),
+                'schend' => $request->input('eddate1'),
+                'name2' => $request->input('iname2'),
+                'schstart2' => $request->input('stdate2'),
+                'schend2' => $request->input('eddate2'),
+            ];
 
             $osdcode = Osncode::find($request->session()->get('id'));
             $schoolattneded = new School($data);
@@ -1054,9 +1054,9 @@ class AdmissionController extends Controller
         $prog = Programme::all();
 
         return view('web.admisssion_appliactioninfo', [
-    'prog'=>$prog,
-    'appinfo'=> $appinfo,
-  ]);
+            'prog' => $prog,
+            'appinfo' => $appinfo,
+        ]);
     }
 
     public function admission_app_info_save(Request $request)
@@ -1110,7 +1110,7 @@ class AdmissionController extends Controller
             {
                 $code = 'GES';
 
-                for ($i = 0; $i < $limit; $i++) {
+                for ($i = 0; $i < $limit; ++$i) {
                     $code .= mt_rand(0, 9);
                 }
 
@@ -1123,16 +1123,16 @@ class AdmissionController extends Controller
             // exit();
 
             $data = [
-      'session' => $request->input('session'),
-      'entrylevel'=> $request->input('entry'),
-      'firstchoice'  => $first,
-      'fcode'  => $first,
-      'secondchoice'  => $sec,
-      'scode'  => $secc,
-      'thirdchoice'  => $trd,
-      'tcode'  => $trdc,
-      'indexnumber'  => generateindexid(5),
-    ];
+                'session' => $request->input('session'),
+                'entrylevel' => $request->input('entry'),
+                'firstchoice' => $first,
+                'fcode' => $first,
+                'secondchoice' => $sec,
+                'scode' => $secc,
+                'thirdchoice' => $trd,
+                'tcode' => $trdc,
+                'indexnumber' => generateindexid(5),
+            ];
 
             $osdcode = Osncode::find($request->session()->get('id'));
             $appinfo = new Applicationinfo($data);
@@ -1148,7 +1148,7 @@ class AdmissionController extends Controller
         $id = $request->session()->get('id');
         $gurinfo = Guardianinfo::where('osncode_id', $id)->first();
 
-        return view('web.admission_gurdian', ['gurinfo'=>$gurinfo]);
+        return view('web.admission_gurdian', ['gurinfo' => $gurinfo]);
     }
 
     public function admission_guid_save(Request $request)
@@ -1175,12 +1175,12 @@ class AdmissionController extends Controller
         } else {
             //insert
             $data = [
-      'gurdianname' =>$request->input('gurname'),
-      'relationshp' =>$request->input('gurrela'),
-      'occupation' =>$request->input('guroccu'),
-      'mobile' =>$request->input('gurmob'),
-      'employed' =>$request->input('emplued'),
-    ];
+                'gurdianname' => $request->input('gurname'),
+                'relationshp' => $request->input('gurrela'),
+                'occupation' => $request->input('guroccu'),
+                'mobile' => $request->input('gurmob'),
+                'employed' => $request->input('emplued'),
+            ];
 
             $osdcode = Osncode::find($request->session()->get('id'));
             $gurinfo = new Guardianinfo($data);
@@ -1204,7 +1204,7 @@ class AdmissionController extends Controller
 
         // dd($suportdoc);
         // exit();
-        return view('web.admission_sup_doc', ['supportdoc'=>$suportdoc]);
+        return view('web.admission_sup_doc', ['supportdoc' => $suportdoc]);
     }
 
     public function admission_sup_doc_save(Request $request)
@@ -1213,9 +1213,9 @@ class AdmissionController extends Controller
 
         //insert
         $data = [
-    'doctype' =>$request->input('doctype'),
-    'filename'=> $fillname,
-  ];
+            'doctype' => $request->input('doctype'),
+            'filename' => $fillname,
+        ];
 
         if (empty($request->session()->get('id'))) {
             session()->forget('id');
@@ -1237,8 +1237,8 @@ class AdmissionController extends Controller
 
             //or
             $data = [
-      'name' => $request->file('fileToUpload')->store('supportdoc', 'public'),
-    ];
+                'name' => $request->file('fileToUpload')->store('supportdoc', 'public'),
+            ];
             $suportdoc->update($data);
         }
 
@@ -1280,7 +1280,7 @@ class AdmissionController extends Controller
         $person = Personalinfo::where('osncode_id', $id)->first();
 
         if ($person) {
-            return view('web.admission_upload_pic', ['profile'=>$person]);
+            return view('web.admission_upload_pic', ['profile' => $person]);
         }
 
         return Redirect()->back();
@@ -1367,9 +1367,9 @@ class AdmissionController extends Controller
         $fullpath = asset('storage') . '/' . $admissfile->file;
 
         return view('web.admission_completed', [
-    'personal' => $person,
-    'appinfo' => $appinfo,
-    'file' => $fullpath, ]);
+            'personal' => $person,
+            'appinfo' => $appinfo,
+            'file' => $fullpath, ]);
     }
 
     public function adm_complete_print(Request $request)
@@ -1674,19 +1674,19 @@ class AdmissionController extends Controller
             ->header('Content-Type', 'application/pdf');
 
         return view('web.admission_print', [
-    'personal' => $person,
-    'appinfo' => $appinfo,
-    'result1' => $result1,
-    'result2' => $result2,
-    'result3' => $result3,
-  ]);
+            'personal' => $person,
+            'appinfo' => $appinfo,
+            'result1' => $result1,
+            'result2' => $result2,
+            'result3' => $result3,
+        ]);
     }
 
     public function newStudent()
     {
         $prog = Programme::all();
 
-        return view('admissionsubmitted.new_student_reg', ['prog'=>$prog]);
+        return view('admissionsubmitted.new_student_reg', ['prog' => $prog]);
     }
 
     public function newStudent_register(Request $request)
@@ -1695,36 +1695,36 @@ class AdmissionController extends Controller
 
         //dd($request);
         $this->validate($request, [
-    'fullname'=>'required',
-    'gender'=>'required',
-    'dateofbirth'=>'required',
-    'denomination'=>'required',
-    'religion'=>'required',
-    'mobile'=>'required',
-    'placeofbirth'=>'required',
-    'nationality'=>'required',
-    'hometown'=>'required',
-    'disability'=>'required',
-    'postcode'=>'required',
-    'email'=>'required|email',
-    'maritalstatus'=>'required',
-    'address'=>'required',
-    'entrylevel'=>'required',
-    'session'=>'required',
-    'programme'=>'required',
-    'guidianfullname'=>'required',
-    'relationship'=>'required',
-    'guidianoccupation'=>'required',
-    'mobnumber'=>'required',
-    'image'=>'required|image',
-    'employed'=>'required',
-  ]);
+            'fullname' => 'required',
+            'gender' => 'required',
+            'dateofbirth' => 'required',
+            'denomination' => 'required',
+            'religion' => 'required',
+            'mobile' => 'required',
+            'placeofbirth' => 'required',
+            'nationality' => 'required',
+            'hometown' => 'required',
+            'disability' => 'required',
+            'postcode' => 'required',
+            'email' => 'required|email',
+            'maritalstatus' => 'required',
+            'address' => 'required',
+            'entrylevel' => 'required',
+            'session' => 'required',
+            'programme' => 'required',
+            'guidianfullname' => 'required',
+            'relationship' => 'required',
+            'guidianoccupation' => 'required',
+            'mobnumber' => 'required',
+            'image' => 'required|image',
+            'employed' => 'required',
+        ]);
 
         function generateindexid($limit)
         {
             $code = 'GES';
 
-            for ($i = 0; $i < $limit; $i++) {
+            for ($i = 0; $i < $limit; ++$i) {
                 $code .= mt_rand(0, 9);
             }
 
@@ -1737,13 +1737,13 @@ class AdmissionController extends Controller
 
         //create user
         $user = User::create([
-   'name' => $request->input('fullname'),
-   'email' => $regemail,
-   'indexnumber'=> $indexnumber,
-   'regemail' => $request->input('email'),
-   'pro_pic'=> $request->file('image')->store('profileimage', 'public'),
-   'password' => Hash::make($request->input('email')),
- ]);
+            'name' => $request->input('fullname'),
+            'email' => $regemail,
+            'indexnumber' => $indexnumber,
+            'regemail' => $request->input('email'),
+            'pro_pic' => $request->file('image')->store('profileimage', 'public'),
+            'password' => Hash::make($request->input('email')),
+        ]);
 
         $user->assignRole('Student');
 
@@ -1762,40 +1762,40 @@ class AdmissionController extends Controller
         //transfer details to another table
 
         $data = [
-    'title' => $request->input('title'),
-    'fullname'=>$request->input('fullname'),
-    'gender'=>$request->input('gender'),
-    'dateofbirth'=>$request->input('dateofbirth'),
-    'religion'=>$request->input('religion'),
-    'denomination'=>$request->input('denomination'),
-    'placeofbirth'=>$request->input('placeofbirth'),
-    'nationality'=>$request->input('nationality'),
-    'hometown'=>$request->input('hometown'),
-    'region'=> '',
-    'disability'=>$request->input('disability'),
-    'postcode'=>$request->input('postcode'),
-    'address'=>$request->input('address'),
-    'email'=>$request->input('email'),
-    'phone'=>$request->input('mobile'),
-    'maritalstutus'=>$request->input('maritalstatus'),
-    'entrylevel'=> $request->input('entrylevel'),
-    'currentlevel'=>  $request->input('entrylevel'),
-    'session'=>$request->input('session'),
-    'programme'=> $name,
-    'type'=> $type,
-    'indexnumber'=> $indexnumber,
-    'gurdianname'=>$request->input('guidianfullname'),
-    'relationship'=>$request->input('relationship'),
-    'occupation'=>$request->input('guidianoccupation'),
-    'mobile' =>$request->input('mobnumber'),
-    'employed'=>$request->input('employed'),
-    'status'=> 1,
-    'academic_year' => $academic->acdemicyear,
-    'admitted' => 'AUG,' . date('Y'),
-    'completion'=> 'AUG' . $duration,
-    'progcode' => $code,
-    'duration' => $duras,
-  ];
+            'title' => $request->input('title'),
+            'fullname' => $request->input('fullname'),
+            'gender' => $request->input('gender'),
+            'dateofbirth' => $request->input('dateofbirth'),
+            'religion' => $request->input('religion'),
+            'denomination' => $request->input('denomination'),
+            'placeofbirth' => $request->input('placeofbirth'),
+            'nationality' => $request->input('nationality'),
+            'hometown' => $request->input('hometown'),
+            'region' => '',
+            'disability' => $request->input('disability'),
+            'postcode' => $request->input('postcode'),
+            'address' => $request->input('address'),
+            'email' => $request->input('email'),
+            'phone' => $request->input('mobile'),
+            'maritalstutus' => $request->input('maritalstatus'),
+            'entrylevel' => $request->input('entrylevel'),
+            'currentlevel' => $request->input('entrylevel'),
+            'session' => $request->input('session'),
+            'programme' => $name,
+            'type' => $type,
+            'indexnumber' => $indexnumber,
+            'gurdianname' => $request->input('guidianfullname'),
+            'relationship' => $request->input('relationship'),
+            'occupation' => $request->input('guidianoccupation'),
+            'mobile' => $request->input('mobnumber'),
+            'employed' => $request->input('employed'),
+            'status' => 1,
+            'academic_year' => $academic->acdemicyear,
+            'admitted' => 'AUG,' . date('Y'),
+            'completion' => 'AUG' . $duration,
+            'progcode' => $code,
+            'duration' => $duras,
+        ];
 
         $studentinfos = new Studentinfo($data);
         $user->studentinfos()->save($studentinfos);

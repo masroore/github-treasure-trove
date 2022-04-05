@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreatePropertyPropertyTagPivotTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::create('property_property_tag', function (Blueprint $table) {
+        Schema::create('property_property_tag', function (Blueprint $table): void {
             $table->unsignedBigInteger('property_id');
             $table->foreign('property_id', 'property_id_fk_4565230')->references('id')->on('properties')->onDelete('cascade');
             $table->unsignedBigInteger('property_tag_id');

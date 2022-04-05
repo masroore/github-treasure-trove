@@ -15,6 +15,7 @@ class ProductLabelsService
      * @var
      */
     protected $productlabelsRepository;
+
     protected $storeRepository;
 
     public function __construct(

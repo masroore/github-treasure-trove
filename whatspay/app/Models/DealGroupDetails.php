@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class DealGroupDetails extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'deal_group_id',
         'product_id',

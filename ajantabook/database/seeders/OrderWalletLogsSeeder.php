@@ -11,6 +11,5 @@ class OrderWalletLogsSeeder extends Seeder
      */
     public function run(): void
     {
-
     }
 }

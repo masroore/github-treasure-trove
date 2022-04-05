@@ -10,6 +10,7 @@ use App\Models\ProductGroup;
 use App\Models\ProductOption;
 use App\Models\ProductOptionValue;
 use App\Models\ProductRelatedProduct;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class CreateProductService
@@ -76,7 +77,7 @@ class CreateProductService
                                 $productOption = ProductOption::create([
                                     'product_id' => $product->id,
                                     'option_id' => $key,
-                                    'required' =>$validatedData['option']['required'][$key],
+                                    'required' => $validatedData['option']['required'][$key],
                                 ]);
 
                                 ProductOptionValue::create([
@@ -85,6 +86,7 @@ class CreateProductService
                                     'input_value' => $optionValue,
                                 ]);
                             }
+
                             break;
 
                         /*case 'select':
@@ -133,10 +135,10 @@ class CreateProductService
                 $time = now();
                 foreach ($validatedData['delivery_time'] as $rp) {
                     $insertDeliveryTimeData[] = [
-                        'products_id'=>$product->id,
-                        'shipping_delivery_times_id'=>$rp,
-                        'shipping_zone_groups_id'=>$validatedData['shipping_zone_groups_id'],
-                        'shipping_packages_id'=>$validatedData['shipping_packages_id'],
+                        'products_id' => $product->id,
+                        'shipping_delivery_times_id' => $rp,
+                        'shipping_zone_groups_id' => $validatedData['shipping_zone_groups_id'],
+                        'shipping_packages_id' => $validatedData['shipping_packages_id'],
                         'created_at' => $time,
                         'updated_at' => $time,
                     ];
@@ -150,8 +152,8 @@ class CreateProductService
                 $time = now();
                 foreach ($validatedData['related_products'] as $rp) {
                     $insertRelatedProductData[] = [
-                        'product_id'=>$product->id,
-                        'related_product_id'=>$rp,
+                        'product_id' => $product->id,
+                        'related_product_id' => $rp,
                         'created_at' => $time,
                         'updated_at' => $time,
                     ];
@@ -176,7 +178,7 @@ class CreateProductService
             DB::commit();
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             //TODO:
             // REMOVE IMAGE FROM FOLDER
             dd($e);

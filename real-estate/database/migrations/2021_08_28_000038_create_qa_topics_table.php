@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateQaTopicsTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::create('qa_topics', function (Blueprint $table) {
+        Schema::create('qa_topics', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('subject');
             $table->unsignedBigInteger('creator_id');

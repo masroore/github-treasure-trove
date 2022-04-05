@@ -8,12 +8,10 @@ class CreateAgentDetailsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('agent_details', function (Blueprint $table) {
+        Schema::create('agent_details', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('agent_id');
             $table->unsignedBigInteger('country_id')->nullable();
@@ -36,10 +34,8 @@ class CreateAgentDetailsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('agent_details');
     }

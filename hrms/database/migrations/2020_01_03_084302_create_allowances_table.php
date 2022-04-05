@@ -8,12 +8,10 @@ class CreateAllowancesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('allowances', function (Blueprint $table) {
+        Schema::create('allowances', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->integer('employee_id');
             $table->integer('allowance_option');
@@ -26,10 +24,8 @@ class CreateAllowancesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('allowances');
     }

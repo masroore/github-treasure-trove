@@ -20,7 +20,7 @@ class TrainingExport implements FromCollection, WithHeadings
         $data = Training::get();
 
         foreach ($data as $k => $training) {
-            unset($training->created_at,$training->updated_at);
+            $training->created_at = null; $training->updated_at = null;
             $data[$k]['branch'] = Branch::where('id', $training->branch)->pluck('name')->first();
 
             $trainer_option = $training->trainer_option;

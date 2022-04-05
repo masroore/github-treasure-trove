@@ -6,10 +6,12 @@ use App\Mail\TestMail;
 use App\Models\IpRestrict;
 use App\Models\Utility;
 use Artisan;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Validator;
 
 class SettingsController extends Controller
 {
@@ -352,7 +354,7 @@ class SettingsController extends Controller
 
     public function testSendMail(Request $request)
     {
-        $validator = \Validator::make($request->all(), ['email' => 'required|email']);
+        $validator = Validator::make($request->all(), ['email' => 'required|email']);
         if ($validator->fails()) {
             $messages = $validator->getMessageBag();
 
@@ -361,7 +363,7 @@ class SettingsController extends Controller
 
         try {
             Mail::to($request->email)->send(new TestMail());
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $smtp_error = __('E-Mail has been not sent due to SMTP configuration');
         }
 
@@ -376,7 +378,7 @@ class SettingsController extends Controller
     public function storeIp(Request $request)
     {
         if ('company' == \Auth::user()->type) {
-            $validator = \Validator::make(
+            $validator = Validator::make(
                 $request->all(),
                 [
                     'ip' => 'required',
@@ -436,7 +438,7 @@ class SettingsController extends Controller
             $rules['google_recaptcha_secret'] = 'required|string|max:50';
         }
 
-        $validator = \Validator::make(
+        $validator = Validator::make(
             $request->all(),
             $rules
         );
@@ -469,7 +471,7 @@ class SettingsController extends Controller
     public function updateIp(Request $request, $id)
     {
         if ('company' == \Auth::user()->type) {
-            $validator = \Validator::make(
+            $validator = Validator::make(
                 $request->all(),
                 [
                     'ip' => 'required',

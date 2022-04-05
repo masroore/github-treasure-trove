@@ -18,15 +18,15 @@ use Modules\AdminRbac\Models\AdminUserGroup;
 
 $factory->define(User::class, function (Faker $faker) {
     return [
-        'first_name'=>'Admin',
-        'last_name'=>'istrator',
-        'email'=>'ssadmin@gmail.com',
-        'username'=>'sadmin',
-        'password'=> bcrypt('123456'),
-        'status'=> 1,
+        'first_name' => 'Admin',
+        'last_name' => 'istrator',
+        'email' => 'ssadmin@gmail.com',
+        'username' => 'sadmin',
+        'password' => bcrypt('123456'),
+        'status' => 1,
     ];
 });
 
-$factory->afterCreating(App\User::class, function ($user, $faker) {
-    factory(AdminUserGroup::class)->create(['user_id'=>1, 'group_id'=>1]);
+$factory->afterCreating(App\User::class, function ($user, $faker): void {
+    factory(AdminUserGroup::class)->create(['user_id' => 1, 'group_id' => 1]);
 });

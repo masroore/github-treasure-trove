@@ -2,6 +2,7 @@
 
 namespace Modules\AdminRbac\Services;
 
+use Exception;
 use Modules\AdminRbac\Models\AdminGroup;
 
 class CreateGroupService
@@ -15,7 +16,7 @@ class CreateGroupService
             AdminGroup::create($data);
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
     }

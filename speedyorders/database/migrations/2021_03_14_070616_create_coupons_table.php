@@ -8,12 +8,10 @@ class CreateCouponsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('coupons', function (Blueprint $table) {
+        Schema::create('coupons', function (Blueprint $table): void {
             $table->unsignedBigInteger('id')->autoIncrement();
             $table->string('code')->default(null)->nullable();
             $table->string('type')->default('percentage')->nullable();
@@ -30,10 +28,8 @@ class CreateCouponsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('coupons');
     }

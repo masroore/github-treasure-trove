@@ -67,7 +67,6 @@ class WebController extends Controller
      */
     public function create()
     {
-
     }
 
     /**
@@ -77,7 +76,6 @@ class WebController extends Controller
      */
     public function store(Request $request)
     {
-
     }
 
     /**
@@ -89,7 +87,6 @@ class WebController extends Controller
      */
     public function show($id)
     {
-
     }
 
     /**
@@ -101,7 +98,6 @@ class WebController extends Controller
      */
     public function edit($id)
     {
-
     }
 
     /**
@@ -113,7 +109,6 @@ class WebController extends Controller
      */
     public function update(Request $request, $id)
     {
-
     }
 
     /**
@@ -125,7 +120,6 @@ class WebController extends Controller
      */
     public function destroy($id)
     {
-
     }
 
     public function student()
@@ -147,7 +141,7 @@ class WebController extends Controller
 
         $email = $user->email;
 
-        $credentials = ['email'=> $email, 'password' => $password];
+        $credentials = ['email' => $email, 'password' => $password];
 
         if (Auth::attempt($credentials)) {
             $user->is_active = '1';
@@ -178,7 +172,7 @@ class WebController extends Controller
 
         $email = $user->email;
 
-        $credentials = ['email'=> $email, 'password' => $password];
+        $credentials = ['email' => $email, 'password' => $password];
 
         if (Auth::attempt($credentials)) {
             $user->is_active = '1';
@@ -209,7 +203,7 @@ class WebController extends Controller
 
         $email = $user->email;
 
-        $credentials = ['email'=> $email, 'password' => $password];
+        $credentials = ['email' => $email, 'password' => $password];
 
         if (Auth::attempt($credentials)) {
             $user->is_active = '1';

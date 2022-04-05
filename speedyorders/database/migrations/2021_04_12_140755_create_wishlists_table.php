@@ -8,12 +8,10 @@ class CreateWishlistsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('wishlists', function (Blueprint $table) {
+        Schema::create('wishlists', function (Blueprint $table): void {
             $table->unsignedBigInteger('id')->autoIncrement();
             $table->unsignedBigInteger('customer_id')->default(null)->nullable();
             $table->unsignedBigInteger('product_id')->default(null)->nullable();
@@ -23,10 +21,8 @@ class CreateWishlistsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('wishlists');
     }

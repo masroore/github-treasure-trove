@@ -8,12 +8,10 @@ class CreateUploadedtimetablesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('uploadedtimetables', function (Blueprint $table) {
+        Schema::create('uploadedtimetables', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('level');
             $table->string('session');
@@ -27,10 +25,8 @@ class CreateUploadedtimetablesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('uploadedtimetables');
     }

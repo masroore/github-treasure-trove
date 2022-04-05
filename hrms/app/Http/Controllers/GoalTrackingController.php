@@ -6,19 +6,21 @@ use App\Models\Branch;
 use App\Models\Employee;
 use App\Models\GoalTracking;
 use App\Models\GoalType;
+use Auth;
 use Illuminate\Http\Request;
+use Validator;
 
 class GoalTrackingController extends Controller
 {
     public function index()
     {
-        if (\Auth::user()->can('Manage Goal Tracking')) {
-            $user = \Auth::user();
+        if (Auth::user()->can('Manage Goal Tracking')) {
+            $user = Auth::user();
             if ('employee' == $user->type) {
                 $employee = Employee::where('user_id', $user->id)->first();
-                $goalTrackings = GoalTracking::where('created_by', '=', \Auth::user()->creatorId())->where('branch', $employee->branch_id)->get();
+                $goalTrackings = GoalTracking::where('created_by', '=', Auth::user()->creatorId())->where('branch', $employee->branch_id)->get();
             } else {
-                $goalTrackings = GoalTracking::where('created_by', '=', \Auth::user()->creatorId())->get();
+                $goalTrackings = GoalTracking::where('created_by', '=', Auth::user()->creatorId())->get();
             }
 
             return view('goaltracking.index', compact('goalTrackings'));
@@ -29,10 +31,10 @@ class GoalTrackingController extends Controller
 
     public function create()
     {
-        if (\Auth::user()->can('Create Goal Tracking')) {
-            $brances = Branch::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        if (Auth::user()->can('Create Goal Tracking')) {
+            $brances = Branch::where('created_by', '=', Auth::user()->creatorId())->get()->pluck('name', 'id');
             $brances->prepend('Select Branch', '');
-            $goalTypes = GoalType::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $goalTypes = GoalType::where('created_by', '=', Auth::user()->creatorId())->get()->pluck('name', 'id');
             $goalTypes->prepend('Select Goal Type', '');
 
             return view('goaltracking.create', compact('brances', 'goalTypes'));
@@ -43,16 +45,16 @@ class GoalTrackingController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('Create Goal Tracking')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Create Goal Tracking')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'branch' => 'required',
-                                   'goal_type' => 'required',
-                                   'start_date' => 'required',
-                                   'end_date' => 'required',
-                                   'subject' => 'required',
-                               ]
+                    'branch' => 'required',
+                    'goal_type' => 'required',
+                    'start_date' => 'required',
+                    'end_date' => 'required',
+                    'subject' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -68,7 +70,7 @@ class GoalTrackingController extends Controller
             $goalTracking->subject = $request->subject;
             $goalTracking->target_achievement = $request->target_achievement;
             $goalTracking->description = $request->description;
-            $goalTracking->created_by = \Auth::user()->creatorId();
+            $goalTracking->created_by = Auth::user()->creatorId();
             $goalTracking->save();
 
             return redirect()->route('goaltracking.index')->with('success', __('Goal tracking successfully created.'));
@@ -77,18 +79,17 @@ class GoalTrackingController extends Controller
         return redirect()->back()->with('error', __('Permission denied.'));
     }
 
-    public function show(GoalTracking $goalTracking)
+    public function show(GoalTracking $goalTracking): void
     {
-
     }
 
     public function edit($id)
     {
-        if (\Auth::user()->can('Edit Goal Tracking')) {
+        if (Auth::user()->can('Edit Goal Tracking')) {
             $goalTracking = GoalTracking::find($id);
-            $brances = Branch::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $brances = Branch::where('created_by', '=', Auth::user()->creatorId())->get()->pluck('name', 'id');
             $brances->prepend('Select Branch', '');
-            $goalTypes = GoalType::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $goalTypes = GoalType::where('created_by', '=', Auth::user()->creatorId())->get()->pluck('name', 'id');
             $goalTypes->prepend('Select Goal Type', '');
 
             $status = GoalTracking::$status;
@@ -101,17 +102,17 @@ class GoalTrackingController extends Controller
 
     public function update(Request $request, $id)
     {
-        if (\Auth::user()->can('Edit Goal Tracking')) {
+        if (Auth::user()->can('Edit Goal Tracking')) {
             $goalTracking = GoalTracking::find($id);
-            $validator = \Validator::make(
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'branch' => 'required',
-                                   'goal_type' => 'required',
-                                   'start_date' => 'required',
-                                   'end_date' => 'required',
-                                   'subject' => 'required',
-                               ]
+                    'branch' => 'required',
+                    'goal_type' => 'required',
+                    'start_date' => 'required',
+                    'end_date' => 'required',
+                    'subject' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -139,9 +140,9 @@ class GoalTrackingController extends Controller
 
     public function destroy($id)
     {
-        if (\Auth::user()->can('Delete Goal Tracking')) {
+        if (Auth::user()->can('Delete Goal Tracking')) {
             $goalTracking = GoalTracking::find($id);
-            if ($goalTracking->created_by == \Auth::user()->creatorId()) {
+            if ($goalTracking->created_by == Auth::user()->creatorId()) {
                 $goalTracking->delete();
 
                 return redirect()->route('goaltracking.index')->with('success', __('GoalTracking successfully deleted.'));

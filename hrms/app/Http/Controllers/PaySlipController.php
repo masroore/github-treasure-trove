@@ -12,10 +12,13 @@ use App\Models\Overtime;
 use App\Models\PaySlip;
 use App\Models\SaturationDeduction;
 use App\Models\Utility;
+use DB;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Mail;
+use Validator;
 
 class PaySlipController extends Controller
 {
@@ -63,14 +66,13 @@ class PaySlipController extends Controller
         return redirect()->back()->with('error', __('Permission denied.'));
     }
 
-    public function create()
+    public function create(): void
     {
-
     }
 
     public function store(Request $request)
     {
-        $validator = \Validator::make(
+        $validator = Validator::make(
             $request->all(),
             [
                 'month' => 'required',
@@ -178,24 +180,24 @@ class PaySlipController extends Controller
         }
         $paylip_employee = PaySlip::select(
             [
-                    'employees.id',
-                    'employees.employee_id',
-                    'employees.name',
-                    'payslip_types.name as payroll_type',
-                    'pay_slips.basic_salary',
-                    'pay_slips.net_payble',
-                    'pay_slips.id as pay_slip_id',
-                    'pay_slips.status',
-                    'employees.user_id',
-                ]
+                'employees.id',
+                'employees.employee_id',
+                'employees.name',
+                'payslip_types.name as payroll_type',
+                'pay_slips.basic_salary',
+                'pay_slips.net_payble',
+                'pay_slips.id as pay_slip_id',
+                'pay_slips.status',
+                'employees.user_id',
+            ]
         )->leftjoin(
-                'employees',
-                function ($join) use ($formate_month_year) {
+            'employees',
+            function ($join) use ($formate_month_year): void {
                     $join->on('employees.id', '=', 'pay_slips.employee_id');
-                    $join->on('pay_slips.salary_month', '=', \DB::raw("'" . $formate_month_year . "'"));
+                    $join->on('pay_slips.salary_month', '=', DB::raw("'" . $formate_month_year . "'"));
                     $join->leftjoin('payslip_types', 'payslip_types.id', '=', 'employees.salary_type');
                 }
-            )->where('employees.created_by', \Auth::user()->creatorId())->get();
+        )->where('employees.created_by', \Auth::user()->creatorId())->get();
 
         foreach ($paylip_employee as $employee) {
             if ('employee' == Auth::user()->type) {
@@ -307,7 +309,7 @@ class PaySlipController extends Controller
         if (1 == $setings['payroll_create']) {
             try {
                 Mail::to($payslip->email)->send(new PayslipSend($payslip));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $smtp_error = __('E-Mail has been not sent due to SMTP configuration');
             }
 

@@ -50,9 +50,8 @@ class OrderController extends BaseController
         return $this->sendResponse($order, 'Data Found');
     }
 
-    public function create()
+    public function create(): void
     {
-
     }
 
     /**
@@ -94,7 +93,6 @@ class OrderController extends BaseController
      */
     public function edit($id)
     {
-
     }
 
     /**

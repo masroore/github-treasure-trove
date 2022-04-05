@@ -8,12 +8,10 @@ class CreateEmployeeDocumentsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('employee_documents', function (Blueprint $table) {
+        Schema::create('employee_documents', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->integer('employee_id');
             $table->integer('document_id');
@@ -25,10 +23,8 @@ class CreateEmployeeDocumentsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('employee_documents');
     }

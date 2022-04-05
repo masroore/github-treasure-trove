@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use App\Models\OtherPayment;
+use Auth;
 use Illuminate\Http\Request;
+use Validator;
 
 class OtherPaymentController extends Controller
 {
@@ -17,14 +19,14 @@ class OtherPaymentController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('Create Other Payment')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Create Other Payment')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'employee_id' => 'required',
-                                   'title' => 'required',
-                                   'amount' => 'required',
-                               ]
+                    'employee_id' => 'required',
+                    'title' => 'required',
+                    'amount' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -36,7 +38,7 @@ class OtherPaymentController extends Controller
             $otherpayment->employee_id = $request->employee_id;
             $otherpayment->title = $request->title;
             $otherpayment->amount = $request->amount;
-            $otherpayment->created_by = \Auth::user()->creatorId();
+            $otherpayment->created_by = Auth::user()->creatorId();
             $otherpayment->save();
 
             return redirect()->back()->with('success', __('OtherPayment  successfully created.'));
@@ -53,8 +55,8 @@ class OtherPaymentController extends Controller
     public function edit($otherpayment)
     {
         $otherpayment = OtherPayment::find($otherpayment);
-        if (\Auth::user()->can('Edit Other Payment')) {
-            if ($otherpayment->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('Edit Other Payment')) {
+            if ($otherpayment->created_by == Auth::user()->creatorId()) {
                 return view('otherpayment.edit', compact('otherpayment'));
             }
 
@@ -66,15 +68,15 @@ class OtherPaymentController extends Controller
 
     public function update(Request $request, OtherPayment $otherpayment)
     {
-        if (\Auth::user()->can('Edit Other Payment')) {
-            if ($otherpayment->created_by == \Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+        if (Auth::user()->can('Edit Other Payment')) {
+            if ($otherpayment->created_by == Auth::user()->creatorId()) {
+                $validator = Validator::make(
                     $request->all(),
                     [
 
-                                       'title' => 'required',
-                                       'amount' => 'required',
-                                   ]
+                        'title' => 'required',
+                        'amount' => 'required',
+                    ]
                 );
                 if ($validator->fails()) {
                     $messages = $validator->getMessageBag();
@@ -97,8 +99,8 @@ class OtherPaymentController extends Controller
 
     public function destroy(OtherPayment $otherpayment)
     {
-        if (\Auth::user()->can('Delete Other Payment')) {
-            if ($otherpayment->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('Delete Other Payment')) {
+            if ($otherpayment->created_by == Auth::user()->creatorId()) {
                 $otherpayment->delete();
 
                 return redirect()->back()->with('success', __('OtherPayment successfully deleted.'));

@@ -6,10 +6,8 @@ class CountryTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         $script = getcwd() . '/database/seeds/db/countries.sql';
 

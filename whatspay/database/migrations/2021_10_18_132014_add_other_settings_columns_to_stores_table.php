@@ -8,12 +8,10 @@ class AddOtherSettingsColumnsToStoresTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('stores', function (Blueprint $table) {
+        Schema::table('stores', function (Blueprint $table): void {
             $table->tinyInteger('is_tax_enable')->default(0)->after('orders_accept_status')->comment('store charges sales tax');
             $table->Integer('tax_rate')->default(0)->comment('If is_tax_enable 1');
             $table->tinyInteger('is_tax_included')->default(0)->comment('Display Product Price Including taxes');
@@ -28,13 +26,10 @@ class AddOtherSettingsColumnsToStoresTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('stores', function (Blueprint $table) {
-
+        Schema::table('stores', function (Blueprint $table): void {
         });
     }
 }

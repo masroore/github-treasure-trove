@@ -8,12 +8,10 @@ class CreateLecCourcesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('lec_cources', function (Blueprint $table) {
+        Schema::create('lec_cources', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('lecturer_id');
             $table->string('lec_name');
@@ -25,10 +23,8 @@ class CreateLecCourcesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('lec_cources');
     }

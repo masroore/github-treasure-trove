@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Traits;
 
+use Exception;
 use Illuminate\Http\Request;
 
 trait MediaUploadingTrait
@@ -31,7 +32,7 @@ trait MediaUploadingTrait
             if (!file_exists($path)) {
                 mkdir($path, 0755, true);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
 
         $file = $request->file('file');
@@ -41,7 +42,7 @@ trait MediaUploadingTrait
         $file->move($path, $name);
 
         return response()->json([
-            'name'          => $name,
+            'name' => $name,
             'original_name' => $file->getClientOriginalName(),
         ]);
     }

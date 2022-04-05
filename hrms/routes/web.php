@@ -47,7 +47,7 @@ Route::group(
             'XSS',
         ],
     ],
-    function () {
+    function (): void {
         Route::resource('settings', 'SettingsController');
         Route::post('email-settings', 'SettingsController@saveEmailSettings')->name('email.settings');
         Route::post('company-settings', 'SettingsController@saveCompanySettings')->name('company.settings');
@@ -74,9 +74,9 @@ Route::group(
 Route::get(
     '/test',
     [
-               'as' => 'test.email',
-               'uses' => 'SettingsController@testEmail',
-           ]
+        'as' => 'test.email',
+        'uses' => 'SettingsController@testEmail',
+    ]
 )->middleware(
     [
         'auth',
@@ -86,9 +86,9 @@ Route::get(
 Route::post(
     '/test/send',
     [
-                    'as' => 'test.email.send',
-                    'uses' => 'SettingsController@testEmailSend',
-                ]
+        'as' => 'test.email.send',
+        'uses' => 'SettingsController@testEmailSend',
+    ]
 )->middleware(
     [
         'auth',
@@ -676,7 +676,7 @@ Route::group(
             'XSS',
         ],
     ],
-    function () {
+    function (): void {
         Route::get('change-language/{lang}', 'LanguageController@changeLanquage')->name('change.language');
         Route::get('manage-language/{lang}', 'LanguageController@manageLanguage')->name('manage.language');
         Route::post('store-language-data/{lang}', 'LanguageController@storeLanguageData')->name('store.language.data');
@@ -1066,4 +1066,4 @@ Route::post('setting/telegram', 'SettingsController@telegram')->name('telegram.s
 Route::post('setting/twilio', 'SettingsController@twilio')->name('twilio.setting');
 
 // recaptcha
-Route::post('/recaptcha-settings', ['as' => 'recaptcha.settings.store', 'uses' =>'SettingsController@recaptchaSettingStore'])->middleware(['auth', 'XSS']);
+Route::post('/recaptcha-settings', ['as' => 'recaptcha.settings.store', 'uses' => 'SettingsController@recaptchaSettingStore'])->middleware(['auth', 'XSS']);

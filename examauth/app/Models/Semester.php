@@ -13,7 +13,7 @@ class Semester extends Model
     use SoftDeletes;
 
     public const SEMESTER_SELECT = [
-        'First'  => 'First',
+        'First' => 'First',
         'Second' => 'Second',
     ];
 

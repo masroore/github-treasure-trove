@@ -9,10 +9,8 @@ class StoresTableSeeder extends Seeder
 {
     /**
      * Auto generated seed file.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         Store::factory()->count(10)->create();
     }

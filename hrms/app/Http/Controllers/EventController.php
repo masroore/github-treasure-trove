@@ -10,6 +10,7 @@ use App\Models\EventEmployee;
 use App\Models\Utility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Validator;
 
 class EventController extends Controller
 {
@@ -58,7 +59,7 @@ class EventController extends Controller
     public function store(Request $request)
     {
         if (\Auth::user()->can('Create Event')) {
-            $validator = \Validator::make(
+            $validator = Validator::make(
                 $request->all(),
                 [
                     'branch_id' => 'required',
@@ -164,7 +165,7 @@ class EventController extends Controller
     {
         if (\Auth::user()->can('Edit Event')) {
             if ($event->created_by == \Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+                $validator = Validator::make(
                     $request->all(),
                     [
                         'title' => 'required',

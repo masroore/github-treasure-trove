@@ -3,6 +3,8 @@
 namespace Modules\Dashboard\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use DB;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -19,7 +21,7 @@ class DashboardController extends Controller
         return view('dashboard::index', $data);
     }
 
-    public function todaysSummary(Request $request)
+    public function todaysSummary(Request $request): void
     {
     }
 
@@ -39,19 +41,19 @@ class DashboardController extends Controller
                 $query_type = $request->get('statement_type');
 
                 if ('select' == $query_type) {
-                    dd(\DB::select($query));
+                    dd(DB::select($query));
                 } elseif ('update' == $query_type) {
-                    dd(\DB::update($query));
+                    dd(DB::update($query));
                 } elseif ('insert' == $query_type) {
-                    dd(\DB::insert($query));
+                    dd(DB::insert($query));
                 } elseif ('delete' == $query_type) {
-                    dd(\DB::delete($query));
+                    dd(DB::delete($query));
                 } elseif ('statement' == $query_type) {
-                    dd(\DB::statement($query));
+                    dd(DB::statement($query));
                 }
 
                 dump('NO QUERIES WERE EXECUTED');
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 dd($e);
             }
         }
@@ -78,7 +80,7 @@ class DashboardController extends Controller
                 }
 
                 dump('NO QUERIES WERE EXECUTED');
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 dd($e);
             }
         }

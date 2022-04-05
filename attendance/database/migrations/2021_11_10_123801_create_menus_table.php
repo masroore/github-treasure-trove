@@ -8,12 +8,10 @@ class CreateMenusTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('menus', function (Blueprint $table) {
+        Schema::create('menus', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('title');
             $table->integer('order');
@@ -23,10 +21,8 @@ class CreateMenusTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('menus');
     }

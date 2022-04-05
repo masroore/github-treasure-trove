@@ -8,12 +8,10 @@ class AddColumnInOrderProduct extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('order_products', function (Blueprint $table) {
+        Schema::table('order_products', function (Blueprint $table): void {
             if (!Schema::hasColumn('order_products', 'orderuuid')) {
                 $table->string('orderuuid')->default(null)->nullable()->after('shipstation_order_id');
             }
@@ -22,13 +20,10 @@ class AddColumnInOrderProduct extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('order_products', function (Blueprint $table) {
-
+        Schema::table('order_products', function (Blueprint $table): void {
         });
     }
 }

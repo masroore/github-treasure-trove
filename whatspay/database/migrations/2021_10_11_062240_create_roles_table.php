@@ -8,12 +8,10 @@ class CreateRolesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('roles', function (Blueprint $table) {
+        Schema::create('roles', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->bigInteger('store_id')->unsigned();
             $table->string('name', 100)->nullable();
@@ -30,10 +28,8 @@ class CreateRolesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('roles');
     }

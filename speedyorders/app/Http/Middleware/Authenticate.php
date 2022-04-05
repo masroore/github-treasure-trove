@@ -17,10 +17,10 @@ class Authenticate extends Middleware
     {
         if ($request->expectsJson()) {
             return response()->json([
-               'status' => false,
-               'data' => [
-                   'error' => 'User not authenticated',
-               ],
+                'status' => false,
+                'data' => [
+                    'error' => 'User not authenticated',
+                ],
             ]);
         }
 

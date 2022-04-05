@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class AddRelationshipFieldsToPropertiesTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::table('properties', function (Blueprint $table) {
+        Schema::table('properties', function (Blueprint $table): void {
             $table->unsignedBigInteger('type_id');
             $table->foreign('type_id', 'type_fk_4565198')->references('id')->on('categories');
             $table->unsignedBigInteger('created_by_id')->nullable();

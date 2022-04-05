@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use ErrorException;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
@@ -29,18 +30,14 @@ class Handler extends ExceptionHandler
 
     /**
      * Report or log an exception.
-     *
-     * @return void
      */
-    public function report(Exception $exception)
+    public function report(Exception $exception): void
     {
         parent::report($exception);
     }
 
     /**
      * @param \Illuminate\Http\Request $request
-     *
-     * @throws Exception
      *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|\Symfony\Component\HttpFoundation\Response
      */
@@ -51,7 +48,7 @@ class Handler extends ExceptionHandler
         }
 
         // custom error message
-        if ($exception instanceof \ErrorException) {
+        if ($exception instanceof ErrorException) {
             $message = $exception->getMessage();
 
             return redirect()->route('errors');
@@ -120,21 +117,27 @@ class Handler extends ExceptionHandler
         switch ($statusCode) {
             case 401:
                 $error = 'Unauthorized';
+
                 break;
             case 403:
                 $error = 'Forbidden';
+
                 break;
             case 404:
                 $error = 'Not Found';
+
                 break;
             case 405:
                 $error = 'Method Not Allowed';
+
                 break;
             case 422:
                 $error = $exception->original['message'];
+
                 break;
             default:
                 $error = (500 == $statusCode) ? 'Whoops, looks like something went wrong' : $exception->getMessage();
+
                 break;
         }
 

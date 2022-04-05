@@ -8,12 +8,10 @@ class CreateProductAddOnsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('product_add_ons', function (Blueprint $table) {
+        Schema::create('product_add_ons', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->bigInteger('product_id')->unsigned()->index('product_add_ons__product_id_index')->comment('Belongs to product table');
             $table->string('title', 100)->nullable();
@@ -29,10 +27,8 @@ class CreateProductAddOnsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('product_add_ons');
     }

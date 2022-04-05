@@ -17,6 +17,7 @@ use App\Studentfee;
 use App\Studentinfo;
 use App\User;
 use App\Wallettop;
+use Exception;
 use FPDF as pdfs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -34,7 +35,6 @@ class AccountController extends Controller
      */
     public function index()
     {
-
     }
 
     /**
@@ -83,8 +83,8 @@ class AccountController extends Controller
 
         if ($request->has('hiddenid')) {
             $data = [
-            'title' => $request->input('title'),
-        ];
+                'title' => $request->input('title'),
+            ];
 
             $mandatoryfees = MandatoryFee::findorfail($request->input('hiddenid'))
                 ->update($data);
@@ -114,7 +114,6 @@ class AccountController extends Controller
      */
     public function show(Account $account)
     {
-
     }
 
     /**
@@ -124,7 +123,6 @@ class AccountController extends Controller
      */
     public function edit(Account $account)
     {
-
     }
 
     /**
@@ -134,7 +132,6 @@ class AccountController extends Controller
      */
     public function update(Request $request, Account $account)
     {
-
     }
 
     /**
@@ -144,7 +141,6 @@ class AccountController extends Controller
      */
     public function destroy(Account $account)
     {
-
     }
 
     /**
@@ -181,9 +177,9 @@ class AccountController extends Controller
     public function save_other_services(Request $request)
     {
         $this->validate($request, [
-        'title' => 'required',
-        'fee' => 'required',
-    ]);
+            'title' => 'required',
+            'fee' => 'required',
+        ]);
 
         $maxcode = DB::table('otherservices_fees')->max('feecode');
 
@@ -197,9 +193,9 @@ class AccountController extends Controller
 
         if ($request->has('hiddenid')) {
             $data = [
-        'title' => $request->input('title'),
-        'fee' => $request->input('fee'),
-    ];
+                'title' => $request->input('title'),
+                'fee' => $request->input('fee'),
+            ];
 
             $mandatoryfees = OtherservicesFee::findorfail($request->input('hiddenid'))
                 ->update($data);
@@ -210,10 +206,10 @@ class AccountController extends Controller
         }
 
         $data = [
-        'title' => $request->input('title'),
-        'feecode' => $code,
-        'fee' => $request->input('fee'),
-    ];
+            'title' => $request->input('title'),
+            'feecode' => $code,
+            'fee' => $request->input('fee'),
+        ];
 
         $mandatoryfees = new OtherservicesFee($data);
         $mandatoryfees->save();
@@ -249,7 +245,7 @@ class AccountController extends Controller
         $semesterfee = Semesterfee::where('academicyear', $year)
             ->orderBy('level')->latest()->get();
 
-        return view('Accounts.add_fees_master', ['otherservce' => $accounts, 'mandatory' => $mandatory, 'year'=> $year, 'semesterfee'=>$semesterfee]);
+        return view('Accounts.add_fees_master', ['otherservce' => $accounts, 'mandatory' => $mandatory, 'year' => $year, 'semesterfee' => $semesterfee]);
     }
 
     public function view_fees_level100()
@@ -260,7 +256,7 @@ class AccountController extends Controller
             ->where('level', 'Level 100')
             ->orderBy('feecode')->latest()->get();
 
-        return view('Accounts.view_fee_level_100', ['year'=> $year, 'semesterfee'=>$semesterfee]);
+        return view('Accounts.view_fee_level_100', ['year' => $year, 'semesterfee' => $semesterfee]);
     }
 
     public function view_fees_level200()
@@ -271,7 +267,7 @@ class AccountController extends Controller
             ->where('level', 'Level 200')
             ->orderBy('feecode')->latest()->get();
 
-        return view('Accounts.view_fee_level_200', ['year'=> $year, 'semesterfee'=>$semesterfee]);
+        return view('Accounts.view_fee_level_200', ['year' => $year, 'semesterfee' => $semesterfee]);
     }
 
     public function view_fees_level300()
@@ -282,7 +278,7 @@ class AccountController extends Controller
             ->where('level', 'Level 300')
             ->orderBy('feecode')->latest()->get();
 
-        return view('Accounts.view_fee_level_300', ['year'=> $year, 'semesterfee'=>$semesterfee]);
+        return view('Accounts.view_fee_level_300', ['year' => $year, 'semesterfee' => $semesterfee]);
     }
 
     public function view_fees_level400()
@@ -293,7 +289,7 @@ class AccountController extends Controller
             ->where('level', 'Level 400')
             ->orderBy('feecode')->latest()->get();
 
-        return view('Accounts.view_fee_level_400', ['year'=> $year, 'semesterfee'=>$semesterfee]);
+        return view('Accounts.view_fee_level_400', ['year' => $year, 'semesterfee' => $semesterfee]);
     }
 
     public function save_fees_master_man(Request $request)
@@ -316,11 +312,11 @@ class AccountController extends Controller
             $count = \count($request->post('session'));
 
             $data = [
-                'level'=> $request->post('level'),
-                'fee'=> trim($fee),
-                'feecode'=> $feecode,
-                'feeamount'=> $request->post('fee'),
-                'academicyear'=> $request->post('academicyear'),
+                'level' => $request->post('level'),
+                'fee' => trim($fee),
+                'feecode' => $feecode,
+                'feeamount' => $request->post('fee'),
+                'academicyear' => $request->post('academicyear'),
             ];
 
             //check if fee has already been added
@@ -334,7 +330,7 @@ class AccountController extends Controller
                 return Redirect()->back();
             }
 
-            for ($i = 0; $i < $count; $i++) {
+            for ($i = 0; $i < $count; ++$i) {
                 $session = $sess[$i];
                 $feeadd = new Semesterfee($data);
                 $feeadd->save();
@@ -351,11 +347,11 @@ class AccountController extends Controller
     public function save_fees_master_otherservice(Request $request)
     {
         $this->validate($request, [
-        'level' => 'required',
-        'session' => 'required',
-        'title' => 'required',
-        'academicyear' => 'required',
-    ]);
+            'level' => 'required',
+            'session' => 'required',
+            'title' => 'required',
+            'academicyear' => 'required',
+        ]);
 
         $input = explode('-', $request->post('title'));
         $fee = $input[0];
@@ -370,12 +366,12 @@ class AccountController extends Controller
             $count = \count($request->post('session'));
 
             $data = [
-            'level'=> $request->post('level'),
-            'fee'=> $fee,
-            'feecode'=> $feecode,
-            'feeamount'=> $amount,
-            'academicyear'=> $request->post('academicyear'),
-        ];
+                'level' => $request->post('level'),
+                'fee' => $fee,
+                'feecode' => $feecode,
+                'feeamount' => $amount,
+                'academicyear' => $request->post('academicyear'),
+            ];
 
             //check if fee has already been added
             $fee = Semesterfee::where('level', $request->post('level'))
@@ -388,7 +384,7 @@ class AccountController extends Controller
                 return Redirect()->back();
             }
 
-            for ($i = 0; $i < $count; $i++) {
+            for ($i = 0; $i < $count; ++$i) {
                 $session = $sess[$i];
                 $feeadd = new Semesterfee($data);
                 $feeadd->save();
@@ -420,20 +416,20 @@ class AccountController extends Controller
     public function update_fees_master(Request $request, $id)
     {
         $this->validate($request, [
-        'level' => 'required',
-        'session' => 'required',
-        'title' => 'required',
-        'feecode' => 'required',
-        'fee' => 'required',
-    ]);
+            'level' => 'required',
+            'session' => 'required',
+            'title' => 'required',
+            'feecode' => 'required',
+            'fee' => 'required',
+        ]);
 
         $data = [
-        'level'=> $request->post('level'),
-        'fee'=> $request->post('title'),
-        'feecode'=> $request->post('feecode'),
-        'feeamount'=> $request->post('fee'),
-        'session'=> $request->post('session'),
-    ];
+            'level' => $request->post('level'),
+            'fee' => $request->post('title'),
+            'feecode' => $request->post('feecode'),
+            'feeamount' => $request->post('fee'),
+            'session' => $request->post('session'),
+        ];
 
         //dd($data);
 
@@ -469,8 +465,8 @@ class AccountController extends Controller
     public function search_student_check(Request $request)
     {
         $this->validate($request, [
-        'index' => 'required',
-    ]);
+            'index' => 'required',
+        ]);
 
         $user = User::where('indexnumber', $request->input('index'))->first();
         if ($user) {
@@ -503,7 +499,7 @@ class AccountController extends Controller
         $studentid = Studentinfo::where('indexnumber', $indexnumber)->first();
 
         if ($studentid) {
-            return Redirect()->route('getstudentfees_view', ['id'=>$studentid->id]);
+            return Redirect()->route('getstudentfees_view', ['id' => $studentid->id]);
         }
         toastr()->warning('The index Number Entered Dont Exist!', 'error');
 
@@ -515,7 +511,7 @@ class AccountController extends Controller
         $studentid = Studentinfo::where('indexnumber', $indexnumber)->first();
 
         if ($studentid) {
-            return Redirect()->route('paystudentfees_view', ['id'=>$studentid->id]);
+            return Redirect()->route('paystudentfees_view', ['id' => $studentid->id]);
         }
         toastr()->warning('he index Number Entered Dont Exist!');
 
@@ -530,7 +526,7 @@ class AccountController extends Controller
         //get fees
         $fees = Studentfee::where('indexnumber', $studentinfo->indexnumber)->get();
 
-        return view('Accounts.displayfees', ['studentinfo' => $studentinfo, 'user' =>$userinf, 'semesterfee' => $fees]);
+        return view('Accounts.displayfees', ['studentinfo' => $studentinfo, 'user' => $userinf, 'semesterfee' => $fees]);
         //dd($studentinfo);
     }
 
@@ -571,16 +567,16 @@ class AccountController extends Controller
         //get fees
         $fees = Studentfee::where('indexnumber', $studentinfo->indexnumber)->get();
 
-        return view('Accounts.payfees', ['studentinfo' => $studentinfo, 'user' =>$userinf, 'semesterfee' => $fees]);
+        return view('Accounts.payfees', ['studentinfo' => $studentinfo, 'user' => $userinf, 'semesterfee' => $fees]);
         //dd($studentinfo);
     }
 
     public function debit_wallet(Request $request)
     {
         $this->validate($request, [
-        'amount' => 'required',
-        'confirmamount' => 'required',
-    ]);
+            'amount' => 'required',
+            'confirmamount' => 'required',
+        ]);
 
         $amount = $request->input('amount');
         $camount = $request->input('confirmamount');
@@ -605,7 +601,7 @@ class AccountController extends Controller
         $studentinfo = Studentinfo::all();
 
         return view('Accounts.transactions', ['transaction' => $wallet,
-        'user' => $user, 'studentinfo' => $studentinfo, ]);
+            'user' => $user, 'studentinfo' => $studentinfo, ]);
     }
 
     public function get_transactions()
@@ -615,54 +611,54 @@ class AccountController extends Controller
         $wallet = DB::table('transactions')
             ->join('users', 'users.id', '=', 'transactions.payable_id')
             ->select([
-        'users.id', 'transactions.payable_id', 'users.name',
-        'users.indexnumber', 'transactions.created_at', 'transactions.meta',
-        'transactions.uuid', 'transactions.amount', 'transactions.id AS tranid',
-    ])->orderBy('transactions.id', 'Desc')->get();
+                'users.id', 'transactions.payable_id', 'users.name',
+                'users.indexnumber', 'transactions.created_at', 'transactions.meta',
+                'transactions.uuid', 'transactions.amount', 'transactions.id AS tranid',
+            ])->orderBy('transactions.id', 'Desc')->get();
 
         $studentinfo = Studentinfo::all();
 
         return Datatables::of($wallet)
             ->addColumn('session', function ($user) use ($studentinfo) {
-        foreach ($studentinfo as $key => $row) {
-            if ($user->payable_id == $row->user_id) {
-                return $row->session;
-            }
-        }
-    })
+                foreach ($studentinfo as $key => $row) {
+                    if ($user->payable_id == $row->user_id) {
+                        return $row->session;
+                    }
+                }
+            })
             ->addColumn('trtype', function ($user) {
-        $data = json_decode($user->meta, true);
+                $data = json_decode($user->meta, true);
 
-        return $data['Trantype'];
-    })
+                return $data['Trantype'];
+            })
             ->addColumn('trrefrence', function ($user) {
-        $data = json_decode($user->meta, true);
+                $data = json_decode($user->meta, true);
 
-        return $data['Reference'];
-    })
+                return $data['Reference'];
+            })
             ->addColumn('revert', function ($user) {
-        $data = json_decode($user->meta, true);
-        if (isset($data['revert'])) {
-            return $data['revert'];
-        }
+                $data = json_decode($user->meta, true);
+                if (isset($data['revert'])) {
+                    return $data['revert'];
+                }
 
-        return 'false';
-    })
+                return 'false';
+            })
             ->addColumn('program', function ($user) use ($studentinfo) {
-        foreach ($studentinfo as $key => $row) {
-            if ($user->payable_id == $row->user_id) {
-                return $row->programme;
-            }
-        }
-    })
+                foreach ($studentinfo as $key => $row) {
+                    if ($user->payable_id == $row->user_id) {
+                        return $row->programme;
+                    }
+                }
+            })
             ->addColumn('refund', function ($user) {
-        return $user->tranid;
-    })
+                return $user->tranid;
+            })
             ->addIndexColumn()
             ->make(true);
     }
 
-    public function revert_transactions(Request $request)
+    public function revert_transactions(Request $request): void
     {
         $id = $request->post('id');
         $wallet = DB::table('transactions')->where('id', $id)->first();
@@ -744,7 +740,7 @@ class AccountController extends Controller
             echo 'success';
 
             exit;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollback();
 
             echo 'failed';
@@ -760,10 +756,10 @@ class AccountController extends Controller
         $wallet = DB::table('transactions')
             ->join('users', 'users.id', '=', 'transactions.payable_id')
             ->select([
-        'users.id', 'transactions.payable_id', 'users.name',
-        'users.indexnumber', 'transactions.created_at', 'transactions.meta',
-        'transactions.uuid', 'transactions.amount',
-    ])
+                'users.id', 'transactions.payable_id', 'users.name',
+                'users.indexnumber', 'transactions.created_at', 'transactions.meta',
+                'transactions.uuid', 'transactions.amount',
+            ])
             ->whereBetween('transactions.created_at', [$startdate, $enddate])
             ->orderBy('transactions.id', 'Desc')->get();
 
@@ -771,29 +767,29 @@ class AccountController extends Controller
 
         return Datatables::of($wallet)
             ->addColumn('session', function ($user) use ($studentinfo) {
-        foreach ($studentinfo as $key => $row) {
-            if ($user->payable_id == $row->user_id) {
-                return $row->session;
-            }
-        }
-    })
+                foreach ($studentinfo as $key => $row) {
+                    if ($user->payable_id == $row->user_id) {
+                        return $row->session;
+                    }
+                }
+            })
             ->addColumn('trtype', function ($user) {
-        $data = json_decode($user->meta, true);
+                $data = json_decode($user->meta, true);
 
-        return $data['Trantype'];
-    })
+                return $data['Trantype'];
+            })
             ->addColumn('trtype', function ($user) {
-        $data = json_decode($user->meta, true);
+                $data = json_decode($user->meta, true);
 
-        return $data['Reference'];
-    })
+                return $data['Reference'];
+            })
             ->addColumn('program', function ($user) use ($studentinfo) {
-        foreach ($studentinfo as $key => $row) {
-            if ($user->payable_id == $row->user_id) {
-                return $row->programme;
-            }
-        }
-    })
+                foreach ($studentinfo as $key => $row) {
+                    if ($user->payable_id == $row->user_id) {
+                        return $row->programme;
+                    }
+                }
+            })
             ->addIndexColumn()
             ->make(true);
     }
@@ -873,7 +869,7 @@ class AccountController extends Controller
             echo 'success';
 
             exit;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollback();
 
             return $e->getMessage();
@@ -896,7 +892,7 @@ class AccountController extends Controller
         );
     }
 
-    public function request_services(Request $request)
+    public function request_services(Request $request): void
     {
         $id = $request->post('id');
         $fee = $request->post('fee');
@@ -911,15 +907,15 @@ class AccountController extends Controller
         $year = $academicyear->acdemicyear;
 
         $data = [
-           'indexnumber' => $indexnumber,
-           'fee' => $title,
-           'feecode' => $feecode,
-           'feeamount' => $amt,
-           'paid' => 0,
-           'owed' => $amt,
-           'type' => 'request',
-           'semester' => $year,
-       ];
+            'indexnumber' => $indexnumber,
+            'fee' => $title,
+            'feecode' => $feecode,
+            'feeamount' => $amt,
+            'paid' => 0,
+            'owed' => $amt,
+            'type' => 'request',
+            'semester' => $year,
+        ];
 
         $newfees = new Studentfee($data);
         $newfees->save();
@@ -954,7 +950,7 @@ class AccountController extends Controller
         );
     }
 
-    public function remove_request_services(Request $request)
+    public function remove_request_services(Request $request): void
     {
         $id = $request->post('id');
         Studentfee::findorfail($id)->delete();
@@ -998,10 +994,10 @@ class AccountController extends Controller
         $transaction = DB::table('transactions')
             ->join('users', 'users.id', '=', 'transactions.payable_id')
             ->select([
-        'users.id', 'transactions.payable_id', 'users.name',
-        'users.indexnumber', 'transactions.created_at', 'transactions.type', 'transactions.meta',
-        'transactions.uuid', 'transactions.amount',
-    ])
+                'users.id', 'transactions.payable_id', 'users.name',
+                'users.indexnumber', 'transactions.created_at', 'transactions.type', 'transactions.meta',
+                'transactions.uuid', 'transactions.amount',
+            ])
             ->where('users.id', auth()->user()->id)
             ->whereBetween('transactions.created_at', [$start, $end])
             ->orderBy('transactions.id', 'Desc')->get();
@@ -1083,7 +1079,7 @@ class AccountController extends Controller
             $this->fpdf->Cell(40, 10, $real . '.00', 0, 0, 'R');
             $this->fpdf->Cell(45, 10, date('jS M y', strtotime($row->created_at)), 0, 0, 'C');
             $this->fpdf->Cell(66, 10, ucfirst(strtolower($data['Reference'])), 0, 1, 'L');
-            $loop++;
+            ++$loop;
         }
 
         return response($this->fpdf->Output('D', 'student-statement.pdf'))
@@ -1104,10 +1100,10 @@ class AccountController extends Controller
         $transaction = DB::table('transactions')
             ->join('users', 'users.id', '=', 'transactions.payable_id')
             ->select([
-        'users.id', 'transactions.payable_id', 'users.name',
-        'users.indexnumber', 'transactions.created_at', 'transactions.type', 'transactions.meta',
-        'transactions.uuid', 'transactions.amount',
-    ])
+                'users.id', 'transactions.payable_id', 'users.name',
+                'users.indexnumber', 'transactions.created_at', 'transactions.type', 'transactions.meta',
+                'transactions.uuid', 'transactions.amount',
+            ])
             ->where('users.id', auth()->user()->id)
             ->whereBetween('transactions.created_at', [$start, $end])
             ->orderBy('transactions.id', 'ASC')->get();
@@ -1211,7 +1207,7 @@ class AccountController extends Controller
 
             $this->fpdf->Cell(28, 10, $total . '.00', 1, 1, 'R');
 
-            $loop++;
+            ++$loop;
         }
 
         return response($this->fpdf->Output('D', 'wallet-ledger.pdf'))
@@ -1230,10 +1226,10 @@ class AccountController extends Controller
         $studentinfo = Studentinfo::where('user_id', $id)->first();
 
         return view('Accounts.student_transaction_history', ['transaction' => $wallet,
-        'user' => $user, 'studentinfo' => $studentinfo, ]);
+            'user' => $user, 'studentinfo' => $studentinfo, ]);
     }
 
-    public function payment_deadline(Request $request)
+    public function payment_deadline(Request $request): void
     {
         $date = $request->post('deadline');
 
@@ -1246,7 +1242,7 @@ class AccountController extends Controller
             'acdemicyear' => $academic,
             'semester' => $semester,
             'date' => date('Y-m-d'),
-    ];
+        ];
 
         $add = new Paymentdeadline($data);
         $add->save();
@@ -1331,16 +1327,16 @@ class AccountController extends Controller
             $credithours = $courses->credithours;
 
             $data = [
-            'user_id'=> $userid,
-            'indexnumber' => $indexnumber,
-            'cource_code'=> $code,
-            'level'=>$currentlevel,
-            'cource_title'=> $codetittle,
-            'credithours'=> $credithours,
-            'semester'=> $semester,
-            'session' => $stuinfo->session,
-            'academic_year'=> $academicyear,
-        ];
+                'user_id' => $userid,
+                'indexnumber' => $indexnumber,
+                'cource_code' => $code,
+                'level' => $currentlevel,
+                'cource_title' => $codetittle,
+                'credithours' => $credithours,
+                'semester' => $semester,
+                'session' => $stuinfo->session,
+                'academic_year' => $academicyear,
+            ];
 
             $cousereg = new Coureregistration($data);
             $cousereg->save();
@@ -1349,10 +1345,10 @@ class AccountController extends Controller
         //add semester record into the database
 
         $regdata = [
-        'user_id'=> $userid,
-        'semester'=> $semester,
-        'academicyear'=> $academicyear,
-    ];
+            'user_id' => $userid,
+            'semester' => $semester,
+            'academicyear' => $academicyear,
+        ];
 
         $userreg = new Regacademicyear($regdata);
         $userreg->save();
@@ -1369,7 +1365,7 @@ class AccountController extends Controller
 
         $studentinfo = Studentinfo::where('user_id', $userid)->first();
         //dd($cousereg);
-        return view('CourseRegistration.prin_courses_reg', ['courses'=>$cousereg, 'academicyear' => $academicyear, 'semester'=>$semester, 'studentinfo'=>$studentinfo]);
+        return view('CourseRegistration.prin_courses_reg', ['courses' => $cousereg, 'academicyear' => $academicyear, 'semester' => $semester, 'studentinfo' => $studentinfo]);
     }
 
     public function register_resit_student($indexnumber, $userid)
@@ -1383,7 +1379,7 @@ class AccountController extends Controller
 
         $exresults = Examresults::where('user_id', $peronalinfo->user_id)->get();
 
-        return view('Accounts.student_course', ['personal' => $peronalinfo, 'course'=> $creg, 'regsem'=>$regsem, 'examsresults'=> $exresults]);
+        return view('Accounts.student_course', ['personal' => $peronalinfo, 'course' => $creg, 'regsem' => $regsem, 'examsresults' => $exresults]);
     }
 
     public function resit_student_save(Request $request)
@@ -1394,9 +1390,9 @@ class AccountController extends Controller
         $creg->save();
 
         return Response::json([
-        'success' => true,
-        'msg' => 'Resit Registered Successfully!',
-    ], 200);
+            'success' => true,
+            'msg' => 'Resit Registered Successfully!',
+        ], 200);
     }
 
     public function top_up_wallet()
@@ -1406,7 +1402,7 @@ class AccountController extends Controller
         return view('Accounts.wallet-top-up', ['student' => $student]);
     }
 
-    public function save_top_up_wallet(Request $request)
+    public function save_top_up_wallet(Request $request): void
     {
         $name = $request->post('fullname');
         $index = $request->post('indexnumber');
@@ -1414,30 +1410,30 @@ class AccountController extends Controller
         $trid = $request->post('trid');
 
         $data = [
-        'tr_id' => $trid,
-        'fullname' => $name,
-        'indexnumber' => $index,
-        'amount' => $amount,
-    ];
+            'tr_id' => $trid,
+            'fullname' => $name,
+            'indexnumber' => $index,
+            'amount' => $amount,
+        ];
 
         $new = new Wallettop($data);
         $new->save();
     }
 
-    public function get_wallet_details(Request $request)
+    public function get_wallet_details(Request $request): void
     {
         $nvoice = 'TST556359522145';
         $curl = curl_init();
 
         curl_setopt_array($curl, [
-  \CURLOPT_URL => 'https://manage.ipaygh.com/gateway/json_status_chk?merchant_key=5c841bf2-d29b-11e7-aebc-f23c9170642f&invoice_id=' . $nvoice,
-  \CURLOPT_RETURNTRANSFER => true,
-  \CURLOPT_ENCODING => '',
-  \CURLOPT_MAXREDIRS => 10,
-  \CURLOPT_TIMEOUT => 0,
-  \CURLOPT_FOLLOWLOCATION => true,
-  \CURLOPT_HTTP_VERSION => \CURL_HTTP_VERSION_1_1,
-  \CURLOPT_CUSTOMREQUEST => 'GET',  ]);
+            \CURLOPT_URL => 'https://manage.ipaygh.com/gateway/json_status_chk?merchant_key=5c841bf2-d29b-11e7-aebc-f23c9170642f&invoice_id=' . $nvoice,
+            \CURLOPT_RETURNTRANSFER => true,
+            \CURLOPT_ENCODING => '',
+            \CURLOPT_MAXREDIRS => 10,
+            \CURLOPT_TIMEOUT => 0,
+            \CURLOPT_FOLLOWLOCATION => true,
+            \CURLOPT_HTTP_VERSION => \CURL_HTTP_VERSION_1_1,
+            \CURLOPT_CUSTOMREQUEST => 'GET',  ]);
 
         $response = curl_exec($curl);
 

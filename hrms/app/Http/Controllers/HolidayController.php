@@ -9,6 +9,8 @@ use App\Models\Utility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
+use Session;
+use Validator;
 
 class HolidayController extends Controller
 {
@@ -44,12 +46,12 @@ class HolidayController extends Controller
     public function store(Request $request)
     {
         if (\Auth::user()->can('Create Holiday')) {
-            $validator = \Validator::make(
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'date' => 'required',
-                                   'occasion' => 'required',
-                               ]
+                    'date' => 'required',
+                    'occasion' => 'required',
+                ]
             );
 
             if ($validator->fails()) {
@@ -87,9 +89,8 @@ class HolidayController extends Controller
         return redirect()->back()->with('error', __('Permission denied.'));
     }
 
-    public function show(Holiday $holiday)
+    public function show(Holiday $holiday): void
     {
-
     }
 
     public function edit(Holiday $holiday)
@@ -104,12 +105,12 @@ class HolidayController extends Controller
     public function update(Request $request, Holiday $holiday)
     {
         if (\Auth::user()->can('Edit Holiday')) {
-            $validator = \Validator::make(
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'date' => 'required',
-                                   'occasion' => 'required',
-                               ]
+                    'date' => 'required',
+                    'occasion' => 'required',
+                ]
             );
 
             if ($validator->fails()) {
@@ -197,7 +198,7 @@ class HolidayController extends Controller
         $rules = [
             'file' => 'required|mimes:csv,txt',
         ];
-        $validator = \Validator::make($request->all(), $rules);
+        $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
             $messages = $validator->getMessageBag();
@@ -208,7 +209,7 @@ class HolidayController extends Controller
 
         $totalholiday = \count($holiday) - 1;
         $errorArray = [];
-        for ($i = 1; $i <= $totalholiday; $i++) {
+        for ($i = 1; $i <= $totalholiday; ++$i) {
             $holidays = $holiday[$i];
 
             $holiydayData = Holiday::where('date', $holidays[0])->where('occasion', $holidays[1])->first();
@@ -235,7 +236,7 @@ class HolidayController extends Controller
                 $errorRecord[] = implode(',', $errorData->toArray());
             }
 
-            \Session::put('errorArray', $errorRecord);
+            Session::put('errorArray', $errorRecord);
         }
 
         return redirect()->back()->with($data['status'], $data['msg']);

@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\ExpenseType;
+use Auth;
 use Illuminate\Http\Request;
+use Validator;
 
 class ExpenseTypeController extends Controller
 {
     public function index()
     {
-        if (\Auth::user()->can('Manage Expense Type')) {
-            $expensetypes = ExpenseType::where('created_by', '=', \Auth::user()->creatorId())->get();
+        if (Auth::user()->can('Manage Expense Type')) {
+            $expensetypes = ExpenseType::where('created_by', '=', Auth::user()->creatorId())->get();
 
             return view('expensetype.index', compact('expensetypes'));
         }
@@ -20,7 +22,7 @@ class ExpenseTypeController extends Controller
 
     public function create()
     {
-        if (\Auth::user()->can('Create Expense Type')) {
+        if (Auth::user()->can('Create Expense Type')) {
             return view('expensetype.create');
         }
 
@@ -29,12 +31,12 @@ class ExpenseTypeController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('Create Expense Type')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Create Expense Type')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'name' => 'required',
-                               ]
+                    'name' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -44,7 +46,7 @@ class ExpenseTypeController extends Controller
 
             $expensetype = new ExpenseType();
             $expensetype->name = $request->name;
-            $expensetype->created_by = \Auth::user()->creatorId();
+            $expensetype->created_by = Auth::user()->creatorId();
             $expensetype->save();
 
             return redirect()->route('expensetype.index')->with('success', __('ExpenseType  successfully created.'));
@@ -60,8 +62,8 @@ class ExpenseTypeController extends Controller
 
     public function edit(ExpenseType $expensetype)
     {
-        if (\Auth::user()->can('Edit Expense Type')) {
-            if ($expensetype->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('Edit Expense Type')) {
+            if ($expensetype->created_by == Auth::user()->creatorId()) {
                 return view('expensetype.edit', compact('expensetype'));
             }
 
@@ -73,14 +75,14 @@ class ExpenseTypeController extends Controller
 
     public function update(Request $request, ExpenseType $expensetype)
     {
-        if (\Auth::user()->can('Edit Expense Type')) {
-            if ($expensetype->created_by == \Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+        if (Auth::user()->can('Edit Expense Type')) {
+            if ($expensetype->created_by == Auth::user()->creatorId()) {
+                $validator = Validator::make(
                     $request->all(),
                     [
-                                       'name' => 'required',
+                        'name' => 'required',
 
-                                   ]
+                    ]
                 );
 
                 if ($validator->fails()) {
@@ -103,8 +105,8 @@ class ExpenseTypeController extends Controller
 
     public function destroy(ExpenseType $expensetype)
     {
-        if (\Auth::user()->can('Delete Expense Type')) {
-            if ($expensetype->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('Delete Expense Type')) {
+            if ($expensetype->created_by == Auth::user()->creatorId()) {
                 $expensetype->delete();
 
                 return redirect()->route('expensetype.index')->with('success', __('ExpenseType successfully deleted.'));

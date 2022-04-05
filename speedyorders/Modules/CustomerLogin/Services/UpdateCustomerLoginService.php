@@ -2,6 +2,7 @@
 
 namespace Modules\CustomerLogin\Services;
 
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class UpdateCustomerLoginService
@@ -14,7 +15,7 @@ class UpdateCustomerLoginService
             DB::commit();
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollback();
 
             return false;

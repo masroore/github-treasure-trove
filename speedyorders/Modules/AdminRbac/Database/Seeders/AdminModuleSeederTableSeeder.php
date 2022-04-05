@@ -10,10 +10,8 @@ class AdminModuleSeederTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         \Illuminate\Support\Facades\DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         \Illuminate\Support\Facades\DB::table('admin_groups')->truncate();

@@ -8,12 +8,10 @@ class CreateAdminPermissionReferencesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('admin_permission_references', function (Blueprint $table) {
+        Schema::create('admin_permission_references', function (Blueprint $table): void {
             $table->increments('id');
             $table->integer('permission_modules_id')->unsigned()->nullable()->default(null);
             $table->string('code', 191)->nullable()->default(null)->index();
@@ -29,10 +27,8 @@ class CreateAdminPermissionReferencesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('admin_permission_references');
     }

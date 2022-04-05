@@ -5,6 +5,7 @@ namespace Modules\AdminCoupon\Http\Controllers;
 use App\Models\Category;
 use App\Models\Coupon;
 use App\Models\Product;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
@@ -142,7 +143,7 @@ class AdminCouponController extends Controller
         try {
             Coupon::find($id)->delete();
             session()->flash('success_message', 'Coupon deleted successfully.');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             session()->flash('error_message', 'Coupon could not be deleted.');
         }
 
@@ -160,7 +161,7 @@ class AdminCouponController extends Controller
             }
             Coupon::where('id', $id)->first()->update(['status' => $status]);
             session()->flash('success_message', 'Coupon updated successfully.');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             session()->flash('error_message', 'Coupon could not be updated.');
         }
 

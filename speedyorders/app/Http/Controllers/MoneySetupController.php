@@ -15,6 +15,7 @@ use App\Models\TempCustomerTransaction;
 use App\Models\TempProductOptionValue;
 use App\Utils\Option;
 use DB;
+use Exception;
 use Hash;
 use Illuminate\Http\Request;
 use Log;
@@ -202,7 +203,7 @@ class MoneySetupController extends Controller
                 if (!$customer_user_id) {
                     Log::info('Found customer user id : ' . $customer_user_id);
 
-                    $password = Hash::make(rand());
+                    $password = Hash::make(mt_rand());
                     $customeruser = new CustomerUser();
                     $customeruser->email = $tempcustomer->email;
                     $customeruser->password = $password;
@@ -349,7 +350,7 @@ class MoneySetupController extends Controller
             DB::commit();
 
             return redirect('/stripeform');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::info('Exception : ' . $e->getMessage());
             DB::rollback();
 

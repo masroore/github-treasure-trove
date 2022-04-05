@@ -14,7 +14,7 @@ class HolidayImport implements ToModel
      */
     use Importable;
 
-    public function model(array $row)
+    public function model(array $row): void
     {
     }
 }

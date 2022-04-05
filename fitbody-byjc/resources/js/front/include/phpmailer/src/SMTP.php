@@ -5,9 +5,6 @@
  *
  * @see       https://github.com/PHPMailer/PHPMailer/ The PHPMailer GitHub project
  *
- * @copyright 2012 - 2019 Marcus Bointon
- * @copyright 2010 - 2012 Jim Jagielski
- * @copyright 2004 - 2009 Andy Prevost
  * @license   http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  * @note      This program is distributed in the hope that it will be useful - WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
@@ -184,7 +181,7 @@ class SMTP
      * The last transaction ID issued in response to a DATA command,
      * if one was detected.
      *
-     * @var bool|string|null
+     * @var null|bool|string
      */
     protected $last_smtp_transaction_id;
 
@@ -211,7 +208,7 @@ class SMTP
      * The reply the server sent to us for HELO.
      * If null, no HELO string has yet been received.
      *
-     * @var string|null
+     * @var null|string
      */
     protected $helo_rply;
 
@@ -223,7 +220,7 @@ class SMTP
      * Other values can be boolean TRUE or an array containing extension options.
      * If null, no HELO/EHLO string has yet been received.
      *
-     * @var array|null
+     * @var null|array
      */
     protected $server_caps;
 
@@ -420,6 +417,7 @@ class SMTP
                 foreach (['CRAM-MD5', 'LOGIN', 'PLAIN', 'XOAUTH2'] as $method) {
                     if (\in_array($method, $this->server_caps['AUTH'], true)) {
                         $authtype = $method;
+
                         break;
                     }
                 }
@@ -454,6 +452,7 @@ class SMTP
                 ) {
                     return false;
                 }
+
                 break;
             case 'LOGIN':
                 // Start authentication
@@ -466,6 +465,7 @@ class SMTP
                 if (!$this->sendCommand('Password', base64_encode($password), 235)) {
                     return false;
                 }
+
                 break;
             case 'CRAM-MD5':
                 // Start authentication
@@ -491,6 +491,7 @@ class SMTP
                 if (!$this->sendCommand('AUTH', 'AUTH XOAUTH2 ' . $oauth, 235)) {
                     return false;
                 }
+
                 break;
             default:
                 $this->setError("Authentication method \"$authtype\" is not supported");
@@ -533,7 +534,7 @@ class SMTP
      *
      * @see quit()
      */
-    public function close()
+    public function close(): void
     {
         $this->setError('');
         $this->server_caps = null;
@@ -850,7 +851,7 @@ class SMTP
     /**
      * Get SMTP extensions available on the server.
      *
-     * @return array|null
+     * @return null|array
      */
     public function getServerExtList()
     {
@@ -872,7 +873,7 @@ class SMTP
      *
      * @param string $name Name of SMTP extension or 'HELO'|'EHLO'
      *
-     * @return bool|string|null
+     * @return null|bool|string
      */
     public function getServerExt($name)
     {
@@ -912,7 +913,7 @@ class SMTP
      *
      * @param bool $enabled
      */
-    public function setVerp($enabled = false)
+    public function setVerp($enabled = false): void
     {
         $this->do_verp = $enabled;
     }
@@ -932,7 +933,7 @@ class SMTP
      *
      * @param callable|string $method The name of the mechanism to use for debugging output, or a callable to handle it
      */
-    public function setDebugOutput($method = 'echo')
+    public function setDebugOutput($method = 'echo'): void
     {
         $this->Debugoutput = $method;
     }
@@ -952,7 +953,7 @@ class SMTP
      *
      * @param int $level
      */
-    public function setDebugLevel($level = 0)
+    public function setDebugLevel($level = 0): void
     {
         $this->do_debug = $level;
     }
@@ -972,7 +973,7 @@ class SMTP
      *
      * @param int $timeout The timeout duration in seconds
      */
-    public function setTimeout($timeout = 0)
+    public function setTimeout($timeout = 0): void
     {
         $this->Timeout = $timeout;
     }
@@ -992,7 +993,7 @@ class SMTP
      * If no reply has been received yet, it will return null.
      * If no pattern was matched, it will return false.
      *
-     * @return bool|string|null
+     * @return null|bool|string
      *
      * @see recordLastTransactionID()
      */
@@ -1010,7 +1011,7 @@ class SMTP
      * @see SMTP::$Debugoutput
      * @see SMTP::$do_debug
      */
-    protected function edebug($str, $level = 0)
+    protected function edebug($str, $level = 0): void
     {
         if ($level > $this->do_debug) {
             return;
@@ -1031,6 +1032,7 @@ class SMTP
             case 'error_log':
                 //Don't output, just log
                 error_log($str);
+
                 break;
             case 'html':
                 //Cleans up output a bit for a better looking, HTML-safe output
@@ -1039,6 +1041,7 @@ class SMTP
                     \ENT_QUOTES,
                     'UTF-8'
                 ), "<br>\n";
+
                 break;
             case 'echo':
             default:
@@ -1126,7 +1129,7 @@ class SMTP
      *
      * @param string $type `HELO` or `EHLO`
      */
-    protected function parseHelloFields($type)
+    protected function parseHelloFields($type): void
     {
         $this->server_caps = [];
         $lines = explode("\n", $this->helo_rply);
@@ -1147,11 +1150,13 @@ class SMTP
                     switch ($name) {
                         case 'SIZE':
                             $fields = ($fields ? $fields[0] : 0);
+
                             break;
                         case 'AUTH':
                             if (!\is_array($fields)) {
                                 $fields = [];
                             }
+
                             break;
                         default:
                             $fields = true;
@@ -1258,6 +1263,7 @@ class SMTP
                     'SMTP -> get_lines(): timed-out (' . $this->Timeout . ' sec)',
                     self::DEBUG_LOWLEVEL
                 );
+
                 break;
             }
             //Deliberate noise suppression - errors are handled afterwards
@@ -1277,6 +1283,7 @@ class SMTP
                     'SMTP -> get_lines(): timed-out (' . $this->Timeout . ' sec)',
                     self::DEBUG_LOWLEVEL
                 );
+
                 break;
             }
             // Now check if reads took too long
@@ -1286,6 +1293,7 @@ class SMTP
                     $this->Timelimit . ' sec)',
                     self::DEBUG_LOWLEVEL
                 );
+
                 break;
             }
         }
@@ -1301,7 +1309,7 @@ class SMTP
      * @param string $smtp_code    An associated SMTP error code
      * @param string $smtp_code_ex Extended SMTP code
      */
-    protected function setError($message, $detail = '', $smtp_code = '', $smtp_code_ex = '')
+    protected function setError($message, $detail = '', $smtp_code = '', $smtp_code_ex = ''): void
     {
         $this->error = [
             'error' => $message,
@@ -1319,7 +1327,7 @@ class SMTP
      * @param string $errfile The file the error occurred in
      * @param int    $errline The line number the error occurred on
      */
-    protected function errorHandler($errno, $errmsg, $errfile = '', $errline = 0)
+    protected function errorHandler($errno, $errmsg, $errfile = '', $errline = 0): void
     {
         $notice = 'Connection failed.';
         $this->setError(
@@ -1340,7 +1348,7 @@ class SMTP
      * If no reply has been received yet, it will return null.
      * If no pattern was matched, it will return false.
      *
-     * @return bool|string|null
+     * @return null|bool|string
      */
     protected function recordLastTransactionID()
     {
@@ -1353,6 +1361,7 @@ class SMTP
             foreach ($this->smtp_transaction_id_patterns as $smtp_transaction_id_pattern) {
                 if (preg_match($smtp_transaction_id_pattern, $reply, $matches)) {
                     $this->last_smtp_transaction_id = trim($matches[1]);
+
                     break;
                 }
             }

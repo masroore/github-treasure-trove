@@ -12,7 +12,7 @@ class CreateWalletsTable extends Migration
 {
     public function up(): void
     {
-        Schema::create($this->table(), function (Blueprint $table) {
+        Schema::create($this->table(), function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->morphs('holder');
             $table->string('name');
@@ -41,8 +41,8 @@ class CreateWalletsTable extends Migration
             ->groupBy('holder_type', 'holder_id')
             ->orderBy('holder_type');
 
-        DB::transaction(function () use ($query) {
-            $query->chunk(1000, function (Collection $transactions) {
+        DB::transaction(function () use ($query): void {
+            $query->chunk(1000, function (Collection $transactions): void {
                 DB::table((new Wallet())->getTable())
                     ->insert($transactions->toArray());
             });

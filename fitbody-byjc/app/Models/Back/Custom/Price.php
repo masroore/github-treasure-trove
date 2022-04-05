@@ -40,20 +40,18 @@ class Price extends Model
     }
 
     /**
-     * @throws \Exception
-     *
      * @return bool
      */
     public function storePrice()
     {
         $id = $this->insertGetId([
-            'title'      => $this->request->title,
-            'subtitle'   => $this->request->subtitle,
-            'price'      => $this->request->price,
-            'price_per'  => $this->request->price_per,
-            'tags'       => $this->request->tags,
-            'status'     => (isset($this->request->status) && 'on' == $this->request->status) ? 1 : 0,
-            'featured'   => (isset($this->request->featured) && 'on' == $this->request->featured) ? 1 : 0,
+            'title' => $this->request->title,
+            'subtitle' => $this->request->subtitle,
+            'price' => $this->request->price,
+            'price_per' => $this->request->price_per,
+            'tags' => $this->request->tags,
+            'status' => (isset($this->request->status) && 'on' == $this->request->status) ? 1 : 0,
+            'featured' => (isset($this->request->featured) && 'on' == $this->request->featured) ? 1 : 0,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
@@ -68,20 +66,18 @@ class Price extends Model
     /**
      * @param array $id
      *
-     * @throws \Exception
-     *
      * @return bool
      */
     public function updatePrice($id)
     {
         return $this->where('id', $id)->update([
-            'title'      => $this->request->title,
-            'subtitle'   => $this->request->subtitle,
-            'price'      => $this->request->price,
-            'price_per'  => $this->request->price_per,
-            'tags'       => $this->request->tags,
-            'status'     => (isset($this->request->status) && 'on' == $this->request->status) ? 1 : 0,
-            'featured'   => (isset($this->request->featured) && 'on' == $this->request->featured) ? 1 : 0,
+            'title' => $this->request->title,
+            'subtitle' => $this->request->subtitle,
+            'price' => $this->request->price,
+            'price_per' => $this->request->price_per,
+            'tags' => $this->request->tags,
+            'status' => (isset($this->request->status) && 'on' == $this->request->status) ? 1 : 0,
+            'featured' => (isset($this->request->featured) && 'on' == $this->request->featured) ? 1 : 0,
             'updated_at' => Carbon::now(),
         ]);
     }

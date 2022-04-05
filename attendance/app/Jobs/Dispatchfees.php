@@ -23,20 +23,15 @@ class Dispatchfees implements ShouldQueue
 
     /**
      * Create a new job instance.
-     *
-     * @return void
      */
     public function __construct()
     {
-
     }
 
     /**
      * Execute the job.
-     *
-     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         $students = Studentinfo::where('currentlevel', '!=', 'Graduating')
             ->where('currentlevel', '!=', 'Graduated')->get();
@@ -97,14 +92,14 @@ class Dispatchfees implements ShouldQueue
 
                         //this is a new fee
                         $data = [
-                        'indexnumber' => $indexnumber,
-                        'fee' => $row->fee,
-                        'feecode' => $row->feecode,
-                        'feeamount' => $row->feeamount,
-                        'paid' => 0,
-                        'owed' => $row->feeamount,
-                        'semester' => $row->academicyear,
-                    ];
+                            'indexnumber' => $indexnumber,
+                            'fee' => $row->fee,
+                            'feecode' => $row->feecode,
+                            'feeamount' => $row->feeamount,
+                            'paid' => 0,
+                            'owed' => $row->feeamount,
+                            'semester' => $row->academicyear,
+                        ];
 
                         $newfees = new Studentfee($data);
                         $newfees->save();

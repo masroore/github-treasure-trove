@@ -8,12 +8,10 @@ class CreateIndustriesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('industries', function (Blueprint $table) {
+        Schema::create('industries', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->bigInteger('parent_id')->unsigned()->default(0);
             $table->string('name', 50)->nullable();
@@ -30,13 +28,11 @@ class CreateIndustriesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('industries');
-        Schema::table('industries', function (Blueprint $table) {
+        Schema::table('industries', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
     }

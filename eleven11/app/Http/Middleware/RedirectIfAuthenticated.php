@@ -12,7 +12,7 @@ class RedirectIfAuthenticated
      * Handle an incoming request.
      *
      * @param \Illuminate\Http\Request $request
-     * @param string|null              $guard
+     * @param null|string              $guard
      */
     public function handle($request, Closure $next, $guard = null)
     {

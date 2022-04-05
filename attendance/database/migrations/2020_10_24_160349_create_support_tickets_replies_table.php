@@ -8,12 +8,10 @@ class CreateSupportTicketsRepliesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('support_tickets_replies', function (Blueprint $table) {
+        Schema::create('support_tickets_replies', function (Blueprint $table): void {
             $table->increments('id');
             $table->integer('tid');
             $table->integer('cl_id');
@@ -29,10 +27,8 @@ class CreateSupportTicketsRepliesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('support_tickets_replies');
     }

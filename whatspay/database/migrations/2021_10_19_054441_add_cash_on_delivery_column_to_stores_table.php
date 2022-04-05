@@ -8,16 +8,14 @@ class AddCashOnDeliveryColumnToStoresTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('stores', function (Blueprint $table) {
+        Schema::table('stores', function (Blueprint $table): void {
             $table->dropColumn('disount_type');
         });
 
-        Schema::table('stores', function (Blueprint $table) {
+        Schema::table('stores', function (Blueprint $table): void {
             $table->enum('cash_on_delivery', ['enable', 'disable'])->default('enable')->after('status');
             $table->enum('disount_type', ['flat', 'percentage'])->nullable();
         });
@@ -25,13 +23,10 @@ class AddCashOnDeliveryColumnToStoresTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('stores', function (Blueprint $table) {
-
+        Schema::table('stores', function (Blueprint $table): void {
         });
     }
 }

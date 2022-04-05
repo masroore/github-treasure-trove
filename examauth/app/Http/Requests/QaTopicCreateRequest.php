@@ -15,8 +15,8 @@ class QaTopicCreateRequest extends FormRequest
     {
         return [
             'recipient' => 'required',
-            'subject'   => 'required',
-            'content'   => 'required',
+            'subject' => 'required',
+            'content' => 'required',
         ];
     }
 }

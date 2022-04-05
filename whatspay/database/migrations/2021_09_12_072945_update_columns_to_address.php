@@ -8,13 +8,11 @@ class UpdateColumnsToAddress extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::dropIfExists('user_addresses');
-        Schema::create('user_addresses', function (Blueprint $table) {
+        Schema::create('user_addresses', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->bigInteger('user_id')->unsigned()->default(0);
             $table->string('title', 100)->nullable();
@@ -36,12 +34,10 @@ class UpdateColumnsToAddress extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('user_addresses', function (Blueprint $table) {
+        Schema::table('user_addresses', function (Blueprint $table): void {
             Schema::dropIfExists('user_addresses');
         });
     }

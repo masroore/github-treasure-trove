@@ -3,6 +3,7 @@
 namespace Modules\AdminShipping\Http\Controllers;
 
 use App\Models\ShippingPackage;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
@@ -133,7 +134,7 @@ class AdminPackageController extends Controller
         try {
             ShippingPackage::find($id)->delete();
             session()->flash('success_message', 'Package deleted successfully.');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             session()->flash('error_message', 'Package could not be deleted.');
         }
 
@@ -151,7 +152,7 @@ class AdminPackageController extends Controller
             }
             ShippingPackage::where('id', $id)->first()->update(['status' => $status]);
             session()->flash('success_message', 'Package updated successfully.');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             session()->flash('error_message', 'Package could not be updated.');
         }
 

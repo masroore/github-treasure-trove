@@ -41,7 +41,7 @@ trait ImagesTrait
         $image = Image::make(public_path($img_name))->resize(670, 440)->encode('webp');
         Storage::disk('local')->put('images/' . $name . '-L.webp', $image);
 
-        $img_instance->resize(null, 500, function ($constraint) {
+        $img_instance->resize(null, 500, function ($constraint): void {
             $constraint->aspectRatio();
             $constraint->upsize();
         });

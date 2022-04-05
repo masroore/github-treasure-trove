@@ -8,12 +8,10 @@ class ChangeDefaultValuesToProductsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('products', function (Blueprint $table) {
+        Schema::table('products', function (Blueprint $table): void {
             $table->string('sale_price')->nullable()->change();
             $table->string('start_date')->nullable()->change();
             $table->string('end_date')->nullable()->change();
@@ -22,13 +20,10 @@ class ChangeDefaultValuesToProductsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('products', function (Blueprint $table) {
-
+        Schema::table('products', function (Blueprint $table): void {
         });
     }
 }

@@ -10,7 +10,6 @@ class Url
 {
     public static function set(string $type, int $id): string
     {
-
         if ('category' == $type) {
             $category = Category::find($id);
 

@@ -8,12 +8,10 @@ class CreateCustomerTransactionsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('customer_transactions', function (Blueprint $table) {
+        Schema::create('customer_transactions', function (Blueprint $table): void {
             $table->unsignedBigInteger('id')->autoIncrement();
             $table->unsignedBigInteger('customer_id')->default(null)->nullable();
             $table->text('description')->default(null)->nullable();
@@ -24,10 +22,8 @@ class CreateCustomerTransactionsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('customer_transactions');
     }

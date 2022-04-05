@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\DeductionOption;
+use Auth;
 use Illuminate\Http\Request;
+use Validator;
 
 class DeductionOptionController extends Controller
 {
     public function index()
     {
-        if (\Auth::user()->can('Manage Deduction Option')) {
-            $deductionoptions = DeductionOption::where('created_by', '=', \Auth::user()->creatorId())->get();
+        if (Auth::user()->can('Manage Deduction Option')) {
+            $deductionoptions = DeductionOption::where('created_by', '=', Auth::user()->creatorId())->get();
 
             return view('deductionoption.index', compact('deductionoptions'));
         }
@@ -20,7 +22,7 @@ class DeductionOptionController extends Controller
 
     public function create()
     {
-        if (\Auth::user()->can('Create Deduction Option')) {
+        if (Auth::user()->can('Create Deduction Option')) {
             return view('deductionoption.create');
         }
 
@@ -29,12 +31,12 @@ class DeductionOptionController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('Create Deduction Option')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Create Deduction Option')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'name' => 'required',
-                               ]
+                    'name' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -44,7 +46,7 @@ class DeductionOptionController extends Controller
 
             $deductionoption = new DeductionOption();
             $deductionoption->name = $request->name;
-            $deductionoption->created_by = \Auth::user()->creatorId();
+            $deductionoption->created_by = Auth::user()->creatorId();
             $deductionoption->save();
 
             return redirect()->route('deductionoption.index')->with('success', __('DeductionOption  successfully created.'));
@@ -61,8 +63,8 @@ class DeductionOptionController extends Controller
     public function edit($deductionoption)
     {
         $deductionoption = DeductionOption::find($deductionoption);
-        if (\Auth::user()->can('Edit Deduction Option')) {
-            if ($deductionoption->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('Edit Deduction Option')) {
+            if ($deductionoption->created_by == Auth::user()->creatorId()) {
                 return view('deductionoption.edit', compact('deductionoption'));
             }
 
@@ -74,14 +76,14 @@ class DeductionOptionController extends Controller
 
     public function update(Request $request, DeductionOption $deductionoption)
     {
-        if (\Auth::user()->can('Edit Deduction Option')) {
-            if ($deductionoption->created_by == \Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+        if (Auth::user()->can('Edit Deduction Option')) {
+            if ($deductionoption->created_by == Auth::user()->creatorId()) {
+                $validator = Validator::make(
                     $request->all(),
                     [
-                                       'name' => 'required',
+                        'name' => 'required',
 
-                                   ]
+                    ]
                 );
 
                 if ($validator->fails()) {
@@ -103,8 +105,8 @@ class DeductionOptionController extends Controller
 
     public function destroy(DeductionOption $deductionoption)
     {
-        if (\Auth::user()->can('Delete Deduction Option')) {
-            if ($deductionoption->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('Delete Deduction Option')) {
+            if ($deductionoption->created_by == Auth::user()->creatorId()) {
                 $deductionoption->delete();
 
                 return redirect()->route('deductionoption.index')->with('success', __('DeductionOption successfully deleted.'));

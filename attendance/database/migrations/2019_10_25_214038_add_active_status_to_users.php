@@ -8,12 +8,10 @@ class AddActiveStatusToUsers extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table): void {
             // if not exist, add the new column
             if (!Schema::hasColumn('users', 'active_status')) {
                 $table->boolean('active_status')->default(0)->after('email');
@@ -23,13 +21,10 @@ class AddActiveStatusToUsers extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-
+        Schema::table('users', function (Blueprint $table): void {
         });
     }
 }

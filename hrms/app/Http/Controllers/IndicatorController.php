@@ -9,14 +9,16 @@ use App\Models\Designation;
 use App\Models\Employee;
 use App\Models\Indicator;
 use App\Models\Performance_Type;
+use Auth;
 use Illuminate\Http\Request;
+use Validator;
 
 class IndicatorController extends Controller
 {
     public function index()
     {
-        if (\Auth::user()->can('Manage Indicator')) {
-            $user = \Auth::user();
+        if (Auth::user()->can('Manage Indicator')) {
+            $user = Auth::user();
             if ('employee' == $user->type) {
                 $employee = Employee::where('user_id', $user->id)->first();
 
@@ -33,12 +35,12 @@ class IndicatorController extends Controller
 
     public function create()
     {
-        if (\Auth::user()->can('Create Indicator')) {
-            $performance_types = Performance_Type::where('created_by', '=', \Auth::user()->creatorId())->get();
-            $brances = Branch::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-            $departments = Department::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        if (Auth::user()->can('Create Indicator')) {
+            $performance_types = Performance_Type::where('created_by', '=', Auth::user()->creatorId())->get();
+            $brances = Branch::where('created_by', '=', Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $departments = Department::where('created_by', '=', Auth::user()->creatorId())->get()->pluck('name', 'id');
             $departments->prepend('Select Department', '');
-            $degisnation = Designation::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $degisnation = Designation::where('created_by', '=', Auth::user()->creatorId())->get()->pluck('name', 'id');
 
             return view('indicator.create', compact('performance_types', 'brances', 'departments', 'degisnation'));
         }
@@ -48,8 +50,8 @@ class IndicatorController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('Create Indicator')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Create Indicator')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
                     'branch' => 'required',
@@ -69,13 +71,13 @@ class IndicatorController extends Controller
             $indicator->designation = $request->designation;
             $indicator->rating = json_encode($request->rating, true);
 
-            if ('company' == \Auth::user()->type) {
-                $indicator->created_user = \Auth::user()->creatorId();
+            if ('company' == Auth::user()->type) {
+                $indicator->created_user = Auth::user()->creatorId();
             } else {
-                $indicator->created_user = \Auth::user()->id;
+                $indicator->created_user = Auth::user()->id;
             }
 
-            $indicator->created_by = \Auth::user()->creatorId();
+            $indicator->created_by = Auth::user()->creatorId();
             $indicator->save();
 
             return redirect()->route('indicator.index')->with('success', __('Indicator successfully created.'));
@@ -85,7 +87,7 @@ class IndicatorController extends Controller
     public function show(Indicator $indicator)
     {
         $ratings = json_decode($indicator->rating, true);
-        $performance_types = Performance_Type::where('created_by', '=', \Auth::user()->creatorId())->get();
+        $performance_types = Performance_Type::where('created_by', '=', Auth::user()->creatorId())->get();
         // $technicals      = Competencies::where('created_by', \Auth::user()->creatorId())->where('type', 'technical')->get();
         // $organizationals = Competencies::where('created_by', \Auth::user()->creatorId())->where('type', 'organizational')->get();
         // $behaviourals = Competencies::where('created_by', \Auth::user()->creatorId())->where('type', 'behavioural')->get();
@@ -95,12 +97,12 @@ class IndicatorController extends Controller
 
     public function edit(Indicator $indicator)
     {
-        if (\Auth::user()->can('Edit Indicator')) {
-            $performance_types = Performance_Type::where('created_by', '=', \Auth::user()->creatorId())->get();
-            $brances = Branch::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-            $departments = Department::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        if (Auth::user()->can('Edit Indicator')) {
+            $performance_types = Performance_Type::where('created_by', '=', Auth::user()->creatorId())->get();
+            $brances = Branch::where('created_by', '=', Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $departments = Department::where('created_by', '=', Auth::user()->creatorId())->get()->pluck('name', 'id');
             $departments->prepend('Select Department', '');
-            $degisnation = Designation::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $degisnation = Designation::where('created_by', '=', Auth::user()->creatorId())->get()->pluck('name', 'id');
 
             $ratings = json_decode($indicator->rating, true);
 
@@ -112,8 +114,8 @@ class IndicatorController extends Controller
 
     public function update(Request $request, Indicator $indicator)
     {
-        if (\Auth::user()->can('Edit Indicator')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Edit Indicator')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
                     'branch' => 'required',
@@ -139,8 +141,8 @@ class IndicatorController extends Controller
 
     public function destroy(Indicator $indicator)
     {
-        if (\Auth::user()->can('Delete Indicator')) {
-            if ($indicator->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('Delete Indicator')) {
+            if ($indicator->created_by == Auth::user()->creatorId()) {
                 $indicator->delete();
 
                 return redirect()->route('indicator.index')->with('success', __('Indicator successfully deleted.'));

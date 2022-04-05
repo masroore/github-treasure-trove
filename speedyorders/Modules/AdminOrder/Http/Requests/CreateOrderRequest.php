@@ -50,28 +50,28 @@ class CreateOrderRequest extends FormRequest
             'currency_code' => 'required|string:max:255',
             'currency_value' => 'required|numeric',
             'ip' => 'nullable|string:max:255',
-            'option.*'=>'nullable',
+            'option.*' => 'nullable',
         ];
 
         if (isset($this->payment_method)) {
             $rules += [
-            'payment_first_name' => 'required|string:max:255',
-            'payment_last_name' => 'required|string:max:255',
-            'payment_company' => 'required|string:max:255',
-            'payment_address_1' => 'required|string:max:255',
-            'payment_address_2' => 'nullable|string:max:255',
-            'payment_city' => 'required|string:max:255',
-            'payment_postcode' => 'required|string:max:255',
-            'payment_country_name' => 'required|string:max:255',
-            'payment_region' => 'required|string:max:255',
-            'payment_method' => 'required|string:max:255',
-            'payment_unique_code' => 'required|string:max:255',
+                'payment_first_name' => 'required|string:max:255',
+                'payment_last_name' => 'required|string:max:255',
+                'payment_company' => 'required|string:max:255',
+                'payment_address_1' => 'required|string:max:255',
+                'payment_address_2' => 'nullable|string:max:255',
+                'payment_city' => 'required|string:max:255',
+                'payment_postcode' => 'required|string:max:255',
+                'payment_country_name' => 'required|string:max:255',
+                'payment_region' => 'required|string:max:255',
+                'payment_method' => 'required|string:max:255',
+                'payment_unique_code' => 'required|string:max:255',
             ];
         }
 
         if (isset($this->coupon_id)) {
             $rules += [
-            'coupon_id' => 'required|numeric',
+                'coupon_id' => 'required|numeric',
             ];
         }
 

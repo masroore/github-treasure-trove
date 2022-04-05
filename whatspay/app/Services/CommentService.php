@@ -19,8 +19,11 @@ class CommentService
      * @var
      */
     protected $userRepository;
+
     protected $storeRepository;
+
     protected $commentRepository;
+
     protected $productRepository;
 
     public function __construct(
@@ -65,8 +68,8 @@ class CommentService
             $comments = $this->productRepository->findByColumn([
                 'id' => $id,
             ], ['*'], ['defaultProductAttributes',
-                        'variations.productAttributes',
-                        'variations.product', 'comments', ]);
+                'variations.productAttributes',
+                'variations.product', 'comments', ]);
             $comments['stats'] = averageRating($id, 'App\Models\Products');
         } catch (Exception $e) {
             throw new InvalidArgumentException($e->getMessage());
@@ -94,8 +97,8 @@ class CommentService
     {
         try {
             $comment = $this->commentRepository->deleteByColumn(
-                ['id'=>$id,
-                'user_id'=>Auth::id(), ]
+                ['id' => $id,
+                    'user_id' => Auth::id(), ]
             );
         } catch (Exception $e) {
             throw new InvalidArgumentException($e->getMessage());
@@ -116,8 +119,8 @@ class CommentService
                 throw new InvalidArgumentException($validator->errors()->first());
             }
             $comment = $this->commentRepository->updateByColumn(
-                ['id'=>$id, 'user_id'=>Auth::id()],
-                ['rating'=>$request->rating, 'body'=>$request->body]
+                ['id' => $id, 'user_id' => Auth::id()],
+                ['rating' => $request->rating, 'body' => $request->body]
             );
         } catch (Exception $e) {
             throw new InvalidArgumentException($e->getMessage());

@@ -8,12 +8,10 @@ class CreatePaymentdeadlinesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('paymentdeadlines', function (Blueprint $table) {
+        Schema::create('paymentdeadlines', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('acdemicyear');
             $table->string('semester');
@@ -25,10 +23,8 @@ class CreatePaymentdeadlinesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('paymentdeadlines');
     }

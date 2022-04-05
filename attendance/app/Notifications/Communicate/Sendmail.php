@@ -10,14 +10,15 @@ use Illuminate\Notifications\Notification;
 class Sendmail extends Notification implements ShouldQueue
 {
     use Queueable;
+
     public $compose;
+
     public $html;
+
     public $fullpath;
 
     /**
      * Create a new notification instance.
-     *
-     * @return void
      */
     public function __construct($compose, $html, $fullpath)
     {

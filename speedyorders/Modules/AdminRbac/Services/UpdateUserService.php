@@ -2,6 +2,7 @@
 
 namespace Modules\AdminRbac\Services;
 
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Modules\AdminRbac\Models\AdminUserGroup;
 
@@ -26,7 +27,7 @@ class UpdateUserService extends UserService
             DB::commit();
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
 
             return false;

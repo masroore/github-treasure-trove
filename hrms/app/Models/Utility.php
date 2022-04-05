@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Artisan;
+use Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
@@ -29,8 +31,8 @@ class Utility extends Model
     public static function settings()
     {
         $data = DB::table('settings');
-        if (\Auth::check()) {
-            $userId = \Auth::user()->creatorId();
+        if (Auth::check()) {
+            $userId = Auth::user()->creatorId();
             $data = $data->where('created_by', '=', $userId);
         } else {
             $data = $data->where('created_by', '=', 1);
@@ -190,11 +192,11 @@ class Utility extends Model
         return rmdir($dir);
     }
 
-    public static function addNewData()
+    public static function addNewData(): void
     {
-        \Artisan::call('cache:forget spatie.permission.cache');
-        \Artisan::call('cache:clear');
-        $usr = \Auth::user();
+        Artisan::call('cache:forget spatie.permission.cache');
+        Artisan::call('cache:clear');
+        $usr = Auth::user();
         $arrPermissions = [
             'Manage Job Category',
             'Create Job Category',
@@ -294,7 +296,7 @@ class Utility extends Model
         }
     }
 
-    public static function jobStage($id)
+    public static function jobStage($id): void
     {
         $stages = [
             'Applied',
@@ -446,9 +448,9 @@ class Utility extends Model
         ];
     }
 
-    public static function send_slack_msg($msg)
+    public static function send_slack_msg($msg): void
     {
-        $settings = self::settings(\Auth::user()->creatorId());
+        $settings = self::settings(Auth::user()->creatorId());
 
         if (isset($settings['slack_webhook']) && !empty($settings['slack_webhook'])) {
             $ch = curl_init();
@@ -470,9 +472,9 @@ class Utility extends Model
         }
     }
 
-    public static function send_telegram_msg($resp)
+    public static function send_telegram_msg($resp): void
     {
-        $settings = self::settings(\Auth::user()->creatorId());
+        $settings = self::settings(Auth::user()->creatorId());
 
         $msg = $resp;
         // Set your Bot ID and Chat ID.
@@ -496,11 +498,11 @@ class Utility extends Model
         $url = $url;
     }
 
-    public static function send_twilio_msg($to, $msg)
+    public static function send_twilio_msg($to, $msg): void
     {
         dd($to);
 
-        $settings = self::settings(\Auth::user()->creatorId());
+        $settings = self::settings(Auth::user()->creatorId());
         $account_sid = $settings['twilio_sid'];
         $auth_token = $settings['twilio_token'];
         $twilio_number = $settings['twilio_from'];

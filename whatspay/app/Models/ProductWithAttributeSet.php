@@ -8,5 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class ProductWithAttributeSet extends Model
 {
     use HasFactory;
+
     protected $fillable = ['attribute_set_id', 'product_id'];
 }

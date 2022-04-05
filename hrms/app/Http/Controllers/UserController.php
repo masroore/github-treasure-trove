@@ -7,6 +7,7 @@ use App\Models\Employee;
 use App\Models\Notification;
 use App\Models\User;
 use App\Models\Utility;
+use Exception;
 use File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Role;
+use Validator;
 
 class UserController extends Controller
 {
@@ -49,13 +51,13 @@ class UserController extends Controller
     {
         if (\Auth::user()->can('Create User')) {
             $default_language = DB::table('settings')->select('value')->where('name', 'default_language')->first();
-            $validator = \Validator::make(
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'name' => 'required',
-                                   'email' => 'required|unique:users',
-                                   'password' => 'required',
-                               ]
+                    'name' => 'required',
+                    'email' => 'required|unique:users',
+                    'password' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -80,9 +82,10 @@ class UserController extends Controller
             if (1 == $setings['user_create']) {
                 $user->type = $role_r->name;
                 $user->password = $request['password'];
+
                 try {
                     Mail::to($user->email)->send(new UserCreate($user));
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     $smtp_error = __('E-Mail has been not sent due to SMTP configuration');
                 }
 
@@ -112,12 +115,12 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
-        $validator = \Validator::make(
+        $validator = Validator::make(
             $request->all(),
             [
-                               'name' => 'required',
-                               'email' => 'unique:users,email,' . $id,
-                           ]
+                'name' => 'required',
+                'email' => 'unique:users,email,' . $id,
+            ]
         );
         if ($validator->fails()) {
             $messages = $validator->getMessageBag();
@@ -165,13 +168,13 @@ class UserController extends Controller
         $userDetail = \Auth::user();
         $user = User::findOrFail($userDetail['id']);
 
-        $validator = \Validator::make(
+        $validator = Validator::make(
             $request->all(),
             [
-                               'name' => 'required|max:120',
-                               'email' => 'required|email|unique:users,email,' . $userDetail['id'],
-                               'profile' => 'image|mimes:jpeg,png,jpg,svg|max:3072',
-                           ]
+                'name' => 'required|max:120',
+                'email' => 'required|email|unique:users,email,' . $userDetail['id'],
+                'profile' => 'image|mimes:jpeg,png,jpg,svg|max:3072',
+            ]
         );
         if ($validator->fails()) {
             $messages = $validator->getMessageBag();

@@ -10,20 +10,15 @@ class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application Services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
-
     }
 
     /**
      * Bootstrap any application Services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Schema::defaultStringLength(191);
         if (env('FORCE_HTTPS', false)) {

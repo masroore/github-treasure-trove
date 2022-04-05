@@ -55,7 +55,6 @@ class CategoryController extends BaseController
      */
     public function create()
     {
-
     }
 
     /**
@@ -99,7 +98,6 @@ class CategoryController extends BaseController
      */
     public function edit($id)
     {
-
     }
 
     /**

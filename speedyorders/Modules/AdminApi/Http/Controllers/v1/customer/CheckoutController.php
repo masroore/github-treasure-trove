@@ -15,8 +15,8 @@ class CheckoutController extends Controller
     {
         if (!$this->validateParams($request)) {
             return response([
-                'status'=>false,
-                'errors'=>$this->errors,
+                'status' => false,
+                'errors' => $this->errors,
                 'msg' => 'please Check Your Details !',
 
             ], 200);
@@ -29,8 +29,8 @@ class CheckoutController extends Controller
     {
         if (!$this->validateParams($request)) {
             return response([
-                'status'=>false,
-                'errors'=>$this->errors,
+                'status' => false,
+                'errors' => $this->errors,
                 'msg' => 'please Check Your Details !',
 
             ], 200);

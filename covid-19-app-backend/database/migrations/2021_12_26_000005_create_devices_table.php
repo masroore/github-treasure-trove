@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateDevicesTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::create('devices', function (Blueprint $table) {
+        Schema::create('devices', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('udid')->nullable();
             $table->string('token')->nullable();

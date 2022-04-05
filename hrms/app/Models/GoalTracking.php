@@ -11,6 +11,7 @@ class GoalTracking extends Model
         'In Progress',
         'Completed',
     ];
+
     protected $fillable = [
         'branch',
         'goal_type',

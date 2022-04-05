@@ -19,6 +19,6 @@ class LogController extends Controller
 
         ///dd($audits );
 
-        return view('log.view_log', ['audits'=>$audits, 'users'=>$users]);
+        return view('log.view_log', ['audits' => $audits, 'users' => $users]);
     }
 }

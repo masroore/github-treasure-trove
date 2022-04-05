@@ -20,7 +20,9 @@ class CategoryService
      * @var
      */
     protected $categoryRepository;
+
     protected $storeRepository;
+
     protected $productRepository;
 
     /**
@@ -238,7 +240,7 @@ class CategoryService
         }
     }
 
-    public function productMigration(Request $request)
+    public function productMigration(Request $request): void
     {
         try {
 //            dd($request->except('store_id'));

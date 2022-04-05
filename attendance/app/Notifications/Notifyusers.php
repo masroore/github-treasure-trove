@@ -10,13 +10,13 @@ use Illuminate\Notifications\Notification;
 class Notifyusers extends Notification implements ShouldQueue
 {
     use Queueable;
+
     public $email;
+
     public $name;
 
     /**
      * Create a new notification instance.
-     *
-     * @return void
      */
     public function __construct($name, $email)
     {
@@ -50,8 +50,8 @@ class Notifyusers extends Notification implements ShouldQueue
     public function toDatabase()
     {
         return [
-            'name'=> $this->name,
-            'email'=> $this->email,
+            'name' => $this->name,
+            'email' => $this->email,
         ];
     }
 

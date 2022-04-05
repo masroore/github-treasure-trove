@@ -5,6 +5,7 @@ namespace Modules\AdminShipping\Http\Controllers;
 use App\Models\ShippingDeliveryTime;
 use App\Models\ShippingPackage;
 use App\Models\ShippingZonePrice;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
@@ -145,14 +146,14 @@ class AdminZonepriceController extends Controller
         try {
             ShippingZonePrice::find($id)->delete();
             session()->flash('success_message', 'Zone Price deleted successfully.');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             session()->flash('error_message', 'Zone Price could not be deleted.');
         }
 
         return redirect()->route('admin.zoneprice.index');
     }
 
-    public function checkZonePrice(Request $request)
+    public function checkZonePrice(Request $request): void
     {
         $group_name = $request->group_name;
         $zip_code = $request->zip_code;

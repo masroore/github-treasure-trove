@@ -11,11 +11,17 @@ class WhatsApp
     protected const HEADERS_ACCEPT = 'application/json';
     protected const HEADERS_CONTENT_TYPE = 'application/json';
     protected const HEADERS_CHARSET = 'charset=utf-8';
+
     protected $endpoint = 'https://whatsapp-api-840.clare.ai/';
+
     protected $headers;
+
     protected $url;
+
     protected $client;
+
     protected $template;
+
     protected $token = 'eyJhbGciOiAiSFMyNTYiLCAidHlwIjogIkpXVCJ9.eyJ1c2VyIjoiYWRtaW4iLCJpYXQiOjE2MzY1MTgzNzgsImV4cCI6MTYzNzEyMzE3OCwid2E6cmFuZCI6ImM3N2QyYmRhMzIzODkxODhkNTc4Mzg5NTk1OWIyZGZlIn0.9ilDyPEF3WAvYdcTK8EXZ-xOb06WWVXs8VVJ5KJGGvE';
 
     public function __construct()
@@ -32,7 +38,7 @@ class WhatsApp
         $response = $this->httpRequest('POST', [
             'json' => [
                 'blocking' => 'wait',
-                'contacts' =>  [
+                'contacts' => [
                     $contact,
                 ],
             ],
@@ -41,7 +47,7 @@ class WhatsApp
         return 'valid' == $response->contacts[0]->status ? true : false;
     }
 
-    public function sendTemplate($to)
+    public function sendTemplate($to): void
     {
 
         // add contact
@@ -57,7 +63,7 @@ class WhatsApp
         }
     }
 
-    public function sendOneTimePin($data)
+    public function sendOneTimePin($data): void
     {
         $this->template = [
             'json' => [
@@ -76,7 +82,7 @@ class WhatsApp
                             'type' => 'header',
                             'parameters' => [
                                 [
-                                'type' => 'image',
+                                    'type' => 'image',
                                     'image' => [
                                         'link' => 'https://www.whatspays.com/assets/images/whatspays-shopping-experience.jpg',
                                     ],
@@ -104,7 +110,7 @@ class WhatsApp
         ];
     }
 
-    public function requestHeaders($type = 'auth')
+    public function requestHeaders($type = 'auth'): void
     {
         switch ($type) {
             case 'auth':
@@ -113,10 +119,12 @@ class WhatsApp
                     'Content-Type' => self::HEADERS_CONTENT_TYPE . ';' . self::HEADERS_CHARSET,
                     'Authorization' => 'Bearer ' . $this->token,
                 ];
+
             break;
 
             case 'no-auth':
                 $this->headers = [self::HEADERS_CONTENT_TYPE];
+
             break;
         }
     }

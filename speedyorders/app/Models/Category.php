@@ -37,7 +37,7 @@ class Category extends Model
      * @var array
      */
     protected $hidden = [
-       'category_id',
+        'category_id',
     ];
 
     public function category()
@@ -74,11 +74,11 @@ class Category extends Model
         return $this->belongsToMany('App\Models\Product', 'product_categories');
     }
 
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
         // Order by sort order ASC
-        static::addGlobalScope('sort_order', function (Builder $builder) {
+        static::addGlobalScope('sort_order', function (Builder $builder): void {
             $builder->orderBy('sort_order', 'asc');
         });
     }

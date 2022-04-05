@@ -34,10 +34,10 @@ return [
         'secret' => env('SPARKPOST_SECRET'),
     ],
 
-    /*******************************************************************************
+    /*
      *                                Copyright : AGmedia                           *
      *                              email: filip@agmedia.hr                         *
-     *******************************************************************************/
+     */
 
     'recaptcha' => [
         'sitekey' => env('GOOGLE_RECAPTCHA_SITE_KEY'),

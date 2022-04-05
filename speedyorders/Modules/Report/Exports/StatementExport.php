@@ -48,7 +48,7 @@ class StatementExport implements FromCollection, Responsable, WithHeadings
                     'remarks' => $collection->remarks,
                     'currency' => $collection->account_type,
                     'debit' => null,
-                    'credit' =>  null,
+                    'credit' => null,
                     'balance' => $collection->closing_balance,
                     'status' => $collection->status,
                 ];

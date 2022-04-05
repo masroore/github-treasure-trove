@@ -3,6 +3,7 @@
 namespace Modules\AdminFaq\Services;
 
 use App\Models\FaqCategory;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class CreateFaqCategoryService
@@ -15,7 +16,7 @@ class CreateFaqCategoryService
             DB::commit();
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollback();
 
             return false;

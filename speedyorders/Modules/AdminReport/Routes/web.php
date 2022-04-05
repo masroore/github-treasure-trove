@@ -11,7 +11,7 @@
 |
 */
 
-Route::group(['prefix' => 'admin/reports', 'middleware' => 'auth:admin', 'as'=>'admin.reports.'], function () {
+Route::group(['prefix' => 'admin/reports', 'middleware' => 'auth:admin', 'as' => 'admin.reports.'], function (): void {
     Route::get('/customer/order', 'AdminReportController@customerOrderIndex')->name('customerorder.index');
     Route::get('/export/order', 'AdminReportController@customerOrderExport')->name('customerorder.export');
 

@@ -13,6 +13,7 @@ use App\Models\Employee;
 use App\Models\EmployeeDocument;
 use App\Models\User;
 use App\Models\Utility;
+use Exception;
 use File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,6 +21,8 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
+use Session;
+use Validator;
 
 //use Faker\Provider\File;
 
@@ -67,20 +70,20 @@ class EmployeeController extends Controller
     public function store(Request $request)
     {
         if (\Auth::user()->can('Create Employee')) {
-            $validator = \Validator::make(
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'name' => 'required',
-                                   'dob' => 'required',
-                                   'gender' => 'required',
-                                   'phone' => 'required',
-                                   'address' => 'required',
-                                   'email' => 'required|unique:users',
-                                   'password' => 'required',
-                                   'department_id' => 'required',
-                                   'designation_id' => 'required',
-                                   'document.*' => 'mimes:jpeg,png,jpg,gif,svg,pdf,doc,zip|max:20480',
-                               ]
+                    'name' => 'required',
+                    'dob' => 'required',
+                    'gender' => 'required',
+                    'phone' => 'required',
+                    'address' => 'required',
+                    'email' => 'required|unique:users',
+                    'password' => 'required',
+                    'department_id' => 'required',
+                    'designation_id' => 'required',
+                    'document.*' => 'mimes:jpeg,png,jpg,gif,svg,pdf,doc,zip|max:20480',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -166,9 +169,10 @@ class EmployeeController extends Controller
             if (1 == $setings['employee_create']) {
                 $user->type = 'Employee';
                 $user->password = $request['password'];
+
                 try {
                     Mail::to($user->email)->send(new UserCreate($user));
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     $smtp_error = __('E-Mail has been not sent due to SMTP configuration');
                 }
 
@@ -201,16 +205,16 @@ class EmployeeController extends Controller
     public function update(Request $request, $id)
     {
         if (\Auth::user()->can('Edit Employee')) {
-            $validator = \Validator::make(
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'name' => 'required',
-                                   'dob' => 'required',
-                                   'gender' => 'required',
-                                   'phone' => 'required|numeric',
-                                   'address' => 'required',
-                                   'document.*' => 'mimes:jpeg,png,jpg,gif,svg,pdf,doc,zip|max:20480',
-                               ]
+                    'name' => 'required',
+                    'dob' => 'required',
+                    'gender' => 'required',
+                    'phone' => 'required|numeric',
+                    'address' => 'required',
+                    'document.*' => 'mimes:jpeg,png,jpg,gif,svg,pdf,doc,zip|max:20480',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -400,7 +404,7 @@ class EmployeeController extends Controller
             'file' => 'required|mimes:csv,txt',
         ];
 
-        $validator = \Validator::make($request->all(), $rules);
+        $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
             $messages = $validator->getMessageBag();
@@ -412,7 +416,7 @@ class EmployeeController extends Controller
         $totalCustomer = \count($employees) - 1;
         $errorArray = [];
 
-        for ($i = 1; $i <= \count($employees) - 1; $i++) {
+        for ($i = 1; $i <= \count($employees) - 1; ++$i) {
             $employee = $employees[$i];
 
             $employeeByEmail = Employee::where('email', $employee[5])->first();
@@ -476,7 +480,7 @@ class EmployeeController extends Controller
                 $errorRecord[] = implode(',', $errorData);
             }
 
-            \Session::put('errorArray', $errorRecord);
+            Session::put('errorArray', $errorRecord);
         }
 
         return redirect()->back()->with($data['status'], $data['msg']);

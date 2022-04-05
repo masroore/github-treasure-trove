@@ -14,12 +14,12 @@ class UpdateStripeSettingRequest extends FormRequest
     public function rules()
     {
         return [
-            'stripe_key'=>'required|string|max:255',
-            'stripe_secret'=>'required|string|max:255',
-            'live_stripe_key'=>'required|string|max:255',
-            'live_stripe_secret'=>'required|string|max:255',
-            'stripe_payment_mode'=>'nullable|string',
-            'stripe_enable_status'=>'nullable|string',
+            'stripe_key' => 'required|string|max:255',
+            'stripe_secret' => 'required|string|max:255',
+            'live_stripe_key' => 'required|string|max:255',
+            'live_stripe_secret' => 'required|string|max:255',
+            'stripe_payment_mode' => 'nullable|string',
+            'stripe_enable_status' => 'nullable|string',
         ];
     }
 

@@ -10,13 +10,18 @@ use Livewire\Component;
 class Adddiploma1 extends Component
 {
     public $allprogram;
+
     public $course;
+
     public $program;
+
     public $name;
+
     public $chrs;
+
     public $type;
 
-    public function updated($field)
+    public function updated($field): void
     {
         $this->validateOnly($field, [
             'name' => 'required|min:8|max:255',
@@ -25,7 +30,7 @@ class Adddiploma1 extends Component
         ]);
     }
 
-    public function submitform()
+    public function submitform(): void
     {
         $this->validate([
             'name' => 'required|min:8|max:255',
@@ -45,10 +50,10 @@ class Adddiploma1 extends Component
         }
 
         $data = [
-            'title'=>$this->name,
-            'code'=>$code,
+            'title' => $this->name,
+            'code' => $code,
             'type' => $this->type,
-            'credithours' =>$this->chrs,
+            'credithours' => $this->chrs,
             'level' => 'Level 100',
             'program' => 'Diploma',
         ];
@@ -63,7 +68,7 @@ class Adddiploma1 extends Component
         return view('livewire.adddiploma1');
     }
 
-    public function deletecourse($code)
+    public function deletecourse($code): void
     {
         $course = Coureregistration::where('cource_code', $code)->first();
         if ($course) {

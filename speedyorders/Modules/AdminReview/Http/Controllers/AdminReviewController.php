@@ -5,6 +5,7 @@ namespace Modules\AdminReview\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Review;
+use Exception;
 use Illuminate\Http\Request;
 use Modules\AdminReview\Http\Requests\CreateReviewRequest;
 use Modules\AdminReview\Http\Requests\UpdateReviewRequest;
@@ -164,7 +165,7 @@ class AdminReviewController extends Controller
             }
             Review::where('id', $id)->first()->update(['status' => $status]);
             session()->flash('success_message', 'Review updated successfully.');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             session()->flash('error_message', 'Review could not be updated.');
         }
 

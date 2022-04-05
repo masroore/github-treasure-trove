@@ -8,12 +8,10 @@ class CreateSizeChartsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('size_charts', function (Blueprint $table) {
+        Schema::create('size_charts', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('name', 191)->nullable();
             $table->string('image', 255)->nullable();
@@ -26,13 +24,11 @@ class CreateSizeChartsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('size_charts');
-        Schema::table('brands', function (Blueprint $table) {
+        Schema::table('brands', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
     }

@@ -12,6 +12,7 @@ use App\Models\ProductQuestionAnswer;
 use App\Models\ProductRelatedProduct;
 use App\Models\Review;
 use Modules\AdminApi\Http\Controllers\BaseController;
+use URL;
 
 class ProductController extends BaseController
 {
@@ -67,7 +68,7 @@ class ProductController extends BaseController
         $fullImageUrl = [];
         $productGalleries = ProductGallery::where('product_id', $id)->orderByDesc('order')->select('image')->get();
         foreach ($productGalleries as $productGallery) {
-            $fullImageUrl[] = \URL::full() . $productGallery->image;
+            $fullImageUrl[] = URL::full() . $productGallery->image;
         }
 
         return $this->success($fullImageUrl);
@@ -90,20 +91,20 @@ class ProductController extends BaseController
 
         foreach ($productOptions as $productOption) {
             $productOptionArray = [
-                'option_id'=>$productOption->id,
-                'option_type'=>$productOption->option->type,
-                'option_name'=>$productOption->option->name,
+                'option_id' => $productOption->id,
+                'option_type' => $productOption->option->type,
+                'option_name' => $productOption->option->name,
             ];
             $optionValuesArray = [];
             foreach ($productOption->optionValues as $optionValue) {
                 $optionValuesArray[] =
                 [
-                    'value'=>$optionValue->optionValue->name,
-                    'quantity'=>$optionValue->quantity,
-                    'price'=>$optionValue->price,
-                    'option_value_id'=>$optionValue->id,
-                    'price_prefix'=>$optionValue->price_prefix,
-                    'thumbnail'=>$optionValue->thumbnail,
+                    'value' => $optionValue->optionValue->name,
+                    'quantity' => $optionValue->quantity,
+                    'price' => $optionValue->price,
+                    'option_value_id' => $optionValue->id,
+                    'price_prefix' => $optionValue->price_prefix,
+                    'thumbnail' => $optionValue->thumbnail,
                 ];
             }
             $productOptionArray['option_values'] = $optionValuesArray;

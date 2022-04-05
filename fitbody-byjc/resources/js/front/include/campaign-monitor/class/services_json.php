@@ -44,10 +44,6 @@
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
  * DAMAGE.
  *
- * @category
- *
- * @copyright   2005 Michal Migurski
- *
  * @version     CVS: $Id: JSON.php,v 1.31 2006/06/28 05:54:17 migurski Exp $
  *
  * @license     http://www.opensource.org/licenses/bsd-license.php
@@ -243,24 +239,29 @@ class Services_JSON
                 * Iterate over every character in the string,
                 * escaping with a slash or encoding to UTF-8 where necessary
                 */
-                for ($c = 0; $c < $strlen_var; $c++) {
+                for ($c = 0; $c < $strlen_var; ++$c) {
                     $ord_var_c = ord($var[$c]);
 
                     switch (true) {
                         case 0x08 == $ord_var_c:
                             $ascii .= '\b';
+
                             break;
                         case 0x09 == $ord_var_c:
                             $ascii .= '\t';
+
                             break;
                         case 0x0A == $ord_var_c:
                             $ascii .= '\n';
+
                             break;
                         case 0x0C == $ord_var_c:
                             $ascii .= '\f';
+
                             break;
                         case 0x0D == $ord_var_c:
                             $ascii .= '\r';
+
                             break;
 
                         case 0x22 == $ord_var_c:
@@ -268,20 +269,23 @@ class Services_JSON
                         case 0x5C == $ord_var_c:
                             // double quote, slash, slosh
                             $ascii .= '\\' . $var[$c];
+
                             break;
 
                         case ($ord_var_c >= 0x20) && ($ord_var_c <= 0x7F):
                             // characters U-00000000 - U-0000007F (same as ASCII)
                             $ascii .= $var[$c];
+
                             break;
 
                         case ($ord_var_c & 0xE0) == 0xC0:
                             // characters U-00000080 - U-000007FF, mask 110XXXXX
                             // see http://www.cl.cam.ac.uk/~mgk25/unicode.html#utf-8
                             $char = pack('C*', $ord_var_c, ord($var[$c + 1]));
-                            $c++;
+                            ++$c;
                             $utf16 = $this->utf82utf16($char);
                             $ascii .= sprintf('\u%04s', bin2hex($utf16));
+
                             break;
 
                         case ($ord_var_c & 0xF0) == 0xE0:
@@ -296,6 +300,7 @@ class Services_JSON
                             $c += 2;
                             $utf16 = $this->utf82utf16($char);
                             $ascii .= sprintf('\u%04s', bin2hex($utf16));
+
                             break;
 
                         case ($ord_var_c & 0xF8) == 0xF0:
@@ -311,6 +316,7 @@ class Services_JSON
                             $c += 3;
                             $utf16 = $this->utf82utf16($char);
                             $ascii .= sprintf('\u%04s', bin2hex($utf16));
+
                             break;
 
                         case ($ord_var_c & 0xFC) == 0xF8:
@@ -327,6 +333,7 @@ class Services_JSON
                             $c += 4;
                             $utf16 = $this->utf82utf16($char);
                             $ascii .= sprintf('\u%04s', bin2hex($utf16));
+
                             break;
 
                         case ($ord_var_c & 0xFE) == 0xFC:
@@ -344,6 +351,7 @@ class Services_JSON
                             $c += 5;
                             $utf16 = $this->utf82utf16($char);
                             $ascii .= sprintf('\u%04s', bin2hex($utf16));
+
                             break;
                     }
                 }
@@ -451,16 +459,16 @@ class Services_JSON
     {
         $str = preg_replace([
 
-                // eliminate single line comments in '// ...' form
-                '#^\s*//(.+)$#m',
+            // eliminate single line comments in '// ...' form
+            '#^\s*//(.+)$#m',
 
-                // eliminate multi-line comments in '/* ... */' form, at start of string
-                '#^\s*/\*(.+)\*/#Us',
+            // eliminate multi-line comments in '/* ... */' form, at start of string
+            '#^\s*/\*(.+)\*/#Us',
 
-                // eliminate multi-line comments in '/* ... */' form, at end of string
-                '#/\*(.+)\*/\s*$#Us',
+            // eliminate multi-line comments in '/* ... */' form, at end of string
+            '#/\*(.+)\*/\s*$#Us',
 
-            ], '', $str);
+        ], '', $str);
 
         // eliminate extraneous space
         return trim($str);
@@ -513,30 +521,35 @@ class Services_JSON
                     $utf8 = '';
                     $strlen_chrs = strlen($chrs);
 
-                    for ($c = 0; $c < $strlen_chrs; $c++) {
+                    for ($c = 0; $c < $strlen_chrs; ++$c) {
                         $substr_chrs_c_2 = substr($chrs, $c, 2);
                         $ord_chrs_c = ord($chrs[$c]);
 
                         switch (true) {
                             case '\b' == $substr_chrs_c_2:
                                 $utf8 .= chr(0x08);
-                                $c++;
+                                ++$c;
+
                                 break;
                             case '\t' == $substr_chrs_c_2:
                                 $utf8 .= chr(0x09);
-                                $c++;
+                                ++$c;
+
                                 break;
                             case '\n' == $substr_chrs_c_2:
                                 $utf8 .= chr(0x0A);
-                                $c++;
+                                ++$c;
+
                                 break;
                             case '\f' == $substr_chrs_c_2:
                                 $utf8 .= chr(0x0C);
-                                $c++;
+                                ++$c;
+
                                 break;
                             case '\r' == $substr_chrs_c_2:
                                 $utf8 .= chr(0x0D);
-                                $c++;
+                                ++$c;
+
                                 break;
 
                             case '\\"' == $substr_chrs_c_2:
@@ -547,6 +560,7 @@ class Services_JSON
                                    ("'" == $delim && '\\"' != $substr_chrs_c_2)) {
                                     $utf8 .= $chrs[++$c];
                                 }
+
                                 break;
 
                             case preg_match('/\\\u[0-9A-F]{4}/i', substr($chrs, $c, 6)):
@@ -555,17 +569,20 @@ class Services_JSON
                                        . chr(hexdec(substr($chrs, ($c + 4), 2)));
                                 $utf8 .= $this->utf162utf8($utf16);
                                 $c += 5;
+
                                 break;
 
                             case ($ord_chrs_c >= 0x20) && ($ord_chrs_c <= 0x7F):
                                 $utf8 .= $chrs[$c];
+
                                 break;
 
                             case ($ord_chrs_c & 0xE0) == 0xC0:
                                 // characters U-00000080 - U-000007FF, mask 110XXXXX
                                 //see http://www.cl.cam.ac.uk/~mgk25/unicode.html#utf-8
                                 $utf8 .= substr($chrs, $c, 2);
-                                $c++;
+                                ++$c;
+
                                 break;
 
                             case ($ord_chrs_c & 0xF0) == 0xE0:
@@ -573,6 +590,7 @@ class Services_JSON
                                 // see http://www.cl.cam.ac.uk/~mgk25/unicode.html#utf-8
                                 $utf8 .= substr($chrs, $c, 3);
                                 $c += 2;
+
                                 break;
 
                             case ($ord_chrs_c & 0xF8) == 0xF0:
@@ -580,6 +598,7 @@ class Services_JSON
                                 // see http://www.cl.cam.ac.uk/~mgk25/unicode.html#utf-8
                                 $utf8 .= substr($chrs, $c, 4);
                                 $c += 3;
+
                                 break;
 
                             case ($ord_chrs_c & 0xFC) == 0xF8:
@@ -587,6 +606,7 @@ class Services_JSON
                                 // see http://www.cl.cam.ac.uk/~mgk25/unicode.html#utf-8
                                 $utf8 .= substr($chrs, $c, 5);
                                 $c += 4;
+
                                 break;
 
                             case ($ord_chrs_c & 0xFE) == 0xFC:
@@ -594,6 +614,7 @@ class Services_JSON
                                 // see http://www.cl.cam.ac.uk/~mgk25/unicode.html#utf-8
                                 $utf8 .= substr($chrs, $c, 6);
                                 $c += 5;
+
                                 break;
 
                         }
@@ -617,9 +638,9 @@ class Services_JSON
                         }
                     }
 
-                    array_push($stk, ['what'  => SERVICES_JSON_SLICE,
-                                           'where' => 0,
-                                           'delim' => false, ]);
+                    array_push($stk, ['what' => SERVICES_JSON_SLICE,
+                        'where' => 0,
+                        'delim' => false, ]);
 
                     $chrs = substr($str, 1, -1);
                     $chrs = $this->reduce_string($chrs);
@@ -636,7 +657,7 @@ class Services_JSON
 
                     $strlen_chrs = strlen($chrs);
 
-                    for ($c = 0; $c <= $strlen_chrs; $c++) {
+                    for ($c = 0; $c <= $strlen_chrs; ++$c) {
                         $top = end($stk);
                         $substr_chrs_c_2 = substr($chrs, $c, 2);
 
@@ -713,14 +734,14 @@ class Services_JSON
                                  in_array($top['what'], [SERVICES_JSON_SLICE, SERVICES_JSON_IN_ARR, SERVICES_JSON_IN_OBJ])) {
                             // found a comment start, and we are in an array, object, or slice
                             array_push($stk, ['what' => SERVICES_JSON_IN_CMT, 'where' => $c, 'delim' => false]);
-                            $c++;
+                            ++$c;
                         //print("Found start of comment at {$c}\n");
                         } elseif (('*/' == $substr_chrs_c_2) && (SERVICES_JSON_IN_CMT == $top['what'])) {
                             // found a comment end, and we're in one now
                             array_pop($stk);
-                            $c++;
+                            ++$c;
 
-                            for ($i = $top['where']; $i <= $c; $i++) {
+                            for ($i = $top['where']; $i <= $c; ++$i) {
                                 $chrs = substr_replace($chrs, ' ', $i, 1);
                             }
 
@@ -757,7 +778,6 @@ class Services_JSON_Error
         $mode = null,
         $options = null,
         $userinfo = null
-    )
-    {
+    ) {
     }
 }

@@ -30,9 +30,13 @@ class StoreService
      * @var
      */
     protected $storeRepository;
+
     protected $employeeRepository;
+
     protected $userRepository;
+
     protected $categoryRepository;
+
     protected $productRepository;
 
     /**
@@ -156,9 +160,9 @@ class StoreService
                 'latitude' => 'required|string',
                 'longitude' => 'required|string',
                 'purpose' => 'required|string',
-                'is_online' =>  'required',
+                'is_online' => 'required',
                 'area' => 'required',
-                'mobile_number' =>  'required',
+                'mobile_number' => 'required',
             ];
         }
 
@@ -267,11 +271,11 @@ class StoreService
             // 'delivery_days' => 'required',
             'delivery_hours' => 'integer',
             'delivery_minutes' => 'integer',
-//            'delivery_range' => 'required',
+            //            'delivery_range' => 'required',
             'delivery_radius' => 'in:0,1',
             'disount_type' => 'in:flat,percentage',
             'discount_amount' => 'integer',
-//            'service_options' => 'required',
+            //            'service_options' => 'required',
             'orders_accept_status' => 'in:yes,no',
             'is_tax_enable' => 'in:0,1',
             'tax_rate' => 'integer',
@@ -406,7 +410,7 @@ class StoreService
         try {
             // validate request
             $validator = Validator::make($request->input(), [
-                'business_url'      => 'required|string',
+                'business_url' => 'required|string',
             ]);
 
             if ($validator->fails()) {
@@ -456,10 +460,12 @@ class StoreService
                 switch ($store->shipping_percentage_type) {
                     case 'flat':
                         $shipping = $store->shipping_percentage . ' Delivery fee';
+
                         break;
 
                     case 'percentage':
                         $shipping = $store->shipping_percentage . ' %Delivery fee';
+
                         break;
                 }
             }
@@ -498,7 +504,7 @@ class StoreService
         try {
             // validate request
             $validator = Validator::make($request->input(), [
-                'business_url'      => 'required|string',
+                'business_url' => 'required|string',
             ]);
 
             if ($validator->fails()) {
@@ -543,21 +549,21 @@ class StoreService
     {
         try {
             $products = $this->productRepository->findAllByColumn(['store_id' => $store_id], [
-                 'id',
-                 'store_id',
-                 'name',
-                 'description',
-                 'status',
-                 'images',
-                 'sku',
-                 'price',
-                 'with_storehouse_management',
-                 'quantity',
-                 'category_id',
-                 'brand_id',
-                 'is_variation',
-                 'sale_price',
-             ]);
+                'id',
+                'store_id',
+                'name',
+                'description',
+                'status',
+                'images',
+                'sku',
+                'price',
+                'with_storehouse_management',
+                'quantity',
+                'category_id',
+                'brand_id',
+                'is_variation',
+                'sale_price',
+            ]);
         } catch (Exception $e) {
             throw new InvalidArgumentException($e->getMessage());
         }
@@ -592,7 +598,7 @@ class StoreService
     {
         try {
             $id = getIdBySlug($slug, 'App\Models\Industries');
-            $store = $this->storeRepository->findAllByColumn(['industry_id'=>$id]);
+            $store = $this->storeRepository->findAllByColumn(['industry_id' => $id]);
         } catch (Exception $e) {
             throw new InvalidArgumentException($e->getMessage());
         }
@@ -636,6 +642,7 @@ class StoreService
     public function createStore(Request $request)
     {
         DB::beginTransaction();
+
         try {
             $result = extract_number_and_cc($request);
             $whatsapp = $result['with_cc'];
@@ -644,7 +651,7 @@ class StoreService
             $validator = Validator::make($request->input(), [
                 'store_name' => 'required|unique:stores,store_name',
                 'business_url' => ['required',
-                    function ($attribute, $value, $fail) {
+                    function ($attribute, $value, $fail): void {
                         if (
                             preg_match('/^[0-9]+$/', $value) ||
                             !preg_match('/^[a-zA-Z0-9-]*$/', $value) ||
@@ -671,18 +678,18 @@ class StoreService
 
             // create a store for company user
             $create_store = $this->storeRepository->create([
-                'user_id'		=> $user_id,
-                'store_name' 	=> $request['store_name'],
-                'business_url' 	=> $request['business_url'],
-                'whatsapp_num' 	=> $request['whatsapp_num'],
-                'industry_id' 	=> $request['industry_id'],
+                'user_id' => $user_id,
+                'store_name' => $request['store_name'],
+                'business_url' => $request['business_url'],
+                'whatsapp_num' => $request['whatsapp_num'],
+                'industry_id' => $request['industry_id'],
                 'industry_types' => $request['industry_types'],
                 'description' => $request['description'],
             ]);
             $this->employeeRepository->create([
-                'user_id'   => $user_id,
-                'store_id' 	=> $create_store->id,
-                'is_admin' 	=> 1,
+                'user_id' => $user_id,
+                'store_id' => $create_store->id,
+                'is_admin' => 1,
             ]);
 
             $email_subject = get_email_subject('create-store', $user_name);
@@ -722,6 +729,7 @@ class StoreService
             return $create_store;
         } catch (Exception $e) {
             DB::rollback();
+
             throw new InvalidArgumentException($e->getMessage());
         }
     }
@@ -729,6 +737,7 @@ class StoreService
     public function delete($ids, $user_id)
     {
         DB::beginTransaction();
+
         try {
 
             //branches
@@ -764,6 +773,7 @@ class StoreService
             DB::commit();
         } catch (Exception $e) {
             DB::rollback();
+
             throw new InvalidArgumentException($e->getMessage());
         }
 
@@ -774,8 +784,8 @@ class StoreService
     {
         try {
             $data = Notification::where('notifiable_id', $request->store_id)
-                  ->where('notifiable_type', 'App\Models\Store')
-                  ->get();
+                ->where('notifiable_type', 'App\Models\Store')
+                ->get();
         } catch (Exception $e) {
             throw new InvalidArgumentException($e->getMessage());
         }
@@ -798,7 +808,7 @@ class StoreService
     {
         try {
             $data = Notification::where('id', $id)->update([
-                'status'=>$request->status,
+                'status' => $request->status,
             ]);
         } catch (Exception $e) {
             throw new InvalidArgumentException($e->getMessage());

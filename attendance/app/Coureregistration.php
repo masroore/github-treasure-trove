@@ -12,7 +12,7 @@ class Coureregistration extends Model implements Auditable
     use \OwenIt\Auditing\Auditable;
 
     protected $fillable = ['user_id', 'indexnumber', 'lecturer_id', 'cource_code', 'cource_title', 'credithours', 'IA_mark', 'exams_mark', 'total_marks', 'grade', 'grade_point', 'total_gp',
-    'semester', 'academic_year', 'status', 'level', 'resit', 'session', 'fvrt', ];
+        'semester', 'academic_year', 'status', 'level', 'resit', 'session', 'fvrt', ];
 
     protected static $logName = 'Coureregistration';
 

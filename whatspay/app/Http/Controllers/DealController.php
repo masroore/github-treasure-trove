@@ -41,7 +41,6 @@ class DealController extends BaseController
      */
     public function create()
     {
-
     }
 
     /**
@@ -79,7 +78,6 @@ class DealController extends BaseController
      */
     public function edit(Deal $deal)
     {
-
     }
 
     /**

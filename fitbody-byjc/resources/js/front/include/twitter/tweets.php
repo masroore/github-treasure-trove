@@ -42,7 +42,7 @@ if (isset($_GET['username']) && '' != $_GET['username']) {
         $cache_rss = serialize($twitter_feed);
 
         if (!empty($cache_rss)) {
-            $cache_static = fopen($cache_file, 'w');
+            $cache_static = fopen($cache_file, 'wb');
             fwrite($cache_static, $cache_rss);
             fclose($cache_static);
         }

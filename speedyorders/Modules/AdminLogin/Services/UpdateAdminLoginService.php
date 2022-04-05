@@ -2,6 +2,8 @@
 
 namespace Modules\AdminLogin\Services;
 
+use Exception;
+
 class UpdateAdminLoginService
 {
     public function handle(array $validatedDatas)
@@ -12,7 +14,7 @@ class UpdateAdminLoginService
             DB::commit();
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollback();
 
             return false;

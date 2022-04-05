@@ -11,9 +11,9 @@ use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class OptionValueImageImport implements ToModel, WithHeadingRow, WithBatchInserts, WithChunkReading, ShouldQueue
+class OptionValueImageImport implements ShouldQueue, ToModel, WithBatchInserts, WithChunkReading, WithHeadingRow
 {
-    public function model(array $row)
+    public function model(array $row): void
     {
         try {
             $optionValue = OptionValue::where('id', $row['option_value_id'])
@@ -21,9 +21,9 @@ class OptionValueImageImport implements ToModel, WithHeadingRow, WithBatchInsert
                 ->first();
             if ($optionValue) {
                 $optionValue->update([
-                    'image'=> $row['image'],
+                    'image' => $row['image'],
                     'sort_order' => $row['sort_order'],
-                    ]);
+                ]);
             }
         } catch (Exception $e) {
             Log::info('Option Value Image File Import data:' . json_encode($row) . ' error:' . json_encode($e->getMessage()));

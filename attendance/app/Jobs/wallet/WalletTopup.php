@@ -20,20 +20,15 @@ class WalletTopup implements ShouldQueue
 
     /**
      * Create a new job instance.
-     *
-     * @return void
      */
     public function __construct()
     {
-
     }
 
     /**
      * Execute the job.
-     *
-     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         $wallet = Wallettop::where('status', 'uppaid')->get();
 
@@ -45,14 +40,14 @@ class WalletTopup implements ShouldQueue
             $curl = curl_init();
 
             curl_setopt_array($curl, [
-              \CURLOPT_URL => 'https://manage.ipaygh.com/gateway/json_status_chk?merchant_key=5c841bf2-d29b-11e7-aebc-f23c9170642f&invoice_id=' . $nvoice,
-              \CURLOPT_RETURNTRANSFER => true,
-              \CURLOPT_ENCODING => '',
-              \CURLOPT_MAXREDIRS => 10,
-              \CURLOPT_TIMEOUT => 0,
-              \CURLOPT_FOLLOWLOCATION => true,
-              \CURLOPT_HTTP_VERSION => \CURL_HTTP_VERSION_1_1,
-              \CURLOPT_CUSTOMREQUEST => 'GET',  ]);
+                \CURLOPT_URL => 'https://manage.ipaygh.com/gateway/json_status_chk?merchant_key=5c841bf2-d29b-11e7-aebc-f23c9170642f&invoice_id=' . $nvoice,
+                \CURLOPT_RETURNTRANSFER => true,
+                \CURLOPT_ENCODING => '',
+                \CURLOPT_MAXREDIRS => 10,
+                \CURLOPT_TIMEOUT => 0,
+                \CURLOPT_FOLLOWLOCATION => true,
+                \CURLOPT_HTTP_VERSION => \CURL_HTTP_VERSION_1_1,
+                \CURLOPT_CUSTOMREQUEST => 'GET',  ]);
 
             $response = curl_exec($curl);
 

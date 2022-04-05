@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Http\Request;
 use Srmklive\PayPal\Services\ExpressCheckout;
 
@@ -15,7 +16,7 @@ class PayPalPaymentController extends Controller
                 [
                     'name' => 'Nike Joyride 2',
                     'price' => 112,
-                    'desc'  => 'Running shoes for Men',
+                    'desc' => 'Running shoes for Men',
                     'qty' => 2,
                 ],
             ];
@@ -30,7 +31,7 @@ class PayPalPaymentController extends Controller
 
             $res = $paypalModule->setExpressCheckout($product);
             $res = $paypalModule->setExpressCheckout($product, true);
-        } catch (\Exception $er) {
+        } catch (Exception $er) {
             echo $er->getMessage();
             exit;
         }
@@ -41,12 +42,12 @@ class PayPalPaymentController extends Controller
         return redirect($res['paypal_link']);
     }
 
-    public function paymentCancel()
+    public function paymentCancel(): void
     {
         dd('Your payment has been declend. The payment cancelation page goes here!');
     }
 
-    public function paymentSuccess(Request $request)
+    public function paymentSuccess(Request $request): void
     {
         $paypalModule = new ExpressCheckout();
         $response = $paypalModule->getExpressCheckoutDetails($request->token);

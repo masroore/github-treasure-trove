@@ -8,12 +8,10 @@ class CreateTimetablesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('timetables', function (Blueprint $table) {
+        Schema::create('timetables', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('level');
             $table->string('sesson');
@@ -31,10 +29,8 @@ class CreateTimetablesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('timetables');
     }

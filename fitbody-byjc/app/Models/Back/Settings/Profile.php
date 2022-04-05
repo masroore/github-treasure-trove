@@ -20,7 +20,7 @@ class Profile extends Model
     /**
      * @param $id
      *
-     * @return \Illuminate\Database\Query\Builder|Model|object|null
+     * @return null|\Illuminate\Database\Query\Builder|Model|object
      */
     public static function settings($id)
     {

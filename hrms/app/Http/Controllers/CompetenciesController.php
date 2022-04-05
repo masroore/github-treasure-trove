@@ -4,14 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Competencies;
 use App\Models\Performance_Type;
+use Auth;
 use Illuminate\Http\Request;
+use Validator;
 
 class CompetenciesController extends Controller
 {
     public function index()
     {
-        if (\Auth::user()->can('Manage Competencies')) {
-            $competencies = Competencies::where('created_by', \Auth::user()->creatorId())->get();
+        if (Auth::user()->can('Manage Competencies')) {
+            $competencies = Competencies::where('created_by', Auth::user()->creatorId())->get();
 
             return view('competencies.index', compact('competencies'));
         }
@@ -21,7 +23,7 @@ class CompetenciesController extends Controller
 
     public function create()
     {
-        $user = \Auth::user();
+        $user = Auth::user();
         $performance_types = Performance_Type::where('created_by', '=', $user->creatorId())->get()->pluck('name', 'id');
         // dd($performance_types);
 
@@ -31,8 +33,8 @@ class CompetenciesController extends Controller
     public function store(Request $request)
     {
         // dd($request->all());
-        if (\Auth::user()->can('Create Competencies')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Create Competencies')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
                     'name' => 'required',
@@ -48,7 +50,7 @@ class CompetenciesController extends Controller
             $competencies = new Competencies();
             $competencies->name = $request->name;
             $competencies->type = $request->type;
-            $competencies->created_by = \Auth::user()->creatorId();
+            $competencies->created_by = Auth::user()->creatorId();
             $competencies->save();
 
             return redirect()->route('competencies.index')->with('success', __('Competencies  successfully created.'));
@@ -57,23 +59,22 @@ class CompetenciesController extends Controller
         return redirect()->back()->with('error', __('Permission denied.'));
     }
 
-    public function show(Competencies $competencies)
+    public function show(Competencies $competencies): void
     {
-
     }
 
     public function edit($id)
     {
         $competencies = Competencies::find($id);
-        $types = Performance_Type::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        $types = Performance_Type::where('created_by', '=', Auth::user()->creatorId())->get()->pluck('name', 'id');
 
         return view('competencies.edit', compact('types', 'competencies'));
     }
 
     public function update(Request $request, $id)
     {
-        if (\Auth::user()->can('Edit Competencies')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Edit Competencies')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
                     'name' => 'required',
@@ -98,7 +99,7 @@ class CompetenciesController extends Controller
 
     public function destroy($id)
     {
-        if (\Auth::user()->can('Delete Competencies')) {
+        if (Auth::user()->can('Delete Competencies')) {
             $competencies = Competencies::find($id);
             $competencies->delete();
 

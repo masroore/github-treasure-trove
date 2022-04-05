@@ -3,6 +3,7 @@
 namespace Modules\Setting\Services;
 
 use App\Utils\Option;
+use Exception;
 
 class GeneralSettingService
 {
@@ -26,7 +27,7 @@ class GeneralSettingService
             }
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
     }

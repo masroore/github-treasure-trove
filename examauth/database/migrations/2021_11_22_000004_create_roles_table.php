@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateRolesTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::create('roles', function (Blueprint $table) {
+        Schema::create('roles', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('title')->nullable();
             $table->timestamps();

@@ -14,7 +14,7 @@ class MessengerController extends Controller
 {
     public function index()
     {
-        $topics = QaTopic::where(function ($query) {
+        $topics = QaTopic::where(function ($query): void {
             $query
                 ->where('creator_id', Auth::id())
                 ->orWhere('receiver_id', Auth::id());
@@ -41,14 +41,14 @@ class MessengerController extends Controller
     public function storeTopic(QaTopicCreateRequest $request)
     {
         $topic = QaTopic::create([
-            'subject'     => $request->input('subject'),
-            'creator_id'  => Auth::id(),
+            'subject' => $request->input('subject'),
+            'creator_id' => Auth::id(),
             'receiver_id' => $request->input('recipient'),
         ]);
 
         $topic->messages()->create([
             'sender_id' => Auth::id(),
-            'content'   => $request->input('content'),
+            'content' => $request->input('content'),
         ]);
 
         return redirect()->route('admin.messenger.index');
@@ -111,7 +111,7 @@ class MessengerController extends Controller
 
         $topic->messages()->create([
             'sender_id' => Auth::id(),
-            'content'   => $request->input('content'),
+            'content' => $request->input('content'),
         ]);
 
         return redirect()->route('admin.messenger.index');
@@ -134,7 +134,7 @@ class MessengerController extends Controller
 
     public function unreadTopics(): array
     {
-        $topics = QaTopic::where(function ($query) {
+        $topics = QaTopic::where(function ($query): void {
             $query
                 ->where('creator_id', Auth::id())
                 ->orWhere('receiver_id', Auth::id());
@@ -152,16 +152,16 @@ class MessengerController extends Controller
                     && null === $message->read_at
                 ) {
                     if ($topic->creator_id !== Auth::id()) {
-                        $inboxUnreadCount++;
+                        ++$inboxUnreadCount;
                     } else {
-                        $outboxUnreadCount++;
+                        ++$outboxUnreadCount;
                     }
                 }
             }
         }
 
         return [
-            'inbox'  => $inboxUnreadCount,
+            'inbox' => $inboxUnreadCount,
             'outbox' => $outboxUnreadCount,
         ];
     }

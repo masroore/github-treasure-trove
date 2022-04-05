@@ -11,20 +11,20 @@ use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class ProductOptionValueImport implements ToModel, WithHeadingRow, WithBatchInserts, WithChunkReading, ShouldQueue
+class ProductOptionValueImport implements ShouldQueue, ToModel, WithBatchInserts, WithChunkReading, WithHeadingRow
 {
-    public function model(array $row)
+    public function model(array $row): void
     {
         try {
             ProductOptionValue::create([
-                'id'                    => $row['product_option_value_id'],
-                'product_option_id'     => $row['product_option_id'],
-                'option_id'             => $row['option_id'],
-                'option_value_id'       => $row['option_value_id'],
-                'quantity'              => $row['quantity'],
-                'subtract_from_stock'   => $row['subtract'],
-                'price'                 => $row['price'],
-                'price_prefix'          => $row['price_prefix'],
+                'id' => $row['product_option_value_id'],
+                'product_option_id' => $row['product_option_id'],
+                'option_id' => $row['option_id'],
+                'option_value_id' => $row['option_value_id'],
+                'quantity' => $row['quantity'],
+                'subtract_from_stock' => $row['subtract'],
+                'price' => $row['price'],
+                'price_prefix' => $row['price_prefix'],
 
             ]);
         } catch (Exception $e) {

@@ -12,12 +12,10 @@ class AddIndexes extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('ticketit', function (Blueprint $table) {
+        Schema::table('ticketit', function (Blueprint $table): void {
             $table->index('subject');
             $table->index('status_id');
             $table->index('priority_id');
@@ -27,12 +25,12 @@ class AddIndexes extends Migration
             $table->index('completed_at');
         });
 
-        Schema::table('ticketit_comments', function (Blueprint $table) {
+        Schema::table('ticketit_comments', function (Blueprint $table): void {
             $table->index('user_id');
             $table->index('ticket_id');
         });
 
-        Schema::table('ticketit_settings', function (Blueprint $table) {
+        Schema::table('ticketit_settings', function (Blueprint $table): void {
             $table->index('lang');
             $table->index('slug');
         });
@@ -40,12 +38,10 @@ class AddIndexes extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('ticketit', function (Blueprint $table) {
+        Schema::table('ticketit', function (Blueprint $table): void {
             $table->dropIndex('ticketit_subject_index');
             $table->dropIndex('ticketit_status_id_index');
             $table->dropIndex('ticketit_priority_id_index');
@@ -55,12 +51,12 @@ class AddIndexes extends Migration
             $table->dropIndex('ticketit_completed_at_index');
         });
 
-        Schema::table('ticketit_comments', function (Blueprint $table) {
+        Schema::table('ticketit_comments', function (Blueprint $table): void {
             $table->dropIndex('ticketit_comments_user_id_index');
             $table->dropIndex('ticketit_comments_ticket_id_index');
         });
 
-        Schema::table('ticketit_settings', function (Blueprint $table) {
+        Schema::table('ticketit_settings', function (Blueprint $table): void {
             $table->dropIndex('ticketit_settings_lang_index');
             $table->dropIndex('ticketit_settings_slug_index');
         });

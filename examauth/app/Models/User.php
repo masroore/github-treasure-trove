@@ -54,14 +54,14 @@ class User extends Authenticatable
         return $this->roles()->where('id', 1)->exists();
     }
 
-    public function setPasswordAttribute($input)
+    public function setPasswordAttribute($input): void
     {
         if ($input) {
             $this->attributes['password'] = app('hash')->needsRehash($input) ? Hash::make($input) : $input;
         }
     }
 
-    public function sendPasswordResetNotification($token)
+    public function sendPasswordResetNotification($token): void
     {
         $this->notify(new ResetPassword($token));
     }
@@ -71,7 +71,7 @@ class User extends Authenticatable
         return $value ? Carbon::createFromFormat('Y-m-d H:i:s', $value)->format(config('panel.date_format') . ' ' . config('panel.time_format')) : null;
     }
 
-    public function setEmailVerifiedAtAttribute($value)
+    public function setEmailVerifiedAtAttribute($value): void
     {
         $this->attributes['email_verified_at'] = $value ? Carbon::createFromFormat(config('panel.date_format') . ' ' . config('panel.time_format'), $value)->format('Y-m-d H:i:s') : null;
     }

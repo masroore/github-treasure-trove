@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreatePropertiesTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::create('properties', function (Blueprint $table) {
+        Schema::create('properties', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('property_title')->unique();
             $table->longText('property_description');

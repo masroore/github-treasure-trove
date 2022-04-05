@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateLocationShiftPivotTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::create('location_shift', function (Blueprint $table) {
+        Schema::create('location_shift', function (Blueprint $table): void {
             $table->unsignedBigInteger('shift_id');
             $table->foreign('shift_id', 'shift_id_fk_3688552')->references('id')->on('shifts')->onDelete('cascade');
             $table->unsignedBigInteger('location_id');

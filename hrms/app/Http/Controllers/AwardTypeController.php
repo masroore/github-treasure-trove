@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\AwardType;
+use Auth;
 use Illuminate\Http\Request;
+use Validator;
 
 class AwardTypeController extends Controller
 {
     public function index()
     {
-        if (\Auth::user()->can('Manage Award Type')) {
-            $awardtypes = AwardType::where('created_by', '=', \Auth::user()->creatorId())->get();
+        if (Auth::user()->can('Manage Award Type')) {
+            $awardtypes = AwardType::where('created_by', '=', Auth::user()->creatorId())->get();
 
             return view('awardtype.index', compact('awardtypes'));
         }
@@ -20,7 +22,7 @@ class AwardTypeController extends Controller
 
     public function create()
     {
-        if (\Auth::user()->can('Create Award Type')) {
+        if (Auth::user()->can('Create Award Type')) {
             return view('awardtype.create');
         }
 
@@ -29,13 +31,13 @@ class AwardTypeController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('Create Award Type')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Create Award Type')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
 
-                                   'name' => 'required|max:20',
-                               ]
+                    'name' => 'required|max:20',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -45,7 +47,7 @@ class AwardTypeController extends Controller
 
             $awardtype = new AwardType();
             $awardtype->name = $request->name;
-            $awardtype->created_by = \Auth::user()->creatorId();
+            $awardtype->created_by = Auth::user()->creatorId();
             $awardtype->save();
 
             return redirect()->route('awardtype.index')->with('success', __('AwardType  successfully created.'));
@@ -61,8 +63,8 @@ class AwardTypeController extends Controller
 
     public function edit(AwardType $awardtype)
     {
-        if (\Auth::user()->can('Edit Award Type')) {
-            if ($awardtype->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('Edit Award Type')) {
+            if ($awardtype->created_by == Auth::user()->creatorId()) {
                 return view('awardtype.edit', compact('awardtype'));
             }
 
@@ -74,14 +76,14 @@ class AwardTypeController extends Controller
 
     public function update(Request $request, AwardType $awardtype)
     {
-        if (\Auth::user()->can('Edit Award Type')) {
-            if ($awardtype->created_by == \Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+        if (Auth::user()->can('Edit Award Type')) {
+            if ($awardtype->created_by == Auth::user()->creatorId()) {
+                $validator = Validator::make(
                     $request->all(),
                     [
 
-                                       'name' => 'required|max:20',
-                                   ]
+                        'name' => 'required|max:20',
+                    ]
                 );
                 if ($validator->fails()) {
                     $messages = $validator->getMessageBag();
@@ -103,8 +105,8 @@ class AwardTypeController extends Controller
 
     public function destroy(AwardType $awardtype)
     {
-        if (\Auth::user()->can('Delete Award Type')) {
-            if ($awardtype->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('Delete Award Type')) {
+            if ($awardtype->created_by == Auth::user()->creatorId()) {
                 $awardtype->delete();
 
                 return redirect()->route('awardtype.index')->with('success', __('AwardType successfully deleted.'));

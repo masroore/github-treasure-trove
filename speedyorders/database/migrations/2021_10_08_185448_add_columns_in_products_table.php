@@ -8,12 +8,10 @@ class AddColumnsInProductsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('products', function (Blueprint $table) {
+        Schema::table('products', function (Blueprint $table): void {
             if (!Schema::hasColumn('products', 'search_counts')) {
                 $table->unsignedBigInteger('search_counts')->default(null)->nullable()->after('return_policy_days');
             }
@@ -22,13 +20,10 @@ class AddColumnsInProductsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('products', function (Blueprint $table) {
-
+        Schema::table('products', function (Blueprint $table): void {
         });
     }
 }

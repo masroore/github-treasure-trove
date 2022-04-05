@@ -13,7 +13,7 @@
 
 use Modules\AdminDashboard\Http\Controllers\AdminDashboardController;
 
-Route::group(['prefix' => 'admin/dashboard', 'middleware' => 'auth:admin'], function () {
+Route::group(['prefix' => 'admin/dashboard', 'middleware' => 'auth:admin'], function (): void {
     Route::get('/', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/get-frequency-data/{frequency}', [AdminDashboardController::class, 'getFrequencyData'])->name('admin.dashboard.get.frequency.data');
 });

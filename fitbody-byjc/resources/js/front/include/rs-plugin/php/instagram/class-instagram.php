@@ -20,7 +20,7 @@ class TP_instagram
      *
      * @since    1.0.0
      *
-     * @param string $api_key Instagram API key.
+     * @param string $api_key instagram API key
      */
     public function __construct($api_key)
     {

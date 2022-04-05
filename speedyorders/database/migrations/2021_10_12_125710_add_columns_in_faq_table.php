@@ -8,12 +8,10 @@ class AddColumnsInFaqTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('faqs', function (Blueprint $table) {
+        Schema::table('faqs', function (Blueprint $table): void {
             if (!Schema::hasColumn('faqs', 'type')) {
                 $table->string('type', 50)->default('faq')->nullable()->comment('support/faq')->after('faq_category_id');
             }
@@ -22,13 +20,10 @@ class AddColumnsInFaqTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('faqs', function (Blueprint $table) {
-
+        Schema::table('faqs', function (Blueprint $table): void {
         });
     }
 }

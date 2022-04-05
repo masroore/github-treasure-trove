@@ -2,6 +2,7 @@
 
 namespace Modules\Logdumper\Providers;
 
+use Config;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\ServiceProvider;
 
@@ -9,10 +10,8 @@ class LogdumperServiceProvider extends ServiceProvider
 {
     /**
      * Boot the application events.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->registerTranslations();
         $this->registerConfig();
@@ -23,20 +22,16 @@ class LogdumperServiceProvider extends ServiceProvider
 
     /**
      * Register the service provider.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->app->register(RouteServiceProvider::class);
     }
 
     /**
      * Register views.
-     *
-     * @return void
      */
-    public function registerViews()
+    public function registerViews(): void
     {
         $viewPath = resource_path('views/modules/logdumper');
 
@@ -48,15 +43,13 @@ class LogdumperServiceProvider extends ServiceProvider
 
         $this->loadViewsFrom(array_merge(array_map(function ($path) {
             return $path . '/modules/logdumper';
-        }, \Config::get('view.paths')), [$sourcePath]), 'logdumper');
+        }, Config::get('view.paths')), [$sourcePath]), 'logdumper');
     }
 
     /**
      * Register translations.
-     *
-     * @return void
      */
-    public function registerTranslations()
+    public function registerTranslations(): void
     {
         $langPath = resource_path('lang/modules/logdumper');
 
@@ -69,10 +62,8 @@ class LogdumperServiceProvider extends ServiceProvider
 
     /**
      * Register an additional directory of factories.
-     *
-     * @return void
      */
-    public function registerFactories()
+    public function registerFactories(): void
     {
         if (!app()->environment('production') && $this->app->runningInConsole()) {
             app(Factory::class)->load(module_path('Logdumper', 'Database/factories'));
@@ -91,10 +82,8 @@ class LogdumperServiceProvider extends ServiceProvider
 
     /**
      * Register config.
-     *
-     * @return void
      */
-    protected function registerConfig()
+    protected function registerConfig(): void
     {
         $this->publishes([
             module_path('Logdumper', 'Config/config.php') => config_path('logdumper.php'),

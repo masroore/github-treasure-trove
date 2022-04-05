@@ -24,8 +24,6 @@ class InfoController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @throws \Exception
-     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request)

@@ -4,6 +4,7 @@ namespace Modules\AdminProductAttribute\Services;
 
 use App\Models\Attribute;
 use App\Models\AttributeValue;
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Log;
 
@@ -19,12 +20,12 @@ class CreateAdminProductAttributeService
             if (isset($data['attribute_value']['name'])) {
                 $inserData = [];
                 $time = now();
-                foreach ($data['attribute_value']['name'] as $key=>$attributeValue) {
+                foreach ($data['attribute_value']['name'] as $key => $attributeValue) {
                     $inserData[] = [
-                        'attributes_id'=>$attribute->id,
-                        'name'=>$attributeValue,
-                        'created_at'=>$time,
-                        'updated_at'=>$time,
+                        'attributes_id' => $attribute->id,
+                        'name' => $attributeValue,
+                        'created_at' => $time,
+                        'updated_at' => $time,
                     ];
 
                     Log::info('Attribute Values Data : ' . json_encode($inserData));
@@ -36,7 +37,7 @@ class CreateAdminProductAttributeService
             DB::commit();
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollback();
 
             return false;

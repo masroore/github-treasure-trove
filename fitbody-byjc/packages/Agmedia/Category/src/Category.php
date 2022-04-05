@@ -124,7 +124,7 @@ class Category
      * @private
      * Resolve the needed group of categories
      */
-    private function resolveGroup()
+    private function resolveGroup(): void
     {
         if ('top' == $this->group) {
             $this->categories = DB::table('categories')->where('status', 1)->orderBy('sort_order')->get()->groupBy('parent_id');

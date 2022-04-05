@@ -10,7 +10,7 @@ class AdminGroup extends Model
 
     protected $guarded = ['id'];
 
-    public function users()
+    public function users(): void
     {
 //        return $this->belongsToMany(AdminU)
     }

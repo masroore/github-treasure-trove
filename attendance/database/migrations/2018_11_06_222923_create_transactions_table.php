@@ -13,7 +13,7 @@ class CreateTransactionsTable extends Migration
 {
     public function up(): void
     {
-        Schema::create($this->table(), function (Blueprint $table) {
+        Schema::create($this->table(), function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->morphs('payable');
             $table->enum('type', ['deposit', 'withdraw'])->index();
@@ -34,6 +34,7 @@ class CreateTransactionsTable extends Migration
         $conn = DB::connection();
         if ($conn instanceof MySqlConnection || $conn instanceof PostgresConnection) {
             $pdo = $conn->getPdo();
+
             try {
                 $sql = 'SELECT JSON_EXTRACT(\'[10, 20, [30, 40]]\', \'$[1]\');';
                 $prepare = $pdo->prepare($sql);

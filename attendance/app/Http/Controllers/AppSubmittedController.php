@@ -17,6 +17,7 @@ use App\Studentinfo;
 use App\Supportingdoc;
 use App\User;
 use Barryvdh\DomPDF\Facade as PDF;
+use DB;
 use FPDF as pdfs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -33,15 +34,15 @@ class AppSubmittedController extends Controller
         $academicyear = Academicyear::where('status', 1)->first();
 
         $peronalinfo = Personalinfo::with('applicationinfo')
-            ->withCount(['results as grade' => function ($query) {
-            $query->select(\DB::raw('sum(grad1 + grad2 + grad3 + grad4 + grad5 + grad6)'));
-        }])
+            ->withCount(['results as grade' => function ($query): void {
+                $query->select(DB::raw('sum(grad1 + grad2 + grad3 + grad4 + grad5 + grad6)'));
+            }])
             ->where('status', '1')
             ->where('year', $academicyear->acdemicyear)
             ->orderBy('grade', 'asc')->get();
 
         //dd($peronalinfo);
-        return view('admissionsubmitted.online_admission', ['peronalinfo' => $peronalinfo, 'academicyear'=> $academicyear]);
+        return view('admissionsubmitted.online_admission', ['peronalinfo' => $peronalinfo, 'academicyear' => $academicyear]);
     }
 
     public function admission_all()
@@ -49,35 +50,35 @@ class AppSubmittedController extends Controller
         $academicyear = Academicyear::where('status', 1)->first();
 
         $peronalinfo = Personalinfo::with('applicationinfo')
-            ->withCount(['results as grade' => function ($query) {
-            $query->select(\DB::raw('sum(grad1 + grad2 + grad3 + grad4 + grad5 + grad6)'));
-        }])
+            ->withCount(['results as grade' => function ($query): void {
+                $query->select(DB::raw('sum(grad1 + grad2 + grad3 + grad4 + grad5 + grad6)'));
+            }])
             ->where('status', '1')
             ->where('year', $academicyear->acdemicyear)
             ->orderBy('grade', 'asc');
 
         return Datatables::of($peronalinfo)
             ->addColumn('action', function ($user) {
-            if (1 == $user->approve) {
+                if (1 == $user->approve) {
+                    return '<a href="/LatestAdmission/admission-all-view/' . $user->osncode_id . '" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i> View</a>';
+                }
+
                 return '<a href="/LatestAdmission/admission-all-view/' . $user->osncode_id . '" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i> View</a>';
-            }
-
-            return '<a href="/LatestAdmission/admission-all-view/' . $user->osncode_id . '" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i> View</a>';
-        })
+            })
             ->addColumn('status', function ($user) {
-            if (1 == $user->approve) {
-                return 'Approved <span class="badge badge-light">Approved</span>';
-            }
+                if (1 == $user->approve) {
+                    return 'Approved <span class="badge badge-light">Approved</span>';
+                }
 
-            return 'Processing...';
-        })
+                return 'Processing...';
+            })
             ->addColumn('grade', function ($user) {
-            return Result::where('osncode_id', $user->osncode_id)
-                ->select(\DB::raw('sum(grad1 + grad2 + grad3 + grad4 + grad5 +grad6) as total'))->get();
-        })
+                return Result::where('osncode_id', $user->osncode_id)
+                    ->select(DB::raw('sum(grad1 + grad2 + grad3 + grad4 + grad5 +grad6) as total'))->get();
+            })
             ->editColumn('firstnames', function ($model) {
-            return $model->surname . ' ' . $model->firstnames . ' ' . $model->middlename;
-        })
+                return $model->surname . ' ' . $model->firstnames . ' ' . $model->middlename;
+            })
             ->make(true);
     }
 
@@ -105,7 +106,7 @@ class AppSubmittedController extends Controller
             'result1' => $result1,
             'result2' => $result2,
             'result3' => $result3,
-            'gurdian'=>$gurdian,
+            'gurdian' => $gurdian,
             'supportdoc' => $support,
         ]);
     }
@@ -127,7 +128,7 @@ class AppSubmittedController extends Controller
 
             $msg = 'Programme Updated Successfully!';
 
-            return response()->json(['msg'=> $msg], 200);
+            return response()->json(['msg' => $msg], 200);
         }
     }
 
@@ -177,7 +178,7 @@ class AppSubmittedController extends Controller
                             //admission approved
                             $msg = 'Admission Has Already been Approved!';
 
-                            return response()->json(['msg'=> $msg], 200);
+                            return response()->json(['msg' => $msg], 200);
                         }
                         //approve it now
                         $approve = Personalinfo::where('osncode_id', $id)->first();
@@ -222,49 +223,49 @@ class AppSubmittedController extends Controller
                         $regemail = strtolower($indexnumber) . '@osms.edu.com';
                         //create user
                         $user = User::create([
-                                'name' => $fullname,
-                                'email' => $regemail,
-                                'indexnumber'=> $indexnumber,
-                                'regemail' => $email,
-                                'pro_pic'=> $approve->profileimg,
-                                'password' => Hash::make($email),
-                            ]);
+                            'name' => $fullname,
+                            'email' => $regemail,
+                            'indexnumber' => $indexnumber,
+                            'regemail' => $email,
+                            'pro_pic' => $approve->profileimg,
+                            'password' => Hash::make($email),
+                        ]);
 
                         $data = [
-                                'title' => $title,
-                                'fullname'=>$fullname,
-                                'gender'=>$gender,
-                                'dateofbirth'=>$dateofbirth,
-                                'religion'=>$religion,
-                                'denomination'=>$denomination,
-                                'placeofbirth'=>$placeofbirth,
-                                'nationality'=>$nationality,
-                                'hometown'=>$hometown,
-                                'region'=>$region,
-                                'disability'=>$disability,
-                                'postcode'=>$postcode,
-                                'address'=>$address,
-                                'email'=>$email,
-                                'phone'=>$phone,
-                                'maritalstutus'=>$maritalstutus,
-                                'entrylevel'=>$entrylevel,
-                                'session'=>$session,
-                                'programme'=>$programme,
-                                'progcode' => $prog->code,
-                                'type'=> $prog->type,
-                                'currentlevel'=>$currentlevel,
-                                'indexnumber'=>$indexnumber,
-                                'gurdianname'=>$gurdianname,
-                                'relationship'=>$relationshp,
-                                'occupation'=>$occupation,
-                                'mobile' =>$mobile,
-                                'employed'=>$employed,
-                                'status'=> 0,
-                                'academic_year' => $academic->acdemicyear,
-                                'admitted' => $admitted,
-                                'completion'=> 'AUG,' . $endyear,
-                                'duration' => $duration,
-                            ];
+                            'title' => $title,
+                            'fullname' => $fullname,
+                            'gender' => $gender,
+                            'dateofbirth' => $dateofbirth,
+                            'religion' => $religion,
+                            'denomination' => $denomination,
+                            'placeofbirth' => $placeofbirth,
+                            'nationality' => $nationality,
+                            'hometown' => $hometown,
+                            'region' => $region,
+                            'disability' => $disability,
+                            'postcode' => $postcode,
+                            'address' => $address,
+                            'email' => $email,
+                            'phone' => $phone,
+                            'maritalstutus' => $maritalstutus,
+                            'entrylevel' => $entrylevel,
+                            'session' => $session,
+                            'programme' => $programme,
+                            'progcode' => $prog->code,
+                            'type' => $prog->type,
+                            'currentlevel' => $currentlevel,
+                            'indexnumber' => $indexnumber,
+                            'gurdianname' => $gurdianname,
+                            'relationship' => $relationshp,
+                            'occupation' => $occupation,
+                            'mobile' => $mobile,
+                            'employed' => $employed,
+                            'status' => 0,
+                            'academic_year' => $academic->acdemicyear,
+                            'admitted' => $admitted,
+                            'completion' => 'AUG,' . $endyear,
+                            'duration' => $duration,
+                        ];
 
                         $studentinfos = new Studentinfo($data);
                         $user->studentinfos()->save($studentinfos);
@@ -279,7 +280,7 @@ class AppSubmittedController extends Controller
                         //send notification to use of admission approved
                         $msg = 'Admission Approved! Successfully';
 
-                        return response()->json(['msg'=> $msg], 200);
+                        return response()->json(['msg' => $msg], 200);
                     }
                     //disapprove
                     //check if there is a data here
@@ -309,11 +310,11 @@ class AppSubmittedController extends Controller
                     //notify user of disapproved success
                     $msg = 'Admission Revoked Successfully!';
 
-                    return response()->json(['msg'=> $msg], 200);
+                    return response()->json(['msg' => $msg], 200);
                 }
                 $msg = 'Please Approve Programme Before Approving Admission Requests!';
 
-                return response()->json(['error'=> $msg], 200);
+                return response()->json(['error' => $msg], 200);
             }
             //value is 0
             //check if there is a data here
@@ -341,7 +342,7 @@ class AppSubmittedController extends Controller
             //notify user of disapproved success
             $msg = 'Admission Revoked Successfully!';
 
-            return response()->json(['msg'=> $msg], 200);
+            return response()->json(['msg' => $msg], 200);
         }
     }
 
@@ -350,17 +351,17 @@ class AppSubmittedController extends Controller
         $academicyear = Academicyear::where('status', 1)->first();
 
         $peronalinfo = Personalinfo::with('applicationinfo')
-            ->withCount(['results as grade' => function ($query) {
-            $query->select(\DB::raw('sum(grad1 + grad2 + grad3 + grad4 + grad5 + grad6)'));
-        }])
+            ->withCount(['results as grade' => function ($query): void {
+                $query->select(DB::raw('sum(grad1 + grad2 + grad3 + grad4 + grad5 + grad6)'));
+            }])
             ->where('status', '1')
             ->where('year', $academicyear->acdemicyear)
-            ->whereHas('applicationinfo', function ($query) {
-            $query->where('entrylevel', 'Level 100');
-        })
+            ->whereHas('applicationinfo', function ($query): void {
+                $query->where('entrylevel', 'Level 100');
+            })
             ->orderBy('grade', 'asc')->get();
 
-        return view('admissionsubmitted.online_admission_level_1', ['peronalinfo' => $peronalinfo, 'academicyear'=> $academicyear]);
+        return view('admissionsubmitted.online_admission_level_1', ['peronalinfo' => $peronalinfo, 'academicyear' => $academicyear]);
     }
 
     public function admission_all_level1()
@@ -374,15 +375,15 @@ class AppSubmittedController extends Controller
 
         return Datatables::of($peronalinfo)
             ->addColumn('action', function ($user) {
-            if (1 == $user->approve) {
-                return '<a href="/LatestAdmission/admission-all-view/' . $user->osncode_id . '" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i> View</a> | <span class="badge badge-light">Approved</span';
-            }
+                if (1 == $user->approve) {
+                    return '<a href="/LatestAdmission/admission-all-view/' . $user->osncode_id . '" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i> View</a> | <span class="badge badge-light">Approved</span';
+                }
 
-            return '<a href="/LatestAdmission/admission-all-view/' . $user->osncode_id . '" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i> View</a>';
-        })
+                return '<a href="/LatestAdmission/admission-all-view/' . $user->osncode_id . '" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i> View</a>';
+            })
             ->editColumn('firstnames', function ($model) {
-            return $model->surname . ' ' . $model->firstnames . ' ' . $model->middlename;
-        })
+                return $model->surname . ' ' . $model->firstnames . ' ' . $model->middlename;
+            })
             ->make(true);
     }
 
@@ -391,18 +392,18 @@ class AppSubmittedController extends Controller
         $academicyear = Academicyear::where('status', 1)->first();
 
         $peronalinfo = Personalinfo::with('applicationinfo')
-            ->withCount(['results as grade' => function ($query) {
-            $query->select(\DB::raw('sum(grad1 + grad2 + grad3 + grad4 + grad5 + grad6)'));
-        }])
+            ->withCount(['results as grade' => function ($query): void {
+                $query->select(DB::raw('sum(grad1 + grad2 + grad3 + grad4 + grad5 + grad6)'));
+            }])
             ->where('status', '1')
             ->where('approve', '1')
             ->where('year', $academicyear->acdemicyear)
-            ->whereHas('applicationinfo', function ($query) {
-            $query->where('entrylevel', 'Level 100');
-        })
+            ->whereHas('applicationinfo', function ($query): void {
+                $query->where('entrylevel', 'Level 100');
+            })
             ->orderBy('grade', 'asc')->get();
 
-        return view('admissionsubmitted.online_admission_level1_app', ['peronalinfo' => $peronalinfo, 'academicyear'=> $academicyear]);
+        return view('admissionsubmitted.online_admission_level1_app', ['peronalinfo' => $peronalinfo, 'academicyear' => $academicyear]);
     }
 
     public function admission_all_level1_app()
@@ -417,11 +418,11 @@ class AppSubmittedController extends Controller
 
         return Datatables::of($peronalinfo)
             ->addColumn('action', function ($user) {
-            return '<a href="/LatestAdmission/admission-all-view/' . $user->osncode_id . '" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i> View</a>';
-        })
+                return '<a href="/LatestAdmission/admission-all-view/' . $user->osncode_id . '" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i> View</a>';
+            })
             ->editColumn('firstnames', function ($model) {
-            return $model->surname . ' ' . $model->firstnames . ' ' . $model->middlename;
-        })
+                return $model->surname . ' ' . $model->firstnames . ' ' . $model->middlename;
+            })
             ->make(true);
     }
 
@@ -432,17 +433,17 @@ class AppSubmittedController extends Controller
         $academicyear = Academicyear::where('status', 1)->first();
 
         $peronalinfo = Personalinfo::with('applicationinfo')
-            ->withCount(['results as grade' => function ($query) {
-            $query->select(\DB::raw('sum(grad1 + grad2 + grad3 + grad4 + grad5 + grad6)'));
-        }])
+            ->withCount(['results as grade' => function ($query): void {
+                $query->select(DB::raw('sum(grad1 + grad2 + grad3 + grad4 + grad5 + grad6)'));
+            }])
             ->where('status', '1')
             ->where('year', $academicyear->acdemicyear)
-            ->whereHas('applicationinfo', function ($query) {
-            $query->where('entrylevel', 'Level 200');
-        })
+            ->whereHas('applicationinfo', function ($query): void {
+                $query->where('entrylevel', 'Level 200');
+            })
             ->orderBy('grade', 'asc')->get();
 
-        return view('admissionsubmitted.online_admission_level_2', ['peronalinfo' => $peronalinfo, 'academicyear'=> $academicyear]);
+        return view('admissionsubmitted.online_admission_level_2', ['peronalinfo' => $peronalinfo, 'academicyear' => $academicyear]);
     }
 
     public function admission_all_level2()
@@ -456,15 +457,15 @@ class AppSubmittedController extends Controller
 
         return Datatables::of($peronalinfo)
             ->addColumn('action', function ($user) {
-            if (1 == $user->approve) {
-                return '<a href="/LatestAdmission/admission-all-view/' . $user->osncode_id . '" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i> View</a> | <span class="badge badge-light">Approved</span';
-            }
+                if (1 == $user->approve) {
+                    return '<a href="/LatestAdmission/admission-all-view/' . $user->osncode_id . '" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i> View</a> | <span class="badge badge-light">Approved</span';
+                }
 
-            return '<a href="/LatestAdmission/admission-all-view/' . $user->osncode_id . '" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i> View</a>';
-        })
+                return '<a href="/LatestAdmission/admission-all-view/' . $user->osncode_id . '" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i> View</a>';
+            })
             ->editColumn('firstnames', function ($model) {
-            return $model->surname . ' ' . $model->firstnames . ' ' . $model->middlename;
-        })
+                return $model->surname . ' ' . $model->firstnames . ' ' . $model->middlename;
+            })
             ->make(true);
     }
 
@@ -473,18 +474,18 @@ class AppSubmittedController extends Controller
         $academicyear = Academicyear::where('status', 1)->first();
 
         $peronalinfo = Personalinfo::with('applicationinfo')
-            ->withCount(['results as grade' => function ($query) {
-            $query->select(\DB::raw('sum(grad1 + grad2 + grad3 + grad4 + grad5 + grad6)'));
-        }])
+            ->withCount(['results as grade' => function ($query): void {
+                $query->select(DB::raw('sum(grad1 + grad2 + grad3 + grad4 + grad5 + grad6)'));
+            }])
             ->where('status', '1')
             ->where('approve', '1')
             ->where('year', $academicyear->acdemicyear)
-            ->whereHas('applicationinfo', function ($query) {
-            $query->where('entrylevel', 'Level 200');
-        })
+            ->whereHas('applicationinfo', function ($query): void {
+                $query->where('entrylevel', 'Level 200');
+            })
             ->orderBy('grade', 'asc')->get();
 
-        return view('admissionsubmitted.online_admission_level2_app', ['peronalinfo' => $peronalinfo, 'academicyear'=> $academicyear]);
+        return view('admissionsubmitted.online_admission_level2_app', ['peronalinfo' => $peronalinfo, 'academicyear' => $academicyear]);
     }
 
     public function admission_all_level2_app()
@@ -499,11 +500,11 @@ class AppSubmittedController extends Controller
 
         return Datatables::of($peronalinfo)
             ->addColumn('action', function ($user) {
-            return '<a href="/LatestAdmission/admission-all-view/' . $user->osncode_id . '" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i> View</a>';
-        })
+                return '<a href="/LatestAdmission/admission-all-view/' . $user->osncode_id . '" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i> View</a>';
+            })
             ->editColumn('firstnames', function ($model) {
-            return $model->surname . ' ' . $model->firstnames . ' ' . $model->middlename;
-        })
+                return $model->surname . ' ' . $model->firstnames . ' ' . $model->middlename;
+            })
             ->make(true);
     }
 
@@ -516,17 +517,17 @@ class AppSubmittedController extends Controller
         $academicyear = Academicyear::where('status', 1)->first();
 
         $peronalinfo = Personalinfo::with('applicationinfo')
-            ->withCount(['results as grade' => function ($query) {
-            $query->select(\DB::raw('sum(grad1 + grad2 + grad3 + grad4 + grad5 + grad6)'));
-        }])
+            ->withCount(['results as grade' => function ($query): void {
+                $query->select(DB::raw('sum(grad1 + grad2 + grad3 + grad4 + grad5 + grad6)'));
+            }])
             ->where('status', '1')
             ->where('year', $academicyear->acdemicyear)
-            ->whereHas('applicationinfo', function ($query) {
-            $query->where('entrylevel', 'Level 200');
-        })
+            ->whereHas('applicationinfo', function ($query): void {
+                $query->where('entrylevel', 'Level 200');
+            })
             ->orderBy('grade', 'asc')->get();
 
-        return view('admissionsubmitted.online_admission_level_3', ['peronalinfo' => $peronalinfo, 'academicyear'=> $academicyear]);
+        return view('admissionsubmitted.online_admission_level_3', ['peronalinfo' => $peronalinfo, 'academicyear' => $academicyear]);
     }
 
     public function admission_all_level3()
@@ -540,15 +541,15 @@ class AppSubmittedController extends Controller
 
         return Datatables::of($peronalinfo)
             ->addColumn('action', function ($user) {
-            if (1 == $user->approve) {
-                return '<a href="/LatestAdmission/admission-all-view/' . $user->osncode_id . '" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i> View</a> | <span class="badge badge-light">Approved</span';
-            }
+                if (1 == $user->approve) {
+                    return '<a href="/LatestAdmission/admission-all-view/' . $user->osncode_id . '" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i> View</a> | <span class="badge badge-light">Approved</span';
+                }
 
-            return '<a href="/LatestAdmission/admission-all-view/' . $user->osncode_id . '" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i> View</a>';
-        })
+                return '<a href="/LatestAdmission/admission-all-view/' . $user->osncode_id . '" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i> View</a>';
+            })
             ->editColumn('firstnames', function ($model) {
-            return $model->surname . ' ' . $model->firstnames . ' ' . $model->middlename;
-        })
+                return $model->surname . ' ' . $model->firstnames . ' ' . $model->middlename;
+            })
             ->make(true);
     }
 
@@ -557,18 +558,18 @@ class AppSubmittedController extends Controller
         $academicyear = Academicyear::where('status', 1)->first();
 
         $peronalinfo = Personalinfo::with('applicationinfo')
-            ->withCount(['results as grade' => function ($query) {
-            $query->select(\DB::raw('sum(grad1 + grad2 + grad3 + grad4 + grad5 + grad6)'));
-        }])
+            ->withCount(['results as grade' => function ($query): void {
+                $query->select(DB::raw('sum(grad1 + grad2 + grad3 + grad4 + grad5 + grad6)'));
+            }])
             ->where('status', '1')
             ->where('approve', '1')
             ->where('year', $academicyear->acdemicyear)
-            ->whereHas('applicationinfo', function ($query) {
-            $query->where('entrylevel', 'Level 300');
-        })
+            ->whereHas('applicationinfo', function ($query): void {
+                $query->where('entrylevel', 'Level 300');
+            })
             ->orderBy('grade', 'asc')->get();
 
-        return view('admissionsubmitted.online_admission_level3_app', ['peronalinfo' => $peronalinfo, 'academicyear'=> $academicyear]);
+        return view('admissionsubmitted.online_admission_level3_app', ['peronalinfo' => $peronalinfo, 'academicyear' => $academicyear]);
     }
 
     public function admission_all_level3_app()
@@ -583,11 +584,11 @@ class AppSubmittedController extends Controller
 
         return Datatables::of($peronalinfo)
             ->addColumn('action', function ($user) {
-            return '<a href="/LatestAdmission/admission-all-view/' . $user->osncode_id . '" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i> View</a>';
-        })
+                return '<a href="/LatestAdmission/admission-all-view/' . $user->osncode_id . '" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i> View</a>';
+            })
             ->editColumn('firstnames', function ($model) {
-            return $model->surname . ' ' . $model->firstnames . ' ' . $model->middlename;
-        })
+                return $model->surname . ' ' . $model->firstnames . ' ' . $model->middlename;
+            })
             ->make(true);
     }
 
@@ -649,11 +650,11 @@ class AppSubmittedController extends Controller
 
         return Datatables::of($peronalinfo)
             ->addColumn('action', function ($user) {
-            return '<a href="/LatestAdmission/admission-all-view/' . $user->osncode_id . '" class="btn btn-xs btn-primary" target="_blank"><i class="fa fa-eye"></i> View</a>';
-        })
+                return '<a href="/LatestAdmission/admission-all-view/' . $user->osncode_id . '" class="btn btn-xs btn-primary" target="_blank"><i class="fa fa-eye"></i> View</a>';
+            })
             ->editColumn('firstnames', function ($model) {
-            return $model->surname . ' ' . $model->firstnames . ' ' . $model->middlename;
-        })
+                return $model->surname . ' ' . $model->firstnames . ' ' . $model->middlename;
+            })
             ->make(true);
     }
 
@@ -687,12 +688,12 @@ class AppSubmittedController extends Controller
 
             $msg = 'Student Admission Confirmed Successfully!';
 
-            return response()->json(['msg'=> $msg], 200);
+            return response()->json(['msg' => $msg], 200);
         }
 
         $msg = 'Something Went Wrong, Contact System Administrator';
 
-        return response()->json(['error'=> $msg], 200);
+        return response()->json(['error' => $msg], 200);
     }
 
     public function admission_revert_students_now(Request $Request)
@@ -725,12 +726,12 @@ class AppSubmittedController extends Controller
 
             $msg = 'Student Admission Reverted Successfully!';
 
-            return response()->json(['msg'=> $msg], 200);
+            return response()->json(['msg' => $msg], 200);
         }
 
         $msg = 'Something Went Wrong, Contact System Administrator';
 
-        return response()->json(['error'=> $msg], 200);
+        return response()->json(['error' => $msg], 200);
     }
 
     public function admission_confirm_letter($num)
@@ -827,7 +828,7 @@ class AppSubmittedController extends Controller
         // 	['user'=> $user, 'prog' => $prog, 'academicyear' => $academicyear]);
         // return $pdf->stream('Appointment-Letter.pdf');
 
-        return view('admissionsubmitted.admission_confirm_appointment', ['user'=> $user, 'prog' => $prog, 'academicyear' => $academicyear]);
+        return view('admissionsubmitted.admission_confirm_appointment', ['user' => $user, 'prog' => $prog, 'academicyear' => $academicyear]);
     }
 
     public function admission_confirm_all()
@@ -849,8 +850,8 @@ class AppSubmittedController extends Controller
 
         return Datatables::of($peronalinfo)
             ->addColumn('action', function ($user) {
-            return '<a href="/Allstudents/student-information-view/' . $user->id . '" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i> View</a>';
-        })
+                return '<a href="/Allstudents/student-information-view/' . $user->id . '" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i> View</a>';
+            })
             ->make(true);
     }
 
@@ -873,8 +874,8 @@ class AppSubmittedController extends Controller
 
         return Datatables::of($peronalinfo)
             ->addColumn('action', function ($user) {
-            return '<a href="/LatestAdmission/admission-all-view/' . $user->id . '" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i> View</a>';
-        })
+                return '<a href="/LatestAdmission/admission-all-view/' . $user->id . '" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i> View</a>';
+            })
             ->make(true);
     }
 }

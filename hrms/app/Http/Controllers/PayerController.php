@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Payer;
+use Auth;
 use Illuminate\Http\Request;
+use Validator;
 
 class PayerController extends Controller
 {
     public function index()
     {
-        if (\Auth::user()->can('Manage Payer')) {
-            $payers = Payer::where('created_by', '=', \Auth::user()->creatorId())->get();
+        if (Auth::user()->can('Manage Payer')) {
+            $payers = Payer::where('created_by', '=', Auth::user()->creatorId())->get();
 
             return view('payer.index', compact('payers'));
         }
@@ -20,7 +22,7 @@ class PayerController extends Controller
 
     public function create()
     {
-        if (\Auth::user()->can('Create Payer')) {
+        if (Auth::user()->can('Create Payer')) {
             return view('payer.create');
         }
 
@@ -29,13 +31,13 @@ class PayerController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('Create Payer')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Create Payer')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'payer_name' => 'required',
-                                   'contact_number' => 'required',
-                               ]
+                    'payer_name' => 'required',
+                    'contact_number' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -46,7 +48,7 @@ class PayerController extends Controller
             $payer = new Payer();
             $payer->payer_name = $request->payer_name;
             $payer->contact_number = $request->contact_number;
-            $payer->created_by = \Auth::user()->creatorId();
+            $payer->created_by = Auth::user()->creatorId();
             $payer->save();
 
             return redirect()->route('payer.index')->with('success', __('Payer  successfully created.'));
@@ -62,8 +64,8 @@ class PayerController extends Controller
 
     public function edit(Payer $payer)
     {
-        if (\Auth::user()->can('Edit Payer')) {
-            if ($payer->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('Edit Payer')) {
+            if ($payer->created_by == Auth::user()->creatorId()) {
                 return view('payer.edit', compact('payer'));
             }
 
@@ -76,14 +78,14 @@ class PayerController extends Controller
     public function update(Request $request, $payer)
     {
         $payer = Payer::find($payer);
-        if (\Auth::user()->can('Edit Payer')) {
-            if ($payer->created_by == \Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+        if (Auth::user()->can('Edit Payer')) {
+            if ($payer->created_by == Auth::user()->creatorId()) {
+                $validator = Validator::make(
                     $request->all(),
                     [
-                                       'payer_name' => 'required',
-                                       'contact_number' => 'required',
-                                   ]
+                        'payer_name' => 'required',
+                        'contact_number' => 'required',
+                    ]
                 );
                 if ($validator->fails()) {
                     $messages = $validator->getMessageBag();
@@ -105,8 +107,8 @@ class PayerController extends Controller
 
     public function destroy(Payer $payer)
     {
-        if (\Auth::user()->can('Delete Payer')) {
-            if ($payer->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('Delete Payer')) {
+            if ($payer->created_by == Auth::user()->creatorId()) {
                 $payer->delete();
 
                 return redirect()->route('payer.index')->with('success', __('Payer successfully deleted.'));

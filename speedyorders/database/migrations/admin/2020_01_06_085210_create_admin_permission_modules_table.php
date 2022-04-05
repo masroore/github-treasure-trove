@@ -8,12 +8,10 @@ class CreateAdminPermissionModulesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('admin_permission_modules', function (Blueprint $table) {
+        Schema::create('admin_permission_modules', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('name', 255)->nullable()->default(null);
             $table->boolean('status')->nullable()->default(1);
@@ -24,10 +22,8 @@ class CreateAdminPermissionModulesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('admin_permission_modules');
     }

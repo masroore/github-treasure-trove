@@ -10,7 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::group(['prefix' => 'admin/attributes', 'middleware' => 'auth:admin', 'as'=>'admin.product.attributes.'], function () {
+Route::group(['prefix' => 'admin/attributes', 'middleware' => 'auth:admin', 'as' => 'admin.product.attributes.'], function (): void {
     Route::get('/', 'AdminProductAttributeController@index')->name('index')->middleware('can:list-product-option');
     Route::get('/create', 'AdminProductAttributeController@create')->name('create')->middleware('can:create-product-option');
     Route::post('/store', 'AdminProductAttributeController@store')->name('store')->middleware('can:store-product-option');

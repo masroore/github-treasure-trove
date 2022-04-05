@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreatePropoertyInquiriesTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::create('propoerty_inquiries', function (Blueprint $table) {
+        Schema::create('propoerty_inquiries', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('full_name');
             $table->string('phone_number');

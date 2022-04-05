@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -21,8 +22,6 @@ class SendEmail implements ShouldQueue
 
     /**
      * Create a new job instance.
-     *
-     * @return void
      */
     public function __construct($data)
     {
@@ -31,10 +30,8 @@ class SendEmail implements ShouldQueue
 
     /**
      * Execute the job.
-     *
-     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         try {
             // common variables to all email templates
@@ -55,7 +52,7 @@ class SendEmail implements ShouldQueue
             ];
             $emailData = $this->data;
 
-            $emailData['vars'] = $emailData['vars'] ?? [];
+            $emailData['vars'] ??= [];
 
             //replacing the placeholders
             $varToReplace = array_merge($commonVars, $emailData['vars']);
@@ -63,7 +60,7 @@ class SendEmail implements ShouldQueue
             $emailData['body'] = strtr($emailData['body'], $varToReplace);
             Log::info('Email data' . json_encode($emailData));
             Log::info('Vars data' . json_encode($varToReplace));
-            Mail::send('emails.template', $emailData, function ($message) use ($emailData) {
+            Mail::send('emails.template', $emailData, function ($message) use ($emailData): void {
                 $message->to($emailData['to']);
                 $message->subject($emailData['subject']);
 
@@ -77,7 +74,7 @@ class SendEmail implements ShouldQueue
                     $message->attach($emailData['attachment']);
                 }
             });
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::stack(['daily'])->warning($e->getCode(), [$e->getMessage(), $e->getFile(), $e->getLine()]);
         }
     }

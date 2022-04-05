@@ -34,7 +34,7 @@ class IndustriesService
                 'id',
                 'name',
                 'parent_id',
-            ], ['types' => function ($query) {
+            ], ['types' => function ($query): void {
                 $query->select('id', 'name', 'parent_id');
             }]);
         } catch (Exception $e) {
@@ -54,12 +54,13 @@ class IndustriesService
     public function show($slug)
     {
         $id = getIdBySlug($slug, 'App\Models\Industries');
+
         try {
             $industry = $this->industriesRepository->findById($id, [
                 'id',
                 'name',
                 'parent_id',
-            ], ['types' => function ($query) {
+            ], ['types' => function ($query): void {
                 $query->select('id', 'name', 'parent_id');
             }]);
         } catch (Exception $e) {

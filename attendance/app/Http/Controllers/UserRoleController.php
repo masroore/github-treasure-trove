@@ -21,18 +21,18 @@ class UserRoleController extends Controller
         $user = Auth::user();
         $user->notify(new Notifyusers($user->email, $user->name));
 
-        return view('UserRoles.addroles', ['role'=> $roles, 'Permission'=>$Permission]);
+        return view('UserRoles.addroles', ['role' => $roles, 'Permission' => $Permission]);
     }
 
     public function addrole_save(Request $request)
     {
         $this->validate($request, [
-        'role' => 'required|min:4|max:25',
-    ]);
+            'role' => 'required|min:4|max:25',
+        ]);
 
         $data = [
-         'name'=> $request->input('role'),
-     ];
+            'name' => $request->input('role'),
+        ];
 
         $role = Role::create($data);
 
@@ -55,12 +55,12 @@ class UserRoleController extends Controller
     public function addpermission_save(Request $request)
     {
         $this->validate($request, [
-    'Permission' => 'required|min:4|max:25',
-]);
+            'Permission' => 'required|min:4|max:25',
+        ]);
 
         $data = [
-     'name'=> $request->input('Permission'),
- ];
+            'name' => $request->input('Permission'),
+        ];
 
         $Permission = Permission::create($data);
 
@@ -77,11 +77,11 @@ class UserRoleController extends Controller
         if ('perm' == $type) {
             $Permission = Permission::where('id', $id)->first();
 
-            return view('UserRoles.editrole_per', ['Permission'=>$Permission]);
+            return view('UserRoles.editrole_per', ['Permission' => $Permission]);
         }
         $roles = Role::where('id', $id)->first();
 
-        return view('UserRoles.editrole_per', ['role'=> $roles]);
+        return view('UserRoles.editrole_per', ['role' => $roles]);
     }
 
     public function edit_role_save(Request $request)
@@ -89,8 +89,8 @@ class UserRoleController extends Controller
         $id = $request->input('hiddenid');
 
         $this->validate($request, [
-    'role' => 'required|min:4|max:25',
-]);
+            'role' => 'required|min:4|max:25',
+        ]);
 
         $roles = Role::where('id', $id)->first();
 
@@ -109,8 +109,8 @@ class UserRoleController extends Controller
         $id = $request->input('hiddenid');
 
         $this->validate($request, [
-       'Permission' => 'required|min:4|max:25',
-   ]);
+            'Permission' => 'required|min:4|max:25',
+        ]);
 
         $Permission = Permission::where('id', $id)->first();
 
@@ -128,7 +128,7 @@ class UserRoleController extends Controller
         $role_permissions = Role::with('permissions')
             ->where('roles.id', $id)->get();
         //dd($role_permissions);
-        return view('UserRoles.assign_role', ['role'=> $roles, 'Permission'=>$Permission, 'role_per' => $role_permissions, 'data' => $data]);
+        return view('UserRoles.assign_role', ['role' => $roles, 'Permission' => $Permission, 'role_per' => $role_permissions, 'data' => $data]);
     }
 
     public function assignrole_to_permission_save(Request $request)
@@ -153,7 +153,7 @@ class UserRoleController extends Controller
         $Permission = Permission::all();
         $role_permissions = Role::with('permissions')->get();
         //dd($role_permissions);
-        return view('UserRoles.assign_role', ['role'=> $roles, 'Permission'=>$Permission, 'role_per' => $role_permissions]);
+        return view('UserRoles.assign_role', ['role' => $roles, 'Permission' => $Permission, 'role_per' => $role_permissions]);
     }
 
     //users and their roles
@@ -164,8 +164,8 @@ class UserRoleController extends Controller
         $role_permissions = Role::with('permissions')->get();
         $all_users_with_all_their_roles = User::with('roles')->get();
         //dd($all_users_with_all_their_roles);
-        return view('UserRoles.user_roles', ['user_roles'=> $all_users_with_all_their_roles,
-        'role_pers' => $role_permissions, ]);
+        return view('UserRoles.user_roles', ['user_roles' => $all_users_with_all_their_roles,
+            'role_pers' => $role_permissions, ]);
     }
 
     //Screen lock
@@ -220,7 +220,7 @@ class UserRoleController extends Controller
     {
         $users = User::where('indexnumber', 'like', '%GES%')->get();
 
-        return view('UserRoles.alluserforce_logout', ['users'=>$users]);
+        return view('UserRoles.alluserforce_logout', ['users' => $users]);
     }
 
     //force logout update script

@@ -32,9 +32,9 @@ class StudentsController extends Controller
 
         return Datatables::of($peronalinfo)
             ->addColumn('action', function ($user) {
-             return '<a href="/Allstudents/student-information-view/' . $user->id . '" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i> View</a>
+                return '<a href="/Allstudents/student-information-view/' . $user->id . '" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i> View</a>
                 ';
-         })
+            })
             ->make(true);
     }
 
@@ -54,9 +54,9 @@ class StudentsController extends Controller
 
         return Datatables::of($peronalinfo)
             ->addColumn('action', function ($user) {
-             return '<a href="/Allstudents/student-information-view/' . $user->id . '" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i> View</a>
+                return '<a href="/Allstudents/student-information-view/' . $user->id . '" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i> View</a>
                 ';
-         })
+            })
             ->make(true);
     }
 
@@ -76,9 +76,9 @@ class StudentsController extends Controller
 
         return Datatables::of($peronalinfo)
             ->addColumn('action', function ($user) {
-             return '<a href="/Allstudents/student-information-view/' . $user->id . '" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i> View</a>
+                return '<a href="/Allstudents/student-information-view/' . $user->id . '" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i> View</a>
                 ';
-         })
+            })
             ->make(true);
     }
 
@@ -98,9 +98,9 @@ class StudentsController extends Controller
 
         return Datatables::of($peronalinfo)
             ->addColumn('action', function ($user) {
-             return '<a href="/Allstudents/student-information-view/' . $user->id . '" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i> View</a>
+                return '<a href="/Allstudents/student-information-view/' . $user->id . '" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i> View</a>
                 ';
-         })
+            })
             ->make(true);
     }
 
@@ -120,9 +120,9 @@ class StudentsController extends Controller
 
         return Datatables::of($peronalinfo)
             ->addColumn('action', function ($user) {
-             return '<a href="/Allstudents/student-information-view/' . $user->id . '" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i> View</a>
+                return '<a href="/Allstudents/student-information-view/' . $user->id . '" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i> View</a>
                 ';
-         })
+            })
             ->make(true);
     }
 
@@ -142,9 +142,9 @@ class StudentsController extends Controller
 
         return Datatables::of($peronalinfo)
             ->addColumn('action', function ($user) {
-             return '<a href="/Allstudents/student-information-view/' . $user->id . '" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i> View</a>
+                return '<a href="/Allstudents/student-information-view/' . $user->id . '" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i> View</a>
                 ';
-         })
+            })
             ->make(true);
     }
 
@@ -154,9 +154,9 @@ class StudentsController extends Controller
             ->with('regacademicyear')
             ->with('Coureregistration')
             ->with('examresults')
-            ->whereHas('studentinfos', function ($query) use ($id) {
-        $query->where('id', $id);
-    })
+            ->whereHas('studentinfos', function ($query) use ($id): void {
+                $query->where('id', $id);
+            })
             ->first();
 
         //dd($peronalinfo);
@@ -192,7 +192,7 @@ class StudentsController extends Controller
 
         //dd($creg);
 
-        return view('Allstudents.student_profile', ['personal' => $peronalinfo, 'course'=> $creg, 'regsem'=>$regsem, 'examsresults'=> $exresults]);
+        return view('Allstudents.student_profile', ['personal' => $peronalinfo, 'course' => $creg, 'regsem' => $regsem, 'examsresults' => $exresults]);
     }
 
     public function student_assignments()
@@ -201,7 +201,7 @@ class StudentsController extends Controller
         $assingment = Assignment::latest()->get();
 
         //dd($assingment);
-        return view('Allstudents.assignment_view', ['assingment'=> $assingment]);
+        return view('Allstudents.assignment_view', ['assingment' => $assingment]);
     }
 
     public function student_assignment_view($id)
@@ -215,22 +215,22 @@ class StudentsController extends Controller
         $diffs = now()->diffInDays(\Carbon\Carbon::parse($assingment->subenddate), false);
         //dd($diffs);
 
-        return view('Allstudents.submit_assignment', ['assignmentid'=> $id, 'row'=> $assingment, 'elapse'=> $diffs, 'subs'=> $sub]);
+        return view('Allstudents.submit_assignment', ['assignmentid' => $id, 'row' => $assingment, 'elapse' => $diffs, 'subs' => $sub]);
     }
 
     public function student_assignment_submit(Request $request)
     {
         //dd($request);
         $this->validate($request, [
-        'assingmentdoc'=>'required|mimes:pdf,docx',
-    ]);
+            'assingmentdoc' => 'required|mimes:pdf,docx',
+        ]);
 
         $data = [
-        'assignment_id'=>$request->input('assignmentid'),
-        'studentid'=>$request->input('stuid'),
-        'studentname'=>$request->input('stuname'),
-        'studoc'=> $request->file('assingmentdoc')->store('Assignments', 'public'),
-    ];
+            'assignment_id' => $request->input('assignmentid'),
+            'studentid' => $request->input('stuid'),
+            'studentname' => $request->input('stuname'),
+            'studoc' => $request->file('assingmentdoc')->store('Assignments', 'public'),
+        ];
 
         $sub = new Submission($data);
         $sub->save();

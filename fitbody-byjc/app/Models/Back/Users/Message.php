@@ -75,8 +75,8 @@ class Message extends Model
     public function validateRequest(Request $request)
     {
         $request->validate([
-            'recipient'       => 'required',
-            'subject'         => 'required',
+            'recipient' => 'required',
+            'subject' => 'required',
             'message_content' => 'required',
         ]);
 
@@ -91,13 +91,13 @@ class Message extends Model
     public function storeData()
     {
         $stored = $this->insertGetId([
-            'from_user_id'    => auth()->user()->id,
-            'to_user_id'      => $this->to->id,
-            'subject'         => $this->request->subject,
+            'from_user_id' => auth()->user()->id,
+            'to_user_id' => $this->to->id,
+            'subject' => $this->request->subject,
             'message' => $this->request->message_content,
-            'session'         => json_encode(session()->all()),
-            'created_at'      => Carbon::now(),
-            'updated_at'      => Carbon::now(),
+            'session' => json_encode(session()->all()),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
 
         if ($stored) {
@@ -113,13 +113,13 @@ class Message extends Model
     public function storeVendorRequest()
     {
         $stored = $this->insertGetId([
-            'from_user_id'    => auth()->user()->id,
-            'to_user_id'      => 1,
-            'subject'         => 'Želim postati prodavač..!',
+            'from_user_id' => auth()->user()->id,
+            'to_user_id' => 1,
+            'subject' => 'Želim postati prodavač..!',
             'message' => 'Poštovani, Želio bih postati prodavač na vašoj platformi...',
-            'session'         => json_encode(session()->all()),
-            'created_at'      => Carbon::now(),
-            'updated_at'      => Carbon::now(),
+            'session' => json_encode(session()->all()),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
 
         if ($stored) {
@@ -132,15 +132,15 @@ class Message extends Model
     /**
      * Set Model required data.
      */
-    public function setData()
+    public function setData(): void
     {
         $this->to = User::find($this->request->recipient);
     }
 
-    /*******************************************************************************
+    /*
      *                                Copyright : AGmedia                           *
      *                              email: filip@agmedia.hr                         *
-     *******************************************************************************/
+     */
     //
     // Static Methods
     //
@@ -164,7 +164,7 @@ class Message extends Model
      *
      * @param $request
      */
-    private function setRequest($request)
+    private function setRequest($request): void
     {
         $this->request = $request;
         $this->setData();

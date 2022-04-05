@@ -29,14 +29,15 @@ class ProductService
 {
     public $file_dimensions = [
 
-    'full'       => ['width' => 1600, 'height' => 1600, 'ext' => 'webp', 'key' => '-F', 'model' => 'Products'],
-    'large'          => ['width' => 1200, 'height' => 1200, 'ext' => 'webp', 'key' => '-L', 'model' => 'Products'],
-    'medium'      => ['width' => 800,  'height' => 800,  'ext' => 'webp', 'key' => '-M', 'model' => 'Products'],
-    'small'          => ['width' => 450,  'height' => 450,  'ext' => 'webp', 'key' => '-S', 'model' => 'Products'],
-    'small-jpg'       => ['width' => 450,  'height' => 450,  'ext' => 'jpg', 'key' => '-SJ', 'model' => 'Products'],
-    'x-small'     => ['width' => 200,  'height' => 200,  'ext' => 'webp', 'key' => '-XS', 'model' => 'Products'],
+        'full' => ['width' => 1600, 'height' => 1600, 'ext' => 'webp', 'key' => '-F', 'model' => 'Products'],
+        'large' => ['width' => 1200, 'height' => 1200, 'ext' => 'webp', 'key' => '-L', 'model' => 'Products'],
+        'medium' => ['width' => 800,  'height' => 800,  'ext' => 'webp', 'key' => '-M', 'model' => 'Products'],
+        'small' => ['width' => 450,  'height' => 450,  'ext' => 'webp', 'key' => '-S', 'model' => 'Products'],
+        'small-jpg' => ['width' => 450,  'height' => 450,  'ext' => 'jpg', 'key' => '-SJ', 'model' => 'Products'],
+        'x-small' => ['width' => 200,  'height' => 200,  'ext' => 'webp', 'key' => '-XS', 'model' => 'Products'],
 
-];
+    ];
+
     public $product_columns = [
         'id',
         'store_id',
@@ -52,20 +53,32 @@ class ProductService
         'with_storehouse_management',
         'quantity',
     ];
+
     /**
      * @var ProductRepositoryInterface
      */
     protected $productRepository;
+
     protected $veriationRepository;
+
     protected $veriationitemRepository;
+
     protected $productwithattributesetRepository;
+
     protected $productaddonsRepository;
+
     protected $productscustomfieldsRepository;
+
     protected $productlabelproductRepository;
+
     protected $producttagsRepository;
+
     protected $productvariationsRepository;
+
     protected $productvariationitemsRepository;
+
     protected $productwithattributeRepository;
+
     protected $attributeRepository;
 
     public function __construct(
@@ -99,6 +112,7 @@ class ProductService
     public function store(Request $request)
     {
         DB::beginTransaction();
+
         try {// get store id from token
             //dd($request->all());
             $validator = Validator::make($request->input(), [
@@ -117,24 +131,24 @@ class ProductService
             // create Parent Product
 
             $product_parent = $this->productRepository->create([
-                'store_id'=>$request->store_id,
-                'brand_id'=>$request->brand_id,
-                'name'=>$request->name,
-                'description'=>$request->description,
-                'status'=>$request->status,
-                'images'=>json_encode($request->images),
-                'sku'=>$request->sku,
-                'price'=>$request->price,
-                'with_storehouse_management'=>$request->with_storehouse_management,
-                'quantity'=>$request->quantity,
-                'category_id'=>$request->category_id,
-                'is_featured'=>$request->is_featured,
-                'is_variation'=>0,
-                'sale_type'=>$request->sale_type,
-                'sale_price'=>$request->sale_price,
-                'start_date'=>$request->start_date,
-                'end_date'=>$request->end_date,
-                'size_chart_id'=>$request->size_chart_id,
+                'store_id' => $request->store_id,
+                'brand_id' => $request->brand_id,
+                'name' => $request->name,
+                'description' => $request->description,
+                'status' => $request->status,
+                'images' => json_encode($request->images),
+                'sku' => $request->sku,
+                'price' => $request->price,
+                'with_storehouse_management' => $request->with_storehouse_management,
+                'quantity' => $request->quantity,
+                'category_id' => $request->category_id,
+                'is_featured' => $request->is_featured,
+                'is_variation' => 0,
+                'sale_type' => $request->sale_type,
+                'sale_price' => $request->sale_price,
+                'start_date' => $request->start_date,
+                'end_date' => $request->end_date,
+                'size_chart_id' => $request->size_chart_id,
             ]);
 //            create unique Slug
 
@@ -142,20 +156,20 @@ class ProductService
 
             $parentProductId = $product_parent->id;
             if ($request['attributes'] && null != $request['attributes'][0]) {
-                foreach ($request['attributes'] as $key=>$attribute) {
+                foreach ($request['attributes'] as $key => $attribute) {
                     $this->productwithattributesetRepository->create([
-                         'attribute_set_id'=>$attribute,
-                         'product_id'=>$parentProductId,
-                         'order'=>$key + 1,
+                        'attribute_set_id' => $attribute,
+                        'product_id' => $parentProductId,
+                        'order' => $key + 1,
                     ]);
                     $pairs = $this->attributeRepository->findAllByColumn(
-                        ['attribute_set_id'=>$attribute]
+                        ['attribute_set_id' => $attribute]
                     );
                     foreach ($pairs as $pair) {
                         $this->productwithattributeRepository->create([
-                             'attribute_id' => $pair->id,
-                             'product_id' => $parentProductId,
-                         ]);
+                            'attribute_id' => $pair->id,
+                            'product_id' => $parentProductId,
+                        ]);
                     }
                 }
             }
@@ -173,31 +187,31 @@ class ProductService
                 // dd($request['add_ons']);
                 foreach ($request['add_ons'] as $addons) {
                     $this->productaddonsRepository->create([
-                        'title'=>$addons['title'],
-                        'price'=>$addons['price'],
-                        'product_id'=>$parentProductId,
+                        'title' => $addons['title'],
+                        'price' => $addons['price'],
+                        'product_id' => $parentProductId,
                     ]);
                 }
             }
             if ($request['labels'] && null != $request['labels'][0]) {
                 foreach ($request['labels'] as $label) {
                     $this->productlabelproductRepository->create([
-                        'product_label_id'=>$label,
-                        'product_id'=>$parentProductId,
+                        'product_label_id' => $label,
+                        'product_id' => $parentProductId,
                     ]);
                 }
             }
             if ($request['tags'] && null != $request['tags'][0]) {
                 foreach ($request['tags'] as $tags) {
                     $this->producttagsRepository->create([
-                        'tag_id'=>$tags,
-                        'product_id'=>$parentProductId,
+                        'tag_id' => $tags,
+                        'product_id' => $parentProductId,
                     ]);
                 }
             }
             // Create variant /Child
             if ($request['varients'] && null != $request['varients'][0]) {
-                foreach ($request->varients as $key=>$varient) {
+                foreach ($request->varients as $key => $varient) {
                     $product_Child = $this->productRepository->create([
                         'store_id' => $request->store_id,
                         'brand_id' => $request->brand_id,
@@ -213,17 +227,17 @@ class ProductService
                     ]);
                     $product_Child_id = $product_Child->id;
                     $productvariations = $this->productvariationsRepository->create([
-                        'product_id'=>$product_Child_id,
-                        'configurable_product_id'=>$parentProductId,
-                        'is_default'=>$varient['is_default'],
+                        'product_id' => $product_Child_id,
+                        'configurable_product_id' => $parentProductId,
+                        'is_default' => $varient['is_default'],
                     ]);
                     // dd('ok');
                     if ($varient['attribute'] && null != $varient['attribute'][0]) {
                         // dd($varient['attribute']);
                         foreach ($varient['attribute'] as $attribute_id) {
                             $this->productvariationitemsRepository->create([
-                                'attribute_id'=>$attribute_id,
-                                'variation_id'=>$productvariations->id,
+                                'attribute_id' => $attribute_id,
+                                'variation_id' => $productvariations->id,
                             ]);
                         }
                     }
@@ -233,6 +247,7 @@ class ProductService
             DB::commit();
         } catch (Exception $e) {
             DB::rollback();
+
             throw new InvalidArgumentException($e->getMessage());
         }
 
@@ -247,6 +262,7 @@ class ProductService
     public function update(Request $request, $id)
     {
         DB::beginTransaction();
+
         try {
             // get store id from token
             $request['store_id'] = request()
@@ -256,7 +272,7 @@ class ProductService
 
             $validator = Validator::make($request->input(), [
                 'name' => 'required|string|max:15|',
-//                'sku' => 'required|string|max:15|unique:products,sku,'.$id,
+                //                'sku' => 'required|string|max:15|unique:products,sku,'.$id,
                 'price' => 'required|integer',
                 'category_id' => 'required|integer',
                 'brand_id' => 'required|integer',
@@ -276,37 +292,37 @@ class ProductService
             $product_parent = $this->productRepository->updateGetModel(
                 ['id' => $id],
                 [
-                    'store_id'=>$request->store_id,
-                    'brand_id'=>$request->brand_id,
-                    'name'=>$request->name,
-                    'description'=>$request->description,
-                    'status'=>$request->status,
-                    'images'=>json_encode($request->images),
-                    'sku'=>$request->sku,
-                    'price'=>$request->price,
-                    'with_storehouse_management'=>$request->with_storehouse_management,
-                    'quantity'=>$request->quantity,
-                    'category_id'=>$request->category_id,
-                    'is_featured'=>$request->is_featured,
-                    'size_chart'=>$request->size_chart,
-                    'is_variation'=>0,
-                    'sale_type'=>$request->sale_type,
-                    'sale_price'=>$request->sale_price,
-                    'start_date'=>$request->start_date,
-                    'end_date'=>$request->end_date,
-                    'size_chart_id'=>$request->size_chart_id,
+                    'store_id' => $request->store_id,
+                    'brand_id' => $request->brand_id,
+                    'name' => $request->name,
+                    'description' => $request->description,
+                    'status' => $request->status,
+                    'images' => json_encode($request->images),
+                    'sku' => $request->sku,
+                    'price' => $request->price,
+                    'with_storehouse_management' => $request->with_storehouse_management,
+                    'quantity' => $request->quantity,
+                    'category_id' => $request->category_id,
+                    'is_featured' => $request->is_featured,
+                    'size_chart' => $request->size_chart,
+                    'is_variation' => 0,
+                    'sale_type' => $request->sale_type,
+                    'sale_price' => $request->sale_price,
+                    'start_date' => $request->start_date,
+                    'end_date' => $request->end_date,
+                    'size_chart_id' => $request->size_chart_id,
                 ]
             );
             $parentProductId = $product_parent->id;
             if ($request['attributes'] && null != $request['attributes'][0]) {
-                foreach ($request['attributes'] as $key=>$attribute) {
+                foreach ($request['attributes'] as $key => $attribute) {
                     $this->productwithattributesetRepository->updateGetModel(['product_id', $parentProductId], [
-                        'attribute_set_id'=>$attribute,
-                        'product_id'=>$parentProductId,
-                        'order'=>$key + 1,
+                        'attribute_set_id' => $attribute,
+                        'product_id' => $parentProductId,
+                        'order' => $key + 1,
                     ]);
                     $pairs = $this->attributeRepository->findAllByColumn(
-                        ['attribute_set_id'=>$attribute]
+                        ['attribute_set_id' => $attribute]
                     );
                     foreach ($pairs as $pair) {
                         $this->productwithattributeRepository->create([
@@ -330,31 +346,31 @@ class ProductService
 //                    dd($request['add_ons']);
                 foreach ($request['add_ons'] as $addons) {
                     $this->productaddonsRepository->updateGetModel(['product_id', $id], [
-                        'title'=>$addons['title'],
-                        'price'=>$addons['price'],
-                        'product_id'=>$parentProductId,
+                        'title' => $addons['title'],
+                        'price' => $addons['price'],
+                        'product_id' => $parentProductId,
                     ]);
                 }
             }
             if ($request['labels'] && null != $request['labels'][0]) {
                 foreach ($request['labels'] as $label) {
                     $this->productlabelproductRepository->updateGetModel(['product_id', $id], [
-                        'product_label_id'=>$label,
-                        'product_id'=>$parentProductId,
+                        'product_label_id' => $label,
+                        'product_id' => $parentProductId,
                     ]);
                 }
             }
             if ($request['tags'] && null != $request['tags'][0]) {
                 foreach ($request['tags'] as $tags) {
                     $this->producttagsRepository->updateGetModel(['product_id', $id], [
-                        'tag_id'=>$tags,
-                        'product_id'=>$parentProductId,
+                        'tag_id' => $tags,
+                        'product_id' => $parentProductId,
                     ]);
                 }
             }
             // Create variant /Child
             if ($request['varients'] && null != $request['varients'][0]) {
-                foreach ($request->varients as $key=>$varient) {
+                foreach ($request->varients as $key => $varient) {
                     $product_Child = $this->productRepository->create([
                         'store_id' => $request->store_id,
                         'brand_id' => $request->brand_id,
@@ -370,16 +386,16 @@ class ProductService
                     ]);
                     $product_Child_id = $product_Child->id;
                     $productvariations = $this->productvariationsRepository->create([
-                        'product_id'=>$product_Child_id,
-                        'configurable_product_id'=>$parentProductId,
-                        'is_default'=>$varient['is_default'],
+                        'product_id' => $product_Child_id,
+                        'configurable_product_id' => $parentProductId,
+                        'is_default' => $varient['is_default'],
                     ]);
                     if ($varient['attribute'] && null != $varient['attribute'][0]) {
 //                        dd($varient['attribute']);
                         foreach ($varient['attribute'] as $attribute_id) {
                             $this->productvariationitemsRepository->create([
-                                'attribute_id'=>$attribute_id,
-                                'variation_id'=>$productvariations->id,
+                                'attribute_id' => $attribute_id,
+                                'variation_id' => $productvariations->id,
                             ]);
                         }
                     }
@@ -390,6 +406,7 @@ class ProductService
             DB::commit();
         } catch (Exception $e) {
             DB::rollback();
+
             throw new InvalidArgumentException($e->getMessage());
         }
 
@@ -420,8 +437,9 @@ class ProductService
     public function destroy($id)
     {
         DB::beginTransaction();
+
         try {
-            $deleted = $this->productRepository->deleteByColumn(['id'=>$id]);
+            $deleted = $this->productRepository->deleteByColumn(['id' => $id]);
 //            $deleted = $this->productwithattributesetRepository->deleteByColumn(['product_id'=>$id]);
 //            $deleted = $this->productwithattributeRepository->deleteByColumn(['product_id'=>$id]);
 //            $deleted = $this->productwithattributeRepository->deleteByColumn(['product_id'=>$id]);
@@ -434,6 +452,7 @@ class ProductService
             DB::commit();
         } catch (Exception $e) {
             DB::rollback();
+
             throw new InvalidArgumentException($e->getMessage());
         }
 
@@ -486,11 +505,11 @@ class ProductService
     {
         try {
             $query = ProductTags::rightJoin('products', 'product_tags.product_id', '=', 'products.id')
-                  ->leftJoin('tags', 'product_tags.tag_id', '=', 'tags.id')
-                  ->leftJoin('stores', 'products.store_id', '=', 'stores.id')
-                  ->leftJoin('industries', 'industries.id', '=', 'stores.industry_id')
-                  ->leftJoin('categories', 'products.category_id', '=', 'categories.id')
-                  ->leftJoin('brands', 'products.brand_id', '=', 'brands.id');
+                ->leftJoin('tags', 'product_tags.tag_id', '=', 'tags.id')
+                ->leftJoin('stores', 'products.store_id', '=', 'stores.id')
+                ->leftJoin('industries', 'industries.id', '=', 'stores.industry_id')
+                ->leftJoin('categories', 'products.category_id', '=', 'categories.id')
+                ->leftJoin('brands', 'products.brand_id', '=', 'brands.id');
             $query->select(
                 'products.name As product_name',
                 'categories.name As category_name',
@@ -532,16 +551,16 @@ class ProductService
                 'name',
                 'icon'
             )
-                ->with('subcategories', function ($query) {
+                ->with('subcategories', function ($query): void {
                     $query->select('id', 'parent_id', 'name', 'icon')
                         ->where('status', 1)
-                        ->with('products', function ($q) {
-                        $q->select($this->product_columns);
-                        $q->where(['status' => 1, 'is_variation' => 0]);
-                        $q->take(5);
-                    });
+                        ->with('products', function ($q): void {
+                            $q->select($this->product_columns);
+                            $q->where(['status' => 1, 'is_variation' => 0]);
+                            $q->take(5);
+                        });
                 })
-                ->with('products', function ($p) {
+                ->with('products', function ($p): void {
                     $p->select($this->product_columns);
                     $p->where(['status' => 1, 'is_variation' => 0]);
                     $p->take(5);

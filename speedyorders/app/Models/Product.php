@@ -76,11 +76,11 @@ class Product extends Model
         });
     }
 
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
 
-        static::creating(function ($query) {
+        static::creating(function ($query): void {
             $query->uuid = (string) Str::uuid();
         });
     }

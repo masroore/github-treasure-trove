@@ -8,12 +8,10 @@ class CreateStoresTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('stores', function (Blueprint $table) {
+        Schema::create('stores', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->bigInteger('user_id')->unsigned();
             // $table->integer('user_id')->default(0);
@@ -49,13 +47,11 @@ class CreateStoresTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('stores');
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
     }

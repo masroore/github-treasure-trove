@@ -45,7 +45,6 @@ class AddressController extends BaseController
      */
     public function create()
     {
-
     }
 
     /**
@@ -91,7 +90,6 @@ class AddressController extends BaseController
      */
     public function edit($id)
     {
-
     }
 
     /**

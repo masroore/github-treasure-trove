@@ -14,14 +14,14 @@ class EmployeeExport implements FromCollection, WithHeadings
     public function collection()
     {
         $data = Employee::get();
-        foreach ($data as $k=>$employee) {
+        foreach ($data as $k => $employee) {
             $data[$k]['branch_id'] = $employee->branch->name;
             $data[$k]['department_id'] = $employee->department->name;
             $data[$k]['designation_id'] = $employee->designation->name;
             $data[$k]['salary_type'] = !empty($employee->salary_type) ? $employee->salaryType->name : '-';
             $data[$k]['salary'] = Employee::employee_salary($employee->salary);
             $data[$k]['created_by'] = Employee::login_user($employee->created_by);
-            unset($employee->id,$employee->user_id,$employee->documents,$employee->tax_payer_id,$employee->is_active,$employee->created_at,$employee->updated_at);
+            $employee->id = null; $employee->user_id = null; $employee->documents = null; $employee->tax_payer_id = null; $employee->is_active = null; $employee->created_at = null; $employee->updated_at = null;
         }
 
         return $data;

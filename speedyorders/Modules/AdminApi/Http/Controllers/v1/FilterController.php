@@ -21,8 +21,8 @@ class FilterController extends BaseController
         $uniqueProductId = array_unique($product);
         $products = Product::where('status', '1')
             ->when(\count($categories) > 0, function ($query) use ($uniqueProductId) {
-                            return $query->whereIn('id', $uniqueProductId);
-                        })
+                return $query->whereIn('id', $uniqueProductId);
+            })
                         // ->when($price, function ($query, $price) {
                         //     $minPrice = $price['minPrice']??0;
                         //     $maxPrice = $price['maxPrice']??200;
@@ -32,11 +32,11 @@ class FilterController extends BaseController
                         //     return $query->where('card_type', $cardType);
                         // })
             ->when('price' == $filterName, function ($query) use ($filterOrder) {
-                            return $query->orderBy('base_price', $filterOrder);
-                        })
+                return $query->orderBy('base_price', $filterOrder);
+            })
             ->when('alpha' == $filterName, function ($query) use ($filterOrder) {
-                            return $query->orderBy('name', $filterOrder);
-                        })
+                return $query->orderBy('name', $filterOrder);
+            })
             ->with('options', 'options.option', 'options.optionValues')
             ->paginate($show);
 

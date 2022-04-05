@@ -8,27 +8,25 @@ class AddRatingInCompetencies extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table(
             'indicators',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->string('rating')->nullable()->after('designation');
             }
         );
 
         Schema::table(
             'appraisals',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->string('rating')->nullable()->after('employee');
             }
         );
         Schema::table(
             'goal_trackings',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->string('rating')->nullable()->after('subject');
             }
         );
@@ -36,26 +34,24 @@ class AddRatingInCompetencies extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table(
             'indicators',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->dropColumn('rating');
             }
         );
         Schema::table(
             'appraisals',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->dropColumn('rating');
             }
         );
         Schema::table(
             'goal_trackings',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->dropColumn('rating');
             }
         );

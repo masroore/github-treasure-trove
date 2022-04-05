@@ -10,6 +10,7 @@ class Notification extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
     protected $fillable = [
         'title',
         'body',

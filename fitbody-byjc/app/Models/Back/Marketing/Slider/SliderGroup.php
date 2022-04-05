@@ -36,22 +36,20 @@ class SliderGroup extends Model
     /**
      * @param $request
      *
-     * @throws \Exception
-     *
      * @return bool
      */
     public static function store($request)
     {
         return self::insert([
-            'name'        => $request->name,
+            'name' => $request->name,
             'category_id' => $request->category_id,
-            'page_id'     => $request->page_id,
-            'blog_id'     => $request->blog_id,
-            'date_start'  => new Carbon($request->date_start),
-            'date_end'    => new Carbon($request->date_end),
-            'status'      => (isset($request->status) && 'on' == $request->status) ? 1 : 0,
-            'created_at'  => Carbon::now(),
-            'updated_at'  => Carbon::now(),
+            'page_id' => $request->page_id,
+            'blog_id' => $request->blog_id,
+            'date_start' => new Carbon($request->date_start),
+            'date_end' => new Carbon($request->date_end),
+            'status' => (isset($request->status) && 'on' == $request->status) ? 1 : 0,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
     }
 
@@ -59,21 +57,19 @@ class SliderGroup extends Model
      * @param $request
      * @param $id
      *
-     * @throws \Exception
-     *
      * @return bool
      */
     public static function edit($request, $id)
     {
         return self::where('id', $id)->update([
-            'name'        => $request->name,
+            'name' => $request->name,
             'category_id' => $request->categories,
-            'page_id'     => $request->pages,
-            'blog_id'     => 0,
-            'date_start'  => '', //new Carbon($request->date_start),
-            'date_end'    => '', //new Carbon($request->date_end),
-            'status'      => (isset($request->status) && 'on' == $request->status) ? 1 : 0,
-            'updated_at'  => Carbon::now(),
+            'page_id' => $request->pages,
+            'blog_id' => 0,
+            'date_start' => '', //new Carbon($request->date_start),
+            'date_end' => '', //new Carbon($request->date_end),
+            'status' => (isset($request->status) && 'on' == $request->status) ? 1 : 0,
+            'updated_at' => Carbon::now(),
         ]);
     }
 

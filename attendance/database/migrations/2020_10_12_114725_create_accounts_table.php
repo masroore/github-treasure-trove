@@ -8,12 +8,10 @@ class CreateAccountsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('accounts', function (Blueprint $table) {
+        Schema::create('accounts', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('title');
             $table->string('feecode');
@@ -23,10 +21,8 @@ class CreateAccountsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('accounts');
     }

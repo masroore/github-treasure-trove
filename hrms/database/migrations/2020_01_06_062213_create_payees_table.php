@@ -8,12 +8,10 @@ class CreatePayeesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('payees', function (Blueprint $table) {
+        Schema::create('payees', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('payee_name');
             $table->string('contact_number');
@@ -24,10 +22,8 @@ class CreatePayeesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('payees');
     }

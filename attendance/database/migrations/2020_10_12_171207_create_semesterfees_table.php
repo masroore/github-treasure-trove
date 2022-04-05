@@ -8,12 +8,10 @@ class CreateSemesterfeesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('semesterfees', function (Blueprint $table) {
+        Schema::create('semesterfees', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('level');
             $table->string('session');
@@ -27,10 +25,8 @@ class CreateSemesterfeesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('semesterfees');
     }

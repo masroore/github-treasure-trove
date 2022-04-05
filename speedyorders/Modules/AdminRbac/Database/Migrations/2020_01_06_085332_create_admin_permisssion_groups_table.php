@@ -8,12 +8,10 @@ class CreateAdminPermisssionGroupsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('admin_permission_groups', function (Blueprint $table) {
+        Schema::create('admin_permission_groups', function (Blueprint $table): void {
             $table->increments('id');
             $table->integer('group_id')->unsigned()->nullable()->default(null)->index();
             $table->integer('permission_reference_id')->unsigned()->nullable()->default(null)->index();
@@ -23,10 +21,8 @@ class CreateAdminPermisssionGroupsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('admin_permission_groups');
     }

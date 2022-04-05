@@ -11,15 +11,17 @@ class sendmail extends Notification
     use Queueable;
 
     public $subject;
+
     public $compose;
+
     public $studntgroup;
+
     public $from;
+
     public $fremail;
 
     /**
      * Create a new notification instance.
-     *
-     * @return void
      */
     public function __construct($from, $fremail, $subject, $compose, $studntgroup)
     {

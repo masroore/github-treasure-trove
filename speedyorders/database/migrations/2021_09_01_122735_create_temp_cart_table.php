@@ -8,12 +8,10 @@ class CreateTempCartTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('temp_cart', function (Blueprint $table) {
+        Schema::create('temp_cart', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('php_session_id', 255)->default(null)->nullable();
             $table->integer('product_id')->default(null)->nullable();
@@ -25,10 +23,8 @@ class CreateTempCartTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('temp_cart');
     }

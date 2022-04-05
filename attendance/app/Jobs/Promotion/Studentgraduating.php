@@ -25,8 +25,6 @@ class Studentgraduating implements ShouldQueue
 
     /**
      * Create a new job instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -35,10 +33,8 @@ class Studentgraduating implements ShouldQueue
 
     /**
      * Execute the job.
-     *
-     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         $forms = ['Level 400', 'Level 300', 'Level 200', 'Level 100'];
 
@@ -163,18 +159,18 @@ class Studentgraduating implements ShouldQueue
                             Studentinfo::findorfail($id)->update($data);
 
                             $new = [
-                           'user_id' => $userid,
-                           'programme' => $progrm,
-                           'session' => $session,
-                           'type' => $type,
-                           'academicyear' => $academic,
-                           'fullname' => $fullname,
-                           'gpa' => round($gpa->gpa, 2),
-                           'graduatingclas' => $class,
-                           'year' => date('Y'),
-                           'level' => $level,
-                           'indexnumber' => $indexnumber,
-                        ];
+                                'user_id' => $userid,
+                                'programme' => $progrm,
+                                'session' => $session,
+                                'type' => $type,
+                                'academicyear' => $academic,
+                                'fullname' => $fullname,
+                                'gpa' => round($gpa->gpa, 2),
+                                'graduatingclas' => $class,
+                                'year' => date('Y'),
+                                'level' => $level,
+                                'indexnumber' => $indexnumber,
+                            ];
 
                             $checkgradua = GraduatingList::where('indexnumber', $indexnumber)->first();
 
@@ -258,18 +254,18 @@ class Studentgraduating implements ShouldQueue
                                 Studentinfo::findorfail($id)->update($data);
 
                                 $new = [
-                           'user_id' => $userid,
-                           'programme' => $progrm,
-                           'session' => $session,
-                           'type' => $type,
-                           'academicyear' => $academic,
-                           'fullname' => $fullname,
-                           'gpa' => round($gpa->gpa, 2),
-                           'graduatingclas' => $class,
-                           'year' => date('Y'),
-                           'level' => $level,
-                           'indexnumber' => $indexnumber,
-                        ];
+                                    'user_id' => $userid,
+                                    'programme' => $progrm,
+                                    'session' => $session,
+                                    'type' => $type,
+                                    'academicyear' => $academic,
+                                    'fullname' => $fullname,
+                                    'gpa' => round($gpa->gpa, 2),
+                                    'graduatingclas' => $class,
+                                    'year' => date('Y'),
+                                    'level' => $level,
+                                    'indexnumber' => $indexnumber,
+                                ];
 
                                 $checkgradua = GraduatingList::where('indexnumber', $indexnumber)->first();
 
@@ -354,18 +350,18 @@ class Studentgraduating implements ShouldQueue
                                 Studentinfo::findorfail($id)->update($data);
 
                                 $new = [
-                           'user_id' => $userid,
-                           'programme' => $progrm,
-                           'session' => $session,
-                           'type' => $type,
-                           'academicyear' => $academic,
-                           'fullname' => $fullname,
-                           'gpa' => round($gpa->gpa, 2),
-                           'graduatingclas' => $class,
-                           'year' => date('Y'),
-                           'level' => $level,
-                           'indexnumber' => $indexnumber,
-                        ];
+                                    'user_id' => $userid,
+                                    'programme' => $progrm,
+                                    'session' => $session,
+                                    'type' => $type,
+                                    'academicyear' => $academic,
+                                    'fullname' => $fullname,
+                                    'gpa' => round($gpa->gpa, 2),
+                                    'graduatingclas' => $class,
+                                    'year' => date('Y'),
+                                    'level' => $level,
+                                    'indexnumber' => $indexnumber,
+                                ];
 
                                 $checkgradua = GraduatingList::where('indexnumber', $indexnumber)->first();
 
@@ -451,18 +447,18 @@ class Studentgraduating implements ShouldQueue
                                 Studentinfo::findorfail($id)->update($data);
 
                                 $new = [
-                           'user_id' => $userid,
-                           'programme' => $progrm,
-                           'session' => $session,
-                           'type' => $type,
-                           'academicyear' => $academic,
-                           'fullname' => $fullname,
-                           'gpa' => round($gpa->gpa, 2),
-                           'graduatingclas' => $class,
-                           'year' => date('Y'),
-                           'level' => $level,
-                           'indexnumber' => $indexnumber,
-                        ];
+                                    'user_id' => $userid,
+                                    'programme' => $progrm,
+                                    'session' => $session,
+                                    'type' => $type,
+                                    'academicyear' => $academic,
+                                    'fullname' => $fullname,
+                                    'gpa' => round($gpa->gpa, 2),
+                                    'graduatingclas' => $class,
+                                    'year' => date('Y'),
+                                    'level' => $level,
+                                    'indexnumber' => $indexnumber,
+                                ];
 
                                 $checkgradua = GraduatingList::where('indexnumber', $indexnumber)->first();
 

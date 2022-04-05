@@ -11,16 +11,16 @@ use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class ProductImageImport implements ToModel, WithHeadingRow, WithBatchInserts, WithChunkReading, ShouldQueue
+class ProductImageImport implements ShouldQueue, ToModel, WithBatchInserts, WithChunkReading, WithHeadingRow
 {
-    public function model(array $row)
+    public function model(array $row): void
     {
         try {
             ProductGallery::create([
-                'id'            =>  $row['product_image_id'],
-                'product_id'    =>  $row['product_id'],
-                'image'         =>  $row['image'],
-                'order'         =>  $row['sort_order'],
+                'id' => $row['product_image_id'],
+                'product_id' => $row['product_id'],
+                'image' => $row['image'],
+                'order' => $row['sort_order'],
             ]);
         } catch (Exception $e) {
             Log::info('Product Image File Import data:' . json_encode($row) . ' error:' . json_encode($e->getMessage()));

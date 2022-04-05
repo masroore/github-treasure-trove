@@ -21,8 +21,11 @@ class OrdersService
      * @var OrdersRepositoryInterface
      */
     protected $ordersRepository;
+
     protected $orderproductRepository;
+
     protected $orderpaymentsextradetailRepository;
+
     protected $orderhistoriesRepository;
 
     public function __construct(
@@ -44,63 +47,64 @@ class OrdersService
             $customer_id = Auth::id();
             $reference_no = $this->referenceNo($request->store_id);
             $order = $this->ordersRepository->create([
-            'reference_no'=>$reference_no,
-            'refrence_no_int'=>$request->refrence_no_int,
-            'customer_id'=>$customer_id,
-            'store_id'=>$request->store_id,
-            'status'=>$request->status,
-            'add_ons_amount'=>$request->add_ons_amount,
-            'sub_total'=>$request->sub_total,
-            'shipping_amount'=>$request->shipping_amount,
-            'promo_code_amount'=>$request->promo_code_amount,
-            'discount_amount'=>$request->discount_amount,
-            'service_charges_amount'=>$request->service_charges_amount,
-            'total_amount'=>$request->total_amount,
-            'payment_channel'=>$request->payment_channel,
-            'transaction_status'=>$request->transaction_status,
-            'service_option'=>$request->service_option,
-            'shipping_city'=>$request->shipping_city,
-            'shipping_country'=>$request->shipping_country,
-            'shipping_latitude'=>$request->shipping_latitude,
-            'shipping_longitude'=>$request->shipping_longitude,
-        ]);
+                'reference_no' => $reference_no,
+                'refrence_no_int' => $request->refrence_no_int,
+                'customer_id' => $customer_id,
+                'store_id' => $request->store_id,
+                'status' => $request->status,
+                'add_ons_amount' => $request->add_ons_amount,
+                'sub_total' => $request->sub_total,
+                'shipping_amount' => $request->shipping_amount,
+                'promo_code_amount' => $request->promo_code_amount,
+                'discount_amount' => $request->discount_amount,
+                'service_charges_amount' => $request->service_charges_amount,
+                'total_amount' => $request->total_amount,
+                'payment_channel' => $request->payment_channel,
+                'transaction_status' => $request->transaction_status,
+                'service_option' => $request->service_option,
+                'shipping_city' => $request->shipping_city,
+                'shipping_country' => $request->shipping_country,
+                'shipping_latitude' => $request->shipping_latitude,
+                'shipping_longitude' => $request->shipping_longitude,
+            ]);
             $order_id = $order->id;
             //            Order product
             foreach ($request->details as $detail) {
                 $products = $this->orderproductRepository->create([
-                'order_id'=>$order_id,
-                'product_id'=>$detail['product_id'],
-                'product_name'=>$detail['product_name'],
-                'qty'=>$detail['qty'],
-                'price'=>$detail['price'],
-                'discount_amount'=>$detail['discount_amount'],
-                'add_ons_detail'=>$detail['add_ons_detail'],
-                'add_ons_amount'=>$detail['add_ons_amount'],
-            ]);
+                    'order_id' => $order_id,
+                    'product_id' => $detail['product_id'],
+                    'product_name' => $detail['product_name'],
+                    'qty' => $detail['qty'],
+                    'price' => $detail['price'],
+                    'discount_amount' => $detail['discount_amount'],
+                    'add_ons_detail' => $detail['add_ons_detail'],
+                    'add_ons_amount' => $detail['add_ons_amount'],
+                ]);
             }
             $order_Extra = $this->orderpaymentsextradetailRepository->create([
-            'order_id'=>$order_id,
-            'customer_id'=>$customer_id,
-            'store_id'=>$request->store_id,
-            'description'=>$request->extra['description'] ?? '',
-            'payment_detail'=>$request->extra['payment_detail'] ?? '',
-        ]);
+                'order_id' => $order_id,
+                'customer_id' => $customer_id,
+                'store_id' => $request->store_id,
+                'description' => $request->extra['description'] ?? '',
+                'payment_detail' => $request->extra['payment_detail'] ?? '',
+            ]);
             //            Order History
             $order_history = $this->orderhistoriesRepository->create([
-            'action'=>$request->histories['action'],
-            'description'=>$request->histories['description'] ?? '',
-            'extras'=>$request->histories['extras'] ?? '',
-            'user_id'=>$customer_id,
-            'order_id'=>$order_id,
-        ]);
+                'action' => $request->histories['action'],
+                'description' => $request->histories['description'] ?? '',
+                'extras' => $request->histories['extras'] ?? '',
+                'user_id' => $customer_id,
+                'order_id' => $order_id,
+            ]);
 
             $main = Orders::where('id', $order_id)
-                      ->with('orderExtra', 'orderHistories', 'orderDetails')
-                      ->first();
+                ->with('orderExtra', 'orderHistories', 'orderDetails')
+                ->first();
 
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
+
             throw new InvalidArgumentException($e->getMessage());
         }
 
@@ -136,30 +140,30 @@ class OrdersService
             $customer_id = Auth::id();
             $order = $this->ordersRepository->updateByColumn(
                 [
-                'id'=>$id,
-                'store_id'=>$request->store_id,
-                'customer_id'=>$customer_id,
+                    'id' => $id,
+                    'store_id' => $request->store_id,
+                    'customer_id' => $customer_id,
                 ],
                 [
-            'refrence_no_int'=>$request->refrence_no_int,
-            'customer_id'=>$customer_id,
-            'store_id'=>$request->store_id,
-            'status'=>$request->status,
-            'add_ons_amount'=>$request->add_ons_amount,
-            'sub_total'=>$request->sub_total,
-            'shipping_amount'=>$request->shipping_amount,
-            'promo_code_amount'=>$request->promo_code_amount,
-            'discount_amount'=>$request->discount_amount,
-            'service_charges_amount'=>$request->service_charges_amount,
-            'total_amount'=>$request->total_amount,
-            'payment_channel'=>$request->payment_channel,
-            'transaction_status'=>$request->transaction_status,
-            'service_option'=>$request->service_option,
-            'shipping_city'=>$request->shipping_city,
-            'shipping_country'=>$request->shipping_country,
-            'shipping_latitude'=>$request->shipping_latitude,
-            'shipping_longitude'=>$request->shipping_longitude,
-        ]
+                    'refrence_no_int' => $request->refrence_no_int,
+                    'customer_id' => $customer_id,
+                    'store_id' => $request->store_id,
+                    'status' => $request->status,
+                    'add_ons_amount' => $request->add_ons_amount,
+                    'sub_total' => $request->sub_total,
+                    'shipping_amount' => $request->shipping_amount,
+                    'promo_code_amount' => $request->promo_code_amount,
+                    'discount_amount' => $request->discount_amount,
+                    'service_charges_amount' => $request->service_charges_amount,
+                    'total_amount' => $request->total_amount,
+                    'payment_channel' => $request->payment_channel,
+                    'transaction_status' => $request->transaction_status,
+                    'service_option' => $request->service_option,
+                    'shipping_city' => $request->shipping_city,
+                    'shipping_country' => $request->shipping_country,
+                    'shipping_latitude' => $request->shipping_latitude,
+                    'shipping_longitude' => $request->shipping_longitude,
+                ]
             );
             $order_id = $id;
             //            Order product
@@ -169,21 +173,21 @@ class OrdersService
                 }
                 $products = $this->orderproductRepository->updateGetModel(
                     [
-                    'id'=>$detail['id'],
-                    'order_id'=>$id,
-                    'product_id'=>$detail['product_id'],
+                        'id' => $detail['id'],
+                        'order_id' => $id,
+                        'product_id' => $detail['product_id'],
 
-                ],
+                    ],
                     [
-                'order_id'=>$order_id,
-                'product_id'=>$detail['product_id'],
-                'product_name'=>$detail['product_name'],
-                'qty'=>$detail['qty'],
-                'price'=>$detail['price'],
-                'discount_amount'=>$detail['discount_amount'],
-                'add_ons_detail'=>$detail['add_ons_detail'],
-                'add_ons_amount'=>$detail['add_ons_amount'],
-            ]
+                        'order_id' => $order_id,
+                        'product_id' => $detail['product_id'],
+                        'product_name' => $detail['product_name'],
+                        'qty' => $detail['qty'],
+                        'price' => $detail['price'],
+                        'discount_amount' => $detail['discount_amount'],
+                        'add_ons_detail' => $detail['add_ons_detail'],
+                        'add_ons_amount' => $detail['add_ons_amount'],
+                    ]
                 );
             }
             if (!isset($request->extra['id'])) {
@@ -191,26 +195,27 @@ class OrdersService
             }
             $order_Extra = $this->orderpaymentsextradetailRepository->updateGetModel(
                 [
-                'id'=>$request->extra['id'],
-                'order_id'=>$id,
-                'customer_id'=>$customer_id,
+                    'id' => $request->extra['id'],
+                    'order_id' => $id,
+                    'customer_id' => $customer_id,
                 ],
                 [
-            'order_id'=>$order_id,
-            'customer_id'=>$customer_id,
-            'store_id'=>$request->store_id,
-            'description'=>$request->extra['description'] ?? '',
-            'payment_detail'=>$request->extra['payment_detail'] ?? '',
-        ]
+                    'order_id' => $order_id,
+                    'customer_id' => $customer_id,
+                    'store_id' => $request->store_id,
+                    'description' => $request->extra['description'] ?? '',
+                    'payment_detail' => $request->extra['payment_detail'] ?? '',
+                ]
             );
 
             $main = Orders::where('id', $order_id)
-            ->with('orderExtra', 'orderHistories', 'orderDetails')
-            ->first();
+                ->with('orderExtra', 'orderHistories', 'orderDetails')
+                ->first();
 
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
+
             throw new InvalidArgumentException($e->getMessage());
         }
 
@@ -245,7 +250,7 @@ class OrdersService
     {
         try {
             $orders = $this->ordersRepository->findAllByColumn(
-                ['customer_id'=>Auth::id()],
+                ['customer_id' => Auth::id()],
                 ['*'],
                 ['orderExtra', 'orderHistories', 'orderDetails']
             );
@@ -260,7 +265,7 @@ class OrdersService
     {
         try {
             $orders = $this->ordersRepository->findAllByColumn(
-                ['store_id'=>$request->store_id],
+                ['store_id' => $request->store_id],
                 ['*'],
                 ['orderExtra', 'orderHistories', 'orderDetails']
             );
@@ -289,35 +294,37 @@ class OrdersService
                     foreach ($request->history as $history) {
                         $orderhistory = $this->orderhistoriesRepository->create(
                             [
-                                'action'=>$history['action'],
-                                'description'=>$history['description'],
-                                'user_id '=>$history['user_id'],
-                                'order_id'=>$history['order_id'],
-                                'extras'=>$history['extras'],
+                                'action' => $history['action'],
+                                'description' => $history['description'],
+                                'user_id ' => $history['user_id'],
+                                'order_id' => $history['order_id'],
+                                'extras' => $history['extras'],
                             ]
                         );
                     }
                 }
+
                 break;
                 case 'visitor':
                      if (1 == !$order->is_confirmed) {
                          $order_status = $this->ordersRepository->update(
                              $request->order_id,
-                             ['status'=>$request->status]
+                             ['status' => $request->status]
                          );
 
                          foreach ($request->history as $history) {
                              $orderhistory = $this->orderhistoriesRepository->create(
                                  [
-                                 'action'=>$history['action'],
-                                 'description'=>$history['description'],
-                                 'user_id '=>$history['user_id'],
-                                 'order_id'=>$history['order_id'],
-                                 'extras'=>$history['extras'],
-                             ]
+                                     'action' => $history['action'],
+                                     'description' => $history['description'],
+                                     'user_id ' => $history['user_id'],
+                                     'order_id' => $history['order_id'],
+                                     'extras' => $history['extras'],
+                                 ]
                              );
                          }
                      }
+
                 break;
                 default:
                     throw new InvalidArgumentException('Something Went Wrong');

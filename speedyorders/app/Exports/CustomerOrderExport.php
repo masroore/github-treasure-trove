@@ -33,19 +33,19 @@ class CustomerOrderExport implements FromView, ShouldAutoSize
         return view(
             'adminreport::order-report',
             ['orderProducts' => OrderProduct::when(isset($newData['startDate']) && isset($newData['endDate']), function ($query) use ($newData) {
-            return $query->where('created_at', '>=', $newData['startDate'])->where('created_at', '<=', $newData['endDate']);
-        })
-            ->when(isset($newData['customer_id']), function ($query) use ($orderProductsId) {
-            return $query->where('order_id', $orderProductsId);
-        })
-            ->when(isset($data['invoice_number']), function ($query) use ($orderProductsId) {
-            return $query->where('order_id', $orderProductsId);
-        })
-            ->when(isset($newData['status']), function ($query) use ($newData) {
-            return $query->where('status', $newData['status']);
-        })
-            ->get(),
-        ]
+                return $query->where('created_at', '>=', $newData['startDate'])->where('created_at', '<=', $newData['endDate']);
+            })
+                ->when(isset($newData['customer_id']), function ($query) use ($orderProductsId) {
+                return $query->where('order_id', $orderProductsId);
+            })
+                ->when(isset($data['invoice_number']), function ($query) use ($orderProductsId) {
+                return $query->where('order_id', $orderProductsId);
+            })
+                ->when(isset($newData['status']), function ($query) use ($newData) {
+                return $query->where('status', $newData['status']);
+            })
+                ->get(),
+            ]
         );
     }
 }

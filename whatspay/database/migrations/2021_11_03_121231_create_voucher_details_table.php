@@ -8,12 +8,10 @@ class CreateVoucherDetailsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('voucher_details', function (Blueprint $table) {
+        Schema::create('voucher_details', function (Blueprint $table): void {
             $table->id();
             $table->morphs('voucherable');
             $table->foreignId('voucher_id')
@@ -30,10 +28,8 @@ class CreateVoucherDetailsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('voucher_details');
     }

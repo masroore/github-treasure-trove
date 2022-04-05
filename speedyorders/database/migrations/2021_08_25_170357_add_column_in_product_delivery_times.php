@@ -8,12 +8,10 @@ class AddColumnInProductDeliveryTimes extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('product_deliverytime', function (Blueprint $table) {
+        Schema::table('product_deliverytime', function (Blueprint $table): void {
             if (!Schema::hasColumn('product_deliverytime', 'shipping_zone_groups_id')) {
                 $table->integer('shipping_zone_groups_id')->default(null)->nullable()->after('shipping_delivery_times_id');
             }
@@ -25,13 +23,10 @@ class AddColumnInProductDeliveryTimes extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('product_deliverytime', function (Blueprint $table) {
-
+        Schema::table('product_deliverytime', function (Blueprint $table): void {
         });
     }
 }

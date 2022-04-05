@@ -98,7 +98,7 @@ class AttributeService
         try {
             // update data
             $attributes = $this->attributeRepository->findAllByColumn(
-                ['attribute_set_id'=>$id]
+                ['attribute_set_id' => $id]
             );
         } catch (Exception $e) {
             throw new InvalidArgumentException($e->getMessage());

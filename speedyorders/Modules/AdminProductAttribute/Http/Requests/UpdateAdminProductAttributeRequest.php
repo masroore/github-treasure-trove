@@ -14,12 +14,12 @@ class UpdateAdminProductAttributeRequest extends FormRequest
     public function rules()
     {
         return [
-            'attribute_label'=> 'required|string|max:255',
-            'input_type'=> 'required',
-            'is_required'=> 'required',
-            'attribute_code'=> 'required|string|max:255',
-            'include_in_filter'=>'required',
-            'attribute_value.name.*'=>'required|string|max:255',
+            'attribute_label' => 'required|string|max:255',
+            'input_type' => 'required',
+            'is_required' => 'required',
+            'attribute_code' => 'required|string|max:255',
+            'include_in_filter' => 'required',
+            'attribute_value.name.*' => 'required|string|max:255',
         ];
     }
 

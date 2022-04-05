@@ -18,7 +18,7 @@ class MassDestroyStudentProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            'ids'   => 'required|array',
+            'ids' => 'required|array',
             'ids.*' => 'exists:student_profiles,id',
         ];
     }

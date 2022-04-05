@@ -6,13 +6,11 @@ class Releasepollsresultsseeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         $releaseresults = new \App\Pollsrelease([
-            'status'=> '0',
+            'status' => '0',
         ]);
 
         $releaseresults->save();

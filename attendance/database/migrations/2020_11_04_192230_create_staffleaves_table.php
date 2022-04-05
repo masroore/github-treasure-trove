@@ -8,12 +8,10 @@ class CreateStaffleavesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('staffleaves', function (Blueprint $table) {
+        Schema::create('staffleaves', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('user_id')->nullable();
             $table->string('staffid')->nullable();
@@ -31,10 +29,8 @@ class CreateStaffleavesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('staffleaves');
     }

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Attribute extends Model
 {
     use HasFactory;
+
     protected $table = 'product_attributes';
 
     protected $fillable = [

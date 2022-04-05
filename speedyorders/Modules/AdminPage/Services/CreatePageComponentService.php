@@ -3,6 +3,7 @@
 namespace Modules\AdminPage\Services;
 
 use App\Models\PageComponent;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class CreatePageComponentService
@@ -15,7 +16,7 @@ class CreatePageComponentService
             DB::commit();
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollback();
             dd($e);
 

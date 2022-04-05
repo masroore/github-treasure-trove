@@ -8,12 +8,10 @@ class CreateCustomerUsersTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('customer_users', function (Blueprint $table) {
+        Schema::create('customer_users', function (Blueprint $table): void {
             $table->unsignedBigInteger('id')->autoIncrement();
             $table->string('username')->default(null)->nullable();
             $table->string('first_name')->default(null)->nullable();
@@ -31,10 +29,8 @@ class CreateCustomerUsersTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('customer_users');
     }

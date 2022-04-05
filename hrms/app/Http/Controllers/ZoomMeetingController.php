@@ -7,6 +7,8 @@ use App\Models\ZoomMeeting;
 use App\Traits\ZoomMeetingTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Log;
+use Validator;
 
 class ZoomMeetingController extends Controller
 {
@@ -43,8 +45,8 @@ class ZoomMeetingController extends Controller
         $data['participant_video'] = 0;
         $meeting_create = $this->createmitting($data);
 
-        \Log::info('Meeting');
-        \Log::info((array) $meeting_create);
+        Log::info('Meeting');
+        Log::info((array) $meeting_create);
         if (isset($meeting_create['success']) && true == $meeting_create['success']) {
             $meeting_id = $meeting_create['data']['id'] ?? 0;
             $start_url = $meeting_create['data']['start_url'] ?? '';
@@ -52,7 +54,7 @@ class ZoomMeetingController extends Controller
             $status = $meeting_create['data']['status'] ?? '';
 
             $created_by = Auth::user()->creatorId();
-            $validator = \Validator::make(
+            $validator = Validator::make(
                 $request->all(),
                 [
                     'title' => 'required',
@@ -113,7 +115,7 @@ class ZoomMeetingController extends Controller
     public function update(Request $request, ZoomMeeting $ZoomMeeting)
     {
         $created_by = Auth::user()->creatorId();
-        $validator = \Validator::make(
+        $validator = Validator::make(
             $request->all(),
             [
                 'title' => 'required',
@@ -150,7 +152,7 @@ class ZoomMeetingController extends Controller
         return redirect()->back()->with('success', __('Zoom Meeting Delete Succsefully'));
     }
 
-    public function statusUpdate()
+    public function statusUpdate(): void
     {
         $meetings = ZoomMeeting::where('created_by', \Auth::user()->id)->pluck('meeting_id');
         foreach ($meetings as $meetings) {

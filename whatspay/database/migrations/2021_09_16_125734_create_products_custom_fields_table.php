@@ -8,12 +8,10 @@ class CreateProductsCustomFieldsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('products_custom_fields', function (Blueprint $table) {
+        Schema::create('products_custom_fields', function (Blueprint $table): void {
             $table->id();
             $table->bigInteger('product_id')->unsigned()->index('cf_product_id_index');
             $table->string('label', 100)->nullable();
@@ -30,13 +28,11 @@ class CreateProductsCustomFieldsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('products_custom_fields');
-        Schema::table('products_custom_fields', function (Blueprint $table) {
+        Schema::table('products_custom_fields', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
     }

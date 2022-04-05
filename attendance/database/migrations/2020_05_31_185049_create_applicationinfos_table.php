@@ -8,12 +8,10 @@ class CreateApplicationinfosTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('applicationinfos', function (Blueprint $table) {
+        Schema::create('applicationinfos', function (Blueprint $table): void {
             $table->increments('id');
             $table->integer('osncode_id')->nullable();
             $table->string('entrylevel')->nullable();
@@ -31,10 +29,8 @@ class CreateApplicationinfosTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('applicationinfos');
     }

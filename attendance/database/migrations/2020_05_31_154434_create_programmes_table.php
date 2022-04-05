@@ -8,12 +8,10 @@ class CreateProgrammesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('programmes', function (Blueprint $table) {
+        Schema::create('programmes', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('name');
             $table->string('code')->unique();
@@ -26,10 +24,8 @@ class CreateProgrammesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('programmes');
     }

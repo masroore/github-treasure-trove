@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateAmenityPropertyPivotTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::create('amenity_property', function (Blueprint $table) {
+        Schema::create('amenity_property', function (Blueprint $table): void {
             $table->unsignedBigInteger('property_id');
             $table->foreign('property_id', 'property_id_fk_4565220')->references('id')->on('properties')->onDelete('cascade');
             $table->unsignedBigInteger('amenity_id');

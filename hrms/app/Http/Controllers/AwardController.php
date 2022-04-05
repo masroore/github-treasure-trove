@@ -7,9 +7,11 @@ use App\Models\Award;
 use App\Models\AwardType;
 use App\Models\Employee;
 use App\Models\Utility;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Validator;
 
 class AwardController extends Controller
 {
@@ -48,14 +50,14 @@ class AwardController extends Controller
     public function store(Request $request)
     {
         if (\Auth::user()->can('Create Award')) {
-            $validator = \Validator::make(
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'employee_id' => 'required',
-                                   'award_type' => 'required',
-                                   'date' => 'required',
-                                   'gift' => 'required',
-                               ]
+                    'employee_id' => 'required',
+                    'award_type' => 'required',
+                    'date' => 'required',
+                    'gift' => 'required',
+                ]
             );
 
             if ($validator->fails()) {
@@ -105,9 +107,10 @@ class AwardController extends Controller
                 $employee = Employee::find($award->employee_id);
                 $award->name = $employee->name;
                 $award->email = $employee->email;
+
                 try {
                     Mail::to($award->email)->send(new AwardSend($award));
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     $smtp_error = __('E-Mail has been not sent due to SMTP configuration');
                 }
 
@@ -145,14 +148,14 @@ class AwardController extends Controller
     {
         if (\Auth::user()->can('Edit Award')) {
             if ($award->created_by == \Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+                $validator = Validator::make(
                     $request->all(),
                     [
-                                       'employee_id' => 'required',
-                                       'award_type' => 'required',
-                                       'date' => 'required',
-                                       'gift' => 'required',
-                                   ]
+                        'employee_id' => 'required',
+                        'award_type' => 'required',
+                        'date' => 'required',
+                        'gift' => 'required',
+                    ]
                 );
 
                 if ($validator->fails()) {

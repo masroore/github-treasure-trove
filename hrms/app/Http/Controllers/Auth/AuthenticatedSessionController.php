@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
@@ -71,7 +72,7 @@ class AuthenticatedSessionController extends Controller
         if ('' == $lang) {
             $lang = \App\Models\Utility::getValByName('default_language');
         }
-        \App::setLocale($lang);
+        App::setLocale($lang);
 
         return view('auth.login', compact('lang'));
     }
@@ -81,7 +82,7 @@ class AuthenticatedSessionController extends Controller
         if ('' == $lang) {
             $lang = \App\Models\Utility::getValByName('default_language');
         }
-        \App::setLocale($lang);
+        App::setLocale($lang);
 
         return view('auth.forgot-password', compact('lang'));
     }

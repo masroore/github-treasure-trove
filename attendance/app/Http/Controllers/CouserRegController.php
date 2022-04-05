@@ -35,7 +35,7 @@ class CouserRegController extends Controller
         //dd($cademicyear);
 
         //dd($creg);
-        return view('CourseRegistration.reg_course_student', ['course'=> $creg, 'academicyear' => $academicyear, 'semester'=>$academicsem, 'studentinfo'=>$studentinfo]);
+        return view('CourseRegistration.reg_course_student', ['course' => $creg, 'academicyear' => $academicyear, 'semester' => $academicsem, 'studentinfo' => $studentinfo]);
     }
 
     public function register_course_user_now($prog, $code, $currentlevel, $semester, $academicyear)
@@ -143,16 +143,16 @@ class CouserRegController extends Controller
             $credithours = $courses->credithours;
 
             $data = [
-   'user_id'=> $userid,
-   'indexnumber' => $indexnumber,
-   'cource_code'=> $code,
-   'level'=>$currentlevel,
-   'cource_title'=> $codetittle,
-   'credithours'=> $credithours,
-   'semester'=> $semester,
-   'session' => $stuinfo->session,
-   'academic_year'=> $academicyear,
- ];
+                'user_id' => $userid,
+                'indexnumber' => $indexnumber,
+                'cource_code' => $code,
+                'level' => $currentlevel,
+                'cource_title' => $codetittle,
+                'credithours' => $credithours,
+                'semester' => $semester,
+                'session' => $stuinfo->session,
+                'academic_year' => $academicyear,
+            ];
 
             $cousereg = new Coureregistration($data);
             $cousereg->save();
@@ -161,10 +161,10 @@ class CouserRegController extends Controller
         //add semester record into the database
 
         $regdata = [
-  'user_id'=> $userid,
-  'semester'=> $semester,
-  'academicyear'=> $academicyear,
-];
+            'user_id' => $userid,
+            'semester' => $semester,
+            'academicyear' => $academicyear,
+        ];
 
         $userreg = new Regacademicyear($regdata);
         $userreg->save();
@@ -181,7 +181,7 @@ class CouserRegController extends Controller
 
         $studentinfo = Studentinfo::where('user_id', auth()->user()->id)->first();
         //dd($cousereg);
-        return view('CourseRegistration.prin_courses_reg', ['courses'=>$cousereg, 'academicyear' => $academicyear, 'semester'=>$semester, 'studentinfo'=>$studentinfo]);
+        return view('CourseRegistration.prin_courses_reg', ['courses' => $cousereg, 'academicyear' => $academicyear, 'semester' => $semester, 'studentinfo' => $studentinfo]);
     }
 
     public function results_display()
@@ -206,6 +206,6 @@ class CouserRegController extends Controller
         //check if student results has been released
         $checkresult = Resultsrelease::first();
 
-        return view('CourseRegistration.results_display', ['course'=> $creg, 'studentinfo'=>$studentinfo, 'regsem'=>$regsem, 'examsresults'=> $exresults, 'check' => $checkresult]);
+        return view('CourseRegistration.results_display', ['course' => $creg, 'studentinfo' => $studentinfo, 'regsem' => $regsem, 'examsresults' => $exresults, 'check' => $checkresult]);
     }
 }

@@ -2,9 +2,12 @@
 
 namespace App\Http\Middleware;
 
+use App;
 use App\Models\LandingPageSection;
 use App\Models\Utility;
+use Auth;
 use Closure;
+use DB;
 use Illuminate\Support\Facades\Schema;
 
 class XSS
@@ -18,14 +21,14 @@ class XSS
      */
     public function handle($request, Closure $next)
     {
-        if (\Auth::check()) {
-            \App::setLocale(\Auth::user()->lang);
+        if (Auth::check()) {
+            App::setLocale(Auth::user()->lang);
 
-            if ('company' == \Auth::user()->type) {
+            if ('company' == Auth::user()->type) {
                 if (Schema::hasTable('ch_messages')) {
                     if (false == Schema::hasColumn('ch_messages', 'type')) {
                         Schema::drop('messages');
-                        \DB::table('migrations')->where('migration', 'like', '%ch_messages%')->delete();
+                        DB::table('migrations')->where('migration', 'like', '%ch_messages%')->delete();
                     }
                 }
 

@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateOurPartnersTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::create('our_partners', function (Blueprint $table) {
+        Schema::create('our_partners', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->timestamps();
             $table->softDeletes();

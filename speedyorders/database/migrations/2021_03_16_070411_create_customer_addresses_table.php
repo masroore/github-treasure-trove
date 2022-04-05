@@ -8,12 +8,10 @@ class CreateCustomerAddressesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('customer_addresses', function (Blueprint $table) {
+        Schema::create('customer_addresses', function (Blueprint $table): void {
             $table->unsignedBigInteger('id')->autoIncrement();
             $table->unsignedBigInteger('customer_id')->default(null)->nullable();
             $table->string('c_first_name')->default(null)->nullable();
@@ -31,10 +29,8 @@ class CreateCustomerAddressesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('customer_addresses');
     }

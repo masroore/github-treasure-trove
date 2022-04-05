@@ -11,7 +11,7 @@
 |
 */
 
-Route::group(['prefix' => 'admin/reports/tax', 'middleware' => 'auth:admin', 'as'=>'admin.reports.tax.'], function () {
+Route::group(['prefix' => 'admin/reports/tax', 'middleware' => 'auth:admin', 'as' => 'admin.reports.tax.'], function (): void {
     Route::get('/', 'AdminStateTaxController@index')->name('index');
     Route::get('/create', 'AdminStateTaxController@create')->name('create');
     Route::post('/store', 'AdminStateTaxController@store')->name('store');

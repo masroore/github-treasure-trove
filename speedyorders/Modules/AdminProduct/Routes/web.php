@@ -11,7 +11,7 @@
 |
 */
 
-Route::group(['prefix' => 'admin/products', 'middleware' => 'auth:admin', 'as'=>'admin.products.'], function () {
+Route::group(['prefix' => 'admin/products', 'middleware' => 'auth:admin', 'as' => 'admin.products.'], function (): void {
 
     // import products
     Route::get('/import', 'AdminProductController@import')->name('import')->middleware('can:create-product');

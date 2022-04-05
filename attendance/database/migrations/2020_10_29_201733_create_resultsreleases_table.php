@@ -8,12 +8,10 @@ class CreateResultsreleasesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('resultsreleases', function (Blueprint $table) {
+        Schema::create('resultsreleases', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('status')->default('0');
             $table->timestamps();
@@ -22,10 +20,8 @@ class CreateResultsreleasesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('resultsreleases');
     }

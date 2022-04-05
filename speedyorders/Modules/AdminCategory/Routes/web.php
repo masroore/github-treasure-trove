@@ -11,7 +11,7 @@
 |
 */
 
-Route::group(['prefix' => 'admin/categories', 'middleware' => 'auth:admin', 'as'=>'admin.categories.'], function () {
+Route::group(['prefix' => 'admin/categories', 'middleware' => 'auth:admin', 'as' => 'admin.categories.'], function (): void {
 
     // import categories
     Route::get('/import', 'AdminCategoryController@import')->name('import')->middleware('can:create-product');

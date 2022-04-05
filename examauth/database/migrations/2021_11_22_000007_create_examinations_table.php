@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateExaminationsTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::create('examinations', function (Blueprint $table) {
+        Schema::create('examinations', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('course_id');
             $table->string('status');

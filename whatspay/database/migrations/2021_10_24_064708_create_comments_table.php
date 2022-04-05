@@ -8,12 +8,10 @@ class CreateCommentsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('comments', function (Blueprint $table) {
+        Schema::create('comments', function (Blueprint $table): void {
             $table->id();
             $table->morphs('commentable');
             $table->text('body');
@@ -30,10 +28,8 @@ class CreateCommentsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('comments');
     }

@@ -45,7 +45,7 @@ class User extends Base
      *
      * @return array
      */
-    protected function _buildHeaders($url, ?array $parameters = null, $method)
+    protected function _buildHeaders($url, ?array $parameters, $method)
     {
         $oauthHeaders = [
             'oauth_version' => '1.0',
@@ -84,7 +84,7 @@ class User extends Base
         ksort($params);
         $sortedParams = [];
 
-        foreach ($params as $key=>$value) {
+        foreach ($params as $key => $value) {
             $sortedParams[] = $key . '=' . $value;
         }
 

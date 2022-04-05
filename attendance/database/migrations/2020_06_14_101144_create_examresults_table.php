@@ -8,12 +8,10 @@ class CreateExamresultsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('examresults', function (Blueprint $table) {
+        Schema::create('examresults', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('user_id');
             $table->string('semester');
@@ -27,10 +25,8 @@ class CreateExamresultsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('examresults');
     }

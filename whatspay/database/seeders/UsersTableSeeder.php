@@ -9,10 +9,8 @@ class UsersTableSeeder extends Seeder
 {
     /**
      * Auto generated seed file.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         User::factory()->count(10)->create();
     }

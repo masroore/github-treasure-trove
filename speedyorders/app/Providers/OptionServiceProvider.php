@@ -8,20 +8,15 @@ class OptionServiceProvider extends ServiceProvider
 {
     /**
      * Register Services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
-
     }
 
     /**
      * Bootstrap Services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         require_once app_path('Utils/Option.php');
     }

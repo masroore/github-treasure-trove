@@ -10,6 +10,7 @@ class VoucherAssignees extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
     protected $fillable = [
         'store_id',
         'voucher_id',

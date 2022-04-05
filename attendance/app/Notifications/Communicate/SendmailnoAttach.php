@@ -9,13 +9,13 @@ use Illuminate\Notifications\Notification;
 class SendmailnoAttach extends Notification
 {
     use Queueable;
+
     public $compose;
+
     public $html;
 
     /**
      * Create a new notification instance.
-     *
-     * @return void
      */
     public function __construct($compose, $html)
     {

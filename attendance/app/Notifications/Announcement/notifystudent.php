@@ -11,15 +11,17 @@ class notifystudent extends Notification
     use Queueable;
 
     public $students;
+
     public $title;
+
     public $message;
+
     public $from;
+
     public $fullname;
 
     /**
      * Create a new notification instance.
-     *
-     * @return void
      */
     public function __construct($students, $title, $message, $from, $fullname)
     {

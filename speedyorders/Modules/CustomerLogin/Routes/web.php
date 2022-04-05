@@ -11,6 +11,6 @@
 |
 */
 
-Route::prefix('customerlogin')->group(function () {
+Route::prefix('customerlogin')->group(function (): void {
     Route::get('/', 'CustomerLoginController@index');
 });

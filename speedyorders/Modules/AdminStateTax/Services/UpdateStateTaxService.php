@@ -3,6 +3,7 @@
 namespace Modules\AdminStateTax\Services;
 
 use App\Models\StateTaxManager;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class UpdateStateTaxService
@@ -18,7 +19,7 @@ class UpdateStateTaxService
             DB::commit();
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollback();
 
             return false;

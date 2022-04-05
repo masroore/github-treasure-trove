@@ -8,12 +8,10 @@ class CreateCoursesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('courses', function (Blueprint $table) {
+        Schema::create('courses', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('title');
             $table->string('code');
@@ -26,10 +24,8 @@ class CreateCoursesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('courses');
     }

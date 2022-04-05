@@ -14,7 +14,7 @@ return [
     'top_category' => 'Top category',
     'choose_parent_category' => 'Choose parent category',
     'url_slug' => 'SEO url',
-    'enter_url_slug'=>'Enter custom SEO url or leave it for auto-generation',
+    'enter_url_slug' => 'Enter custom SEO url or leave it for auto-generation',
     'parent_category' => 'Parent category',
 
 ];

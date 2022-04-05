@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateAboutusesTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::create('aboutuses', function (Blueprint $table) {
+        Schema::create('aboutuses', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->longText('description');
             $table->timestamps();

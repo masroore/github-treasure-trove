@@ -252,9 +252,9 @@ class PaypalController extends Controller
                 )
             )->setCancelUrl(
                 route(
-                        'customer.get.payment.status',
-                        $invoice->id
-                    )
+                    'customer.get.payment.status',
+                    $invoice->id
+                )
             );
 
             $payment = new Payment();

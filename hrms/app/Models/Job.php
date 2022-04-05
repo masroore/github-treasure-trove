@@ -10,6 +10,7 @@ class Job extends Model
         'active' => 'Active',
         'in_active' => 'In Active',
     ];
+
     protected $fillable = [
         'title',
         'description',

@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateAmenitiesTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::create('amenities', function (Blueprint $table) {
+        Schema::create('amenities', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('name')->unique();
             $table->timestamps();

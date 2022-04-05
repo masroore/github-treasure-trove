@@ -71,7 +71,7 @@ class User extends Authenticatable implements HasMedia
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        self::created(function (self $user) {
+        self::created(function (self $user): void {
             if (auth()->check()) {
                 $user->verified = 1;
                 $user->verified_at = Carbon::now()->format(config('panel.date_format') . ' ' . config('panel.time_format'));
@@ -126,19 +126,19 @@ class User extends Authenticatable implements HasMedia
         return $value ? Carbon::createFromFormat('Y-m-d H:i:s', $value)->format(config('panel.date_format') . ' ' . config('panel.time_format')) : null;
     }
 
-    public function setEmailVerifiedAtAttribute($value)
+    public function setEmailVerifiedAtAttribute($value): void
     {
         $this->attributes['email_verified_at'] = $value ? Carbon::createFromFormat(config('panel.date_format') . ' ' . config('panel.time_format'), $value)->format('Y-m-d H:i:s') : null;
     }
 
-    public function setPasswordAttribute($input)
+    public function setPasswordAttribute($input): void
     {
         if ($input) {
             $this->attributes['password'] = app('hash')->needsRehash($input) ? Hash::make($input) : $input;
         }
     }
 
-    public function sendPasswordResetNotification($token)
+    public function sendPasswordResetNotification($token): void
     {
         $this->notify(new ResetPassword($token));
     }
@@ -148,7 +148,7 @@ class User extends Authenticatable implements HasMedia
         return $value ? Carbon::createFromFormat('Y-m-d H:i:s', $value)->format(config('panel.date_format') . ' ' . config('panel.time_format')) : null;
     }
 
-    public function setVerifiedAtAttribute($value)
+    public function setVerifiedAtAttribute($value): void
     {
         $this->attributes['verified_at'] = $value ? Carbon::createFromFormat(config('panel.date_format') . ' ' . config('panel.time_format'), $value)->format('Y-m-d H:i:s') : null;
     }

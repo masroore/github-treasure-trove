@@ -144,7 +144,7 @@ class CategoryMenu extends Model
      * @private
      * Resolve the needed group of categories
      */
-    private function resolveGroup()
+    private function resolveGroup(): void
     {
         if ('top' == $this->group) {
             $this->categories = DB::table('categories')->where('status', 1)->orderBy('sort_order')->get()->groupBy('parent_id');
@@ -155,7 +155,7 @@ class CategoryMenu extends Model
      * @private
      * Resolve the needed group of categories
      */
-    private function resolveAdminGroup()
+    private function resolveAdminGroup(): void
     {
         if ('top' == $this->group) {
             $this->categories = DB::table('categories')->orderBy('sort_order')->get()->groupBy('parent_id');

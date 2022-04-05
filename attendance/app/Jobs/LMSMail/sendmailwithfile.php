@@ -19,16 +19,19 @@ class sendmailwithfile implements ShouldQueue
     use SerializesModels;
 
     public $subject;
+
     public $compose;
+
     public $studntgroup;
+
     public $fullpath;
+
     public $from;
+
     public $fremail;
 
     /**
      * Create a new job instance.
-     *
-     * @return void
      */
     public function __construct($from, $fremail, $subject, $compose, $studntgroup, $fullpath)
     {
@@ -42,10 +45,8 @@ class sendmailwithfile implements ShouldQueue
 
     /**
      * Execute the job.
-     *
-     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         foreach ($this->studntgroup as $row => $value) {
             $index = $row->indexnumber;

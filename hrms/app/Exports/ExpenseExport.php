@@ -15,13 +15,13 @@ class ExpenseExport implements FromCollection, WithHeadings
     public function collection()
     {
         $data = Expense::all();
-        foreach ($data as $k=>$expense) {
+        foreach ($data as $k => $expense) {
             $data[$k]['account_id'] = !empty($expense->account($expense->account_id)) ? $expense->account($expense->account_id)->account_name : '';
             $data[$k]['expense_category_id'] = !empty($expense->expense_category($expense->expense_category_id)) ? $expense->expense_category($expense->expense_category_id)->name : '';
             $data[$k]['payee_id'] = Expense::payee($expense->payee_id)->payee_name;
             $data[$k]['payment_type_id'] = !empty($expense->payment_type($expense->payment_type_id)) ? $expense->payment_type($expense->payment_type_id)->name : '';
             $data[$k]['created_by'] = Employee::login_user($expense->created_by);
-            unset($expense->created_at,$expense->updated_at);
+            $expense->created_at = null; $expense->updated_at = null;
         }
 
         return $data;

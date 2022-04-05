@@ -5,14 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Branch;
 use App\Models\CompanyPolicy;
 use App\Models\Utility;
+use Auth;
 use Illuminate\Http\Request;
+use Validator;
 
 class CompanyPolicyController extends Controller
 {
     public function index()
     {
-        if (\Auth::user()->can('Manage Company Policy')) {
-            $companyPolicy = CompanyPolicy::where('created_by', '=', \Auth::user()->creatorId())->get();
+        if (Auth::user()->can('Manage Company Policy')) {
+            $companyPolicy = CompanyPolicy::where('created_by', '=', Auth::user()->creatorId())->get();
 
             return view('companyPolicy.index', compact('companyPolicy'));
         }
@@ -22,8 +24,8 @@ class CompanyPolicyController extends Controller
 
     public function create()
     {
-        if (\Auth::user()->can('Create Company Policy')) {
-            $branch = Branch::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        if (Auth::user()->can('Create Company Policy')) {
+            $branch = Branch::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
             $branch->prepend('Select Branch', '');
 
             return view('companyPolicy.create', compact('branch'));
@@ -34,8 +36,8 @@ class CompanyPolicyController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('Create Company Policy')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Create Company Policy')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
                     'branch' => 'required',
@@ -67,11 +69,11 @@ class CompanyPolicyController extends Controller
             $policy->title = $request->title;
             $policy->description = $request->description;
             $policy->attachment = !empty($request->attachment) ? $fileNameToStore : '';
-            $policy->created_by = \Auth::user()->creatorId();
+            $policy->created_by = Auth::user()->creatorId();
             $policy->save();
 
             // slack
-            $setting = Utility::settings(\Auth::user()->creatorId());
+            $setting = Utility::settings(Auth::user()->creatorId());
             $branch = Branch::find($request->branch);
             if (isset($setting['company_policy_notification']) && 1 == $setting['company_policy_notification']) {
                 $msg = $request->title . ' ' . __('for') . ' ' . $branch->name . ' ' . __('created') . '.';
@@ -79,7 +81,7 @@ class CompanyPolicyController extends Controller
             }
 
             // telegram
-            $setting = Utility::settings(\Auth::user()->creatorId());
+            $setting = Utility::settings(Auth::user()->creatorId());
             $branch = Branch::find($request->branch);
             if (isset($setting['telegram_company_policy_notification']) && 1 == $setting['telegram_company_policy_notification']) {
                 $msg = $request->title . ' ' . __('for') . ' ' . $branch->name . ' ' . __('created') . '.';
@@ -92,15 +94,14 @@ class CompanyPolicyController extends Controller
         return redirect()->back()->with('error', __('Permission denied.'));
     }
 
-    public function show(CompanyPolicy $companyPolicy)
+    public function show(CompanyPolicy $companyPolicy): void
     {
-
     }
 
     public function edit(CompanyPolicy $companyPolicy)
     {
-        if (\Auth::user()->can('Edit Company Policy')) {
-            $branch = Branch::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        if (Auth::user()->can('Edit Company Policy')) {
+            $branch = Branch::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
             $branch->prepend('Select Branch', '');
 
             return view('companyPolicy.edit', compact('branch', 'companyPolicy'));
@@ -111,8 +112,8 @@ class CompanyPolicyController extends Controller
 
     public function update(Request $request, CompanyPolicy $companyPolicy)
     {
-        if (\Auth::user()->can('Create Company Policy')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Create Company Policy')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
                     'branch' => 'required',
@@ -145,7 +146,7 @@ class CompanyPolicyController extends Controller
             if (isset($request->attachment)) {
                 $companyPolicy->attachment = $fileNameToStore;
             }
-            $companyPolicy->created_by = \Auth::user()->creatorId();
+            $companyPolicy->created_by = Auth::user()->creatorId();
             $companyPolicy->save();
 
             return redirect()->route('company-policy.index')->with('success', __('Company policy successfully updated.'));
@@ -156,8 +157,8 @@ class CompanyPolicyController extends Controller
 
     public function destroy(CompanyPolicy $companyPolicy)
     {
-        if (\Auth::user()->can('Delete Document')) {
-            if ($companyPolicy->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('Delete Document')) {
+            if ($companyPolicy->created_by == Auth::user()->creatorId()) {
                 $companyPolicy->delete();
 
                 $dir = storage_path('uploads/companyPolicy/');

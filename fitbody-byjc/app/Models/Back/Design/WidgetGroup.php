@@ -3,6 +3,7 @@
 namespace App\Models\Back\Design;
 
 use Carbon\Carbon;
+use DirectoryIterator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -44,7 +45,7 @@ class WidgetGroup extends Model
     {
         $request->validate([
             'section' => 'required',
-            'title'   => 'required',
+            'title' => 'required',
         ]);
 
         $this->setRequest($request);
@@ -53,13 +54,11 @@ class WidgetGroup extends Model
     }
 
     /**
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     *
      * @return array
      */
     public function getSectionsList()
     {
-        $blades = new \DirectoryIterator('./../resources/views/front/layouts/widgets');
+        $blades = new DirectoryIterator('./../resources/views/front/layouts/widgets');
         $response = [];
 
         foreach ($blades as $file) {
@@ -67,7 +66,7 @@ class WidgetGroup extends Model
                 $filename = str_replace('.blade.php', '', $file);
 
                 $response[] = [
-                    'id'    => str_replace('widget_', '', $filename),
+                    'id' => str_replace('widget_', '', $filename),
                     'title' => str_replace('widget_', 'Dizajn ', $filename),
                 ];
             }
@@ -80,10 +79,10 @@ class WidgetGroup extends Model
     {
         $id = $this->insertGetId([
             'section_id' => $this->request->section,
-            'title'      => $this->request->title,
-            'slug'       => Str::slug($this->request->title),
-            'width'      => $this->request->width ? $this->request->width : null,
-            'status'     => (isset($this->request->status) && 'on' == $this->request->status) ? 1 : 0,
+            'title' => $this->request->title,
+            'slug' => Str::slug($this->request->title),
+            'width' => $this->request->width ? $this->request->width : null,
+            'status' => (isset($this->request->status) && 'on' == $this->request->status) ? 1 : 0,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
@@ -100,10 +99,10 @@ class WidgetGroup extends Model
     {
         $ok = $this->where('id', $id)->update([
             'section_id' => $this->request->section,
-            'title'      => $this->request->title,
-            'slug'       => Str::slug($this->request->title),
-            'width'      => $this->request->width ? $this->request->width : null,
-            'status'     => (isset($this->request->status) && 'on' == $this->request->status) ? 1 : 0,
+            'title' => $this->request->title,
+            'slug' => Str::slug($this->request->title),
+            'width' => $this->request->width ? $this->request->width : null,
+            'status' => (isset($this->request->status) && 'on' == $this->request->status) ? 1 : 0,
             'updated_at' => Carbon::now(),
         ]);
 
@@ -144,7 +143,7 @@ class WidgetGroup extends Model
      *
      * @param $request
      */
-    private function setRequest($request)
+    private function setRequest($request): void
     {
         $this->request = $request;
     }

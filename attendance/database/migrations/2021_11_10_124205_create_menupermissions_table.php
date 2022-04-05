@@ -8,12 +8,10 @@ class CreateMenupermissionsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('menupermissions', function (Blueprint $table) {
+        Schema::create('menupermissions', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('sub_menu_id');
             $table->string('menu_id');
@@ -24,10 +22,8 @@ class CreateMenupermissionsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('menupermissions');
     }

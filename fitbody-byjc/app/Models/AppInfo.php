@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\Storage;
 class AppInfo
 {
     /**
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     *
      * @return false
      */
     public static function get()

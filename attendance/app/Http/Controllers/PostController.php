@@ -25,7 +25,6 @@ class PostController extends Controller
      */
     public function create()
     {
-
     }
 
     /**
@@ -35,7 +34,6 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-
     }
 
     /**
@@ -47,7 +45,6 @@ class PostController extends Controller
      */
     public function show($id)
     {
-
     }
 
     /**
@@ -59,7 +56,6 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-
     }
 
     /**
@@ -71,7 +67,6 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-
     }
 
     /**
@@ -83,6 +78,5 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-
     }
 }

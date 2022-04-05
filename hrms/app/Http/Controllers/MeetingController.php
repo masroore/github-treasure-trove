@@ -10,6 +10,7 @@ use App\Models\MeetingEmployee;
 use App\Models\Utility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Validator;
 
 class MeetingController extends Controller
 {
@@ -22,7 +23,7 @@ class MeetingController extends Controller
                 $meetings = Meeting::orderBy('meetings.id', 'desc')
                     ->leftjoin('meeting_employees', 'meetings.id', '=', 'meeting_employees.meeting_id')
                     ->where('meeting_employees.employee_id', '=', $current_employee->id)
-                    ->orWhere(function ($q) {
+                    ->orWhere(function ($q): void {
                         $q->where('meetings.department_id', '["0"]')
                             ->where('meetings.employee_id', '["0"]');
                     })
@@ -56,7 +57,7 @@ class MeetingController extends Controller
 
     public function store(Request $request)
     {
-        $validator = \Validator::make(
+        $validator = Validator::make(
             $request->all(),
             [
                 'branch_id' => 'required',
@@ -150,7 +151,7 @@ class MeetingController extends Controller
     public function update(Request $request, Meeting $meeting)
     {
         if (\Auth::user()->can('Edit Meeting')) {
-            $validator = \Validator::make(
+            $validator = Validator::make(
                 $request->all(),
                 [
 

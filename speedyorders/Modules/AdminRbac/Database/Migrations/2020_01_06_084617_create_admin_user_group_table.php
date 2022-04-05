@@ -8,12 +8,10 @@ class CreateAdminUserGroupTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('admin_user_groups', function (Blueprint $table) {
+        Schema::create('admin_user_groups', function (Blueprint $table): void {
             $table->integer('user_id')->unsigned()->index();
             $table->integer('group_id')->unsigned()->index();
             $table->primary(['user_id', 'group_id']);
@@ -23,10 +21,8 @@ class CreateAdminUserGroupTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('admin_user_groups');
     }

@@ -39,7 +39,7 @@ class TP_vimeo
      *
      * @param string $videos Vimeo Output Data
      */
-    private function vimeo_output_array($videos, $count)
+    private function vimeo_output_array($videos, $count): void
     {
         foreach ($videos as $video) {
             if (0 == $count--) {
@@ -49,9 +49,9 @@ class TP_vimeo
             $stream = [];
 
             $image_url = @[
-                'thumbnail_small' 	=> 	[$video->thumbnail_small],
-                'thumbnail_medium' 	=> 	[$video->thumbnail_medium],
-                'thumbnail_large' 	=> 	[$video->thumbnail_large],
+                'thumbnail_small' => [$video->thumbnail_small],
+                'thumbnail_medium' => [$video->thumbnail_medium],
+                'thumbnail_large' => [$video->thumbnail_large],
             ];
 
             $stream['custom-image-url'] = $image_url; //image for entry

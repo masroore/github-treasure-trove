@@ -8,12 +8,10 @@ class CreateProductRelatedProductsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('product_related_products', function (Blueprint $table) {
+        Schema::create('product_related_products', function (Blueprint $table): void {
             $table->unsignedBigInteger('id')->autoIncrement();
             $table->unsignedBigInteger('product_id')->nullable()->default(null);
             $table->unsignedBigInteger('related_product_id')->nullable()->default(null);
@@ -23,10 +21,8 @@ class CreateProductRelatedProductsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('product_related_products');
     }

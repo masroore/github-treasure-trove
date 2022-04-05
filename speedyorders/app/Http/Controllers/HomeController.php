@@ -232,7 +232,7 @@ class HomeController extends Controller
         return view('cart.receipt', compact('activePage'));
     }
 
-    public function slugify($text, string $divider = '-')
+    public function slugify($text, string $divider = '-'): void
     {
         $products = Product::all();
 

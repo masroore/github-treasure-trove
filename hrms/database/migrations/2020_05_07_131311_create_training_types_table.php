@@ -8,14 +8,12 @@ class CreateTrainingTypesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create(
             'training_types',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->bigIncrements('id');
                 $table->string('name');
                 $table->integer('created_by');
@@ -26,10 +24,8 @@ class CreateTrainingTypesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('training_types');
     }

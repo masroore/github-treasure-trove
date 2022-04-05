@@ -18,7 +18,7 @@ trait ApiResponser
      *
      * @param array|string $data
      * @param string       $message
-     * @param int|null     $code
+     * @param null|int     $code
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -35,11 +35,11 @@ trait ApiResponser
      * Return an error JSON response.
      *
      * @param string            $message
-     * @param array|string|null $data
+     * @param null|array|string $data
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function error(?string $message = null, int $code, $data = null)
+    protected function error(?string $message, int $code, $data = null)
     {
         return response()->json([
             'is_success' => false,

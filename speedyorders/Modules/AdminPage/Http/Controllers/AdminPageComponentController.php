@@ -3,6 +3,7 @@
 namespace Modules\AdminPage\Http\Controllers;
 
 use App\Models\PageComponent;
+use Exception;
 use Illuminate\Routing\Controller;
 use Modules\AdminPage\Http\Requests\CreatePageComponentRequest;
 use Modules\AdminPage\Http\Requests\UpdatePageComponentRequest;
@@ -90,7 +91,7 @@ class AdminPageComponentController extends Controller
             }
             PageComponent::where('id', $id)->first()->update(['status' => $status]);
             session()->flash('success_message', 'Page Component updated successfully.');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             session()->flash('error_message', 'Page component could not be updated.');
         }
 

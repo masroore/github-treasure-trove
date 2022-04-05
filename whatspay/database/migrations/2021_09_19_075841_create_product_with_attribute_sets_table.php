@@ -8,12 +8,10 @@ class CreateProductWithAttributeSetsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('product_with_attribute_sets', function (Blueprint $table) {
+        Schema::create('product_with_attribute_sets', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->bigInteger('attribute_set_id')->unsigned()->index('p_witp_with_attr_set_attribute_set_id_index')->comment('Belongs to product_attribute_sets');
             $table->bigInteger('product_id')->unsigned()->index('p_with_attr_product_id_index')->comment('Belongs to products table of parent product');
@@ -35,13 +33,11 @@ class CreateProductWithAttributeSetsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('product_with_attribute_sets');
-        Schema::table('product_with_attribute_sets', function (Blueprint $table) {
+        Schema::table('product_with_attribute_sets', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
     }

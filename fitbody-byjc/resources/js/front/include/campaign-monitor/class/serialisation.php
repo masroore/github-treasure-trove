@@ -25,7 +25,7 @@ class CS_REST_BaseSerialiser
     /**
      * Recursively ensures that all data values are utf-8 encoded.
      *
-     * @param array $data All values of this array are checked for utf-8 encoding.
+     * @param array $data all values of this array are checked for utf-8 encoding
      */
     public function check_encoding($data)
     {

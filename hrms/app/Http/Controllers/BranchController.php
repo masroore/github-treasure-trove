@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Branch;
+use Auth;
 use Illuminate\Http\Request;
+use Validator;
 
 class BranchController extends Controller
 {
     public function index()
     {
-        if (\Auth::user()->can('Manage Branch')) {
-            $branches = Branch::where('created_by', '=', \Auth::user()->creatorId())->get();
+        if (Auth::user()->can('Manage Branch')) {
+            $branches = Branch::where('created_by', '=', Auth::user()->creatorId())->get();
 
             return view('branch.index', compact('branches'));
         }
@@ -20,7 +22,7 @@ class BranchController extends Controller
 
     public function create()
     {
-        if (\Auth::user()->can('Create Branch')) {
+        if (Auth::user()->can('Create Branch')) {
             return view('branch.create');
         }
 
@@ -29,12 +31,12 @@ class BranchController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('Create Branch')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Create Branch')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'name' => 'required',
-                               ]
+                    'name' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -44,7 +46,7 @@ class BranchController extends Controller
 
             $branch = new Branch();
             $branch->name = $request->name;
-            $branch->created_by = \Auth::user()->creatorId();
+            $branch->created_by = Auth::user()->creatorId();
             $branch->save();
 
             return redirect()->route('branch.index')->with('success', __('Branch  successfully created.'));
@@ -60,8 +62,8 @@ class BranchController extends Controller
 
     public function edit(Branch $branch)
     {
-        if (\Auth::user()->can('Edit Branch')) {
-            if ($branch->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('Edit Branch')) {
+            if ($branch->created_by == Auth::user()->creatorId()) {
                 return view('branch.edit', compact('branch'));
             }
 
@@ -73,13 +75,13 @@ class BranchController extends Controller
 
     public function update(Request $request, Branch $branch)
     {
-        if (\Auth::user()->can('Edit Branch')) {
-            if ($branch->created_by == \Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+        if (Auth::user()->can('Edit Branch')) {
+            if ($branch->created_by == Auth::user()->creatorId()) {
+                $validator = Validator::make(
                     $request->all(),
                     [
-                                       'name' => 'required',
-                                   ]
+                        'name' => 'required',
+                    ]
                 );
                 if ($validator->fails()) {
                     $messages = $validator->getMessageBag();
@@ -101,8 +103,8 @@ class BranchController extends Controller
 
     public function destroy(Branch $branch)
     {
-        if (\Auth::user()->can('Delete Branch')) {
-            if ($branch->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('Delete Branch')) {
+            if ($branch->created_by == Auth::user()->creatorId()) {
                 $branch->delete();
 
                 return redirect()->route('branch.index')->with('success', __('Branch successfully deleted.'));

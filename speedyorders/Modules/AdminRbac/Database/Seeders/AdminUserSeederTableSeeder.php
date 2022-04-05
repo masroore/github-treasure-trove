@@ -10,31 +10,29 @@ class AdminUserSeederTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         \Illuminate\Support\Facades\DB::table('admin_users')->truncate();
 
         User::truncate();
 
         $superAdmin = User::create([
-            'first_name'=>'Admin',
-            'last_name'=>'istrator',
-            'email'=>'sadmin@gmail.com',
-            'username'=>'sadmin',
-            'password'=> bcrypt('123456'),
-            'status'=> 1,
+            'first_name' => 'Admin',
+            'last_name' => 'istrator',
+            'email' => 'sadmin@gmail.com',
+            'username' => 'sadmin',
+            'password' => bcrypt('123456'),
+            'status' => 1,
         ]);
 
         $admin = User::create([
-            'first_name'=>'Admin',
-            'last_name'=>'istrator',
-            'email'=>'admin@gmail.com',
-            'username'=>'admin',
-            'password'=> bcrypt('123456'),
-            'status'=> 1,
+            'first_name' => 'Admin',
+            'last_name' => 'istrator',
+            'email' => 'admin@gmail.com',
+            'username' => 'admin',
+            'password' => bcrypt('123456'),
+            'status' => 1,
         ]);
 
         // super admin

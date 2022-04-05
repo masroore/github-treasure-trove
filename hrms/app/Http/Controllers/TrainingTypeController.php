@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\TrainingType;
+use Auth;
 use Illuminate\Http\Request;
+use Validator;
 
 class TrainingTypeController extends Controller
 {
     public function index()
     {
-        if (\Auth::user()->can('Manage Training Type')) {
-            $trainingtypes = TrainingType::where('created_by', '=', \Auth::user()->creatorId())->get();
+        if (Auth::user()->can('Manage Training Type')) {
+            $trainingtypes = TrainingType::where('created_by', '=', Auth::user()->creatorId())->get();
 
             return view('trainingtype.index', compact('trainingtypes'));
         }
@@ -20,7 +22,7 @@ class TrainingTypeController extends Controller
 
     public function create()
     {
-        if (\Auth::user()->can('Create Training Type')) {
+        if (Auth::user()->can('Create Training Type')) {
             return view('trainingtype.create');
         }
 
@@ -29,12 +31,12 @@ class TrainingTypeController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('Create Training Type')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Create Training Type')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'name' => 'required',
-                               ]
+                    'name' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -44,7 +46,7 @@ class TrainingTypeController extends Controller
 
             $trainingtype = new TrainingType();
             $trainingtype->name = $request->name;
-            $trainingtype->created_by = \Auth::user()->creatorId();
+            $trainingtype->created_by = Auth::user()->creatorId();
             $trainingtype->save();
 
             return redirect()->route('trainingtype.index')->with('success', __('TrainingType  successfully created.'));
@@ -53,16 +55,15 @@ class TrainingTypeController extends Controller
         return redirect()->back()->with('error', __('Permission denied.'));
     }
 
-    public function show(TrainingType $trainingType)
+    public function show(TrainingType $trainingType): void
     {
-
     }
 
     public function edit($id)
     {
-        if (\Auth::user()->can('Edit Training Type')) {
+        if (Auth::user()->can('Edit Training Type')) {
             $trainingType = TrainingType::find($id);
-            if ($trainingType->created_by == \Auth::user()->creatorId()) {
+            if ($trainingType->created_by == Auth::user()->creatorId()) {
                 return view('trainingtype.edit', compact('trainingType'));
             }
 
@@ -74,15 +75,15 @@ class TrainingTypeController extends Controller
 
     public function update(Request $request, $id)
     {
-        if (\Auth::user()->can('Edit Training Type')) {
+        if (Auth::user()->can('Edit Training Type')) {
             $trainingType = TrainingType::find($id);
-            if ($trainingType->created_by == \Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+            if ($trainingType->created_by == Auth::user()->creatorId()) {
+                $validator = Validator::make(
                     $request->all(),
                     [
-                                       'name' => 'required',
+                        'name' => 'required',
 
-                                   ]
+                    ]
                 );
 
                 $trainingType->name = $request->name;
@@ -99,9 +100,9 @@ class TrainingTypeController extends Controller
 
     public function destroy($id)
     {
-        if (\Auth::user()->can('Delete Training Type')) {
+        if (Auth::user()->can('Delete Training Type')) {
             $trainingType = TrainingType::find($id);
-            if ($trainingType->created_by == \Auth::user()->creatorId()) {
+            if ($trainingType->created_by == Auth::user()->creatorId()) {
                 $trainingType->delete();
 
                 return redirect()->route('trainingtype.index')->with('success', __('TrainingType successfully deleted.'));

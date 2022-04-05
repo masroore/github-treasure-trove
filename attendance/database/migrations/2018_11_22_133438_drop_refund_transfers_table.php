@@ -11,7 +11,7 @@ class DropRefundTransfersTable extends Migration
 {
     public function up(): void
     {
-        Schema::table($this->table(), function (Blueprint $table) {
+        Schema::table($this->table(), function (Blueprint $table): void {
             if (!(DB::connection() instanceof SQLiteConnection)) {
                 $table->dropIndex('from_to_refund_ind');
                 $table->dropIndex('from_refund_ind');
@@ -24,7 +24,7 @@ class DropRefundTransfersTable extends Migration
 
     public function down(): void
     {
-        Schema::table($this->table(), function (Blueprint $table) {
+        Schema::table($this->table(), function (Blueprint $table): void {
             $table->boolean('refund')
                 ->after('withdraw_id')
                 ->default(0);

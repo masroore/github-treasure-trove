@@ -11,6 +11,7 @@ class OAuthException extends Exception
 class OAuthConsumer
 {
     public $key;
+
     public $secret;
 
     public function __construct($key, $secret, $callback_url = null)
@@ -30,6 +31,7 @@ class OAuthToken
 {
     // access tokens and request tokens
     public $key;
+
     public $secret;
 
     /**
@@ -125,9 +127,9 @@ class OAuthSignatureMethod_HMAC_SHA1 extends OAuthSignatureMethod
         $request->base_string = $base_string;
 
         $key_parts = [
-      $consumer->secret,
-      ($token) ? $token->secret : '',
-    ];
+            $consumer->secret,
+            ($token) ? $token->secret : '',
+        ];
 
         $key_parts = OAuthUtil::urlencode_rfc3986($key_parts);
         $key = implode('&', $key_parts);
@@ -160,9 +162,9 @@ class OAuthSignatureMethod_PLAINTEXT extends OAuthSignatureMethod
     public function build_signature($request, $consumer, $token)
     {
         $key_parts = [
-      $consumer->secret,
-      ($token) ? $token->secret : '',
-    ];
+            $consumer->secret,
+            ($token) ? $token->secret : '',
+        ];
 
         $key_parts = OAuthUtil::urlencode_rfc3986($key_parts);
         $key = implode('&', $key_parts);
@@ -247,10 +249,15 @@ class OAuthRequest
 {
     // for debug purposes
     public $base_string;
+
     public static $version = '1.0';
+
     public static $POST_INPUT = 'php://input';
+
     private $parameters;
+
     private $http_method;
+
     private $http_url;
 
     public function __construct($http_method, $http_url, $parameters = null)
@@ -270,9 +277,9 @@ class OAuthRequest
     /**
      * attempt to build up a request from what was passed to the server.
      *
-     * @param mixed|null $http_method
-     * @param mixed|null $http_url
-     * @param mixed|null $parameters
+     * @param null|mixed $http_method
+     * @param null|mixed $http_url
+     * @param null|mixed $parameters
      */
     public static function from_request($http_method = null, $http_url = null, $parameters = null)
     {
@@ -327,15 +334,15 @@ class OAuthRequest
     /**
      * pretty much a helper function to set up the request.
      *
-     * @param mixed|null $parameters
+     * @param null|mixed $parameters
      */
     public static function from_consumer_and_token($consumer, $token, $http_method, $http_url, $parameters = null)
     {
         @$parameters || $parameters = [];
         $defaults = ['oauth_version' => self::$version,
-                      'oauth_nonce' => self::generate_nonce(),
-                      'oauth_timestamp' => self::generate_timestamp(),
-                      'oauth_consumer_key' => $consumer->key, ];
+            'oauth_nonce' => self::generate_nonce(),
+            'oauth_timestamp' => self::generate_timestamp(),
+            'oauth_consumer_key' => $consumer->key, ];
         if ($token) {
             $defaults['oauth_token'] = $token->key;
         }
@@ -345,7 +352,7 @@ class OAuthRequest
         return new self($http_method, $http_url, $parameters);
     }
 
-    public function set_parameter($name, $value, $allow_duplicates = true)
+    public function set_parameter($name, $value, $allow_duplicates = true): void
     {
         if ($allow_duplicates && isset($this->parameters[$name])) {
             // We have already added parameter(s) with this name, so add to the list
@@ -371,7 +378,7 @@ class OAuthRequest
         return $this->parameters;
     }
 
-    public function unset_parameter($name)
+    public function unset_parameter($name): void
     {
         unset($this->parameters[$name]);
     }
@@ -405,10 +412,10 @@ class OAuthRequest
     public function get_signature_base_string()
     {
         $parts = [
-      $this->get_normalized_http_method(),
-      $this->get_normalized_http_url(),
-      $this->get_signable_parameters(),
-    ];
+            $this->get_normalized_http_method(),
+            $this->get_normalized_http_url(),
+            $this->get_signable_parameters(),
+        ];
 
         $parts = OAuthUtil::urlencode_rfc3986($parts);
 
@@ -471,7 +478,7 @@ class OAuthRequest
     /**
      * builds the Authorization: header.
      *
-     * @param mixed|null $realm
+     * @param null|mixed $realm
      */
     public function to_header($realm = null)
     {
@@ -502,7 +509,7 @@ class OAuthRequest
         return $out;
     }
 
-    public function sign_request($signature_method, $consumer, $token)
+    public function sign_request($signature_method, $consumer, $token): void
     {
         $this->set_parameter(
             'oauth_signature_method',
@@ -541,8 +548,10 @@ class OAuthRequest
 class OAuthServer
 {
     protected $timestamp_threshold = 300; // in seconds, five minutes
-  protected $version = '1.0';             // hi blaine
-  protected $signature_methods = [];
+
+    protected $version = '1.0';             // hi blaine
+
+    protected $signature_methods = [];
 
     protected $data_store;
 
@@ -551,7 +560,7 @@ class OAuthServer
         $this->data_store = $data_store;
     }
 
-    public function add_signature_method($signature_method)
+    public function add_signature_method($signature_method): void
     {
         $this->signature_methods[$signature_method->get_name()] =
       $signature_method;
@@ -699,7 +708,7 @@ class OAuthServer
      * all-in-one function to check the signature on a request
      * should guess the signature method appropriately.
      */
-    private function check_signature(&$request, $consumer, $token)
+    private function check_signature(&$request, $consumer, $token): void
     {
         // this should probably be in a different method
         $timestamp = @$request->get_parameter('oauth_timestamp');
@@ -726,7 +735,7 @@ class OAuthServer
     /**
      * check that the timestamp is new enough.
      */
-    private function check_timestamp($timestamp)
+    private function check_timestamp($timestamp): void
     {
         if (!$timestamp) {
             throw new OAuthException('Missing timestamp parameter. The parameter is required');
@@ -742,7 +751,7 @@ class OAuthServer
     /**
      * check that the nonce is not repeated.
      */
-    private function check_nonce($consumer, $token, $nonce, $timestamp)
+    private function check_nonce($consumer, $token, $nonce, $timestamp): void
     {
         if (!$nonce) {
             throw new OAuthException('Missing nonce parameter. The parameter is required');
@@ -763,27 +772,27 @@ class OAuthServer
 
 class OAuthDataStore
 {
-    public function lookup_consumer($consumer_key)
+    public function lookup_consumer($consumer_key): void
     {
         // implement me
     }
 
-    public function lookup_token($consumer, $token_type, $token)
+    public function lookup_token($consumer, $token_type, $token): void
     {
         // implement me
     }
 
-    public function lookup_nonce($consumer, $token, $nonce, $timestamp)
+    public function lookup_nonce($consumer, $token, $nonce, $timestamp): void
     {
         // implement me
     }
 
-    public function new_request_token($consumer, $callback = null)
+    public function new_request_token($consumer, $callback = null): void
     {
         // return a new token attached to this consumer
     }
 
-    public function new_access_token($token, $consumer, $verifier = null)
+    public function new_access_token($token, $consumer, $verifier = null): void
     {
         // return a new access token attached to this consumer
     // for the user associated with this token if the request token

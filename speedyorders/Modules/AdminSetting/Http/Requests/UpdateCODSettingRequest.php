@@ -14,7 +14,7 @@ class UpdateCODSettingRequest extends FormRequest
     public function rules()
     {
         return [
-            'cod_enable_status'=>'nullable|string',
+            'cod_enable_status' => 'nullable|string',
         ];
     }
 

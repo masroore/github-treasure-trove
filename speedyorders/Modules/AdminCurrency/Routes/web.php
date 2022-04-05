@@ -11,7 +11,7 @@
 |
 */
 
-Route::group(['middleware' => 'auth:admin', 'as' => 'admin.'], function () {
+Route::group(['middleware' => 'auth:admin', 'as' => 'admin.'], function (): void {
     Route::get('/currencies', 'AdminCurrencyController@index')
         ->name('currencies.index')
         ->middleware('can:view-currency');

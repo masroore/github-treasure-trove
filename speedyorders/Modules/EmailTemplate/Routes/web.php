@@ -11,7 +11,7 @@
 |
 */
 
-Route::group(['prefix' => 'email-templates', 'as' => 'admin.', 'middleware' => 'auth:admin'], function () {
+Route::group(['prefix' => 'email-templates', 'as' => 'admin.', 'middleware' => 'auth:admin'], function (): void {
     Route::get('/', 'EmailTemplateController@index')->name('email-templates');
     Route::get('/{id}/edit', 'EmailTemplateController@edit')->name('email.edit');
 });

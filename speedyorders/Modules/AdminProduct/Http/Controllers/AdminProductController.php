@@ -12,6 +12,7 @@ use App\Models\ProductOptionValue;
 use App\Models\ShippingPackage;
 use App\Models\ShippingZoneGroup;
 use App\Models\ShippingZonePrice;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
@@ -51,7 +52,7 @@ class AdminProductController extends Controller
         ];
 
         //$categories = Category::where(['category_id'=>null])->select('id','name')->get();
-        $categories = Category::where(['category_id'=>0])->orWhere(['category_id'=>null])->select('id', 'name')->get();
+        $categories = Category::where(['category_id' => 0])->orWhere(['category_id' => null])->select('id', 'name')->get();
         $products = Product::where('status', 1)->select('id', 'name')->get();
         $options = Option::orderBy('sort_order')->get();
 
@@ -113,7 +114,7 @@ class AdminProductController extends Controller
         $options = Option::orderBy('sort_order')->get();
         $product = Product::where('id', $id)->with('options', 'options.optionValues', 'groups', 'relatedProducts', 'delivery_time')->first();
         $products = Product::where('status', 1)->select('id', 'name')->get();
-        $categories = Category::where(['category_id'=>0])->orWhere(['category_id'=>null])->select('id', 'name')->get();
+        $categories = Category::where(['category_id' => 0])->orWhere(['category_id' => null])->select('id', 'name')->get();
         $productCategories = ProductCategory::where('product_id', $id)->pluck('category_id')->toArray();
         $productGalleries = ProductGallery::where('product_id', $id)->select(['id', 'image', 'order'])->get();
         $optionsId = ProductOption::where('product_id', $id)->pluck('option_id');
@@ -176,7 +177,7 @@ class AdminProductController extends Controller
         try {
             Product::find($id)->delete();
             session()->flash('success_message', 'Product deleted successfully.');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             session()->flash('error_message', 'Product could not be deleted.');
         }
 
@@ -194,7 +195,7 @@ class AdminProductController extends Controller
             }
             Product::where('id', $id)->first()->update(['status' => $status]);
             session()->flash('success_message', 'Product updated successfully.');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             session()->flash('error_message', 'Product could not be updated.');
         }
 
@@ -208,19 +209,19 @@ class AdminProductController extends Controller
         $galleries = [];
         $galleryId = [];
 
-        for ($i = 0; $i < \count($gallery_images); $i++) {
+        for ($i = 0; $i < \count($gallery_images); ++$i) {
             $image = $gallery_images[$i];
             $imageName = uniqid() . time() . $image->getClientOriginalName();
             $upload_success = $image->move(public_path('images/products'), $imageName);
             $gallery = ProductGallery::create([
-                'image'=> $imageName,
-                'order'=> $i,
+                'image' => $imageName,
+                'order' => $i,
             ]);
             $galleryId[] = $gallery->id;
             $galleries[] = $gallery;
         }
 
-        return response()->json(['data'=>array_reverse($galleries), 'id'=>array_reverse($galleryId)], 200);
+        return response()->json(['data' => array_reverse($galleries), 'id' => array_reverse($galleryId)], 200);
     }
 
     public function getProductMedia($ids)
@@ -228,14 +229,14 @@ class AdminProductController extends Controller
         $galleryIdsArray = explode(',', $ids);
         $galleryData = ProductGallery::whereIn('id', $galleryIdsArray)->get();
 
-        return response()->json(['data'=>$galleryData], 200);
+        return response()->json(['data' => $galleryData], 200);
     }
 
     public function getSingleProductMedia($id)
     {
         $galleryData = ProductGallery::where('id', $id)->first();
 
-        return response()->json(['data'=>$galleryData], 200);
+        return response()->json(['data' => $galleryData], 200);
     }
 
     public function updateSingleProductMedia(Request $request)
@@ -255,21 +256,21 @@ class AdminProductController extends Controller
 
         $data = ProductGallery::find($request->singleGalleryId);
 
-        return response()->json(['data'=>$data], 200);
+        return response()->json(['data' => $data], 200);
     }
 
     public function deleteProductMedia($id)
     {
         $deletedMedia = ProductGallery::where('id', $id)->delete();
 
-        return response()->json(['data'=>$id], 200);
+        return response()->json(['data' => $id], 200);
     }
 
     public function getProductGroupData($id)
     {
         $groupData = ShippingZonePrice::with(['deliverytime', 'group', 'package'])->where('shipping_zone_groups_id', $id)->get();
 
-        return response()->json(['data'=>$groupData], 200);
+        return response()->json(['data' => $groupData], 200);
     }
 
     /**

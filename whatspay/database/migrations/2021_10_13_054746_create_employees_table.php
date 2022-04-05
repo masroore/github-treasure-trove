@@ -8,12 +8,10 @@ class CreateEmployeesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('employees', function (Blueprint $table) {
+        Schema::create('employees', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->bigInteger('user_id')->unsigned()->comment('Belongs to users table PK');
             $table->foreign('user_id')
@@ -43,10 +41,8 @@ class CreateEmployeesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('employees');
     }

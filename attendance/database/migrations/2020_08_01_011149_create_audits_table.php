@@ -8,12 +8,10 @@ class CreateAuditsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('audits', function (Blueprint $table) {
+        Schema::create('audits', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('user_type')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
@@ -33,10 +31,8 @@ class CreateAuditsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop('audits');
     }

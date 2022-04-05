@@ -8,12 +8,10 @@ class CreatePricesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('prices', function (Blueprint $table) {
+        Schema::create('prices', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('title')->index();
             $table->string('subtitle')->nullable();
@@ -28,10 +26,8 @@ class CreatePricesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('prices');
     }

@@ -8,12 +8,10 @@ class CreateShippingRulesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('shipping_rules', function (Blueprint $table) {
+        Schema::create('shipping_rules', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->bigInteger('shipping_id')->unsigned()->index('shipping_rules_shipping_id_index')->comment('Belongs to shipping table');
             $table->string('name', 120)->nullable();
@@ -32,10 +30,8 @@ class CreateShippingRulesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('shipping_rules');
     }

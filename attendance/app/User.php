@@ -111,7 +111,7 @@ class User extends Authenticatable implements Wallet
     }
 
     //this method is for the custom mail send notification.the method bmust be the same has laravel default method
-    public function sendPasswordResetNotification($token)
+    public function sendPasswordResetNotification($token): void
     {
         $this->notify(new CustomPasswordReset($token));
     }
@@ -141,7 +141,7 @@ class User extends Authenticatable implements Wallet
         return Regacademicyear::where('user_id', auth()->user()->id)->get();
     }
 
-    public function getimage($id)
+    public function getimage($id): void
     {
     }
 

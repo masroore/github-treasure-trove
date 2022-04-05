@@ -8,12 +8,10 @@ class CreateAdvertisementsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('advertisements', function (Blueprint $table) {
+        Schema::create('advertisements', function (Blueprint $table): void {
             $table->unsignedBigInteger('id')->autoIncrement();
             $table->string('title')->default(null)->nullable();
             $table->string('image')->default(null)->nullable();
@@ -26,10 +24,8 @@ class CreateAdvertisementsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('advertisements');
     }

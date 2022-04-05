@@ -18,7 +18,9 @@ class DealService
      * @var DealRepositoryInterface
      */
     protected $dealRepository;
+
     protected $dealgroupsRepository;
+
     protected $dealgroupdetailsRepository;
 
     public function __construct(
@@ -34,6 +36,7 @@ class DealService
     public function update(Request $request, $id)
     {
         DB::beginTransaction();
+
         try {
             //    validate request
             $validator = Validator::make($request->input(), [
@@ -56,43 +59,44 @@ class DealService
                 }
                 $group = $this->dealgroupsRepository->updateGetModel(
                     [
-                        'id'=>$groups['id'],
-                        'deal_id'=>$id,
+                        'id' => $groups['id'],
+                        'deal_id' => $id,
                     ],
                     [
-                    'title'=>$groups['title'],
-                    'deal_id'=>$id,
-                    'status'=>1,
-                ]
+                        'title' => $groups['title'],
+                        'deal_id' => $id,
+                        'status' => 1,
+                    ]
                 );
                 $group_id = $group->id;
 //                dd($groups['products_id']);
                 foreach ($groups['products_id'] as $product) {
                     $this->dealgroupdetailsRepository->updateGetModel(
                         [
-                            'deal_group_id'=>$group_id,
-                            'product_id'=>  $product,
-                            ],
+                            'deal_group_id' => $group_id,
+                            'product_id' => $product,
+                        ],
                         [
-                        'deal_group_id'=>$group_id,
-                        'product_id'=>$product,
-                        'status'=>1,
-                    ]
+                            'deal_group_id' => $group_id,
+                            'product_id' => $product,
+                            'status' => 1,
+                        ]
                     );
                 }
             }
             DB::commit();
         } catch (Exception $e) {
             DB::rollback();
+
             throw new InvalidArgumentException($e->getMessage());
         }
-        $data = Deal::where('id', $id)->with('groups', function ($q) {
+        $data = Deal::where('id', $id)->with('groups', function ($q): void {
             $q->where('status', 1);
             $q->select('id', 'title', 'status', 'deal_id');
-            $q->with('groupDetails', function ($k) {
+            $q->with('groupDetails', function ($k): void {
                 $k->where('status', 1);
                 $k->select('id', 'deal_group_id', 'product_id', 'status');
-                $k->with('products', function ($p) {
+                $k->with('products', function ($p): void {
                     $p->select('id', 'name', 'price');
                 });
             });
@@ -105,6 +109,7 @@ class DealService
     {
 //        dd($request->all());
         DB::beginTransaction();
+
         try {
             // validate request
             $validator = Validator::make($request->input(), [
@@ -112,7 +117,7 @@ class DealService
                 'original_price' => 'required|numeric',
                 'quantity' => 'required|numeric',
                 'start_date' => 'required',
-                ]);
+            ]);
 
             // if validation fails throw exception
             if ($validator->fails()) {
@@ -123,31 +128,32 @@ class DealService
             $deal_id = $deals->id;
             foreach ($request->deal_group as $groups) {
                 $group = $this->dealgroupsRepository->create([
-                    'title'=>$groups['title'],
-                    'deal_id'=>$deal_id,
-                    'status'=>1,
+                    'title' => $groups['title'],
+                    'deal_id' => $deal_id,
+                    'status' => 1,
                 ]);
                 $group_id = $group->id;
                 foreach ($groups['products_id'] as $product) {
                     $this->dealgroupdetailsRepository->create([
-                    'deal_group_id'=>$group_id,
-                    'product_id'=>$product,
-                    'status'=>1,
-                ]);
+                        'deal_group_id' => $group_id,
+                        'product_id' => $product,
+                        'status' => 1,
+                    ]);
                 }
             }
             DB::commit();
         } catch (Exception $e) {
             DB::rollback();
+
             throw new InvalidArgumentException($e->getMessage());
         }
-        $data = Deal::where('id', $deals->id)->with('groups', function ($q) {
+        $data = Deal::where('id', $deals->id)->with('groups', function ($q): void {
             $q->where('status', 1);
             $q->select('id', 'title', 'status', 'deal_id');
-            $q->with('groupDetails', function ($k) {
+            $q->with('groupDetails', function ($k): void {
                 $k->where('status', 1);
                 $k->select('id', 'deal_group_id', 'product_id', 'status');
-                $k->with('products', function ($p) {
+                $k->with('products', function ($p): void {
                     $p->select('id', 'name', 'price');
                 });
             });
@@ -159,13 +165,13 @@ class DealService
     public function view(Deal $deal)
     {
         try {
-            $data = Deal::where('id', $deal->id)->with('groups', function ($q) {
+            $data = Deal::where('id', $deal->id)->with('groups', function ($q): void {
                 $q->where('status', 1);
                 $q->select('id', 'title', 'status', 'deal_id');
-                $q->with('groupDetails', function ($k) {
+                $q->with('groupDetails', function ($k): void {
                     $k->where('status', 1);
                     $k->select('id', 'deal_group_id', 'product_id', 'status');
-                    $k->with('products', function ($p) {
+                    $k->with('products', function ($p): void {
                         $p->select('id', 'name', 'price');
                     });
                 });
@@ -180,13 +186,13 @@ class DealService
     public function index(Request $request)
     {
         try {
-            $data = Deal::where('store_id', $request->store_id)->with('groups', function ($q) {
+            $data = Deal::where('store_id', $request->store_id)->with('groups', function ($q): void {
                 $q->where('status', 1);
                 $q->select('id', 'title', 'status', 'deal_id');
-                $q->with('groupDetails', function ($k) {
+                $q->with('groupDetails', function ($k): void {
                     $k->where('status', 1);
                     $k->select('id', 'deal_group_id', 'product_id', 'status');
-                    $k->with('products', function ($p) {
+                    $k->with('products', function ($p): void {
                         $p->select('id', 'name', 'price');
                     });
                 });

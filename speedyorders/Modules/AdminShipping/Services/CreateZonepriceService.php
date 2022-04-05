@@ -6,6 +6,7 @@ use App\Models\ShippingDeliveryTime;
 use App\Models\ShippingPackage;
 use App\Models\ShippingZoneGroup;
 use App\Models\ShippingZonePrice;
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Log;
 
@@ -36,7 +37,7 @@ class CreateZonepriceService
                                 $price_data['zip_code'] = $zipcode;
                                 $price_data['shipping_zone_groups_id'] = $zoneGroup->id;
 
-                                for ($i = 0; $i < \count($zonetimes); $i++) {
+                                for ($i = 0; $i < \count($zonetimes); ++$i) {
                                     $price_data['shipping_delivery_times_id'] = $zonetimes[$i];
                                     $price_data['shipping_packages_id'] = $validatedData['shipping_packages_id'];
                                     $price_data['price'] = $zonetimesprice[$i];
@@ -49,7 +50,7 @@ class CreateZonepriceService
                             $price_data['group_name'] = $validatedData['group_name'];
                             $price_data['shipping_packages_id'] = $validatedData['shipping_packages_id'];
 
-                            for ($j = 0; $j < \count($zonetimes); $j++) {
+                            for ($j = 0; $j < \count($zonetimes); ++$j) {
                                 $price_data['shipping_delivery_times_id'] = $zonetimes[$j];
                                 $price_data['price'] = $zonetimesprice[$j];
                                 $price_data['shipping_zone_groups_id'] = $zoneGroup->id;
@@ -57,6 +58,7 @@ class CreateZonepriceService
                                 ShippingZonePrice::create($price_data);
                             }
                         }
+
                     break;
 
                 case '2':
@@ -74,7 +76,7 @@ class CreateZonepriceService
 
                         // Now parse the csv and store all values in DB
                         $filename = public_path('images/zoneprices/' . $fileName);
-                        $file = fopen($filename, 'r');
+                        $file = fopen($filename, 'rb');
                         $all_data = [];
 
                         $count_header = 0;
@@ -170,7 +172,7 @@ class CreateZonepriceService
                                 }
                             }
 
-                            $count_header++;
+                            ++$count_header;
                         }
 
                     break;
@@ -180,7 +182,7 @@ class CreateZonepriceService
             DB::commit();
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::info('Error' . $e->getMessage());
             // DB::rollback();
             return false;

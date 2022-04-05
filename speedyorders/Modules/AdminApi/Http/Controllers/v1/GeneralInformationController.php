@@ -11,7 +11,7 @@ class GeneralInformationController extends BaseController
     public function generalInformation(Request $request)
     {
         $keyArray = ['company_name', 'company_address', 'company_email', 'company_phone', 'google_analytics_url',
-        'facebook_url', 'instagram_url', 'pinterest_url', 'youtube_url', 'twitter_url', 'linkedin_url', ];
+            'facebook_url', 'instagram_url', 'pinterest_url', 'youtube_url', 'twitter_url', 'linkedin_url', ];
 
         if ($request->uuid) {
             $generalInfo = AdminOption::where('uuid', $request->uuid)->whereIn('name', $keyArray)->select('name', 'value')->first();

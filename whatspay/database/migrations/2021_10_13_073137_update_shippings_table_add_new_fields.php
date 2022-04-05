@@ -8,12 +8,10 @@ class UpdateShippingsTableAddNewFields extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('shippings', function (Blueprint $table) {
+        Schema::table('shippings', function (Blueprint $table): void {
             $table->bigInteger('parent_id')->unsigned()->after('id')->nullable();
             $table->string('city', 160)->after('country')->nullable();
             $table->float('radius')->after('city')->nullable();
@@ -24,13 +22,10 @@ class UpdateShippingsTableAddNewFields extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('shippings', function (Blueprint $table) {
-
+        Schema::table('shippings', function (Blueprint $table): void {
         });
     }
 }

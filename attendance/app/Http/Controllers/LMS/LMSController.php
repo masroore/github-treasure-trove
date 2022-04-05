@@ -71,7 +71,7 @@ class LMSController extends Controller
 
         $email = $user->email;
 
-        $credentials = ['email'=> $email, 'password' => $password];
+        $credentials = ['email' => $email, 'password' => $password];
 
         if (Auth::attempt($credentials)) {
             $user->is_active = '1';
@@ -119,9 +119,9 @@ class LMSController extends Controller
     public function lec_overview_save(Request $request)
     {
         $this->validate($request, [
-      'overview' => 'required',
-      'courseobj' => 'required',
-    ]);
+            'overview' => 'required',
+            'courseobj' => 'required',
+        ]);
 
         $available = $request->input('available');
 
@@ -130,14 +130,14 @@ class LMSController extends Controller
         $semester = $academicyear->semester;
 
         $data = [
-      'overview' => $request->input('overview'),
-      'objectives' => $request->input('courseobj'),
-      'academicyear' => $year,
-      'semester' => $semester,
-      'user_id' => auth()->user()->id,
-      'course_code' => $request->input('coursecode'),
-      'fullname' => auth()->user()->name,
-    ];
+            'overview' => $request->input('overview'),
+            'objectives' => $request->input('courseobj'),
+            'academicyear' => $year,
+            'semester' => $semester,
+            'user_id' => auth()->user()->id,
+            'course_code' => $request->input('coursecode'),
+            'fullname' => auth()->user()->name,
+        ];
 
         if ('1' == $available) {
             $view = Courseoverview::where('user_id', auth()->user()->id)
@@ -173,7 +173,7 @@ class LMSController extends Controller
         return view('LMS.lecturer.edit_event', ['data' => $data, 'code' => $code]);
     }
 
-    public function lec_callendar_get($code)
+    public function lec_callendar_get($code): void
     {
         $academicyear = Academicyear::where('status', '1')->first();
         $year = $academicyear->acdemicyear;
@@ -189,24 +189,24 @@ class LMSController extends Controller
         echo json_encode($new);
     }
 
-    public function lec_callendar_save(Request $request)
+    public function lec_callendar_save(Request $request): void
     {
         $academicyear = Academicyear::where('status', '1')->first();
         $year = $academicyear->acdemicyear;
         $semester = $academicyear->semester;
 
         $data = [
-  'title' => $request->post('title'),
-  'startdate' => $request->post('start'),
-  'enddate' => $request->post('end'),
-  'border' => $request->post('currColor'),
-  'background' => $request->post('currColor'),
-  'academicyear' => $year,
-  'semester' => $semester,
-  'lectid' => auth()->user()->id,
-  'coursecode' => $request->post('code'),
-  'lecname' => auth()->user()->name,
-];
+            'title' => $request->post('title'),
+            'startdate' => $request->post('start'),
+            'enddate' => $request->post('end'),
+            'border' => $request->post('currColor'),
+            'background' => $request->post('currColor'),
+            'academicyear' => $year,
+            'semester' => $semester,
+            'lectid' => auth()->user()->id,
+            'coursecode' => $request->post('code'),
+            'lecname' => auth()->user()->name,
+        ];
 
         if ($request->has('hiddenid')) {
             AcademicCalendar::where('id', $request->post('hiddenid'))->update($data);
@@ -253,23 +253,23 @@ class LMSController extends Controller
     public function lec_announcements_save(Request $request)
     {
         $this->validate($request, [
-    'title' => 'required',
-    'message' => 'required',
-  ]);
+            'title' => 'required',
+            'message' => 'required',
+        ]);
 
         $academicyear = Academicyear::where('status', '1')->first();
         $year = $academicyear->acdemicyear;
         $semester = $academicyear->semester;
 
         $data = [
-    'title' => $request->input('title'),
-    'message' => $request->input('message'),
-    'academicyear' => $year,
-    'semester' => $semester,
-    'user_id' => auth()->user()->id,
-    'course_code' => $request->input('coursecode'),
-    'fullname' => auth()->user()->name,
-  ];
+            'title' => $request->input('title'),
+            'message' => $request->input('message'),
+            'academicyear' => $year,
+            'semester' => $semester,
+            'user_id' => auth()->user()->id,
+            'course_code' => $request->input('coursecode'),
+            'fullname' => auth()->user()->name,
+        ];
 
         if ($request->has('hiddenid')) {
             $id = $request->post('hiddenid');
@@ -289,10 +289,10 @@ class LMSController extends Controller
                 //send email to students
 
                 $students = Studentgrouping::where('year', $year)
-          ->where('semester', $semester)
-          ->where('coursecode', $cousers)
-          ->where('lecid', auth()->user()->id)
-          ->get();
+                    ->where('semester', $semester)
+                    ->where('coursecode', $cousers)
+                    ->where('lecid', auth()->user()->id)
+                    ->get();
 
                 $this->dispatch(new notifystudent($students, $request->input('title'), $request->input('message'), auth()->user()->email, auth()->user()->name));
             }
@@ -390,7 +390,7 @@ class LMSController extends Controller
         $examsid = $exam->id;
         $totalquestions = $exam->totalquestion;
 
-        return view('LMS.lecturer.add_questions', ['examsid'=>$examsid, 'totalquestions'=>$totalquestions]);
+        return view('LMS.lecturer.add_questions', ['examsid' => $examsid, 'totalquestions' => $totalquestions]);
     }
 
     public function lec_edit_test_quiz($code, $id)
@@ -398,7 +398,7 @@ class LMSController extends Controller
         $programm = Programme::all();
         $exam = Exam::where('id', $id)->first();
 
-        return view('LMS.lecturer.edit_exams', ['exams'=>$exam, 'prog'=>$programm]);
+        return view('LMS.lecturer.edit_exams', ['exams' => $exam, 'prog' => $programm]);
     }
 
     public function lec_quisquestion_test_quiz($code, $id)
@@ -415,12 +415,12 @@ class LMSController extends Controller
             ->where('exam_id', $examid)
             ->get();
 
-        return view('LMS.lecturer.lec_exam_view', ['answer'=>$anser, 'questions'=>$ques, 'examsid'=>$examid, 'examtot'=>$examtot]);
+        return view('LMS.lecturer.lec_exam_view', ['answer' => $anser, 'questions' => $ques, 'examsid' => $examid, 'examtot' => $examtot]);
     }
 
     public function more_questions($code, $quanty, $examid)
     {
-        return view('LMS.lecturer.add_more_question', ['examsid'=>$examid, 'totalquestions'=>$quanty]);
+        return view('LMS.lecturer.add_more_question', ['examsid' => $examid, 'totalquestions' => $quanty]);
     }
 
     public function lect_question_edit($code, $id)
@@ -437,7 +437,7 @@ class LMSController extends Controller
             ->where('exam_id', $examsid)
             ->get();
 
-        return view('LMS.lecturer.edit_question', ['answer'=>$anser, 'examsid'=>$examsid, 'totalquestions'=>$totalquestions, 'questions'=>$ques]);
+        return view('LMS.lecturer.edit_question', ['answer' => $anser, 'examsid' => $examsid, 'totalquestions' => $totalquestions, 'questions' => $ques]);
     }
 
     public function view_exams_score($code, $id)
@@ -446,7 +446,7 @@ class LMSController extends Controller
 
         $user = DB::table('users')->where('indexnumber', 'like', '%GES%')->get();
 
-        return view('LMS.lecturer.view_exam_score', ['score'=>$exscore, 'user'=>$user]);
+        return view('LMS.lecturer.view_exam_score', ['score' => $exscore, 'user' => $user]);
     }
 
     public function lec_gradebook($code)
@@ -467,25 +467,25 @@ class LMSController extends Controller
     public function lec_gradebook_save(Request $request)
     {
         $this->validate($request, [
-    'attendancescore' => 'required',
-    'quiz' => 'required',
-    'exams' => 'required',
-  ]);
+            'attendancescore' => 'required',
+            'quiz' => 'required',
+            'exams' => 'required',
+        ]);
 
         $academicyear = Academicyear::where('status', '1')->first();
         $year = $academicyear->acdemicyear;
         $semester = $academicyear->semester;
 
         $data = [
-    'attendance' => $request->input('attendancescore'),
-    'quiz' => $request->input('quiz'),
-    'exams' => $request->input('exams'),
-    'academicyear' => $year,
-    'semester' => $semester,
-    'user_id' => auth()->user()->id,
-    'course_code' => $request->input('coursecode'),
-    'fullname' => auth()->user()->name,
-  ];
+            'attendance' => $request->input('attendancescore'),
+            'quiz' => $request->input('quiz'),
+            'exams' => $request->input('exams'),
+            'academicyear' => $year,
+            'semester' => $semester,
+            'user_id' => auth()->user()->id,
+            'course_code' => $request->input('coursecode'),
+            'fullname' => auth()->user()->name,
+        ];
 
         if ($request->has('hiddenid')) {
             $new = Gradebook::findorfail($request->post('hiddenid'))->update($data);
@@ -520,16 +520,16 @@ class LMSController extends Controller
     public function lec_meetings_save(Request $request)
     {
         $this->validate($request, [
-    'title' => 'required',
-    'start-time' => 'required',
-    'duration' => 'required',
-  ]);
+            'title' => 'required',
+            'start-time' => 'required',
+            'duration' => 'required',
+        ]);
 
         $data = [
-    'topic' => $request->input('title'),
-    'start_time' => new Carbon($request->input('start-time')),
-    'duration' => $request->input('duration'),
-  ];
+            'topic' => $request->input('title'),
+            'start_time' => new Carbon($request->input('start-time')),
+            'duration' => $request->input('duration'),
+        ];
 
         $meeting = Zoom::user()->find('ogua.ahmed18@gmail.com')
             ->meetings()->create($data);
@@ -540,32 +540,32 @@ class LMSController extends Controller
 
         if ($meeting) {
             $meeting->settings()->make([
-    'host_video' => true,
-    'participant_video' => true,
-    'join_before_host' => false,
-    'approval_type' => 2,
-    'registration_type' => 2,
-    'enforce_login' => false,
-    'waiting_room' => false,
-  ]);
+                'host_video' => true,
+                'participant_video' => true,
+                'join_before_host' => false,
+                'approval_type' => 2,
+                'registration_type' => 2,
+                'enforce_login' => false,
+                'waiting_room' => false,
+            ]);
 
             //$meeting->save();
 
             $details = [
-    'zoomid' => $meeting->id,
-    'user_id' => $meeting->user_id,
-    'uuid' => $meeting->uuid,
-    'lec_id' => auth()->user()->id,
-    'lec_name' => auth()->user()->name,
-    'title' => $request->input('title'),
-    'starttime' => $request->input('start-time'),
-    'duration' => $request->input('duration'),
-    'cousers' => $request->input('cousers'),
-    'join_url' => $meeting->join_url,
-    'start_url' => $meeting->start_url,
-    'academicyear' => $year,
-    'semester' => $semester,
-  ];
+                'zoomid' => $meeting->id,
+                'user_id' => $meeting->user_id,
+                'uuid' => $meeting->uuid,
+                'lec_id' => auth()->user()->id,
+                'lec_name' => auth()->user()->name,
+                'title' => $request->input('title'),
+                'starttime' => $request->input('start-time'),
+                'duration' => $request->input('duration'),
+                'cousers' => $request->input('cousers'),
+                'join_url' => $meeting->join_url,
+                'start_url' => $meeting->start_url,
+                'academicyear' => $year,
+                'semester' => $semester,
+            ];
 
             $zoom = new Zoomweb($details);
             $zoom->save();
@@ -589,10 +589,10 @@ class LMSController extends Controller
     public function lec_email_save(Request $request)
     {
         $this->validate($request, [
-    'subject' => 'required',
-    'compose' => 'required',
-    'sendto' => 'required',
-  ]);
+            'subject' => 'required',
+            'compose' => 'required',
+            'sendto' => 'required',
+        ]);
 
         $academicyear = Academicyear::where('status', '1')->first();
         $year = $academicyear->acdemicyear;
@@ -632,7 +632,7 @@ class LMSController extends Controller
         $course = Course::all();
         $prog = Programme::all();
 
-        return view('LMS.lecturer.attendance', ['data' => $course, 'prog'=>$prog]);
+        return view('LMS.lecturer.attendance', ['data' => $course, 'prog' => $prog]);
     }
 
     public function getstudentsattenca(Request $request)
@@ -659,8 +659,8 @@ class LMSController extends Controller
             ->where('semester', $semester)->get()
             ->groupBy('indexnumber')
             ->map(function ($items) {
-        return $items->pluck('indexnumber', 'date');
-    });
+                return $items->pluck('indexnumber', 'date');
+            });
 
         $year = date('Y', strtotime($date));
         $month = date('m', strtotime($date));
@@ -699,8 +699,8 @@ class LMSController extends Controller
             ->where('semester', $semester)->get()
             ->groupBy('indexnumber')
             ->map(function ($items) {
-        return $items->pluck('indexnumber', 'date');
-    });
+                return $items->pluck('indexnumber', 'date');
+            });
 
         $year = date('Y', strtotime($date));
         $month = date('m', strtotime($date));
@@ -745,25 +745,25 @@ class LMSController extends Controller
 
         $dates = [
             [
-                'year'     => $previousDateYear,
-                'month'    => $previousDateMonth,
+                'year' => $previousDateYear,
+                'month' => $previousDateMonth,
                 'fullName' => $this->getYearAndFullMonthName($previousDateYear, $previousDateMonth),
-                'date'        => $previousDate,
+                'date' => $previousDate,
             ],
             [
-                'year'     => $currentDateYear,
-                'month'    => $currentDateMonth,
+                'year' => $currentDateYear,
+                'month' => $currentDateMonth,
                 'fullName' => $this->getYearAndFullMonthName($currentDateYear, $currentDateMonth),
-                'date'        => $currentDate,
+                'date' => $currentDate,
             ],
         ];
 
         if ($year < now()->year | ($year == now()->year && $month < now()->month)) {
             $dates[] = [
-                'year'     => $nextDateYear,
-                'month'    => $nextDateMonth,
+                'year' => $nextDateYear,
+                'month' => $nextDateMonth,
                 'fullName' => $this->getYearAndFullMonthName($nextDateYear, $nextDateMonth),
-                'date'        => $nextDate,
+                'date' => $nextDate,
             ];
         }
 
@@ -815,8 +815,8 @@ class LMSController extends Controller
             ->where('semester', $semester)->get()
             ->groupBy('indexnumber')
             ->map(function ($items) {
-        return $items->pluck('indexnumber', 'date');
-    });
+                return $items->pluck('indexnumber', 'date');
+            });
 
         $year = date('Y', strtotime($date));
         $month = date('m', strtotime($date));
@@ -873,27 +873,27 @@ class LMSController extends Controller
 
             // echo $key.'=>'.$value;
 
-            for ($i = 0; $i < $countdate; $i++) {
+            for ($i = 0; $i < $countdate; ++$i) {
                 $datenow = $date[$i];
                 $day = substr($datenow, 8);
                 $month = substr($datenow, 5, 2);
                 $year = substr($datenow, 0, 4);
 
                 $data = [
-            'indexnumber' => $curindex,
-            'attendance' => 'P',
-            'note' => '',
-            'year' => $year,
-            'month' => $month,
-            'day' => $day,
-            'date' => $datenow,
-            'academicyear' => $academicyear,
-            'semester' => $semester,
-            'lectid' => auth()->user()->id,
-            'coursecode' => $code,
-            'lecname' => auth()->user()->name,
-            'session' => $session,
-        ];
+                    'indexnumber' => $curindex,
+                    'attendance' => 'P',
+                    'note' => '',
+                    'year' => $year,
+                    'month' => $month,
+                    'day' => $day,
+                    'date' => $datenow,
+                    'academicyear' => $academicyear,
+                    'semester' => $semester,
+                    'lectid' => auth()->user()->id,
+                    'coursecode' => $code,
+                    'lecname' => auth()->user()->name,
+                    'session' => $session,
+                ];
 
                 //dd($data);
 
@@ -929,7 +929,7 @@ class LMSController extends Controller
 
         // dd($count);
 
-        for ($i = 0; $i < $count; $i++) {
+        for ($i = 0; $i < $count; ++$i) {
             $loop = $mumber[$i];
             $user = $request->post('user' . $loop);
 
@@ -939,27 +939,27 @@ class LMSController extends Controller
 
             $curindex = $user;
 
-            for ($i = 0; $i < $countdate; $i++) {
+            for ($i = 0; $i < $countdate; ++$i) {
                 $datenow = $date[$i];
                 $day = substr($datenow, 8);
                 $month = substr($datenow, 5, 2);
                 $year = substr($datenow, 0, 4);
 
                 $data = [
-            'indexnumber' => $curindex,
-            'attendance' => 'P',
-            'note' => '',
-            'year' => $year,
-            'month' => $month,
-            'day' => $day,
-            'date' => $datenow,
-            'academicyear' => $academicyear,
-            'semester' => $semester,
-            'lectid' => auth()->user()->id,
-            'coursecode' => $code,
-            'lecname' => auth()->user()->name,
-            'session' => $session,
-        ];
+                    'indexnumber' => $curindex,
+                    'attendance' => 'P',
+                    'note' => '',
+                    'year' => $year,
+                    'month' => $month,
+                    'day' => $day,
+                    'date' => $datenow,
+                    'academicyear' => $academicyear,
+                    'semester' => $semester,
+                    'lectid' => auth()->user()->id,
+                    'coursecode' => $code,
+                    'lecname' => auth()->user()->name,
+                    'session' => $session,
+                ];
 
                 $attendance = StudentAttendances::where('coursecode', $code)
                     ->where('session', $session)
@@ -1182,7 +1182,7 @@ class LMSController extends Controller
 
 </tr>
 ';
-                $loop++;
+                ++$loop;
             }
         } else {
             $html .= '
@@ -1210,7 +1210,7 @@ class LMSController extends Controller
         $course = Course::all();
         $prog = Programme::all();
 
-        return view('LMS.lecturer.reportattendance', ['data' => $course, 'prog'=>$prog]);
+        return view('LMS.lecturer.reportattendance', ['data' => $course, 'prog' => $prog]);
     }
 
     public function attendancereport_fetch(Request $request)
@@ -1417,7 +1417,7 @@ class LMSController extends Controller
 
 </tr>
 ';
-                $loop++;
+                ++$loop;
             }
         } else {
             $html .= '
@@ -1451,7 +1451,7 @@ class LMSController extends Controller
 
         $date = $request->post('date');
 
-        for ($i = 0; $i < $count; $i++) {
+        for ($i = 0; $i < $count; ++$i) {
             $loop = $mumber[$i];
             $indexnumber = $request->post('user' . $loop);
             $attend = $request->post('attend' . $loop);
@@ -1461,20 +1461,20 @@ class LMSController extends Controller
             $year = substr($date, 0, 4);
 
             $data = [
-            'indexnumber' => $indexnumber,
-            'attendance' => $attend,
-            'note' => $note,
-            'year' => $year,
-            'month' => $month,
-            'day' => $day,
-            'date' => $date,
-            'academicyear' => $academicyear,
-            'semester' => $semester,
-            'lectid' => auth()->user()->id,
-            'coursecode' => $code,
-            'lecname' => auth()->user()->name,
-            'session' => $session,
-        ];
+                'indexnumber' => $indexnumber,
+                'attendance' => $attend,
+                'note' => $note,
+                'year' => $year,
+                'month' => $month,
+                'day' => $day,
+                'date' => $date,
+                'academicyear' => $academicyear,
+                'semester' => $semester,
+                'lectid' => auth()->user()->id,
+                'coursecode' => $code,
+                'lecname' => auth()->user()->name,
+                'session' => $session,
+            ];
 
             //make query
             $attendance = StudentAttendances::where('coursecode', $code)
@@ -1538,35 +1538,35 @@ class LMSController extends Controller
     public function lec_lesson_plan_save(Request $request)
     {
         $this->validate($request, [
-    'week' => 'required',
-    'topic' => 'required',
-    'aimlesson' => 'required',
-    'objec' => 'required',
-    'keyskills' => 'required',
-    'coursemat' => 'required',
-    'lessques' => 'required',
-    'lessnote' => 'required',
-  ]);
+            'week' => 'required',
+            'topic' => 'required',
+            'aimlesson' => 'required',
+            'objec' => 'required',
+            'keyskills' => 'required',
+            'coursemat' => 'required',
+            'lessques' => 'required',
+            'lessnote' => 'required',
+        ]);
 
         $academicyear = Academicyear::where('status', '1')->first();
         $year = $academicyear->acdemicyear;
         $semester = $academicyear->semester;
 
         $data = [
-    'week' => $request->input('week'),
-    'topic' => $request->input('topic'),
-    'aims' => $request->input('aimlesson'),
-    'obj' => $request->input('objec'),
-    'skills' => $request->input('keyskills'),
-    'materials' => $request->input('coursemat'),
-    'questions' => $request->input('lessques'),
-    'feedback' => $request->input('lessnote'),
-    'academicyear' => $year,
-    'semester' => $semester,
-    'user_id' => auth()->user()->id,
-    'course_code' => $request->input('coursecode'),
-    'fullname' => auth()->user()->name,
-  ];
+            'week' => $request->input('week'),
+            'topic' => $request->input('topic'),
+            'aims' => $request->input('aimlesson'),
+            'obj' => $request->input('objec'),
+            'skills' => $request->input('keyskills'),
+            'materials' => $request->input('coursemat'),
+            'questions' => $request->input('lessques'),
+            'feedback' => $request->input('lessnote'),
+            'academicyear' => $year,
+            'semester' => $semester,
+            'user_id' => auth()->user()->id,
+            'course_code' => $request->input('coursecode'),
+            'fullname' => auth()->user()->name,
+        ];
 
         if ($request->has('hiddenid')) {
             $new = Lessonplan::findorfail($request->post('hiddenid'))->update($data);
@@ -1597,25 +1597,25 @@ class LMSController extends Controller
     public function lec_lesson_docs_save(Request $request)
     {
         $this->validate($request, [
-    'week' => 'required',
-    'title' => 'required',
-    'doc' => 'required|mimes:pdf,docx,txt',
-  ]);
+            'week' => 'required',
+            'title' => 'required',
+            'doc' => 'required|mimes:pdf,docx,txt',
+        ]);
 
         $academicyear = Academicyear::where('status', '1')->first();
         $year = $academicyear->acdemicyear;
         $semester = $academicyear->semester;
 
         $data = [
-    'week' => $request->input('week'),
-    'title' => $request->input('title'),
-    'doc' => $request->file('doc')->store('Coursefile', 'public'),
-    'academicyear' => $year,
-    'semester' => $semester,
-    'user_id' => auth()->user()->id,
-    'course_code' => $request->input('coursecode'),
-    'fullname' => auth()->user()->name,
-  ];
+            'week' => $request->input('week'),
+            'title' => $request->input('title'),
+            'doc' => $request->file('doc')->store('Coursefile', 'public'),
+            'academicyear' => $year,
+            'semester' => $semester,
+            'user_id' => auth()->user()->id,
+            'course_code' => $request->input('coursecode'),
+            'fullname' => auth()->user()->name,
+        ];
 
         $new = new Lessondoc($data);
         $new->save();
@@ -1665,11 +1665,11 @@ class LMSController extends Controller
     public function lec_online_video_save(Request $request)
     {
         $this->validate($request, [
-    'week' => 'required',
-    'title' => 'required',
-    'desc' => 'required',
-    'url' => 'required',
-  ]);
+            'week' => 'required',
+            'title' => 'required',
+            'desc' => 'required',
+            'url' => 'required',
+        ]);
 
         $academicyear = Academicyear::where('status', '1')->first();
         $year = $academicyear->acdemicyear;
@@ -1682,17 +1682,17 @@ class LMSController extends Controller
         $vid = end($youtudeid);
 
         $data = [
-    'week' => $request->input('week'),
-    'title' => $request->input('title'),
-    'desc' => $request->input('desc'),
-    'url' => $request->input('url'),
-    'youtubeid' => $vid,
-    'academicyear' => $year,
-    'semester' => $semester,
-    'user_id' => auth()->user()->id,
-    'course_code' => $request->input('coursecode'),
-    'fullname' => auth()->user()->name,
-  ];
+            'week' => $request->input('week'),
+            'title' => $request->input('title'),
+            'desc' => $request->input('desc'),
+            'url' => $request->input('url'),
+            'youtubeid' => $vid,
+            'academicyear' => $year,
+            'semester' => $semester,
+            'user_id' => auth()->user()->id,
+            'course_code' => $request->input('coursecode'),
+            'fullname' => auth()->user()->name,
+        ];
 
         //dd($data);
 
@@ -1700,7 +1700,7 @@ class LMSController extends Controller
             $id = $request->post('hiddenid');
             $new = Videoupload::findorfail($id)->update($data);
 
-            return Redirect()->route('lms-lec-online-videos', ['code'=> $request->input('coursecode')])->with('message', 'Video Info Updated Successfully!');
+            return Redirect()->route('lms-lec-online-videos', ['code' => $request->input('coursecode')])->with('message', 'Video Info Updated Successfully!');
         }
         $new = new Videoupload($data);
         $new->save();
@@ -1734,7 +1734,7 @@ class LMSController extends Controller
     {
         $assingment = Assignment::where('id', $id)->first();
 
-        return view('LMS.lecturer.edit_assignment', ['assingment'=> $assingment, 'code'=>$code]);
+        return view('LMS.lecturer.edit_assignment', ['assingment' => $assingment, 'code' => $code]);
     }
 
     public function lec_online_assignment_submitted($code, $id)
@@ -1746,13 +1746,13 @@ class LMSController extends Controller
         $assingment = Submission::where('assignment_id', $id)->get();
 
         $user = Studentgrouping::where('year', $year)
-       ->where('semester', $semester)
-       ->where('coursecode', $code)
-       ->where('lecid', auth()->user()->id)
-       ->get();
+            ->where('semester', $semester)
+            ->where('coursecode', $code)
+            ->where('lecid', auth()->user()->id)
+            ->get();
 
         //dd($assingment);
-        return view('LMS.lecturer.submitted_assignment', ['assingment'=> $assingment, 'user'=> $user]);
+        return view('LMS.lecturer.submitted_assignment', ['assingment' => $assingment, 'user' => $user]);
     }
 
     public function lec_public_chat($code)
@@ -1762,10 +1762,10 @@ class LMSController extends Controller
         $semester = $academicyear->semester;
 
         $grp = Studentgrouping::where('year', $year)
-      ->where('semester', $semester)
-      ->where('coursecode', $code)
-      ->where('lecid', auth()->user()->id)
-      ->get();
+            ->where('semester', $semester)
+            ->where('coursecode', $code)
+            ->where('lecid', auth()->user()->id)
+            ->get();
 
         $user = User::join(
             'studentgroupings',
@@ -1782,7 +1782,9 @@ class LMSController extends Controller
    where('year', $year)
        ->where('semester', $semester)
        ->where('code', $code)
-       ->where('lectid', auth()->user()->id)->groupBy(function ($item) { return $item->created_at->format('d-M-Y'); })->toArray();
+       ->where('lectid', auth()->user()->id)->groupBy(function ($item) {
+           return $item->created_at->format('d-M-Y');
+       })->toArray();
 
         return view('LMS.lecturer.all_chat', ['users' => $user, 'messages' => $message, 'code' => $code, 'grp' => $grp, 'lectid' => auth()->user()->id, 'lecname' => auth()->user()->name]);
     }
@@ -1794,12 +1796,14 @@ class LMSController extends Controller
         $semester = $academicyear->semester;
 
         $user = Studentgrouping::where('year', $year)
-      ->where('semester', $semester)
-      ->where('coursecode', $code)
-      ->where('lecid', auth()->user()->id)
-      ->get();
+            ->where('semester', $semester)
+            ->where('coursecode', $code)
+            ->where('lecid', auth()->user()->id)
+            ->get();
 
-        $message = chatmessages::all()->groupBy(function ($item) { return $item->created_at->format('d-M-Y'); })->toArray();
+        $message = chatmessages::all()->groupBy(function ($item) {
+            return $item->created_at->format('d-M-Y');
+        })->toArray();
 
         return view('LMS.lecturer.private', ['users' => $user, 'messages' => $message, 'code' => $code]);
     }
@@ -1843,19 +1847,19 @@ class LMSController extends Controller
         }
 
         $data = [
-    'indexnumber' => auth()->user()->indexnumber,
-    'studentname' => auth()->user()->name,
-    'year' => $year,
-    'semester' => $semester,
-    'lecname' => $lectname,
-    'lecid' => $lectid,
-    'capacity' => '1',
-    'group' => '',
-    'session' => auth()->user()->studentinfos->session,
-    'coursecode' => $code,
-    'level' => auth()->user()->studentinfos->currentlevel,
-    'progcode' => auth()->user()->studentinfos->progcode,
-  ];
+            'indexnumber' => auth()->user()->indexnumber,
+            'studentname' => auth()->user()->name,
+            'year' => $year,
+            'semester' => $semester,
+            'lecname' => $lectname,
+            'lecid' => $lectid,
+            'capacity' => '1',
+            'group' => '',
+            'session' => auth()->user()->studentinfos->session,
+            'coursecode' => $code,
+            'level' => auth()->user()->studentinfos->currentlevel,
+            'progcode' => auth()->user()->studentinfos->progcode,
+        ];
 
         $check = Studentgrouping::where('indexnumber', auth()->user()->indexnumber)
             ->where('coursecode', $code)
@@ -2044,7 +2048,7 @@ class LMSController extends Controller
                 return Redirect()->back()->with('Message', 'Your Session has Expired!');
             }
             //add to exams tracking
-            $data = ['user_id'=> auth()->user()->id, 'exam_id'=>$examid];
+            $data = ['user_id' => auth()->user()->id, 'exam_id' => $examid];
             $track = new Examtrack($data);
             $track->save();
         }
@@ -2065,10 +2069,10 @@ class LMSController extends Controller
 
         foreach ($ques as $row) {
             $data = [
-    'question_id' => $row['id'],
-    'exam_id' => $row['exam_id'],
-    'user_id' => auth()->user()->id,
-  ];
+                'question_id' => $row['id'],
+                'exam_id' => $row['exam_id'],
+                'user_id' => auth()->user()->id,
+            ];
 
             $stueaxm = new Studentexam($data);
             $stueaxm->save();
@@ -2082,13 +2086,13 @@ class LMSController extends Controller
 
         return Redirect()->route(
             'lms-student-exams-start',
-            ['studentname'=> auth()->user()->name,
-  'examid'=> $examid,
-  'examtotal'=> $examtot,
-  'mins'=> $mins,
-  'code' => $code,
-  'title' => $etitle,
-]
+            ['studentname' => auth()->user()->name,
+                'examid' => $examid,
+                'examtotal' => $examtot,
+                'mins' => $mins,
+                'code' => $code,
+                'title' => $etitle,
+            ]
         );
     }
 
@@ -2100,7 +2104,7 @@ class LMSController extends Controller
         $ques = Studentexam::where('user_id', auth()->user()->id)
             ->where('exam_id', $examid)->get();
 
-        return view('LMS.course.quiz_start', ['mins'=>$mins, 'questions'=>$ques, 'examsid'=>$examid, 'examtot'=>$examtotal, 'code' => $code, 'title' => $title]);
+        return view('LMS.course.quiz_start', ['mins' => $mins, 'questions' => $ques, 'examsid' => $examid, 'examtot' => $examtotal, 'code' => $code, 'title' => $title]);
     }
 
     public function retry_exam_results(Request $request, $id)
@@ -2110,7 +2114,7 @@ class LMSController extends Controller
             ->where('exam_id', $id)->get();
 
         //dd($wrespon);
-        return view('LMS.course.results_view', ['examsresults'=>$wrespon, 'code' => $code]);
+        return view('LMS.course.results_view', ['examsresults' => $wrespon, 'code' => $code]);
     }
 
     public function assignment(Request $request)
@@ -2143,7 +2147,7 @@ class LMSController extends Controller
         $diffs = now()->diffInDays(\Carbon\Carbon::parse($assingment->subenddate), false);
         //dd($diffs);
 
-        return view('LMS.course.assignment_view', ['assignmentid'=> $id, 'row'=> $assingment, 'elapse'=> $diffs, 'subs'=> $sub, 'code' => $code]);
+        return view('LMS.course.assignment_view', ['assignmentid' => $id, 'row' => $assingment, 'elapse' => $diffs, 'subs' => $sub, 'code' => $code]);
     }
 
     public function zoom_meeting(Request $request)
@@ -2198,9 +2202,11 @@ class LMSController extends Controller
 
         $message = chatmessages::all()
             ->where('code', $code)
-            ->where('lectid', $lect)->groupBy(function ($item) { return $item->created_at->format('d-M-Y'); })->toArray();
+            ->where('lectid', $lect)->groupBy(function ($item) {
+                return $item->created_at->format('d-M-Y');
+            })->toArray();
 
-        return view('LMS.course.public_chat', ['users' => $user, 'messages' => $message, 'grp' => $grp, 'code' => $code, 'lectid' => $lect, 'lecname' =>  $lecname]);
+        return view('LMS.course.public_chat', ['users' => $user, 'messages' => $message, 'grp' => $grp, 'code' => $code, 'lectid' => $lect, 'lecname' => $lecname]);
     }
 
     public function chat_room_private(Request $request)
@@ -2227,7 +2233,9 @@ class LMSController extends Controller
             ->where('lecid', $lect)->get();
 
         $message = chatmessages::all()->
-where('type', 'public')->groupBy(function ($item) { return $item->created_at->format('d-M-Y'); })->toArray();
+where('type', 'public')->groupBy(function ($item) {
+    return $item->created_at->format('d-M-Y');
+})->toArray();
 
         return view('LMS.course.private_chat', ['users' => $user, 'messages' => $message, 'lectureid' => $lect, 'code' => $code]);
     }
@@ -2242,15 +2250,15 @@ where('type', 'public')->groupBy(function ($item) { return $item->created_at->fo
     public function private_file_save(Request $request)
     {
         $this->validate($request, [
-    'title' => 'required',
-    'file' => 'required|mimes:pdf,docx,txt',
-  ]);
+            'title' => 'required',
+            'file' => 'required|mimes:pdf,docx,txt',
+        ]);
 
         $data = [
-    'user_id' => auth()->user()->id,
-    'title' => $request->input('title'),
-    'file' => $request->file('file')->store('PrivateFiles', 'public'),
-  ];
+            'user_id' => auth()->user()->id,
+            'title' => $request->input('title'),
+            'file' => $request->file('file')->store('PrivateFiles', 'public'),
+        ];
 
         $new = new Privatefile($data);
         $new->save();
@@ -2278,24 +2286,24 @@ where('type', 'public')->groupBy(function ($item) { return $item->created_at->fo
         return view('LMS.main.calendar');
     }
 
-    public function calendar_save(Request $request)
+    public function calendar_save(Request $request): void
     {
         $academicyear = Academicyear::where('status', '1')->first();
         $year = $academicyear->acdemicyear;
         $semester = $academicyear->semester;
 
         $data = [
-    'title' => $request->post('title'),
-    'startdate' => $request->post('start'),
-    'enddate' => $request->post('end'),
-    'border' => $request->post('currColor'),
-    'background' => $request->post('currColor'),
-    'academicyear' => $year,
-    'semester' => $semester,
-    'lectid' => auth()->user()->id,
-    'coursecode' => '',
-    'lecname' => auth()->user()->name,
-  ];
+            'title' => $request->post('title'),
+            'startdate' => $request->post('start'),
+            'enddate' => $request->post('end'),
+            'border' => $request->post('currColor'),
+            'background' => $request->post('currColor'),
+            'academicyear' => $year,
+            'semester' => $semester,
+            'lectid' => auth()->user()->id,
+            'coursecode' => '',
+            'lecname' => auth()->user()->name,
+        ];
 
         $new = new AcademicCalendar($data);
         $new->save();
@@ -2304,7 +2312,7 @@ where('type', 'public')->groupBy(function ($item) { return $item->created_at->fo
         exit();
     }
 
-    public function calendar_get(Request $request)
+    public function calendar_get(Request $request): void
     {
         $new = AcademicCalendar::all()->toArray();
 
@@ -2330,7 +2338,7 @@ where('type', 'public')->groupBy(function ($item) { return $item->created_at->fo
         return view('LMS.course.calendar');
     }
 
-    public function calendar_getevents(Request $request)
+    public function calendar_getevents(Request $request): void
     {
         $code = $request->get('code');
 
@@ -2362,7 +2370,7 @@ where('type', 'public')->groupBy(function ($item) { return $item->created_at->fo
         return view('LMS.main.course', ['data' => $data]);
     }
 
-    public function my_courses_save(Request $request)
+    public function my_courses_save(Request $request): void
     {
         //dd($request);
         $id = $request->post('cid');

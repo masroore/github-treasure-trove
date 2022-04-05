@@ -3,6 +3,7 @@
 namespace Modules\Setting\Services;
 
 use App\Utils\Option;
+use Exception;
 
 class SabreSettingService
 {
@@ -17,7 +18,7 @@ class SabreSettingService
             Option::set('sabre_printer_terminal', $data['sabre_printer_terminal']);
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
     }

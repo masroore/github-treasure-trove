@@ -3,6 +3,7 @@
 namespace Modules\AdminReview\Services;
 
 use App\Models\Review;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class UpdateReviewService
@@ -16,7 +17,7 @@ class UpdateReviewService
             DB::commit();
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollback();
 
             return false;

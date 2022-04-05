@@ -8,10 +8,14 @@ use App\Models\Employee;
 use App\Models\Leave;
 use App\Models\LeaveType;
 use App\Models\Utility;
+use DateTime;
+use DB;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
+use Validator;
 
 class LeaveController extends Controller
 {
@@ -54,15 +58,15 @@ class LeaveController extends Controller
     public function store(Request $request)
     {
         if (\Auth::user()->can('Create Leave')) {
-            $validator = \Validator::make(
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'leave_type_id' => 'required',
-                                   'start_date' => 'required',
-                                   'end_date' => 'required',
-                                   'leave_reason' => 'required',
-                                   'remark' => 'required',
-                               ]
+                    'leave_type_id' => 'required',
+                    'start_date' => 'required',
+                    'end_date' => 'required',
+                    'leave_reason' => 'required',
+                    'remark' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -121,15 +125,15 @@ class LeaveController extends Controller
         $leave = Leave::find($leave);
         if (\Auth::user()->can('Edit Leave')) {
             if ($leave->created_by == Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+                $validator = Validator::make(
                     $request->all(),
                     [
-                                       'leave_type_id' => 'required',
-                                       'start_date' => 'required',
-                                       'end_date' => 'required',
-                                       'leave_reason' => 'required',
-                                       'remark' => 'required',
-                                   ]
+                        'leave_type_id' => 'required',
+                        'start_date' => 'required',
+                        'end_date' => 'required',
+                        'leave_reason' => 'required',
+                        'remark' => 'required',
+                    ]
                 );
                 if ($validator->fails()) {
                     $messages = $validator->getMessageBag();
@@ -186,8 +190,8 @@ class LeaveController extends Controller
 
         $leave->status = $request->status;
         if ('Approval' == $leave->status) {
-            $startDate = new \DateTime($leave->start_date);
-            $endDate = new \DateTime($leave->end_date);
+            $startDate = new DateTime($leave->start_date);
+            $endDate = new DateTime($leave->end_date);
             $total_leave_days = $startDate->diff($endDate)->days;
             $leave->total_leave_days = $total_leave_days;
             $leave->status = 'Approve';
@@ -209,9 +213,10 @@ class LeaveController extends Controller
             $employee = Employee::where('id', $leave->employee_id)->where('created_by', '=', \Auth::user()->creatorId())->first();
             $leave->name = !empty($employee->name) ? $employee->name : '';
             $leave->email = !empty($employee->email) ? $employee->email : '';
+
             try {
                 Mail::to($leave->email)->send(new LeaveActionSend($leave));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $smtp_error = __('E-Mail has been not sent due to SMTP configuration');
             }
 
@@ -230,13 +235,13 @@ class LeaveController extends Controller
 //        }
 //        )->groupBy('leaves.leave_type_id')->get();
 
-        $leave_counts = LeaveType::select(\DB::raw('COALESCE(SUM(leaves.total_leave_days),0) AS total_leave, leave_types.title, leave_types.days,leave_types.id'))
+        $leave_counts = LeaveType::select(DB::raw('COALESCE(SUM(leaves.total_leave_days),0) AS total_leave, leave_types.title, leave_types.days,leave_types.id'))
             ->leftjoin(
                 'leaves',
-                function ($join) use ($request) {
-                                     $join->on('leaves.leave_type_id', '=', 'leave_types.id');
-                                     $join->where('leaves.employee_id', '=', $request->employee_id);
-                                 }
+                function ($join) use ($request): void {
+                    $join->on('leaves.leave_type_id', '=', 'leave_types.id');
+                    $join->where('leaves.employee_id', '=', $request->employee_id);
+                }
             )->groupBy('leaves.leave_type_id')->get();
 
         return $leave_counts;

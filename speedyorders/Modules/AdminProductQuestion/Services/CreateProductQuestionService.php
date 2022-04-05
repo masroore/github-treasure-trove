@@ -3,6 +3,7 @@
 namespace Modules\AdminProductQuestion\Services;
 
 use App\Models\ProductQuestion;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class CreateProductQuestionService
@@ -15,7 +16,7 @@ class CreateProductQuestionService
             DB::commit();
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollback();
 
             return false;

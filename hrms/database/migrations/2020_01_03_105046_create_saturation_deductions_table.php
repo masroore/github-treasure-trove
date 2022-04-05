@@ -8,12 +8,10 @@ class CreateSaturationDeductionsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('saturation_deductions', function (Blueprint $table) {
+        Schema::create('saturation_deductions', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->integer('employee_id');
             $table->integer('deduction_option');
@@ -26,10 +24,8 @@ class CreateSaturationDeductionsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('saturation_deductions');
     }

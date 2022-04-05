@@ -8,12 +8,10 @@ class CreateFavoritesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('favorites', function (Blueprint $table) {
+        Schema::create('favorites', function (Blueprint $table): void {
             $table->id();
             $table->morphs('favorable');
             $table->foreignId('user_id')->nullable()
@@ -28,10 +26,8 @@ class CreateFavoritesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('favorites');
     }

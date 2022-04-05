@@ -11,15 +11,17 @@ class sendquickmail extends Notification
     use Queueable;
 
     public $to;
+
     public $subject;
+
     public $message;
+
     public $from;
+
     public $file;
 
     /**
      * Create a new notification instance.
-     *
-     * @return void
      */
     public function __construct($to, $subject, $message, $from)
     {

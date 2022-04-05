@@ -8,12 +8,10 @@ class CreateCategoriesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('name');
             $table->longText('description')->nullable();
@@ -35,10 +33,8 @@ class CreateCategoriesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('categories');
     }

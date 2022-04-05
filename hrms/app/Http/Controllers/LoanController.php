@@ -5,32 +5,34 @@ namespace App\Http\Controllers;
 use App\Models\Employee;
 use App\Models\Loan;
 use App\Models\LoanOption;
+use Auth;
 use Illuminate\Http\Request;
+use Validator;
 
 class LoanController extends Controller
 {
     public function loanCreate($id)
     {
         $employee = Employee::find($id);
-        $loan_options = LoanOption::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        $loan_options = LoanOption::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
 
         return view('loan.create', compact('employee', 'loan_options'));
     }
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('Create Loan')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Create Loan')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'employee_id' => 'required',
-                                   'loan_option' => 'required',
-                                   'title' => 'required',
-                                   'amount' => 'required',
-                                   'start_date' => 'required',
-                                   'end_date' => 'required',
-                                   'reason' => 'required',
-                               ]
+                    'employee_id' => 'required',
+                    'loan_option' => 'required',
+                    'title' => 'required',
+                    'amount' => 'required',
+                    'start_date' => 'required',
+                    'end_date' => 'required',
+                    'reason' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -46,7 +48,7 @@ class LoanController extends Controller
             $loan->start_date = $request->start_date;
             $loan->end_date = $request->end_date;
             $loan->reason = $request->reason;
-            $loan->created_by = \Auth::user()->creatorId();
+            $loan->created_by = Auth::user()->creatorId();
             $loan->save();
 
             return redirect()->back()->with('success', __('Loan  successfully created.'));
@@ -63,9 +65,9 @@ class LoanController extends Controller
     public function edit($loan)
     {
         $loan = Loan::find($loan);
-        if (\Auth::user()->can('Edit Loan')) {
-            if ($loan->created_by == \Auth::user()->creatorId()) {
-                $loan_options = LoanOption::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        if (Auth::user()->can('Edit Loan')) {
+            if ($loan->created_by == Auth::user()->creatorId()) {
+                $loan_options = LoanOption::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
 
                 return view('loan.edit', compact('loan', 'loan_options'));
             }
@@ -78,19 +80,19 @@ class LoanController extends Controller
 
     public function update(Request $request, Loan $loan)
     {
-        if (\Auth::user()->can('Edit Loan')) {
-            if ($loan->created_by == \Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+        if (Auth::user()->can('Edit Loan')) {
+            if ($loan->created_by == Auth::user()->creatorId()) {
+                $validator = Validator::make(
                     $request->all(),
                     [
 
-                                       'loan_option' => 'required',
-                                       'title' => 'required',
-                                       'amount' => 'required',
-                                       'start_date' => 'required',
-                                       'end_date' => 'required',
-                                       'reason' => 'required',
-                                   ]
+                        'loan_option' => 'required',
+                        'title' => 'required',
+                        'amount' => 'required',
+                        'start_date' => 'required',
+                        'end_date' => 'required',
+                        'reason' => 'required',
+                    ]
                 );
                 if ($validator->fails()) {
                     $messages = $validator->getMessageBag();
@@ -116,8 +118,8 @@ class LoanController extends Controller
 
     public function destroy(Loan $loan)
     {
-        if (\Auth::user()->can('Delete Loan')) {
-            if ($loan->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('Delete Loan')) {
+            if ($loan->created_by == Auth::user()->creatorId()) {
                 $loan->delete();
 
                 return redirect()->back()->with('success', __('Loan successfully deleted.'));

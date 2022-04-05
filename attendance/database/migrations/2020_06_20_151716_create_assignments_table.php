@@ -8,12 +8,10 @@ class CreateAssignmentsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('assignments', function (Blueprint $table) {
+        Schema::create('assignments', function (Blueprint $table): void {
             $table->increments('id');
             $table->integer('lecturer_id');
             $table->string('lname')->nullable();
@@ -33,10 +31,8 @@ class CreateAssignmentsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('assignments');
     }

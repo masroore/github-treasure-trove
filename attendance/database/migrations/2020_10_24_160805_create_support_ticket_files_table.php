@@ -8,12 +8,10 @@ class CreateSupportTicketFilesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('support_ticket_files', function (Blueprint $table) {
+        Schema::create('support_ticket_files', function (Blueprint $table): void {
             $table->increments('id');
             $table->integer('ticket_id');
             $table->integer('cl_id');
@@ -28,10 +26,8 @@ class CreateSupportTicketFilesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('support_ticket_files');
     }

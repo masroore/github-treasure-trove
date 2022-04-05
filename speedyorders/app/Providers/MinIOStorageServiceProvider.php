@@ -8,19 +8,15 @@ class MinIOStorageServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application Services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
     }
 
     /**
      * Register the application Services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
     }
 }

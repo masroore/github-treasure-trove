@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Performance_Type;
+use Auth;
 use Illuminate\Http\Request;
+use Validator;
 
 class PerformanceTypeController extends Controller
 {
@@ -14,7 +16,7 @@ class PerformanceTypeController extends Controller
      */
     public function index()
     {
-        $performance_types = Performance_Type::where('created_by', '=', \Auth::user()->id)->get();
+        $performance_types = Performance_Type::where('created_by', '=', Auth::user()->id)->get();
 
         return view('performance_type.index', compact('performance_types'));
     }
@@ -36,7 +38,7 @@ class PerformanceTypeController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = \Validator::make(
+        $validator = Validator::make(
             $request->all(),
             [
                 'name' => 'required',
@@ -51,7 +53,7 @@ class PerformanceTypeController extends Controller
 
         $performance_type = new Performance_Type();
         $performance_type->name = $request->name;
-        $performance_type->created_by = \Auth::user()->id;
+        $performance_type->created_by = Auth::user()->id;
         $performance_type->save();
 
         return redirect()->back()->with('success', 'Performance Type created successfully');
@@ -64,7 +66,6 @@ class PerformanceTypeController extends Controller
      */
     public function show(Performance_Type $performance_Type)
     {
-
     }
 
     /**
@@ -86,7 +87,7 @@ class PerformanceTypeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validator = \Validator::make(
+        $validator = Validator::make(
             $request->all(),
             [
                 'name' => 'required',
@@ -113,6 +114,5 @@ class PerformanceTypeController extends Controller
      */
     public function destroy(Performance_Type $performance_Type)
     {
-
     }
 }

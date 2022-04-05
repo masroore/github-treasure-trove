@@ -8,20 +8,20 @@ class SystemCalendarController extends Controller
 {
     public $sources = [
         [
-            'model'      => '\App\Models\PropoertyInquiry',
+            'model' => '\App\Models\PropoertyInquiry',
             'date_field' => 'created_at',
-            'field'      => 'full_name',
-            'prefix'     => '',
-            'suffix'     => '',
-            'route'      => 'admin.propoerty-inquiries.edit',
+            'field' => 'full_name',
+            'prefix' => '',
+            'suffix' => '',
+            'route' => 'admin.propoerty-inquiries.edit',
         ],
         [
-            'model'      => '\App\Models\PropertyReview',
+            'model' => '\App\Models\PropertyReview',
             'date_field' => 'created_at',
-            'field'      => 'full_name',
-            'prefix'     => '',
-            'suffix'     => '',
-            'route'      => 'admin.property-reviews.edit',
+            'field' => 'full_name',
+            'prefix' => '',
+            'suffix' => '',
+            'route' => 'admin.property-reviews.edit',
         ],
     ];
 
@@ -39,7 +39,7 @@ class SystemCalendarController extends Controller
                 $events[] = [
                     'title' => trim($source['prefix'] . ' ' . $model->{$source['field']} . ' ' . $source['suffix']),
                     'start' => $crudFieldValue,
-                    'url'   => route($source['route'], $model->id),
+                    'url' => route($source['route'], $model->id),
                 ];
             }
         }

@@ -6,15 +6,13 @@ class PostTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         $post = new \App\Votes(
             [
-                'title'=> 'This is a default title',
-                'content'=> 'This is a default content',
+                'title' => 'This is a default title',
+                'content' => 'This is a default content',
             ]
         );
 
@@ -22,8 +20,8 @@ class PostTableSeeder extends Seeder
 
         $post = new \App\Votes(
             [
-                'title'=> 'This is a default title2',
-                'content'=> 'This is a default content2',
+                'title' => 'This is a default title2',
+                'content' => 'This is a default content2',
             ]
         );
 

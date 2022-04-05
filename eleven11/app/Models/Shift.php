@@ -46,7 +46,7 @@ class Shift extends Model
         return $value ? Carbon::parse($value)->format(config('panel.date_format')) : null;
     }
 
-    public function setStartDateAttribute($value)
+    public function setStartDateAttribute($value): void
     {
         $this->attributes['start_date'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
@@ -56,7 +56,7 @@ class Shift extends Model
         return $value ? Carbon::parse($value)->format(config('panel.date_format')) : null;
     }
 
-    public function setEndDateAttribute($value)
+    public function setEndDateAttribute($value): void
     {
         $this->attributes['end_date'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }

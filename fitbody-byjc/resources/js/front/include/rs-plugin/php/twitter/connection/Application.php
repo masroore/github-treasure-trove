@@ -38,19 +38,17 @@ class Application extends Base
      *
      * @return array
      */
-    protected function _buildHeaders($url, ?array $parameters = null, $method)
+    protected function _buildHeaders($url, ?array $parameters, $method)
     {
         return $headers = [
-                    'Authorization: Bearer ' . $this->_getBearerToken(),
-                ];
+            'Authorization: Bearer ' . $this->_getBearerToken(),
+        ];
     }
 
     /**
      * Get Bearer token.
      *
      * @see https://dev.twitter.com/docs/auth/application-only-auth
-     *
-     * @throws \TwitterPhp\RestApiException
      *
      * @return string
      */

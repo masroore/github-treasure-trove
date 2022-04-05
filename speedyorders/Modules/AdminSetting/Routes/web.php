@@ -11,7 +11,7 @@
 |
 */
 
-Route::group(['prefix' => '/admin/settings', 'middleware' => 'auth:admin'], function () {
+Route::group(['prefix' => '/admin/settings', 'middleware' => 'auth:admin'], function (): void {
     Route::get('/general', 'AdminSettingController@index')
         ->name('admin.settings')
         ->middleware('can:general-setting');

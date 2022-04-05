@@ -16,7 +16,7 @@ class UpdateCouponRequest extends FormRequest
         return [
             'code' => 'required|string|max:255|unique:coupons,code,' . $this->id,
             'type' => 'required|in:percentage,flat',
-            'amount' => "required|regex:/^\d+(\.\d{1,2})?$/",
+            'amount' => 'required|regex:/^\\d+(\\.\\d{1,2})?$/',
             'max_limit' => 'required|numeric',
             'limit_per_user' => 'required|numeric',
             'min_order_amount' => 'nullable|numeric',

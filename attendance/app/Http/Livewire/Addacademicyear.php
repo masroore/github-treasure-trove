@@ -8,26 +8,28 @@ use Livewire\Component;
 class Addacademicyear extends Component
 {
     public $academics;
+
     public $semester;
+
     public $allacdemics;
 
-    public function updated($field)
+    public function updated($field): void
     {
         $this->validateOnly($field, [
             'academics' => 'required|min:9',
-            'semester'=> 'required',
+            'semester' => 'required',
         ]);
     }
 
-    public function submitform()
+    public function submitform(): void
     {
         $this->validate([
             'academics' => 'required|min:9',
-            'semester'=> 'required',
+            'semester' => 'required',
         ]);
 
         $data = [
-            'acdemicyear'=>$this->academics,
+            'acdemicyear' => $this->academics,
             'semester' => $this->semester,
         ];
 
@@ -36,7 +38,7 @@ class Addacademicyear extends Component
         $this->emit('Added', '0');
     }
 
-    public function mount($academic)
+    public function mount($academic): void
     {
         $this->allacdemics = $academic;
     }

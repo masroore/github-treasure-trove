@@ -42,7 +42,6 @@ class ProductController extends BaseController
      */
     public function create()
     {
-
     }
 
     /**
@@ -88,7 +87,6 @@ class ProductController extends BaseController
      */
     public function edit($id)
     {
-
     }
 
     /**
@@ -132,7 +130,6 @@ class ProductController extends BaseController
 //        dd($request);
         try {
             $this->productService->deleteImage($request->image);
-
         } catch (Exception $e) {
             return $this->sendError($e->getMessage());
         }

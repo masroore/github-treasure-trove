@@ -8,9 +8,9 @@ require 'phpmailer/src/SMTP.php';
 $toemails = [];
 
 $toemails[] = [
-                'email' => 'username@website.com', // Your Email Address
-                'name' => 'Your Name', // Your Name
-            ];
+    'email' => 'username@website.com', // Your Email Address
+    'name' => 'Your Name', // Your Name
+];
 
 // Form Processing Messages
 $message_success = 'We have <strong>successfully</strong> received your Message and will get Back to you as soon as possible.';

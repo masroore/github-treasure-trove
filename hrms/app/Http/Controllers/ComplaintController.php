@@ -6,9 +6,11 @@ use App\Mail\ComplaintsSend;
 use App\Models\Complaint;
 use App\Models\Employee;
 use App\Models\Utility;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Validator;
 
 class ComplaintController extends Controller
 {
@@ -51,21 +53,21 @@ class ComplaintController extends Controller
     {
         if (\Auth::user()->can('Create Complaint')) {
             if ('employee' != \Auth::user()->type) {
-                $validator = \Validator::make(
+                $validator = Validator::make(
                     $request->all(),
                     [
-                                       'complaint_from' => 'required',
-                                   ]
+                        'complaint_from' => 'required',
+                    ]
                 );
             }
 
-            $validator = \Validator::make(
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'complaint_against' => 'required',
-                                   'title' => 'required',
-                                   'complaint_date' => 'required',
-                               ]
+                    'complaint_against' => 'required',
+                    'title' => 'required',
+                    'complaint_date' => 'required',
+                ]
             );
 
             if ($validator->fails()) {
@@ -95,7 +97,7 @@ class ComplaintController extends Controller
 
                 try {
                     Mail::to($complaint->email)->send(new ComplaintsSend($complaint));
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     $smtp_error = __('E-Mail has been not sent due to SMTP configuration');
                 }
 
@@ -141,22 +143,22 @@ class ComplaintController extends Controller
         if (\Auth::user()->can('Edit Complaint')) {
             if ($complaint->created_by == \Auth::user()->creatorId()) {
                 if ('employee' != \Auth::user()->type) {
-                    $validator = \Validator::make(
+                    $validator = Validator::make(
                         $request->all(),
                         [
-                                           'complaint_from' => 'required',
-                                       ]
+                            'complaint_from' => 'required',
+                        ]
                     );
                 }
 
-                $validator = \Validator::make(
+                $validator = Validator::make(
                     $request->all(),
                     [
 
-                                       'complaint_against' => 'required',
-                                       'title' => 'required',
-                                       'complaint_date' => 'required',
-                                   ]
+                        'complaint_against' => 'required',
+                        'title' => 'required',
+                        'complaint_date' => 'required',
+                    ]
                 );
 
                 if ($validator->fails()) {

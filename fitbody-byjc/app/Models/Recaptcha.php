@@ -71,7 +71,7 @@ class Recaptcha
     private function setContentData(string $recaptcha)
     {
         return [
-            'secret'   => config('services.recaptcha.secret'),
+            'secret' => config('services.recaptcha.secret'),
             'response' => $recaptcha,
             'remoteip' => $this->remote_ip,
         ];
@@ -84,8 +84,8 @@ class Recaptcha
     {
         return [
             'http' => [
-                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-                'method'  => 'POST',
+                'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method' => 'POST',
                 'content' => http_build_query($data),
             ],
         ];

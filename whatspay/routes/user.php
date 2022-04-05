@@ -8,7 +8,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // routes without auth
-Route::post('/noti', function () {
+Route::post('/noti', function (): void {
     $notifiable_type = 'App\Models\Orders';
     $notifiable_id = 1;
     $sender_id = 3;
@@ -29,7 +29,7 @@ Route::post('/reset_link', [UserController::class, 'resetWithLink']);
 Route::post('/resend_code', [UserController::class, 'resendActivationCode']);
 Route::delete('/delete/{email}', [UserController::class, 'destroy']);
 // routes with auth
-Route::group(['middleware' => 'auth:sanctum'], function () {
+Route::group(['middleware' => 'auth:sanctum'], function (): void {
     Route::post('/change_password', [UserController::class, 'changePassword']);
     Route::get('/deactivate', [UserController::class, 'deactivate']);
 
@@ -41,7 +41,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::put('/{store}/default', [UserController::class, 'default']);
 
-    Route::group(['prefix' => 'notification'], function () {
+    Route::group(['prefix' => 'notification'], function (): void {
         Route::get('/', [UserController::class, 'notificationview']);
         Route::delete('/{id}', [StoreController::class, 'deletenoti']);
         Route::post('/{id}', [StoreController::class, 'statuChange']);
@@ -54,42 +54,42 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     // address routes
     Route::resource('address', AddressController::class);
 
-    Route::group(['prefix' => 'comment'], function () {
-        Route::post('/store', ['uses'=>'App\Http\Controllers\CommentController@storeComments']);
-        Route::post('/product', ['uses'=>'App\Http\Controllers\CommentController@productComments']);
-        Route::get('/store/{id}', ['uses'=>'App\Http\Controllers\CommentController@showStoreComments']);
-        Route::post('/like', ['uses'=>'App\Http\Controllers\CommentController@like']);
-        Route::post('/{id}', ['uses'=>'App\Http\Controllers\CommentController@update']);
-        Route::delete('/{id}', ['uses'=>'App\Http\Controllers\CommentController@destroy']);
+    Route::group(['prefix' => 'comment'], function (): void {
+        Route::post('/store', ['uses' => 'App\Http\Controllers\CommentController@storeComments']);
+        Route::post('/product', ['uses' => 'App\Http\Controllers\CommentController@productComments']);
+        Route::get('/store/{id}', ['uses' => 'App\Http\Controllers\CommentController@showStoreComments']);
+        Route::post('/like', ['uses' => 'App\Http\Controllers\CommentController@like']);
+        Route::post('/{id}', ['uses' => 'App\Http\Controllers\CommentController@update']);
+        Route::delete('/{id}', ['uses' => 'App\Http\Controllers\CommentController@destroy']);
     });
 
-    Route::group(['prefix' => 'order'], function () {
+    Route::group(['prefix' => 'order'], function (): void {
         Route::get('/get-payment-methods/', ['uses' => 'App\Http\Controllers\CardSessionController@index']);
         Route::put('/manage-payment-method-default-status/{id}', ['uses' => 'App\Http\Controllers\CardSessionController@update']);
         Route::delete('/delete-payment-method/{id}', ['uses' => 'App\Http\Controllers\CardSessionController@destroy']);
-        Route::post('/place-order', ['uses'=>'App\Http\Controllers\OrderController@store']);
-        Route::post('/update-status', ['uses'=>'App\Http\Controllers\OrderController@statusUpdate']);
-        Route::get('/', ['uses'=>'App\Http\Controllers\OrderController@view']);
-        Route::get('/{id}', ['uses'=>'App\Http\Controllers\OrderController@show']);
-        Route::put('/{id}', ['uses'=>'App\Http\Controllers\OrderController@update']);
-        Route::delete('/{id}', ['uses'=>'App\Http\Controllers\OrderController@destroy']);
+        Route::post('/place-order', ['uses' => 'App\Http\Controllers\OrderController@store']);
+        Route::post('/update-status', ['uses' => 'App\Http\Controllers\OrderController@statusUpdate']);
+        Route::get('/', ['uses' => 'App\Http\Controllers\OrderController@view']);
+        Route::get('/{id}', ['uses' => 'App\Http\Controllers\OrderController@show']);
+        Route::put('/{id}', ['uses' => 'App\Http\Controllers\OrderController@update']);
+        Route::delete('/{id}', ['uses' => 'App\Http\Controllers\OrderController@destroy']);
     });
     // favorites
-    Route::group(['prefix' => 'favorite'], function () {
-        Route::group(['prefix' => 'store'], function () {
+    Route::group(['prefix' => 'favorite'], function (): void {
+        Route::group(['prefix' => 'store'], function (): void {
             Route::put('/{store}', [FavoritesController::class, 'addFavoriteStore']);
             Route::delete('/{store}', [FavoritesController::class, 'deleteFavoriteStore']);
             Route::get('/', [FavoritesController::class, 'getFavoriteStores']);
         });
 
-        Route::group(['prefix' => 'product'], function () {
+        Route::group(['prefix' => 'product'], function (): void {
             Route::put('/{product}', [FavoritesController::class, 'addFavoriteProduct']);
             Route::delete('/{product}', [FavoritesController::class, 'deleteFavoriteProduct']);
             Route::get('/', [FavoritesController::class, 'getFavoriteProducts']);
         });
     });
 
-    Route::group(['prefix' => 'voucher'], function () {
+    Route::group(['prefix' => 'voucher'], function (): void {
         Route::post('/{voucher}', [DiscountVoucherController::class, 'checkVoucher']);
     });
 });

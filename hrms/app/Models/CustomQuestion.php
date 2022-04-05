@@ -10,6 +10,7 @@ class CustomQuestion extends Model
         'yes' => 'Yes',
         'no' => 'No',
     ];
+
     protected $fillable = [
         'question',
         'is_required',

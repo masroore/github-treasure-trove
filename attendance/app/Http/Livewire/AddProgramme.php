@@ -8,10 +8,15 @@ use Livewire\Component;
 class AddProgramme extends Component
 {
     public $name;
+
     public $typeofp;
+
     public $duration;
+
     public $department;
+
     public $allprogram;
+
     public $code;
 
     // public function updated($field){
@@ -26,12 +31,12 @@ class AddProgramme extends Component
 
     //   }
 
-    public function submitform()
+    public function submitform(): void
     {
         $this->validate([
             'name' => 'required|min:12|max:255',
             'typeofp' => 'required',
-            'code'=> 'required|min:3|max:4|unique:programmes',
+            'code' => 'required|min:3|max:4|unique:programmes',
             'duration' => 'required|integer',
             'department' => 'required|min:12|max:255',
         ]);
@@ -49,7 +54,7 @@ class AddProgramme extends Component
         $this->emit('Added', '0');
     }
 
-    public function mount($program)
+    public function mount($program): void
     {
         $this->allprogram = $program;
     }

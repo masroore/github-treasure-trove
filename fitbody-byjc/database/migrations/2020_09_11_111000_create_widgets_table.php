@@ -8,12 +8,10 @@ class CreateWidgetsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('widget_groups', function (Blueprint $table) {
+        Schema::create('widget_groups', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->integer('section_id')->unsigned()->index();
             $table->string('title');
@@ -23,7 +21,7 @@ class CreateWidgetsTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('widgets', function (Blueprint $table) {
+        Schema::create('widgets', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->integer('group_id')->unsigned()->index();
             $table->string('title')->index();
@@ -43,10 +41,8 @@ class CreateWidgetsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('widget_groups');
         Schema::dropIfExists('widgets');

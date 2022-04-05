@@ -50,7 +50,6 @@ class AdminCouponHistoryController extends Controller
      */
     public function store(Request $request)
     {
-
     }
 
     /**
@@ -86,7 +85,6 @@ class AdminCouponHistoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-
     }
 
     /**
@@ -98,7 +96,6 @@ class AdminCouponHistoryController extends Controller
      */
     public function destroy($id)
     {
-
     }
 
     public function couponHistoryDetails($coupon)

@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\JobStage;
+use Auth;
 use Illuminate\Http\Request;
+use Validator;
 
 class JobStageController extends Controller
 {
     public function index()
     {
-        if (\Auth::user()->can('Manage Job Stage')) {
-            $stages = JobStage::where('created_by', '=', \Auth::user()->creatorId())->orderBy('order', 'asc')->get();
+        if (Auth::user()->can('Manage Job Stage')) {
+            $stages = JobStage::where('created_by', '=', Auth::user()->creatorId())->orderBy('order', 'asc')->get();
 
             return view('jobStage.index', compact('stages'));
         }
@@ -25,12 +27,12 @@ class JobStageController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('Create Job Stage')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Create Job Stage')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'title' => 'required',
-                               ]
+                    'title' => 'required',
+                ]
             );
 
             if ($validator->fails()) {
@@ -41,7 +43,7 @@ class JobStageController extends Controller
 
             $jobStage = new JobStage();
             $jobStage->title = $request->title;
-            $jobStage->created_by = \Auth::user()->creatorId();
+            $jobStage->created_by = Auth::user()->creatorId();
             $jobStage->save();
 
             return redirect()->back()->with('success', __('Job stage  successfully created.'));
@@ -50,9 +52,8 @@ class JobStageController extends Controller
         return redirect()->back()->with('error', __('Permission denied.'));
     }
 
-    public function show(JobStage $jobStage)
+    public function show(JobStage $jobStage): void
     {
-
     }
 
     public function edit(JobStage $jobStage)
@@ -62,12 +63,12 @@ class JobStageController extends Controller
 
     public function update(Request $request, JobStage $jobStage)
     {
-        if (\Auth::user()->can('Edit Job Stage')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Edit Job Stage')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'title' => 'required',
-                               ]
+                    'title' => 'required',
+                ]
             );
 
             if ($validator->fails()) {
@@ -77,7 +78,7 @@ class JobStageController extends Controller
             }
 
             $jobStage->title = $request->title;
-            $jobStage->created_by = \Auth::user()->creatorId();
+            $jobStage->created_by = Auth::user()->creatorId();
             $jobStage->save();
 
             return redirect()->back()->with('success', __('Job stage  successfully updated.'));
@@ -88,8 +89,8 @@ class JobStageController extends Controller
 
     public function destroy(JobStage $jobStage)
     {
-        if (\Auth::user()->can('Delete Job Stage')) {
-            if ($jobStage->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('Delete Job Stage')) {
+            if ($jobStage->created_by == Auth::user()->creatorId()) {
                 $jobStage->delete();
 
                 return redirect()->back()->with('success', __('Job stage successfully deleted.'));
@@ -101,7 +102,7 @@ class JobStageController extends Controller
         return redirect()->back()->with('error', __('Permission denied.'));
     }
 
-    public function order(Request $request)
+    public function order(Request $request): void
     {
         $post = $request->all();
         foreach ($post['order'] as $key => $item) {

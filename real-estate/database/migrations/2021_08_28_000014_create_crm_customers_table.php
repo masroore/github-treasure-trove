@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateCrmCustomersTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::create('crm_customers', function (Blueprint $table) {
+        Schema::create('crm_customers', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();

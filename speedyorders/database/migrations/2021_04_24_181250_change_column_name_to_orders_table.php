@@ -8,12 +8,10 @@ class ChangeColumnNameToOrdersTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('orders', function (Blueprint $table) {
+        Schema::table('orders', function (Blueprint $table): void {
             $table->renameColumn('customer_id', 'customer_user_id');
             $table->renameColumn('address1', 'address_1');
             $table->renameColumn('address2', 'address_2');
@@ -27,7 +25,7 @@ class ChangeColumnNameToOrdersTable extends Migration
         });
     }
 
-    public function down()
+    public function down(): void
     {
     }
 }

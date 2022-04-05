@@ -24,12 +24,12 @@ class SearchController extends Controller
             foreach ($products->take(5)->all() as $product) {
                 $subcat_slug = $product->subcategory() ? $product->subcategory()->slug : 'null';
                 $response['products'][] = [
-                    'id'      => $product->id,
-                    'name'    => $product->name,
-                    'price'   => $product->price,
+                    'id' => $product->id,
+                    'name' => $product->name,
+                    'price' => $product->price,
                     'special' => $product->action ? $this->getActionPrice($product->price, $product->action) : $product->price,
-                    'image'   => asset($product->image),
-                    'url'     => Str::slug($product->clientAsArray()->name) . '/' . $product->category()->slug . '/' . $subcat_slug . '/' . $product->slug,
+                    'image' => asset($product->image),
+                    'url' => Str::slug($product->clientAsArray()->name) . '/' . $product->category()->slug . '/' . $subcat_slug . '/' . $product->slug,
                 ];
             }
 

@@ -8,12 +8,10 @@ class CreateProductVariationItemsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('product_variation_items', function (Blueprint $table) {
+        Schema::create('product_variation_items', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->bigInteger('attribute_id')->unsigned()->index('p_variation_items_attribute_id_index')->comment('Belongs to product_attributes table');
             $table->bigInteger('variation_id')->unsigned()->index('p_variation_items_variation_id_index')->comment('Belongs to product_variations table');
@@ -34,13 +32,11 @@ class CreateProductVariationItemsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('product_variation_items');
-        Schema::table('product_variation_items', function (Blueprint $table) {
+        Schema::table('product_variation_items', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
     }

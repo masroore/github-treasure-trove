@@ -11,11 +11,11 @@
 |
 */
 
-Route::group(['prefix' => 'logdumper', 'middleware' => 'auth:admin', 'as' => 'admin.'], function () {
+Route::group(['prefix' => 'logdumper', 'middleware' => 'auth:admin', 'as' => 'admin.'], function (): void {
     Route::get('/', 'LogdumperController@index')->name('logdumper');
     Route::post('/', 'LogdumperController@download')->name('log.download');
 });
 
-Route::group(['middleware' => 'auth:admin', 'as' => 'admin.', 'prefix' => 'logs'], function () {
+Route::group(['middleware' => 'auth:admin', 'as' => 'admin.', 'prefix' => 'logs'], function (): void {
     Route::get('/', 'LogdumperController@logs')->name('logs');
 });

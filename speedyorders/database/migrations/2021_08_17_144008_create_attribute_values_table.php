@@ -8,12 +8,10 @@ class CreateAttributeValuesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('attribute_values', function (Blueprint $table) {
+        Schema::create('attribute_values', function (Blueprint $table): void {
             $table->unsignedBigInteger('id')->autoIncrement();
             $table->unsignedBigInteger('attributes_id')->default(null)->nullable();
             $table->string('name')->default(null)->nullable();
@@ -23,10 +21,8 @@ class CreateAttributeValuesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('attribute_values');
     }

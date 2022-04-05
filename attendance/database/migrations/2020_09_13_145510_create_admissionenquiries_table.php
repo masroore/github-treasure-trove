@@ -8,12 +8,10 @@ class CreateAdmissionenquiriesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('admissionenquiries', function (Blueprint $table) {
+        Schema::create('admissionenquiries', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('fullname');
             $table->string('gender');
@@ -27,10 +25,8 @@ class CreateAdmissionenquiriesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('admissionenquiries');
     }

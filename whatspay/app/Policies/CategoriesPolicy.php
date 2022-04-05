@@ -17,7 +17,6 @@ class CategoriesPolicy
      */
     public function viewAny(User $user)
     {
-
     }
 
     /**
@@ -27,7 +26,6 @@ class CategoriesPolicy
      */
     public function view(User $user, Categories $categories)
     {
-
     }
 
     /**
@@ -37,7 +35,6 @@ class CategoriesPolicy
      */
     public function create(User $user)
     {
-
     }
 
     /**
@@ -47,7 +44,6 @@ class CategoriesPolicy
      */
     public function update(User $user, Categories $categories)
     {
-
     }
 
     /**
@@ -57,7 +53,6 @@ class CategoriesPolicy
      */
     public function delete(User $user, Categories $categories)
     {
-
     }
 
     /**
@@ -67,7 +62,6 @@ class CategoriesPolicy
      */
     public function restore(User $user, Categories $categories)
     {
-
     }
 
     /**
@@ -77,6 +71,5 @@ class CategoriesPolicy
      */
     public function forceDelete(User $user, Categories $categories)
     {
-
     }
 }

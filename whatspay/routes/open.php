@@ -3,7 +3,7 @@
 use App\Http\Controllers\PublicController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix' => 'store'], function () {
+Route::group(['prefix' => 'store'], function (): void {
     Route::get('/{url}', [PublicController::class, 'getStore']);
     Route::get('/{store}/categories', [PublicController::class, 'storeCategories']);
     Route::get('/{store}/{category}/products', [PublicController::class, 'categoryProducts']);

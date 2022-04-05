@@ -8,12 +8,10 @@ class AddFcodeToApplicationinfosTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('applicationinfos', function (Blueprint $table) {
+        Schema::table('applicationinfos', function (Blueprint $table): void {
             $table->string('fcode')->nullable();
             $table->string('scode')->nullable();
             $table->string('tcode')->nullable();
@@ -22,25 +20,23 @@ class AddFcodeToApplicationinfosTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         if (Schema::hasColumn('applicationinfos', 'fcode')) {
-            Schema::table('applicationinfos', function (Blueprint $table) {
+            Schema::table('applicationinfos', function (Blueprint $table): void {
                 $table->dropColumn('fcode');
             });
         }
 
         if (Schema::hasColumn('applicationinfos', 'scode')) {
-            Schema::table('applicationinfos', function (Blueprint $table) {
+            Schema::table('applicationinfos', function (Blueprint $table): void {
                 $table->dropColumn('scode');
             });
         }
 
         if (Schema::hasColumn('applicationinfos', 'tcode')) {
-            Schema::table('applicationinfos', function (Blueprint $table) {
+            Schema::table('applicationinfos', function (Blueprint $table): void {
                 $table->dropColumn('tcode');
             });
         }

@@ -11,16 +11,16 @@ use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class CategoryDescriptionImport implements ToModel, WithHeadingRow, WithBatchInserts, WithChunkReading, ShouldQueue
+class CategoryDescriptionImport implements ShouldQueue, ToModel, WithBatchInserts, WithChunkReading, WithHeadingRow
 {
-    public function model(array $row)
+    public function model(array $row): void
     {
         try {
             $category = Category::where('id', $row['category_id'])->first();
 
             $category->update([
-                'name'           => $row['name'],
-                'description'    => $row['description'],
+                'name' => $row['name'],
+                'description' => $row['description'],
             ]);
         } catch (Exception $e) {
             Log::info('Category Description File Import data:' . json_encode($row) . ' error:' . json_encode($e->getMessage()));

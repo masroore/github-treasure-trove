@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Payees;
+use Auth;
 use Illuminate\Http\Request;
+use Validator;
 
 class PayeesController extends Controller
 {
     public function index()
     {
-        if (\Auth::user()->can('Manage Payee')) {
-            $payees = Payees::where('created_by', '=', \Auth::user()->creatorId())->get();
+        if (Auth::user()->can('Manage Payee')) {
+            $payees = Payees::where('created_by', '=', Auth::user()->creatorId())->get();
 
             return view('payees.index', compact('payees'));
         }
@@ -20,7 +22,7 @@ class PayeesController extends Controller
 
     public function create()
     {
-        if (\Auth::user()->can('Create Payee')) {
+        if (Auth::user()->can('Create Payee')) {
             return view('payees.create');
         }
 
@@ -29,13 +31,13 @@ class PayeesController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('Create Payee')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Create Payee')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'payee_name' => 'required',
-                                   'contact_number' => 'required',
-                               ]
+                    'payee_name' => 'required',
+                    'contact_number' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -46,7 +48,7 @@ class PayeesController extends Controller
             $payee = new Payees();
             $payee->payee_name = $request->payee_name;
             $payee->contact_number = $request->contact_number;
-            $payee->created_by = \Auth::user()->creatorId();
+            $payee->created_by = Auth::user()->creatorId();
             $payee->save();
 
             return redirect()->route('payees.index')->with('success', __('Payees  successfully created.'));
@@ -62,8 +64,8 @@ class PayeesController extends Controller
 
     public function edit(Payees $payee)
     {
-        if (\Auth::user()->can('Edit Payee')) {
-            if ($payee->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('Edit Payee')) {
+            if ($payee->created_by == Auth::user()->creatorId()) {
                 return view('payees.edit', compact('payee'));
             }
 
@@ -76,14 +78,14 @@ class PayeesController extends Controller
     public function update(Request $request, $payee)
     {
         $payee = Payees::find($payee);
-        if (\Auth::user()->can('Edit Payee')) {
-            if ($payee->created_by == \Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+        if (Auth::user()->can('Edit Payee')) {
+            if ($payee->created_by == Auth::user()->creatorId()) {
+                $validator = Validator::make(
                     $request->all(),
                     [
-                                       'payee_name' => 'required',
-                                       'contact_number' => 'required',
-                                   ]
+                        'payee_name' => 'required',
+                        'contact_number' => 'required',
+                    ]
                 );
                 if ($validator->fails()) {
                     $messages = $validator->getMessageBag();
@@ -105,8 +107,8 @@ class PayeesController extends Controller
 
     public function destroy(Payees $payee)
     {
-        if (\Auth::user()->can('Delete Payee')) {
-            if ($payee->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('Delete Payee')) {
+            if ($payee->created_by == Auth::user()->creatorId()) {
                 $payee->delete();
 
                 return redirect()->route('payees.index')->with('success', __('Payees successfully deleted.'));

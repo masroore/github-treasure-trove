@@ -48,12 +48,12 @@ class PublicService
                 'is_approved' => 1,
                 'status' => 1,
             ])->with([
-                'slug' => function ($query) {
+                'slug' => function ($query): void {
                     $query->select('slugable_id', 'slug');
                 },
             ])
                 ->when($user_id, function ($query) use ($user_id) {
-                    return $query->withCount(['favorite as is_favorite' => function ($q) use ($user_id) {
+                    return $query->withCount(['favorite as is_favorite' => function ($q) use ($user_id): void {
                         $q->where('favorites.user_id', $user_id);
                     }]);
                 })
@@ -98,23 +98,23 @@ class PublicService
                     'is_approved' => 1,
                     'stores.status' => 1,
                 ])
-                ->where(function ($query) use ($keyword) {
+                ->where(function ($query) use ($keyword): void {
                     $query->where('store_name', 'like', '%' . $keyword . '%')
-                        ->orWhereHas('categories', function ($categories) use ($keyword) {
+                        ->orWhereHas('categories', function ($categories) use ($keyword): void {
                             $categories->select('categories.id')->where('name', 'like', '%' . $keyword . '%');
                         })
-                        ->orWhereHas('products', function ($products) use ($keyword) {
+                        ->orWhereHas('products', function ($products) use ($keyword): void {
                             $products->select('id')->where('name', 'like', '%' . $keyword . '%')
-                                ->orWhereHas('tags', function ($tags) use ($keyword) {
+                                ->orWhereHas('tags', function ($tags) use ($keyword): void {
                                     $tags->select('tags.id')->where('name', 'like', '%' . $keyword . '%');
                                 });
                         })
-                        ->orWhereHas('brands', function ($brands) use ($keyword) {
+                        ->orWhereHas('brands', function ($brands) use ($keyword): void {
                             $brands->select('brands.id')->where('name', 'like', '%' . $keyword . '%');
                         });
                 })
                 ->when($user_id, function ($query) use ($user_id) {
-                    return $query->withCount(['favorite as is_favorite' => function ($q) use ($user_id) {
+                    return $query->withCount(['favorite as is_favorite' => function ($q) use ($user_id): void {
                         $q->where('favorites.user_id', $user_id);
                     }]);
                 })
@@ -134,7 +134,7 @@ class PublicService
     /**
      * @param $slug
      *
-     * @return Collection|null
+     * @return null|Collection
      */
     public function storesByIndustry($industry)
     {
@@ -158,12 +158,12 @@ class PublicService
                     'status' => 1,
                 ])
                 ->whereRaw('(`industry_id` = ? or FIND_IN_SET(?, `industry_types`))', [$industry, $industry])
-                ->with('comments', function ($query) {
+                ->with('comments', function ($query): void {
                     $query->select('id', 'commentable_id', 'body', 'likes')->latest();
                 })
                 ->withMin('products as starting_from', 'price')
                 ->when($user_id, function ($query) use ($user_id) {
-                    return $query->withCount(['favorite as is_favorite' => function ($q) use ($user_id) {
+                    return $query->withCount(['favorite as is_favorite' => function ($q) use ($user_id): void {
                         $q->where('favorites.user_id', $user_id);
                     }]);
                 })
@@ -260,7 +260,7 @@ class PublicService
                     'is_approved' => 1,
                     'status' => 1,
                 ])
-                ->with('comments', function ($query) {
+                ->with('comments', function ($query): void {
                     $query->select('id', 'commentable_id', 'body', 'rating', 'likes', 'created_at')->latest();
                 })
                 ->withCount('comments as ratings_count')
@@ -329,7 +329,7 @@ class PublicService
                     'is_approved' => 1,
                     'status' => 1,
                 ])
-                ->with('comments', function ($query) {
+                ->with('comments', function ($query): void {
                     $query->select('id', 'commentable_id', 'body', 'rating', 'likes', 'created_at')->latest();
                 })
                 ->withCount('comments as ratings_count')
@@ -362,18 +362,18 @@ class PublicService
                 'name',
                 'icon'
             )
-                ->with('subcategories', function ($query) {
+                ->with('subcategories', function ($query): void {
                     $query->select(
                         'id',
                         'parent_id',
                         'name',
                         'icon'
                     )
-                        ->where('status', 1)->with('products', function ($q) {
+                        ->where('status', 1)->with('products', function ($q): void {
                             $q->where('status', 1)->take('5');
                         });
                 })
-                ->with('products', function ($query) {
+                ->with('products', function ($query): void {
                     $query->take(5);
                 })
                 ->where([

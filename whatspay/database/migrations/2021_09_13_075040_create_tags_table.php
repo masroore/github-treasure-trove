@@ -8,12 +8,10 @@ class CreateTagsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('tags', function (Blueprint $table) {
+        Schema::create('tags', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('name', 120)->nullable();
             $table->tinyInteger('status')->default(1);
@@ -25,13 +23,11 @@ class CreateTagsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('tags');
-        Schema::table('tags', function (Blueprint $table) {
+        Schema::table('tags', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
     }

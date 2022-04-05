@@ -5,6 +5,7 @@ namespace Modules\AdminProductAttribute\Http\Controllers;
 use App\Models\Attribute;
 use App\Models\AttributeValue;
 use DB;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
@@ -142,7 +143,7 @@ class AdminProductAttributeController extends Controller
         try {
             Attribute::find($id)->delete();
             session()->flash('success_message', 'Product Attribute deleted successfully.');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             session()->flash('error_message', 'Product Attribute could not be deleted.');
         }
 
@@ -173,7 +174,7 @@ class AdminProductAttributeController extends Controller
             $filename = public_path('images/attributes/' . $fileName);
 
             $list_attributes = [];
-            if (($file = @fopen($filename, 'r')) !== false) {
+            if (($file = @fopen($filename, 'rb')) !== false) {
                 $count_header = 0;
 
                 while (($data = @fgetcsv($file, 10000, ',')) !== false) {
@@ -230,7 +231,7 @@ class AdminProductAttributeController extends Controller
                         }
                     }
 
-                    $count_header++;
+                    ++$count_header;
                 }
             }
             // DB::commit();
@@ -238,7 +239,7 @@ class AdminProductAttributeController extends Controller
             session()->flash('success_message', 'Product Attributes imported successfully.');
 
             return redirect()->route('admin.product.attributes.index');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::info('Error' . $e->getMessage());
             Log::info('Line Number' . $e->getLine());
             DB::rollback();

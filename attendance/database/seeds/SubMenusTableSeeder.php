@@ -6,10 +6,8 @@ class SubMenusTableSeeder extends Seeder
 {
     /**
      * Auto generated seed file.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
 
         //\DB::table('sub_menus')->delete();

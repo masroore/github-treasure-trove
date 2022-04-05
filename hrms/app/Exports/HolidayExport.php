@@ -15,9 +15,9 @@ class HolidayExport implements FromCollection, WithHeadings
     public function collection()
     {
         $data = Holiday::get();
-        foreach ($data as $k=>$holidays) {
+        foreach ($data as $k => $holidays) {
             $data[$k]['created_by'] = Employee::login_user($holidays->created_by);
-            unset($holidays->created_at,$holidays->updated_at);
+            $holidays->created_at = null; $holidays->updated_at = null;
         }
 
         return $data;

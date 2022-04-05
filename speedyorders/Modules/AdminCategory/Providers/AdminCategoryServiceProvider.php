@@ -2,6 +2,7 @@
 
 namespace Modules\AdminCategory\Providers;
 
+use Config;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\ServiceProvider;
 
@@ -9,10 +10,8 @@ class AdminCategoryServiceProvider extends ServiceProvider
 {
     /**
      * Boot the application events.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->registerTranslations();
         $this->registerConfig();
@@ -23,20 +22,16 @@ class AdminCategoryServiceProvider extends ServiceProvider
 
     /**
      * Register the service provider.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->app->register(RouteServiceProvider::class);
     }
 
     /**
      * Register views.
-     *
-     * @return void
      */
-    public function registerViews()
+    public function registerViews(): void
     {
         $viewPath = resource_path('views/modules/admincategory');
 
@@ -48,15 +43,13 @@ class AdminCategoryServiceProvider extends ServiceProvider
 
         $this->loadViewsFrom(array_merge(array_map(function ($path) {
             return $path . '/modules/admincategory';
-        }, \Config::get('view.paths')), [$sourcePath]), 'admincategory');
+        }, Config::get('view.paths')), [$sourcePath]), 'admincategory');
     }
 
     /**
      * Register translations.
-     *
-     * @return void
      */
-    public function registerTranslations()
+    public function registerTranslations(): void
     {
         $langPath = resource_path('lang/modules/admincategory');
 
@@ -69,10 +62,8 @@ class AdminCategoryServiceProvider extends ServiceProvider
 
     /**
      * Register an additional directory of factories.
-     *
-     * @return void
      */
-    public function registerFactories()
+    public function registerFactories(): void
     {
         if (!app()->environment('production') && $this->app->runningInConsole()) {
             app(Factory::class)->load(module_path('AdminCategory', 'Database/factories'));
@@ -91,10 +82,8 @@ class AdminCategoryServiceProvider extends ServiceProvider
 
     /**
      * Register config.
-     *
-     * @return void
      */
-    protected function registerConfig()
+    protected function registerConfig(): void
     {
         $this->publishes([
             module_path('AdminCategory', 'Config/config.php') => config_path('admincategory.php'),

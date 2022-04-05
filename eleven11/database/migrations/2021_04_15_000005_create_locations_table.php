@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateLocationsTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::create('locations', function (Blueprint $table) {
+        Schema::create('locations', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('location_code')->unique();
             $table->boolean('active')->default(0);

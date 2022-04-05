@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateShiftsTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::create('shifts', function (Blueprint $table) {
+        Schema::create('shifts', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('shift_name');
             $table->date('start_date');

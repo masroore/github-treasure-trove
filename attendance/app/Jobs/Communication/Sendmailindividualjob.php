@@ -17,15 +17,17 @@ class Sendmailindividualjob implements ShouldQueue
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
+
     public $eperemail;
+
     public $compose;
+
     public $html;
+
     public $fullpath;
 
     /**
      * Create a new job instance.
-     *
-     * @return void
      */
     public function __construct($eperemail, $compose, $html, $fullpath)
     {
@@ -37,10 +39,8 @@ class Sendmailindividualjob implements ShouldQueue
 
     /**
      * Execute the job.
-     *
-     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         if ('false' == $this->fullpath) {
             Notification::route('mail', $this->eperemail)

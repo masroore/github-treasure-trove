@@ -12,14 +12,14 @@ class ProgrammeController extends Controller
     {
         $program = Programme::all();
         // dd($program);
-        return view('programmes.new_programme', ['program'=>$program]);
+        return view('programmes.new_programme', ['program' => $program]);
     }
 
     public function editprogramme($id)
     {
         $program = Programme::where('id', $id)->first();
 
-        return view('programmes.edit_programme', ['program'=>$program]);
+        return view('programmes.edit_programme', ['program' => $program]);
     }
 
     public function update(Request $Request)
@@ -32,9 +32,9 @@ class ProgrammeController extends Controller
         $depart = $Request->post('department');
 
         $this->validate($Request, [
-             'name' => 'required|min:12|max:255',
+            'name' => 'required|min:12|max:255',
             'typeofp' => 'required',
-            'code'=> 'required|min:3|max:4',
+            'code' => 'required|min:3|max:4',
             'duration' => 'required|integer',
             'department' => 'required|min:12|max:255',
         ]);
@@ -54,17 +54,17 @@ class ProgrammeController extends Controller
     {
         $faculty = Faculty::all();
         // dd($program);
-        return view('programmes.faculty', ['faculty'=>$faculty]);
+        return view('programmes.faculty', ['faculty' => $faculty]);
     }
 
     public function faculty_save(Request $request)
     {
         $this->validate($request, [
-            'name'=>'required|min:10|max:255',
+            'name' => 'required|min:10|max:255',
         ]);
 
         $data = [
-            'name'=>$request->input('name'),
+            'name' => $request->input('name'),
         ];
 
         $faculty = new Faculty($data);

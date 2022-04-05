@@ -8,12 +8,10 @@ class AddDeliveryTimmingColumnToStoresTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('stores', function (Blueprint $table) {
+        Schema::table('stores', function (Blueprint $table): void {
             $table->string('delivery_timming', 255)->nullable();
             $table->string('product_sorting', 255)->nullable();
             $table->string('timezone', 255)->nullable();
@@ -23,13 +21,10 @@ class AddDeliveryTimmingColumnToStoresTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('stores', function (Blueprint $table) {
-
+        Schema::table('stores', function (Blueprint $table): void {
         });
     }
 }

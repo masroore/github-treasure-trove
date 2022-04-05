@@ -14,12 +14,12 @@ class UpdateSocialMediaSettingRequest extends FormRequest
     public function rules()
     {
         return [
-            'facebook_url'=>'required|string|max:255',
-            'instagram_url'=>'required|string|max:255',
-            'pinterest_url'=>'required|string|max:255',
-            'youtube_url'=>'required|string|max:255',
-            'twitter_url'=>'required|string|max:255',
-            'linkedin_url'=>'required|string|max:255',
+            'facebook_url' => 'required|string|max:255',
+            'instagram_url' => 'required|string|max:255',
+            'pinterest_url' => 'required|string|max:255',
+            'youtube_url' => 'required|string|max:255',
+            'twitter_url' => 'required|string|max:255',
+            'linkedin_url' => 'required|string|max:255',
         ];
     }
 

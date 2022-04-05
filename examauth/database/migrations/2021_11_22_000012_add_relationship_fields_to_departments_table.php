@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class AddRelationshipFieldsToDepartmentsTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::table('departments', function (Blueprint $table) {
+        Schema::table('departments', function (Blueprint $table): void {
             $table->unsignedBigInteger('hod_id');
             $table->foreign('hod_id', 'hod_fk_5390383')->references('id')->on('users');
             $table->unsignedBigInteger('faculty_id');

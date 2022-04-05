@@ -107,13 +107,13 @@ class Page extends Model
         return $query->where('name', 'LIKE', "%{$term}%")->orWhere('meta_keywords', 'LIKE', "%{$term}%");
     }
 
-    public function setDescription()
+    public function setDescription(): void
     {
         $iterator = substr_count($this->description, '++');
         $offset = 0;
         $ids = [];
 
-        for ($i = 0; $i < $iterator / 2; $i++) {
+        for ($i = 0; $i < $iterator / 2; ++$i) {
             $from = strpos($this->description, '++', $offset) + 2;
             $to = strpos($this->description, '++', $from + 2);
             $ids[] = substr($this->description, $from, $to - $from);

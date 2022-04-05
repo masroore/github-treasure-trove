@@ -14,7 +14,7 @@ class UpdateGoogleAnalyticsSettingRequest extends FormRequest
     public function rules()
     {
         return [
-            'google_analytics_url'=>'required|string',
+            'google_analytics_url' => 'required|string',
         ];
     }
 

@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class AddRelationshipFieldsToCoursesTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::table('courses', function (Blueprint $table) {
+        Schema::table('courses', function (Blueprint $table): void {
             $table->unsignedBigInteger('course_lecturer_id');
             $table->foreign('course_lecturer_id', 'course_lecturer_fk_5390396')->references('id')->on('users');
             $table->unsignedBigInteger('department_id');

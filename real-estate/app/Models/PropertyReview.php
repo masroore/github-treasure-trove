@@ -58,7 +58,7 @@ class PropertyReview extends Model implements HasMedia
     public function getPhotosAttribute()
     {
         $files = $this->getMedia('photos');
-        $files->each(function ($item) {
+        $files->each(function ($item): void {
             $item->url = $item->getUrl();
             $item->thumbnail = $item->getUrl('thumb');
             $item->preview = $item->getUrl('preview');

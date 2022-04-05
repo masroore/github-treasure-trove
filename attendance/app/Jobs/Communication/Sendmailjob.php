@@ -18,13 +18,13 @@ class Sendmailjob implements ShouldQueue
     use SerializesModels;
 
     public $students;
+
     public $compose;
+
     public $html;
 
     /**
      * Create a new job instance.
-     *
-     * @return void
      */
     public function __construct($students, $compose, $html)
     {
@@ -35,10 +35,8 @@ class Sendmailjob implements ShouldQueue
 
     /**
      * Execute the job.
-     *
-     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         foreach ($this->students as $student) {
             $email = $student->email;

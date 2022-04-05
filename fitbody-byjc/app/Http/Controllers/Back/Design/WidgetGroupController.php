@@ -105,10 +105,10 @@ class WidgetGroupController extends Controller
         }
     }
 
-    /*******************************************************************************
+    /*
     *                                Copyright : AGmedia                           *
     *                              email: filip@agmedia.hr                         *
-    *******************************************************************************/
+    */
     // API ROUTES
 
     public function getLinks(Request $request)

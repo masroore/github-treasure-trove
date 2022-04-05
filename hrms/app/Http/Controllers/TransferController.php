@@ -8,9 +8,11 @@ use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Transfer;
 use App\Models\Utility;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Validator;
 
 class TransferController extends Controller
 {
@@ -46,14 +48,14 @@ class TransferController extends Controller
     public function store(Request $request)
     {
         if (\Auth::user()->can('Create Transfer')) {
-            $validator = \Validator::make(
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'employee_id' => 'required',
-                                   'branch_id' => 'required',
-                                   'department_id' => 'required',
-                                   'transfer_date' => 'required',
-                               ]
+                    'employee_id' => 'required',
+                    'branch_id' => 'required',
+                    'department_id' => 'required',
+                    'transfer_date' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -79,9 +81,10 @@ class TransferController extends Controller
                 $transfer->email = $employee->email;
                 $transfer->branch = $branch->name;
                 $transfer->department = $department->name;
+
                 try {
                     Mail::to($transfer->email)->send(new TransferSend($transfer));
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     $smtp_error = __('E-Mail has been not sent due to SMTP configuration');
                 }
 
@@ -119,14 +122,14 @@ class TransferController extends Controller
     {
         if (\Auth::user()->can('Edit Transfer')) {
             if ($transfer->created_by == \Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+                $validator = Validator::make(
                     $request->all(),
                     [
-                                       'employee_id' => 'required',
-                                       'branch_id' => 'required',
-                                       'department_id' => 'required',
-                                       'transfer_date' => 'required',
-                                   ]
+                        'employee_id' => 'required',
+                        'branch_id' => 'required',
+                        'department_id' => 'required',
+                        'transfer_date' => 'required',
+                    ]
                 );
                 if ($validator->fails()) {
                     $messages = $validator->getMessageBag();

@@ -8,12 +8,10 @@ class CreatePostalreceivesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('postalreceives', function (Blueprint $table) {
+        Schema::create('postalreceives', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('to')->nullable();
             $table->string('ref')->nullable();
@@ -27,10 +25,8 @@ class CreatePostalreceivesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('postalreceives');
     }

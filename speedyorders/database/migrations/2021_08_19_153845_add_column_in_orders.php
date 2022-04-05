@@ -8,12 +8,10 @@ class AddColumnInOrders extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('orders', function (Blueprint $table) {
+        Schema::table('orders', function (Blueprint $table): void {
             if (!Schema::hasColumn('orders', 'payment_region')) {
                 $table->string('payment_region')->default(null)->nullable()->after('payment_city');
             }
@@ -25,13 +23,10 @@ class AddColumnInOrders extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('orders', function (Blueprint $table) {
-
+        Schema::table('orders', function (Blueprint $table): void {
         });
     }
 }

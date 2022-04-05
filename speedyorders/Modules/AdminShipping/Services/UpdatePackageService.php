@@ -3,6 +3,7 @@
 namespace Modules\AdminShipping\Services;
 
 use App\Models\ShippingPackage;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class UpdatePackageService
@@ -21,7 +22,7 @@ class UpdatePackageService
             DB::commit();
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollback();
 
             return false;

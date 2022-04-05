@@ -8,12 +8,10 @@ class CreatePerformanceTypesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('performance__types', function (Blueprint $table) {
+        Schema::create('performance__types', function (Blueprint $table): void {
             $table->id();
             $table->string('name');
             $table->string('created_by');
@@ -23,10 +21,8 @@ class CreatePerformanceTypesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('performance__types');
     }

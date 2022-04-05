@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class AddRelationshipFieldsToRandomCodesTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::table('random_codes', function (Blueprint $table) {
+        Schema::table('random_codes', function (Blueprint $table): void {
             $table->unsignedBigInteger('location_code_id');
             $table->foreign('location_code_id', 'location_code_fk_3563124')->references('id')->on('locations');
             $table->unsignedBigInteger('company_id');

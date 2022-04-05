@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class AddRelationshipFieldsToAmenitiesTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::table('amenities', function (Blueprint $table) {
+        Schema::table('amenities', function (Blueprint $table): void {
             $table->unsignedBigInteger('created_by_id')->nullable();
             $table->foreign('created_by_id', 'created_by_fk_4565219')->references('id')->on('users');
         });

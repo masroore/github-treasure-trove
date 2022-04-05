@@ -12,6 +12,7 @@ use App\Staffdoc;
 use App\Staffleave;
 use App\User;
 use DB;
+use Exception;
 use FPDF as pdfs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -27,28 +28,28 @@ class StaffController extends Controller
         $faculty = Faculty::all();
         $role = DB::table('roles')->get();
         //dd($role);
-        return view('Staff.add_staff', ['courses'=> $courses, 'roles' => $role, 'faculty'=>$faculty]);
+        return view('Staff.add_staff', ['courses' => $courses, 'roles' => $role, 'faculty' => $faculty]);
     }
 
     public function savestaff(Request $request)
     {
         $this->validate($request, [
-    'fullname'=> 'required',
-    'gender'=> 'required',
-    'role' => 'required',
-    'faculty'=> 'required',
-    'dateofbirth'=> 'required',
-    'religion'=> 'required',
-    'mobile'=> 'required|min:10',
-    'email'=> 'required|email',
-    'mstatus'=> 'required',
-    'wrkexperience'=> 'required',
-    'qualification'=> 'required',
-    'address'=> 'required',
-    'image'=> 'required',
-    'grade'=> 'required',
-    'salary'=> 'required',
-  ]);
+            'fullname' => 'required',
+            'gender' => 'required',
+            'role' => 'required',
+            'faculty' => 'required',
+            'dateofbirth' => 'required',
+            'religion' => 'required',
+            'mobile' => 'required|min:10',
+            'email' => 'required|email',
+            'mstatus' => 'required',
+            'wrkexperience' => 'required',
+            'qualification' => 'required',
+            'address' => 'required',
+            'image' => 'required',
+            'grade' => 'required',
+            'salary' => 'required',
+        ]);
 
         DB::beginTransaction();
 
@@ -78,13 +79,13 @@ class StaffController extends Controller
             $regemail = strtolower($code) . '@osms.edu.com';
 
             $user = User::create([
-      'name' => $request->input('fullname'),
-      'email' => $regemail,
-      'regemail' => $request->input('email'),
-      'indexnumber'=> $code,
-      'pro_pic'=> $request->file('image')->store('profileimage', 'public'),
-      'password' => Hash::make($request->input('email')),
-    ]);
+                'name' => $request->input('fullname'),
+                'email' => $regemail,
+                'regemail' => $request->input('email'),
+                'indexnumber' => $code,
+                'pro_pic' => $request->file('image')->store('profileimage', 'public'),
+                'password' => Hash::make($request->input('email')),
+            ]);
 
             $user->assignRole($role);
 
@@ -95,10 +96,10 @@ class StaffController extends Controller
                 foreach ($otherdocs as $file) {
                     $name = $file->getClientOriginalName();
                     $staffdata = [
-        'user_id' => $user->id,
-        'title' => $file->getFilename(),
-        'doc' => $file->move('StaffDoc', $name),
-      ];
+                        'user_id' => $user->id,
+                        'title' => $file->getFilename(),
+                        'doc' => $file->move('StaffDoc', $name),
+                    ];
 
                     $staffdoc = new Staffdoc($staffdata);
                     $staffdoc->save();
@@ -106,28 +107,28 @@ class StaffController extends Controller
             }
 
             $data = [
-   'user_id' => $user->id,
-   'role' => $request->input('role'),
-   'fullname' => $request->input('fullname'),
-   'dateofbirth' => $request->input('dateofbirth'),
-   'address' => $request->input('address'),
-   'faculty' => $request->input('faculty'),
-   'gender' => $request->input('gender'),
-   'religion' => $request->input('religion'),
-   'qualification' => $request->input('qualification'),
-   'number' => $request->input('mobile'),
-   'fathername' => $request->input('fname'),
-   'mothername' => $request->input('mname'),
-   'maritalstatus' => $request->input('mstatus'),
-   'workexperience' => $request->input('wrkexperience'),
-   'eployid' => $code,
-   'salarygrade' => $request->input('grade'),
-   'salary' => $request->input('salary'),
-   'acctitle' => $request->input('acctitle'),
-   'accnum' => $request->input('accnumber'),
-   'bankname' => $request->input('bankname'),
-   'bankbranch' => $request->input('branch'),
- ];
+                'user_id' => $user->id,
+                'role' => $request->input('role'),
+                'fullname' => $request->input('fullname'),
+                'dateofbirth' => $request->input('dateofbirth'),
+                'address' => $request->input('address'),
+                'faculty' => $request->input('faculty'),
+                'gender' => $request->input('gender'),
+                'religion' => $request->input('religion'),
+                'qualification' => $request->input('qualification'),
+                'number' => $request->input('mobile'),
+                'fathername' => $request->input('fname'),
+                'mothername' => $request->input('mname'),
+                'maritalstatus' => $request->input('mstatus'),
+                'workexperience' => $request->input('wrkexperience'),
+                'eployid' => $code,
+                'salarygrade' => $request->input('grade'),
+                'salary' => $request->input('salary'),
+                'acctitle' => $request->input('acctitle'),
+                'accnum' => $request->input('accnumber'),
+                'bankname' => $request->input('bankname'),
+                'bankbranch' => $request->input('branch'),
+            ];
 
             $staff = new Staff($data);
             $staff->save();
@@ -143,17 +144,17 @@ class StaffController extends Controller
 
                 $total = \count($courses);
 
-                for ($i = 0; $i < $total; $i++) {
+                for ($i = 0; $i < $total; ++$i) {
                     $acode = $courses[$i];
                     $course = Course::where('code', $acode)->first();
                     $titlec = $course->title;
 
                     $lecdata = [
-      'lecturer_id' => $lecid,
-      'lec_name' => $request->input('fullname'),
-      'course' => $titlec,
-      'code' => $acode,
-    ];
+                        'lecturer_id' => $lecid,
+                        'lec_name' => $request->input('fullname'),
+                        'course' => $titlec,
+                        'code' => $acode,
+                    ];
 
                     $leccourse = new LecCource($lecdata);
                     $leccourse->save();
@@ -163,7 +164,7 @@ class StaffController extends Controller
             DB::commit();
 
             return Redirect()->back()->with('message', 'Staff Added Successfully');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollback();
 
             return Redirect()->back()->with('message', 'Failed, Try again Later');
@@ -179,27 +180,27 @@ class StaffController extends Controller
         $lectcorse = LecCource::where('lecturer_id', $staff->user_id)->get();
         $users = DB::table('users')->where('indexnumber', 'not like', '%GES%')->get();
 
-        return view('Staff.editStaff', ['staff' => $staff, 'user' => $users, 'courses'=> $courses, 'roles' => $role, 'faculty'=>$faculty, 'leccources' => $lectcorse, 'lectid' => $staff->user_id]);
+        return view('Staff.editStaff', ['staff' => $staff, 'user' => $users, 'courses' => $courses, 'roles' => $role, 'faculty' => $faculty, 'leccources' => $lectcorse, 'lectid' => $staff->user_id]);
     }
 
     public function update_staff_info(Request $request)
     {
         $this->validate($request, [
-  'fullname'=> 'required',
-  'gender'=> 'required',
-  'role' => 'required',
-  'faculty'=> 'required',
-  'dateofbirth'=> 'required',
-  'religion'=> 'required',
-  'mobile'=> 'required|min:10',
-  'email'=> 'required|email',
-  'mstatus'=> 'required',
-  'wrkexperience'=> 'required',
-  'qualification'=> 'required',
-  'address'=> 'required',
-  'grade'=> 'required',
-  'salary'=> 'required',
-]);
+            'fullname' => 'required',
+            'gender' => 'required',
+            'role' => 'required',
+            'faculty' => 'required',
+            'dateofbirth' => 'required',
+            'religion' => 'required',
+            'mobile' => 'required|min:10',
+            'email' => 'required|email',
+            'mstatus' => 'required',
+            'wrkexperience' => 'required',
+            'qualification' => 'required',
+            'address' => 'required',
+            'grade' => 'required',
+            'salary' => 'required',
+        ]);
 
         //dd($request);
 
@@ -226,10 +227,10 @@ class StaffController extends Controller
                 foreach ($otherdocs as $file) {
                     $name = $file->getClientOriginalName();
                     $staffdata = [
-      'user_id' => $user->id,
-      'title' => $file->getFilename(),
-      'doc' => $file->move('StaffDoc', $name),
-    ];
+                        'user_id' => $user->id,
+                        'title' => $file->getFilename(),
+                        'doc' => $file->move('StaffDoc', $name),
+                    ];
 
                     $staffdoc = new Staffdoc($staffdata);
                     $staffdoc->save();
@@ -241,47 +242,47 @@ class StaffController extends Controller
 
         if ($request->has('resume')) {
             $data = [
-   'fullname' => $request->input('fullname'),
-   'dateofbirth' => $request->input('dateofbirth'),
-   'address' => $request->input('address'),
-   'faculty' => $request->input('faculty'),
-   'gender' => $request->input('gender'),
-   'religion' => $request->input('religion'),
-   'qualification' => $request->input('qualification'),
-   'number' => $request->input('mobile'),
-   'fathername' => $request->input('fname'),
-   'mothername' => $request->input('mname'),
-   'maritalstatus' => $request->input('mstatus'),
-   'workexperience' => $request->input('wrkexperience'),
-   'salarygrade' => $request->input('grade'),
-   'salary' => $request->input('salary'),
-   'acctitle' => $request->input('acctitle'),
-   'accnum' => $request->input('accnumber'),
-   'bankname' => $request->input('bankname'),
-   'bankbranch' => $request->input('branch'),
-   'resumedoc' => $request->file('resume')->store('Resume', 'public'),
- ];
+                'fullname' => $request->input('fullname'),
+                'dateofbirth' => $request->input('dateofbirth'),
+                'address' => $request->input('address'),
+                'faculty' => $request->input('faculty'),
+                'gender' => $request->input('gender'),
+                'religion' => $request->input('religion'),
+                'qualification' => $request->input('qualification'),
+                'number' => $request->input('mobile'),
+                'fathername' => $request->input('fname'),
+                'mothername' => $request->input('mname'),
+                'maritalstatus' => $request->input('mstatus'),
+                'workexperience' => $request->input('wrkexperience'),
+                'salarygrade' => $request->input('grade'),
+                'salary' => $request->input('salary'),
+                'acctitle' => $request->input('acctitle'),
+                'accnum' => $request->input('accnumber'),
+                'bankname' => $request->input('bankname'),
+                'bankbranch' => $request->input('branch'),
+                'resumedoc' => $request->file('resume')->store('Resume', 'public'),
+            ];
         } else {
             $data = [
-   'fullname' => $request->input('fullname'),
-   'dateofbirth' => $request->input('dateofbirth'),
-   'address' => $request->input('address'),
-   'faculty' => $request->input('faculty'),
-   'gender' => $request->input('gender'),
-   'religion' => $request->input('religion'),
-   'qualification' => $request->input('qualification'),
-   'number' => $request->input('mobile'),
-   'fathername' => $request->input('fname'),
-   'mothername' => $request->input('mname'),
-   'maritalstatus' => $request->input('mstatus'),
-   'workexperience' => $request->input('wrkexperience'),
-   'salarygrade' => $request->input('grade'),
-   'salary' => $request->input('salary'),
-   'acctitle' => $request->input('acctitle'),
-   'accnum' => $request->input('accnumber'),
-   'bankname' => $request->input('bankname'),
-   'bankbranch' => $request->input('branch'),
- ];
+                'fullname' => $request->input('fullname'),
+                'dateofbirth' => $request->input('dateofbirth'),
+                'address' => $request->input('address'),
+                'faculty' => $request->input('faculty'),
+                'gender' => $request->input('gender'),
+                'religion' => $request->input('religion'),
+                'qualification' => $request->input('qualification'),
+                'number' => $request->input('mobile'),
+                'fathername' => $request->input('fname'),
+                'mothername' => $request->input('mname'),
+                'maritalstatus' => $request->input('mstatus'),
+                'workexperience' => $request->input('wrkexperience'),
+                'salarygrade' => $request->input('grade'),
+                'salary' => $request->input('salary'),
+                'acctitle' => $request->input('acctitle'),
+                'accnum' => $request->input('accnumber'),
+                'bankname' => $request->input('bankname'),
+                'bankbranch' => $request->input('branch'),
+            ];
         }
 
         $staff = Staff::findorfail($staff_id)->update($data);
@@ -355,8 +356,8 @@ class StaffController extends Controller
         $totalnetearning = Payroll::where('user_id', auth()->user()->id)->sum('totalearn');
         $totalnetdeduction = Payroll::where('user_id', auth()->user()->id)->sum('totalded');
 
-        return view('Staff.view_staff', ['lectid'=> auth()->user()->id, 'staff' => $staff, 'staffdoc' => $staffdoc, 'leccources' => $lectcorse,
-    'courses'=>$courses, 'attendance' => $attendance, 'totalpresent' => $totalpresent, 'totallate' => $totallate, 'totalabsent' => $totalabsent, 'totalholiday' => $totalholiday, 'totalhalfday' => $totalhalfday, 'leave' => $leave, 'totalleave' => $totalleave, 'totalrejected' => $totalrejected, 'totalapproved' => $totalapproved, 'totalrevert' => $totalrevert, 'payrol' => $payrol, 'totalnetsalary' => $totalnetsalary, 'totalgrosssalary' => $totalgrosssalary, 'totalnetearning' => $totalnetearning, 'totalnetdeduction' => $totalnetdeduction, ]);
+        return view('Staff.view_staff', ['lectid' => auth()->user()->id, 'staff' => $staff, 'staffdoc' => $staffdoc, 'leccources' => $lectcorse,
+            'courses' => $courses, 'attendance' => $attendance, 'totalpresent' => $totalpresent, 'totallate' => $totallate, 'totalabsent' => $totalabsent, 'totalholiday' => $totalholiday, 'totalhalfday' => $totalhalfday, 'leave' => $leave, 'totalleave' => $totalleave, 'totalrejected' => $totalrejected, 'totalapproved' => $totalapproved, 'totalrevert' => $totalrevert, 'payrol' => $payrol, 'totalnetsalary' => $totalnetsalary, 'totalgrosssalary' => $totalgrosssalary, 'totalnetearning' => $totalnetearning, 'totalnetdeduction' => $totalnetdeduction, ]);
     }
 
     public function viewStaff($id)
@@ -411,8 +412,8 @@ class StaffController extends Controller
         $totalnetearning = Payroll::where('user_id', $id)->sum('totalearn');
         $totalnetdeduction = Payroll::where('user_id', $id)->sum('totalded');
 
-        return view('Staff.view_staff', ['lectid'=> $id, 'staff' => $staff, 'staffdoc' => $staffdoc, 'leccources' => $lectcorse,
-    'courses'=>$courses, 'attendance' => $attendance, 'totalpresent' => $totalpresent, 'totallate' => $totallate, 'totalabsent' => $totalabsent, 'totalholiday' => $totalholiday, 'totalhalfday' => $totalhalfday, 'leave' => $leave, 'totalleave' => $totalleave, 'totalrejected' => $totalrejected, 'totalapproved' => $totalapproved, 'totalrevert' => $totalrevert, 'payrol' => $payrol, 'totalnetsalary' => $totalnetsalary, 'totalgrosssalary' => $totalgrosssalary, 'totalnetearning' => $totalnetearning, 'totalnetdeduction' => $totalnetdeduction, ]);
+        return view('Staff.view_staff', ['lectid' => $id, 'staff' => $staff, 'staffdoc' => $staffdoc, 'leccources' => $lectcorse,
+            'courses' => $courses, 'attendance' => $attendance, 'totalpresent' => $totalpresent, 'totallate' => $totallate, 'totalabsent' => $totalabsent, 'totalholiday' => $totalholiday, 'totalhalfday' => $totalhalfday, 'leave' => $leave, 'totalleave' => $totalleave, 'totalrejected' => $totalrejected, 'totalapproved' => $totalapproved, 'totalrevert' => $totalrevert, 'payrol' => $payrol, 'totalnetsalary' => $totalnetsalary, 'totalgrosssalary' => $totalgrosssalary, 'totalnetearning' => $totalnetearning, 'totalnetdeduction' => $totalnetdeduction, ]);
     }
 
     public function deletedoc(Request $request, $id)
@@ -620,7 +621,7 @@ class StaffController extends Controller
 
     </tr>
     ';
-                $loop++;
+                ++$loop;
             }
         } else {
             $html .= '
@@ -650,7 +651,7 @@ class StaffController extends Controller
         $role = $request->post('role');
         $date = $request->post('date');
 
-        for ($i = 0; $i < $count; $i++) {
+        for ($i = 0; $i < $count; ++$i) {
             $loop = $mumber[$i];
             $userid = $request->post('user' . $loop);
             $attend = $request->post('attend' . $loop);
@@ -660,15 +661,15 @@ class StaffController extends Controller
             $year = substr($date, 0, 4);
 
             $data = [
-      'user_id' => $userid,
-      'attendance' => $attend,
-      'note' => $note,
-      'year' => $year,
-      'month' => $month,
-      'day' => $day,
-      'role' => $role,
-      'date' => $date,
-    ];
+                'user_id' => $userid,
+                'attendance' => $attend,
+                'note' => $note,
+                'year' => $year,
+                'month' => $month,
+                'day' => $day,
+                'role' => $role,
+                'date' => $date,
+            ];
 
             //make query
 
@@ -842,12 +843,12 @@ class StaffController extends Controller
             ->where('month', $aliase)
             ->where('attendance', 'F')->count();
 
-        return view('Staff.generatepay', ['staff' => $staff, 'payroll' => $payroll, 'attendance' => $attendance, 'aliase' => $aliase, 'month' => $month, 'year' => $year,  'user' => $user, 'totalpresent' => $totalpresent, 'totallate' => $totallate, 'totalabsent' => $totalabsent, 'totalholiday' => $totalholiday, 'totalhalfday' => $totalhalfday, 'role'=> $role]);
+        return view('Staff.generatepay', ['staff' => $staff, 'payroll' => $payroll, 'attendance' => $attendance, 'aliase' => $aliase, 'month' => $month, 'year' => $year,  'user' => $user, 'totalpresent' => $totalpresent, 'totallate' => $totallate, 'totalabsent' => $totalabsent, 'totalholiday' => $totalholiday, 'totalhalfday' => $totalhalfday, 'role' => $role]);
     }
 
     public function genearn()
     {
-        $value = rand(300, 500);
+        $value = mt_rand(300, 500);
         $html = '';
         $html .= '
   <div class="row" id="' . $value . '">
@@ -871,7 +872,7 @@ class StaffController extends Controller
 
     public function gendeduct()
     {
-        $value = rand(600, 2000);
+        $value = mt_rand(600, 2000);
         $html = '';
         $html .= '
   <div class="row" id="' . $value . '">
@@ -924,7 +925,7 @@ class StaffController extends Controller
             $counttype = \count($earntype);
             $earmamount = 0;
             if ($counttype > 0) {
-                for ($i = 0; $i < $counttype; $i++) {
+                for ($i = 0; $i < $counttype; ++$i) {
                     $earmamount += $earn[$i];
                 }
             }
@@ -932,7 +933,7 @@ class StaffController extends Controller
             $coundec = \count($deductype);
             $deductamount = 0;
             if ($coundec > 0) {
-                for ($d = 0; $d < $coundec; $d++) {
+                for ($d = 0; $d < $coundec; ++$d) {
                     $deductamount += $deduct[$d];
                 }
             }
@@ -948,14 +949,14 @@ class StaffController extends Controller
             }
 
             return Response::json([
-    'msg' => 'calculate',
-    'totalearn' => $earmamount,
-    'totaldeduc' => $deductamount,
-    'gross' => $initial,
-    'tax' => $tax,
-    'net' => $gross,
+                'msg' => 'calculate',
+                'totalearn' => $earmamount,
+                'totaldeduc' => $deductamount,
+                'gross' => $initial,
+                'tax' => $tax,
+                'net' => $gross,
 
-  ], 200);
+            ], 200);
         }
 
         $counttype = \count($earntype);
@@ -963,7 +964,7 @@ class StaffController extends Controller
         $earnmnt = '';
         if ($counttype > 0) {
             $etypes = '';
-            for ($i = 0; $i < $counttype; $i++) {
+            for ($i = 0; $i < $counttype; ++$i) {
                 $earmamount += $earn[$i];
                 $etypes .= $earntype[$i] . ',';
                 $earnmnt .= $earn[$i] . ',';
@@ -978,7 +979,7 @@ class StaffController extends Controller
         $dtyamnt = '';
         if ($coundec > 0) {
             $dtypes = '';
-            for ($d = 0; $d < $coundec; $d++) {
+            for ($d = 0; $d < $coundec; ++$d) {
                 $deductamount += $deduct[$d];
                 $dtypes .= $deductype[$d] . ',';
                 $dtyamnt .= $deduct[$d] . ',';
@@ -999,31 +1000,31 @@ class StaffController extends Controller
         }
 
         $data = [
-  'user_id' => $stafid,
-  'role' => $role,
-  'month' => $month,
-  'monthalise' => $aliase,
-  'year' => $year,
-  'earning' =>  $etypes,
-  'earnamnts' => $earnmnt,
-  'totalearn' => $earmamount,
-  'deduction' => $dtypes,
-  'deductamnts' => $dtyamnt,
-  'totalded' => $deductamount,
-  'grosssalary' => $initial,
-  'netsalary' => $gross,
-  'tax' => $tax,
-  'paymentdate' => date('Y-m-d'),
-  'status' => 'Generated',
-];
+            'user_id' => $stafid,
+            'role' => $role,
+            'month' => $month,
+            'monthalise' => $aliase,
+            'year' => $year,
+            'earning' => $etypes,
+            'earnamnts' => $earnmnt,
+            'totalearn' => $earmamount,
+            'deduction' => $dtypes,
+            'deductamnts' => $dtyamnt,
+            'totalded' => $deductamount,
+            'grosssalary' => $initial,
+            'netsalary' => $gross,
+            'tax' => $tax,
+            'paymentdate' => date('Y-m-d'),
+            'status' => 'Generated',
+        ];
 
         $payroll = new Payroll($data);
         $payroll->save();
 
         return Response::json([
-  'msg' => 'save',
-  'datas' => 'Payroll Generated Successfully!',
-], 200);
+            'msg' => 'save',
+            'datas' => 'Payroll Generated Successfully!',
+        ], 200);
     }
 
     public function view_staff_payroll_now($id)
@@ -1097,7 +1098,7 @@ class StaffController extends Controller
 
             $this->fpdf->Cell(95, 10, strtoupper($value), 0, 0, 'L');
             $this->fpdf->Cell(95, 10, 'Gh ' . $earnamnts[$mnt], 0, 1, 'L');
-            $mnt++;
+            ++$mnt;
         }
 
         $this->fpdf->Cell(95, 10, 'Total Earnings', 'B', 0, 'L');
@@ -1119,7 +1120,7 @@ class StaffController extends Controller
 
             $this->fpdf->Cell(95, 10, strtoupper($value), 0, 0, 'L');
             $this->fpdf->Cell(95, 10, 'Gh ' . $dedtamnts[$dmnt], 0, 1, 'L');
-            $dmnt++;
+            ++$dmnt;
         }
 
         $this->fpdf->Cell(95, 10, 'Total Deductions', 'B', 0, 'L');
@@ -1179,32 +1180,32 @@ class StaffController extends Controller
         }
 
         $data = [
-  'user_id' => auth()->user()->id,
-  'staffid' => $user->eployid,
-  'role' =>  $role,
-  'applydate' => $now,
-  'leavedate' => $date,
-  'leavetype' => $type,
-  'days' => $days,
-  'status' => 'Processing',
-  'reason' => $reason,
-];
+            'user_id' => auth()->user()->id,
+            'staffid' => $user->eployid,
+            'role' => $role,
+            'applydate' => $now,
+            'leavedate' => $date,
+            'leavetype' => $type,
+            'days' => $days,
+            'status' => 'Processing',
+            'reason' => $reason,
+        ];
 
         if ('edit' == $edit) {
             $rqleave = Staffleave::where('id', $hiddenid)->update($data);
 
             return Response::json([
-    'msg' => 'true',
-    'message' => 'Leave Updated Successfully!',
-  ], 200);
+                'msg' => 'true',
+                'message' => 'Leave Updated Successfully!',
+            ], 200);
         }
         $rqleave = new Staffleave($data);
         $rqleave->save();
 
         return Response::json([
-    'msg' => 'true',
-    'message' => 'Leave Requested Successfully!',
-  ], 200);
+            'msg' => 'true',
+            'message' => 'Leave Requested Successfully!',
+        ], 200);
     }
 
     public function update_requestleave(Request $request)
@@ -1219,9 +1220,9 @@ class StaffController extends Controller
         $rqleave->save();
 
         return Response::json([
-    'msg' => 'true',
-    'message' => 'Leave Request Updated Successfully!',
-  ], 200);
+            'msg' => 'true',
+            'message' => 'Leave Request Updated Successfully!',
+        ], 200);
     }
 
     public function leave_req_revert(Request $request)
@@ -1233,9 +1234,9 @@ class StaffController extends Controller
         $rqleave->save();
 
         return Response::json([
-    'msg' => 'true',
-    'message' => 'Leave Request Reverted Successfully!',
-  ], 200);
+            'msg' => 'true',
+            'message' => 'Leave Request Reverted Successfully!',
+        ], 200);
     }
 
     public function fetch_payroll_fetail(Request $request)
@@ -1245,13 +1246,13 @@ class StaffController extends Controller
         $staff = Staff::where('user_id', $payroll->user_id)->first();
 
         return Response::json([
-    'msg' => 'true',
-    'userid' => $id,
-    'fname' => $staff->fullname,
-    'employid' => $staff->eployid,
-    'salary' => $payroll->netsalary,
-    'note' => $payroll->note,
-  ], 200);
+            'msg' => 'true',
+            'userid' => $id,
+            'fname' => $staff->fullname,
+            'employid' => $staff->eployid,
+            'salary' => $payroll->netsalary,
+            'note' => $payroll->note,
+        ], 200);
     }
 
     public function save_payroll_now(Request $request)
@@ -1278,9 +1279,9 @@ class StaffController extends Controller
         $payroll->save();
 
         return Response::json([
-    'msg' => 'true',
-    'message' => 'Staff Paid Successfully!',
-  ], 200);
+            'msg' => 'true',
+            'message' => 'Staff Paid Successfully!',
+        ], 200);
     }
 
     public function view_payroll_now(Request $request)
@@ -1395,7 +1396,7 @@ class StaffController extends Controller
     </tr>
     ';
 
-            $mnt++;
+            ++$mnt;
         }
 
         $html .= '
@@ -1435,7 +1436,7 @@ class StaffController extends Controller
     </tr>
     ';
 
-            $mnt++;
+            ++$mnt;
         }
 
         $html .= '
@@ -1513,9 +1514,9 @@ class StaffController extends Controller
   </div>';
 
         return Response::json([
-    'msg' => 'true',
-    'message' => $html,
-  ], 200);
+            'msg' => 'true',
+            'message' => $html,
+        ], 200);
     }
 
     public function disable_staff()
@@ -1523,6 +1524,6 @@ class StaffController extends Controller
         $users = User::with('staff')
             ->where('indexnumber', 'not like', '%GES%')->get();
 
-        return view('Staff.disable_staff', ['users'=>$users]);
+        return view('Staff.disable_staff', ['users' => $users]);
     }
 }

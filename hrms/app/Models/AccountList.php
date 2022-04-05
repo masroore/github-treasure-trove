@@ -16,21 +16,21 @@ class AccountList extends Model
         'created_by',
     ];
 
-    public static function add_Balance($id, $amount)
+    public static function add_Balance($id, $amount): void
     {
         $accountBalance = self::where('id', '=', $id)->first();
         $accountBalance->initial_balance = $amount + $accountBalance->initial_balance;
         $accountBalance->save();
     }
 
-    public static function remove_Balance($id, $amount)
+    public static function remove_Balance($id, $amount): void
     {
         $accountBalance = self::where('id', '=', $id)->first();
         $accountBalance->initial_balance = $accountBalance->initial_balance - $amount;
         $accountBalance->save();
     }
 
-    public static function transfer_Balance($from_account, $to_account, $amount)
+    public static function transfer_Balance($from_account, $to_account, $amount): void
     {
         $fromAccount = self::where('id', '=', $from_account)->first();
         $fromAccount->initial_balance = $fromAccount->initial_balance - $amount;

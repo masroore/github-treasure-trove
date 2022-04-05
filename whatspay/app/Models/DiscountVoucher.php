@@ -11,6 +11,7 @@ class DiscountVoucher extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
     protected $fillable = [
         'name',
         'code',

@@ -7,12 +7,10 @@ class CreateFaqsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('faqs', function (Blueprint $table) {
+        Schema::create('faqs', function (Blueprint $table): void {
             $table->unsignedBigInteger('id')->autoIncrement();
 
             $table->unsignedBigInteger('faq_category_id')->default(null)->nullable();
@@ -26,10 +24,8 @@ class CreateFaqsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop('faqs');
     }

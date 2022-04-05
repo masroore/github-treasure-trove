@@ -15,13 +15,13 @@ class Counter extends Component
         return view('livewire.counter');
     }
 
-    public function increment()
+    public function increment(): void
     {
-        $this->count++;
+        ++$this->count;
     }
 
-    public function decrement()
+    public function decrement(): void
     {
-        $this->count--;
+        --$this->count;
     }
 }

@@ -3,6 +3,7 @@
 namespace Modules\AdminRbac\Services;
 
 use App\Models\User;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class CreateUserService extends UserService
@@ -30,7 +31,7 @@ class CreateUserService extends UserService
             DB::commit();
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollback();
 
             return false;

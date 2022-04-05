@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\IncomeType;
+use Auth;
 use Illuminate\Http\Request;
+use Validator;
 
 class IncomeTypeController extends Controller
 {
     public function index()
     {
-        if (\Auth::user()->can('Manage Income Type')) {
-            $incometypes = IncomeType::where('created_by', '=', \Auth::user()->creatorId())->get();
+        if (Auth::user()->can('Manage Income Type')) {
+            $incometypes = IncomeType::where('created_by', '=', Auth::user()->creatorId())->get();
 
             return view('incometype.index', compact('incometypes'));
         }
@@ -20,7 +22,7 @@ class IncomeTypeController extends Controller
 
     public function create()
     {
-        if (\Auth::user()->can('Create Income Type')) {
+        if (Auth::user()->can('Create Income Type')) {
             return view('incometype.create');
         }
 
@@ -29,12 +31,12 @@ class IncomeTypeController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('Create Income Type')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Create Income Type')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'name' => 'required',
-                               ]
+                    'name' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -43,7 +45,7 @@ class IncomeTypeController extends Controller
             }
             $incometype = new IncomeType();
             $incometype->name = $request->name;
-            $incometype->created_by = \Auth::user()->creatorId();
+            $incometype->created_by = Auth::user()->creatorId();
             $incometype->save();
 
             return redirect()->route('incometype.index')->with('success', __('IncomeType  successfully created.'));
@@ -59,8 +61,8 @@ class IncomeTypeController extends Controller
 
     public function edit(IncomeType $incometype)
     {
-        if (\Auth::user()->can('Edit Income Type')) {
-            if ($incometype->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('Edit Income Type')) {
+            if ($incometype->created_by == Auth::user()->creatorId()) {
                 return view('incometype.edit', compact('incometype'));
             }
 
@@ -72,14 +74,14 @@ class IncomeTypeController extends Controller
 
     public function update(Request $request, IncomeType $incometype)
     {
-        if (\Auth::user()->can('Edit Income Type')) {
-            if ($incometype->created_by == \Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+        if (Auth::user()->can('Edit Income Type')) {
+            if ($incometype->created_by == Auth::user()->creatorId()) {
+                $validator = Validator::make(
                     $request->all(),
                     [
-                                       'name' => 'required',
+                        'name' => 'required',
 
-                                   ]
+                    ]
                 );
                 if ($validator->fails()) {
                     $messages = $validator->getMessageBag();
@@ -100,8 +102,8 @@ class IncomeTypeController extends Controller
 
     public function destroy(IncomeType $incometype)
     {
-        if (\Auth::user()->can('Delete Income Type')) {
-            if ($incometype->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('Delete Income Type')) {
+            if ($incometype->created_by == Auth::user()->creatorId()) {
                 $incometype->delete();
 
                 return redirect()->route('incometype.index')->with('success', __('IncomeType successfully deleted.'));

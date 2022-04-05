@@ -90,7 +90,7 @@ interface EloquentRepositoryInterface
     /**
      * Update multiple row at once.
      *
-     * @return bool|null
+     * @return null|bool
      */
     public function updateMultiple(string $column, array $where, array $payload): bool;
 

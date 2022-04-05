@@ -8,12 +8,10 @@ class CreateProductTagsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('product_tags', function (Blueprint $table) {
+        Schema::create('product_tags', function (Blueprint $table): void {
             $table->bigInteger('product_id')->unsigned();
             $table->bigInteger('tag_id')->unsigned();
             $table->foreign('product_id')
@@ -32,13 +30,11 @@ class CreateProductTagsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('product_tags');
-        Schema::table('product_tags', function (Blueprint $table) {
+        Schema::table('product_tags', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
     }

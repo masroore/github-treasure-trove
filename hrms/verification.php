@@ -5,7 +5,7 @@
 function getPhpVersionInfo()
 {
     $currentVersionFull = \PHP_VERSION;
-    preg_match("#^\d+(\.\d+)*#", $currentVersionFull, $filtered);
+    preg_match('#^\\d+(\\.\\d+)*#', $currentVersionFull, $filtered);
     $currentVersion = $filtered[0];
 
     return [
@@ -76,8 +76,8 @@ if (1 != $err) {
                 <li class="list__item list__title <?php if ($allowed_version) {
     echo 'success';
 } else {
-                    echo 'error';
-                } ?>">
+    echo 'error';
+} ?>">
                     <strong>Php
                         <small>(version <?php echo $minPhpVersion; ?> required)</small>
                     </strong>
@@ -96,12 +96,12 @@ if (1 != $err) {
                     <li class="list__item list__item--permissions <?php if ('777' == $val) {
                     echo 'success';
                 } else {
-                        echo 'error';
-                    } ?>">
+                    echo 'error';
+                } ?>">
                         <?php echo $key; ?>
                         <?php if ($val < '777') {
-                        echo '<small>(Required Permission is 777)</small>';
-                    } ?>
+                    echo '<small>(Required Permission is 777)</small>';
+                } ?>
                         <span>
                             <?php if ('777' == $val) { ?>
                                 <i class="fa fa-fw fa-check-circle-o"></i>

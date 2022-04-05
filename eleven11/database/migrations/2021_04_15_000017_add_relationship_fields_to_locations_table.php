@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class AddRelationshipFieldsToLocationsTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::table('locations', function (Blueprint $table) {
+        Schema::table('locations', function (Blueprint $table): void {
             $table->unsignedBigInteger('company_id');
             $table->foreign('company_id', 'company_fk_3556290')->references('id')->on('companies');
         });

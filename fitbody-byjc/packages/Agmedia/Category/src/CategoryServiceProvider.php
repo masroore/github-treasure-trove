@@ -8,10 +8,8 @@ class CategoryServiceProvider extends ServiceProvider
 {
     /**
      * Perform post-registration booting of services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'agmedia');
         // $this->loadViewsFrom(__DIR__.'/../resources/views', 'agmedia');
@@ -26,10 +24,8 @@ class CategoryServiceProvider extends ServiceProvider
 
     /**
      * Register any package services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/category.php', 'category');
 
@@ -51,10 +47,8 @@ class CategoryServiceProvider extends ServiceProvider
 
     /**
      * Console-specific booting.
-     *
-     * @return void
      */
-    protected function bootForConsole()
+    protected function bootForConsole(): void
     {
         // Publishing the configuration file.
         $this->publishes([

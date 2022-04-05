@@ -12,6 +12,7 @@ use App\Models\ProductOption;
 use App\Models\ShippingPackage;
 use App\Models\ShippingZonePrice;
 use DB;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use LaravelShipStation\ShipStation;
@@ -250,7 +251,7 @@ class AdminOrderController extends Controller
             }
             Order::where('id', $id)->first()->update(['status' => $status]);
             session()->flash('success_message', 'Order updated successfully.');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             session()->flash('error_message', 'Order could not be updated.');
         }
 
@@ -274,34 +275,37 @@ class AdminOrderController extends Controller
                     switch ($po->option->type) {
                         case 'input':
                             $returnHTML = view('adminorder::htmlelement.input', [
-                                'option'=>$po->option,
-                                'productId'=>$request->productId,
-                                'productOption'=>$po,
-                                ])->render();
+                                'option' => $po->option,
+                                'productId' => $request->productId,
+                                'productOption' => $po,
+                            ])->render();
                             $responseHtml .= $returnHTML;
+
                         break;
                         case 'text':
                             $returnHTML = view('adminorder::htmlelement.input', [
-                                'option'=>$po->option,
-                                'productId'=>$request->productId,
-                                'productOption'=>$po,
-                                ])->render();
+                                'option' => $po->option,
+                                'productId' => $request->productId,
+                                'productOption' => $po,
+                            ])->render();
                             $responseHtml .= $returnHTML;
+
                         break;
                         case 'select':
                             $returnHTML = view('adminorder::htmlelement.select', [
-                                'option'=>$po->option,
-                                'productId'=>$request->productId,
-                                'productOption'=>$po,
+                                'option' => $po->option,
+                                'productId' => $request->productId,
+                                'productOption' => $po,
                             ])->render();
                             $responseHtml .= $returnHTML;
+
                         break;
                     }
                 }
             }
         }
 
-        return response()->json(['success' => true, 'html'=>$responseHtml]);
+        return response()->json(['success' => true, 'html' => $responseHtml]);
     }
 
     /**
@@ -354,12 +358,12 @@ class AdminOrderController extends Controller
         $selectname = 'single_product_package[]';
 
         $returnHTML = view('adminorder::htmlelement.package', [
-            'option'=> 'Package',
-            'productPackage'=>$packages,
-            'productId'=>$productId,
+            'option' => 'Package',
+            'productPackage' => $packages,
+            'productId' => $productId,
             'selectname' => $selectname,
             'product_packages_array' => $product_packages_array,
-            ])->render();
+        ])->render();
 
         $selectnamedeliverytime = 'single_product_deliverytime[]';
 
@@ -369,14 +373,14 @@ class AdminOrderController extends Controller
         $orderProductData = OrderProduct::where('order_id', $orderId)->where('product_id', $productId)->first();
 
         $responseHtmlDeliveryTime = view('adminorder::htmlelement.orderdeliverytime', [
-            'option'=> 'DeliveryTime',
-            'productDeliveryTimes'=>$deliveryData,
-            'productId'=>$productId,
+            'option' => 'DeliveryTime',
+            'productDeliveryTimes' => $deliveryData,
+            'productId' => $productId,
             'selectnamedeliverytime' => $selectnamedeliverytime,
             'selectedId' => (isset($orderProductData->shipping_delivery_times_id) && '' != $orderProductData->shipping_delivery_times_id) ? $orderProductData->shipping_delivery_times_id : '',
         ])->render();
 
-        return response()->json(['success' => true, 'html'=>$returnHTML, 'deliveryHtml' => $responseHtmlDeliveryTime]);
+        return response()->json(['success' => true, 'html' => $returnHTML, 'deliveryHtml' => $responseHtmlDeliveryTime]);
     }
 
     public function showOrderInvoices($id)
@@ -410,7 +414,7 @@ class AdminOrderController extends Controller
         return redirect()->back();
     }
 
-    public function getOrderData()
+    public function getOrderData(): void
     {
         $shipStation = new ShipStation('28243d7551d441a3ac6acddcb937f255', 'b8adcebd9271434781d84f5ebca8e705', 'https://ssapi.shipstation.com');
 
@@ -443,27 +447,27 @@ class AdminOrderController extends Controller
                 $singalarr[$indexsingle]['package'] = $this->getPackageName($listPackages[$key]);
                 $singalarr[$indexsingle]['deliverytime'] = $this->getDeliveryData($listDeliveryTimes[$key]);
                 $singalarr[$indexsingle]['deliverytimeprice'] = $this->getDeliveryData($listDeliveryTimes[$key], $productsIds[$key], $listPackages[$key]);
-                $indexsingle++;
+                ++$indexsingle;
             }
 
             if (0 == $value) {
                 $comboarr[$indexcombo]['id'] = $productsIds[$key];
                 $comboarr[$indexcombo]['name'] = $productNames[$key];
                 $comboarr[$indexcombo]['product_price'] = $this->getProductPrice($orderId, $productsIds[$key]);
-                $indexcombo++;
+                ++$indexcombo;
             }
         }
 
         $returnHTML = view('adminorder::htmlelement.step2', [
-                            'singalarr' => $singalarr,
-                            'comboarr' => $comboarr,
-                            //'productUnitPrices' => $productUnitPrices,
-                            //'productQuantities' => $productQuantities,
-                            //'productTotals' => $productTotals,
-                            //'listPackages' => $listPackages,
-                        ])->render();
+            'singalarr' => $singalarr,
+            'comboarr' => $comboarr,
+            //'productUnitPrices' => $productUnitPrices,
+            //'productQuantities' => $productQuantities,
+            //'productTotals' => $productTotals,
+            //'listPackages' => $listPackages,
+        ])->render();
 
-        return response()->json(['success' => true, 'html'=>$returnHTML]);
+        return response()->json(['success' => true, 'html' => $returnHTML]);
     }
 
     public function getPackageName($packageId)
@@ -518,7 +522,7 @@ class AdminOrderController extends Controller
             $message = 'Order could not be sent on shipstation, Please refresh the page and try again.';
         }
 
-        return response()->json(['success' => true, 'message'=>$message]);
+        return response()->json(['success' => true, 'message' => $message]);
     }
 
     /**
@@ -558,14 +562,14 @@ class AdminOrderController extends Controller
         $selectname = 'product_delivery_time_' . $productId . '[]';
 
         $returnHTML = view('adminorder::htmlelement.deliverytime', [
-            'option'=> 'Package',
-            'deliveryTimes'=>$deliveryTimes,
-            'productId'=>$request->productId,
+            'option' => 'Package',
+            'deliveryTimes' => $deliveryTimes,
+            'productId' => $request->productId,
             'selectname' => $selectname,
-            ])->render();
+        ])->render();
 
         $responseHtml .= $returnHTML;
 
-        return response()->json(['success' => true, 'html'=>$responseHtml]);
+        return response()->json(['success' => true, 'html' => $responseHtml]);
     }
 }

@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\AllowanceOption;
+use Auth;
 use Illuminate\Http\Request;
+use Validator;
 
 class AllowanceOptionController extends Controller
 {
     public function index()
     {
-        if (\Auth::user()->can('Manage Allowance Option')) {
-            $allowanceoptions = AllowanceOption::where('created_by', '=', \Auth::user()->creatorId())->get();
+        if (Auth::user()->can('Manage Allowance Option')) {
+            $allowanceoptions = AllowanceOption::where('created_by', '=', Auth::user()->creatorId())->get();
 
             return view('allowanceoption.index', compact('allowanceoptions'));
         }
@@ -20,7 +22,7 @@ class AllowanceOptionController extends Controller
 
     public function create()
     {
-        if (\Auth::user()->can('Create Allowance Option')) {
+        if (Auth::user()->can('Create Allowance Option')) {
             return view('allowanceoption.create');
         }
 
@@ -29,12 +31,12 @@ class AllowanceOptionController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('Create Allowance Option')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Create Allowance Option')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'name' => 'required|max:20',
-                               ]
+                    'name' => 'required|max:20',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -44,7 +46,7 @@ class AllowanceOptionController extends Controller
 
             $allowanceoption = new AllowanceOption();
             $allowanceoption->name = $request->name;
-            $allowanceoption->created_by = \Auth::user()->creatorId();
+            $allowanceoption->created_by = Auth::user()->creatorId();
             $allowanceoption->save();
 
             return redirect()->route('allowanceoption.index')->with('success', __('AllowanceOption  successfully created.'));
@@ -60,8 +62,8 @@ class AllowanceOptionController extends Controller
 
     public function edit(AllowanceOption $allowanceoption)
     {
-        if (\Auth::user()->can('Edit Allowance Option')) {
-            if ($allowanceoption->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('Edit Allowance Option')) {
+            if ($allowanceoption->created_by == Auth::user()->creatorId()) {
                 return view('allowanceoption.edit', compact('allowanceoption'));
             }
 
@@ -73,14 +75,14 @@ class AllowanceOptionController extends Controller
 
     public function update(Request $request, AllowanceOption $allowanceoption)
     {
-        if (\Auth::user()->can('Edit Allowance Option')) {
-            if ($allowanceoption->created_by == \Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+        if (Auth::user()->can('Edit Allowance Option')) {
+            if ($allowanceoption->created_by == Auth::user()->creatorId()) {
+                $validator = Validator::make(
                     $request->all(),
                     [
-                                       'name' => 'required|max:20',
+                        'name' => 'required|max:20',
 
-                                   ]
+                    ]
                 );
 
                 if ($validator->fails()) {
@@ -102,8 +104,8 @@ class AllowanceOptionController extends Controller
 
     public function destroy(AllowanceOption $allowanceoption)
     {
-        if (\Auth::user()->can('Delete Allowance Option')) {
-            if ($allowanceoption->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('Delete Allowance Option')) {
+            if ($allowanceoption->created_by == Auth::user()->creatorId()) {
                 $allowanceoption->delete();
 
                 return redirect()->route('allowanceoption.index')->with('success', __('AllowanceOption successfully deleted.'));

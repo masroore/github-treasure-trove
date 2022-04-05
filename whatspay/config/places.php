@@ -14,7 +14,7 @@ return [
             'UAQ',
         ],
     ],
-    'Bhutan'=> [
+    'Bhutan' => [
         'continent' => 'Asia',
         'cities' => [
             'Punakha',
@@ -26,13 +26,13 @@ return [
             'St Saviour',
         ],
     ],
-    'Nepal'=> [
+    'Nepal' => [
         'continent' => 'Asia',
         'cities' => [
             'Lumbini',
         ],
     ],
-    'Guatemala'=> [
+    'Guatemala' => [
         'continent' => 'Central America',
         'cities' => [
             'Pacaya Volcano',
@@ -269,7 +269,7 @@ return [
             'Jizan',
             'Medina',
             'Al Ahsa',
-    ],
+        ],
     ],
     'Oman' => [
         'continent' => 'Asia',
@@ -457,7 +457,7 @@ return [
         'Daraa',
         'Halab',
     ]],
-    'Seychelles'=> ['continent' => 'Africa', 'cities' => [
+    'Seychelles' => ['continent' => 'Africa', 'cities' => [
         'Roche Caiman',
     ]],
     'Tunisia' => ['continent' => 'Africa', 'cities' => [
@@ -1465,7 +1465,7 @@ return [
         'Kamikawa',
         'Tochigi',
         'Shiga', ]],
-    'Jamaica'=> ['continent' => 'North America', 'cities' => [
+    'Jamaica' => ['continent' => 'North America', 'cities' => [
         'Kingston',
         'Portmore',
         'Montego Bay',
@@ -2115,7 +2115,7 @@ return [
         'Shuya',
         'Penza',
         'Irkutsk Oblast', ]],
-    'Tanzania'=> ['continent' => 'Africa', 'cities' => [
+    'Tanzania' => ['continent' => 'Africa', 'cities' => [
         'Moshi urban',
     ]],
     'Taiwan' => ['continent' => 'Asia', 'cities' => [

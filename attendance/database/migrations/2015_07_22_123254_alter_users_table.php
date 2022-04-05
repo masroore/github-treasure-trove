@@ -7,12 +7,10 @@ class AlterUsersTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table): void {
             $table->boolean('ticketit_admin')->default(0);
             $table->boolean('ticketit_agent')->default(0);
         });
@@ -20,12 +18,10 @@ class AlterUsersTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table): void {
             $table->dropColumn(['ticketit_admin', 'ticketit_agent']);
         });
     }

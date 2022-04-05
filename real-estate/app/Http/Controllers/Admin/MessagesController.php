@@ -43,7 +43,7 @@ class MessagesController extends Controller
 
         // Use the service
         $results = $sms->send([
-            'to'      => '+' . $request->phone_number,
+            'to' => '+' . $request->phone_number,
             'message' => 'Hello, ' . $request->full_name . ' ' . $request->message,
         ]);
 

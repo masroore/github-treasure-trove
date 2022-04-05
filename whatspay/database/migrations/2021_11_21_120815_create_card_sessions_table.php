@@ -8,12 +8,10 @@ class CreateCardSessionsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('card_sessions', function (Blueprint $table) {
+        Schema::create('card_sessions', function (Blueprint $table): void {
             $table->id();
             $table->bigInteger('user_id')
                 ->unsigned()
@@ -33,10 +31,8 @@ class CreateCardSessionsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('card_sessions');
     }

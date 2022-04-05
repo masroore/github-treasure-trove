@@ -32,6 +32,7 @@ if (!function_exists('get_whatsapp_message')) {
                   . 'Regards,'
                   . NEW_LINE
                   . '*{{name}}*';
+
             break;
             case 'create-store':
                 $whatsapp = ADMIN_WHATSAPP;
@@ -44,6 +45,7 @@ if (!function_exists('get_whatsapp_message')) {
                     . 'Regards,'
                     . NEW_LINE
                     . '*{{name}}*';
+
                 break;
         }
 
@@ -72,21 +74,27 @@ if (!function_exists('get_email_subject')) {
         switch ($purpose) {
             case 'register':
                 $return = 'Hey ' . $params . ' - Welcome! Thank you for registering on WhatsPays.';
+
                 break;
             case 'reactivate':
                 $return = 'Hey ' . $params . ' - Welcome Back! Thank you for reactivating on WhatsPays.';
+
                 break;
             case 'forgot-password':
                 $return = 'Hey ' . $params . ' - Forgot your password?';
+
                 break;
             case 'reset-password':
                 $return = 'Hey ' . $params . ' - Security Alert! You have successfully reset your password.';
+
                 break;
             case 'resendcode':
                 $return = 'Hey ' . $params . ' - Welcome Back! Thank you for reactivating on WhatsPays.';
+
                 break;
             case 'create-store':
                 $return = 'Hey ' . $params . ' - Welcome! Thank you for creating your store on WhatsPays.';
+
                 break;
         }
 
@@ -161,7 +169,7 @@ if (!function_exists('onefile')) {
 }
 
 if (!function_exists('multiFile')) {
-    function multiFile($files = [], $dimensions)
+    function multiFile($files, $dimensions)
     {
         $images = [];
         foreach ($files as $key => $request) {
@@ -169,7 +177,7 @@ if (!function_exists('multiFile')) {
             $filename = pathinfo($filenamewithextension, \PATHINFO_FILENAME);
             //get file extension
             $extension = $request->getClientOriginalExtension();
-            $filenametostore = rand() . '.' . $extension;
+            $filenametostore = mt_rand() . '.' . $extension;
             //Upload File
             $request->storeAs($dimensions['full']['model'] . '/images', $filenametostore);
             //create small thumbnail
@@ -188,7 +196,7 @@ if (!function_exists('createThumbnail')) {
         $quality = 70;
         $img_name = 'storage/' . $img_name1;
         $name = pathinfo(public_path($img_name), \PATHINFO_FILENAME);
-        foreach ($dimensions as $key=>$dimension) {
+        foreach ($dimensions as $key => $dimension) {
             $image = Image::make(public_path($img_name))->resize($dimension['width'], $dimension['width'])->encode($dimension['ext'], $quality);
             Storage::disk('local')->put($dimension['model'] . '/images/' . $name . $dimension['key'] . '.' . $dimension['ext'], $image);
         }
@@ -229,6 +237,7 @@ if (!function_exists('hasAnyPermission')) {
         foreach ($roles as $role) {
             if ($role->pivot->store_id == $store_id) {
                 $user_permissions = $role->permissions;
+
                 break;
             }
         }
@@ -260,7 +269,7 @@ if (!function_exists('averageRating')) {
             ->groupBy('rating')
             ->get();
 
-        return ['average'=>$ratingAverage, 'total'=>$star_count->sum('count'), 'count'=>$star_count];
+        return ['average' => $ratingAverage, 'total' => $star_count->sum('count'), 'count' => $star_count];
     }
 }
 
@@ -313,7 +322,7 @@ if (!function_exists('createSlug')) {
         $model = get_class($data);
         $title = ($data->name) ?: $data->store_name;
         $slug = SlugService::createSlug(App\Models\Slug::class, 'slug', $title);
-        \App\Models\Slug::create(['slug'=>$slug, 'slugable_type'=>$model, 'slugable_id'=>$data->id]);
+        \App\Models\Slug::create(['slug' => $slug, 'slugable_type' => $model, 'slugable_id' => $data->id]);
 
         return $slug;
     }

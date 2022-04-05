@@ -14,7 +14,7 @@ class UpdateAdminProductQuestionRequest extends FormRequest
     public function rules()
     {
         return [
-            'answer'=>'nullable|string',
+            'answer' => 'nullable|string',
             'product_id' => 'required|exists:products,id',
             'customer_id' => 'nullable|exists:customer_users,id',
             'name' => 'required|string|max:255',

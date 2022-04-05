@@ -8,12 +8,10 @@ class CreateVisitorsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('visitors', function (Blueprint $table) {
+        Schema::create('visitors', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('fullname')->nullable();
             $table->string('phone')->nullable();
@@ -30,10 +28,8 @@ class CreateVisitorsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('visitors');
     }

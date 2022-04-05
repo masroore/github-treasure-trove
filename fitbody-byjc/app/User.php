@@ -69,7 +69,7 @@ class User extends Authenticatable
     public function validateRequest(Request $request)
     {
         $request->validate([
-            'user_name'  => 'required',
+            'user_name' => 'required',
             'user_email' => 'required',
         ]);
 
@@ -84,12 +84,12 @@ class User extends Authenticatable
     public function validateCustomerRequest(Request $request)
     {
         $request->validate([
-            'fname'    => 'required',
-            'lname'    => 'required',
-            'address'  => 'required',
-            'zip'      => 'required',
-            'city'     => 'required',
-            'email'    => 'required',
+            'fname' => 'required',
+            'lname' => 'required',
+            'address' => 'required',
+            'zip' => 'required',
+            'city' => 'required',
+            'email' => 'required',
             'username' => 'required',
         ]);
 
@@ -106,11 +106,11 @@ class User extends Authenticatable
         $role = $this->request->user_role ?? 'customer';
 
         $stored = $this->insertGetId([
-            'name'       => $this->request->user_name,
-            'email'      => $this->request->user_email,
-            'password'   => isset($this->request->user_password) ? bcrypt($this->request->user_password) : '',
-            'role'       => $role,
-            'status'     => (isset($this->request->user_status) && 'on' == $this->request->user_status) ? 1 : 0,
+            'name' => $this->request->user_name,
+            'email' => $this->request->user_email,
+            'password' => isset($this->request->user_password) ? bcrypt($this->request->user_password) : '',
+            'role' => $role,
+            'status' => (isset($this->request->user_status) && 'on' == $this->request->user_status) ? 1 : 0,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
@@ -143,11 +143,11 @@ class User extends Authenticatable
         }
 
         $updated = $this->where('id', $id)->update([
-            'name'       => $this->request->user_name,
-            'email'      => $this->request->user_email,
-            'password'   => $password,
-            'role'       => $role,
-            'status'     => (isset($this->request->user_status) && 'on' == $this->request->user_status) ? 1 : 0,
+            'name' => $this->request->user_name,
+            'email' => $this->request->user_email,
+            'password' => $password,
+            'role' => $role,
+            'status' => (isset($this->request->user_status) && 'on' == $this->request->user_status) ? 1 : 0,
             'updated_at' => Carbon::now(),
         ]);
 
@@ -196,8 +196,8 @@ class User extends Authenticatable
     public function updateCustomerData($id)
     {
         $updated = $this->where('id', $id)->update([
-            'name'       => $this->request->username,
-            'email'      => $this->request->email,
+            'name' => $this->request->username,
+            'email' => $this->request->email,
             'updated_at' => Carbon::now(),
         ]);
 
@@ -235,7 +235,7 @@ class User extends Authenticatable
      *
      * @param $request
      */
-    private function setRequest($request)
+    private function setRequest($request): void
     {
         $this->request = $request;
     }

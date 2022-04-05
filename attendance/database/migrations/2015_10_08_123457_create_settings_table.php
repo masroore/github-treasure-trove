@@ -7,12 +7,10 @@ class CreateSettingsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('ticketit_settings', function (Blueprint $table) {
+        Schema::create('ticketit_settings', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('lang')->unique()->nullable();
             $table->string('slug')->unique()->index();
@@ -24,10 +22,8 @@ class CreateSettingsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop('ticketit_settings');
     }

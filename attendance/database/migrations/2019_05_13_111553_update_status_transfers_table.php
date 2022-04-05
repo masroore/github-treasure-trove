@@ -36,7 +36,7 @@ class UpdateStatusTransfersTable extends Migration
             return;
         }
 
-        Schema::table($this->table(), function (Blueprint $table) {
+        Schema::table($this->table(), function (Blueprint $table): void {
             $table->string('status')
                 ->default(Transfer::STATUS_TRANSFER)
                 ->change();
@@ -80,7 +80,7 @@ class UpdateStatusTransfersTable extends Migration
             return;
         }
 
-        Schema::table($this->table(), function (Blueprint $table) {
+        Schema::table($this->table(), function (Blueprint $table): void {
             $table->string('status')
                 ->default(Transfer::STATUS_PAID)
                 ->change();
@@ -114,7 +114,7 @@ class UpdateStatusTransfersTable extends Migration
 
         $enumString = implode(', ', $enumList);
 
-        DB::transaction(function () use ($table, $field, $check, $enumString) {
+        DB::transaction(function () use ($table, $field, $check, $enumString): void {
             DB::statement(sprintf('ALTER TABLE %s DROP CONSTRAINT %s;', $table, $check));
             DB::statement(sprintf('ALTER TABLE %s ADD CONSTRAINT %s CHECK (%s::TEXT = ANY (ARRAY[%s]::TEXT[]))', $table, $check, $field, $enumString));
         });

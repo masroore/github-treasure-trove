@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\PayslipType;
+use Auth;
 use Illuminate\Http\Request;
+use Validator;
 
 class PayslipTypeController extends Controller
 {
     public function index()
     {
-        if (\Auth::user()->can('Manage Payslip Type')) {
-            $paysliptypes = PayslipType::where('created_by', '=', \Auth::user()->creatorId())->get();
+        if (Auth::user()->can('Manage Payslip Type')) {
+            $paysliptypes = PayslipType::where('created_by', '=', Auth::user()->creatorId())->get();
 
             return view('paysliptype.index', compact('paysliptypes'));
         }
@@ -20,7 +22,7 @@ class PayslipTypeController extends Controller
 
     public function create()
     {
-        if (\Auth::user()->can('Create Payslip Type')) {
+        if (Auth::user()->can('Create Payslip Type')) {
             return view('paysliptype.create');
         }
 
@@ -29,12 +31,12 @@ class PayslipTypeController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('Create Payslip Type')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Create Payslip Type')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'name' => 'required|max:20',
-                               ]
+                    'name' => 'required|max:20',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -43,7 +45,7 @@ class PayslipTypeController extends Controller
             }
             $paysliptype = new PayslipType();
             $paysliptype->name = $request->name;
-            $paysliptype->created_by = \Auth::user()->creatorId();
+            $paysliptype->created_by = Auth::user()->creatorId();
             $paysliptype->save();
 
             return redirect()->route('paysliptype.index')->with('success', __('PayslipType  successfully created.'));
@@ -59,8 +61,8 @@ class PayslipTypeController extends Controller
 
     public function edit(PayslipType $paysliptype)
     {
-        if (\Auth::user()->can('Edit Payslip Type')) {
-            if ($paysliptype->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('Edit Payslip Type')) {
+            if ($paysliptype->created_by == Auth::user()->creatorId()) {
                 return view('paysliptype.edit', compact('paysliptype'));
             }
 
@@ -72,14 +74,14 @@ class PayslipTypeController extends Controller
 
     public function update(Request $request, PayslipType $paysliptype)
     {
-        if (\Auth::user()->can('Edit Payslip Type')) {
-            if ($paysliptype->created_by == \Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+        if (Auth::user()->can('Edit Payslip Type')) {
+            if ($paysliptype->created_by == Auth::user()->creatorId()) {
+                $validator = Validator::make(
                     $request->all(),
                     [
-                                       'name' => 'required|max:20',
+                        'name' => 'required|max:20',
 
-                                   ]
+                    ]
                 );
 
                 if ($validator->fails()) {
@@ -102,8 +104,8 @@ class PayslipTypeController extends Controller
 
     public function destroy(PayslipType $paysliptype)
     {
-        if (\Auth::user()->can('Delete Payslip Type')) {
-            if ($paysliptype->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('Delete Payslip Type')) {
+            if ($paysliptype->created_by == Auth::user()->creatorId()) {
                 $paysliptype->delete();
 
                 return redirect()->route('paysliptype.index')->with('success', __('PayslipType successfully deleted.'));

@@ -8,14 +8,12 @@ class CreateHolidaysTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create(
             'holidays',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->id();
                 $table->date('date');
                 $table->text('occasion');
@@ -27,10 +25,8 @@ class CreateHolidaysTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('holidays');
     }

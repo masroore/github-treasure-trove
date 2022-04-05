@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateCategoriesTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('name')->unique();
             $table->timestamps();

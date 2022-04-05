@@ -26,9 +26,9 @@ class CreateZonePriceRequest extends FormRequest
         }
 
         return [
-                'type' => 'required',
-                'file_name' => 'required',
-            ];
+            'type' => 'required',
+            'file_name' => 'required',
+        ];
     }
 
     /**

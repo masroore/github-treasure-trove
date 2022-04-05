@@ -8,12 +8,10 @@ class CreatePayrollsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('payrolls', function (Blueprint $table) {
+        Schema::create('payrolls', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('user_id')->nullable();
             $table->string('role')->nullable();
@@ -40,10 +38,8 @@ class CreatePayrollsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('payrolls');
     }

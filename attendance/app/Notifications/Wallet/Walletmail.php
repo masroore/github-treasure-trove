@@ -11,13 +11,13 @@ class Walletmail extends Notification
     use Queueable;
 
     public $name;
+
     public $transctionid;
+
     public $amount;
 
     /**
      * Create a new notification instance.
-     *
-     * @return void
      */
     public function __construct($name, $transctionid, $amount)
     {

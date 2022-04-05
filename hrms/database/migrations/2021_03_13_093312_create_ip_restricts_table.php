@@ -8,14 +8,12 @@ class CreateIpRestrictsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create(
             'ip_restricts',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->id();
                 $table->string('ip');
                 $table->integer('created_by');
@@ -26,10 +24,8 @@ class CreateIpRestrictsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('ip_restricts');
     }

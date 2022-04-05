@@ -4,6 +4,7 @@ namespace Modules\AdminProductAttribute\Services;
 
 use App\Models\Attribute;
 use App\Models\AttributeValue;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class UpdateAdminProductAttributeService
@@ -20,11 +21,11 @@ class UpdateAdminProductAttributeService
                 $attribute->attributeValues()->delete();
                 $inserData = [];
                 $time = now();
-                foreach ($data['attribute_value']['name'] as $key=>$attributeValue) {
+                foreach ($data['attribute_value']['name'] as $key => $attributeValue) {
                     $inserData[] = [
-                        'attributes_id'=>$attribute->id,
-                        'name'=>$attributeValue,
-                        'updated_at'=>$time,
+                        'attributes_id' => $attribute->id,
+                        'name' => $attributeValue,
+                        'updated_at' => $time,
                     ];
                 }
 
@@ -34,7 +35,7 @@ class UpdateAdminProductAttributeService
             DB::commit();
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             dd($e);
             DB::rollback();
 

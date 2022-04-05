@@ -8,14 +8,12 @@ class CreatePaySlipsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create(
             'pay_slips',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->bigIncrements('id');
                 $table->integer('employee_id');
                 $table->integer('net_payble');
@@ -36,10 +34,8 @@ class CreatePaySlipsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('pay_slips');
     }

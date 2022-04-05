@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class AddRelationshipFieldsToTimeTrackingsTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::table('time_trackings', function (Blueprint $table) {
+        Schema::table('time_trackings', function (Blueprint $table): void {
             $table->unsignedBigInteger('random_code_id');
             $table->foreign('random_code_id', 'random_code_fk_3581405')->references('id')->on('random_codes');
             $table->unsignedBigInteger('user_id');

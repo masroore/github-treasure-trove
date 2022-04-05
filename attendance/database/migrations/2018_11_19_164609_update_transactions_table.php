@@ -12,7 +12,7 @@ class UpdateTransactionsTable extends Migration
 {
     public function up(): void
     {
-        Schema::table($this->table(), function (Blueprint $table) {
+        Schema::table($this->table(), function (Blueprint $table): void {
             $table->unsignedBigInteger('wallet_id')
                 ->nullable()
                 ->after('payable_id');
@@ -24,8 +24,8 @@ class UpdateTransactionsTable extends Migration
         });
 
         $slug = config('wallet.wallet.default.slug', 'default');
-        DB::transaction(function () use ($slug) {
-            Wallet::where('slug', $slug)->each(function (Wallet $wallet) {
+        DB::transaction(function () use ($slug): void {
+            Wallet::where('slug', $slug)->each(function (Wallet $wallet): void {
                 Transaction::query()
                     ->where('payable_type', $wallet->holder_type)
                     ->where('payable_id', $wallet->holder_id)
@@ -36,7 +36,7 @@ class UpdateTransactionsTable extends Migration
 
     public function down(): void
     {
-        Schema::table($this->table(), function (Blueprint $table) {
+        Schema::table($this->table(), function (Blueprint $table): void {
             if (!(DB::connection() instanceof SQLiteConnection)) {
                 $table->dropForeign(['wallet_id']);
             }

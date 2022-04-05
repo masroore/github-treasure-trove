@@ -22,20 +22,15 @@ class Studentpromotion2 implements ShouldQueue
 
     /**
      * Create a new job instance.
-     *
-     * @return void
      */
     public function __construct()
     {
-
     }
 
     /**
      * Execute the job.
-     *
-     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         $forms = ['Level 400', 'Level 300', 'Level 200', 'Level 100'];
 

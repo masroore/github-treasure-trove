@@ -3,6 +3,7 @@
 namespace Modules\Setting\Services;
 
 use App\Utils\Option;
+use Exception;
 
 class ApiSettingService
 {
@@ -14,7 +15,7 @@ class ApiSettingService
             Option::set('api_agent_password', $data['api_agent_password'] ?? null);
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
     }

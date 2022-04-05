@@ -17,15 +17,17 @@ class notifystudent implements ShouldQueue
     use SerializesModels;
 
     public $students;
+
     public $title;
+
     public $message;
+
     public $from;
+
     public $fullname;
 
     /**
      * Create a new job instance.
-     *
-     * @return void
      */
     public function __construct($students, $title, $message, $from, $fullname)
     {
@@ -38,10 +40,8 @@ class notifystudent implements ShouldQueue
 
     /**
      * Execute the job.
-     *
-     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         foreach ($this->students as $row => $value) {
             $index = $row->indexnumber;

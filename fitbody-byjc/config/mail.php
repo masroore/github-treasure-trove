@@ -60,10 +60,10 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
-    /*******************************************************************************
+    /*
      *                                Copyright : @AGmedia                          *
      *                              email: filip@agmedia.hr                         *
-     *******************************************************************************/
+     */
     'admin_default' => env('MAIL_ADMIN_DEFAULT', 'filip@agmedia.hr'),
     // END Copyright : AGmedia
 

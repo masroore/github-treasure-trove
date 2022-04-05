@@ -17,7 +17,7 @@ class StudentProfile extends Model implements HasMedia
     use SoftDeletes;
 
     public const GENDER_SELECT = [
-        'Male'   => 'Male',
+        'Male' => 'Male',
         'Female' => 'Female',
     ];
 

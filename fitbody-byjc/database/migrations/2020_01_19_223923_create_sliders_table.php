@@ -8,12 +8,10 @@ class CreateSlidersTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('slider_groups', function (Blueprint $table) {
+        Schema::create('slider_groups', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('name')->index();
             $table->integer('blog_id')->unsigned()->nullable();
@@ -28,7 +26,7 @@ class CreateSlidersTable extends Migration
 
         // Atributi proizvoda. Može ih imati više.
         //
-        Schema::create('sliders', function (Blueprint $table) {
+        Schema::create('sliders', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->integer('group_id')->unsigned()->nullable();
             $table->string('image')->nullable();
@@ -46,10 +44,8 @@ class CreateSlidersTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('slider_groups');
         Schema::dropIfExists('sliders');

@@ -15,13 +15,13 @@ class DepositExport implements FromCollection, WithHeadings
     public function collection()
     {
         $data = Deposit::get();
-        foreach ($data as $k=>$deposit) {
+        foreach ($data as $k => $deposit) {
             $data[$k]['account_id'] = !empty($deposit->account($deposit->account_id)) ? $deposit->account($deposit->account_id)->account_name : '';
             $data[$k]['income_category_id'] = !empty($deposit->income_category($deposit->income_category_id)) ? $deposit->income_category($deposit->income_category_id)->name : '';
             $data[$k]['payer_id'] = Deposit::payer($deposit->payer_id)->payer_name;
             $data[$k]['payment_type_id'] = !empty($deposit->payment_type($deposit->payment_type_id)) ? $deposit->payment_type($deposit->payment_type_id)->name : '';
             $data[$k]['created_by'] = Employee::login_user($deposit->created_by);
-            unset($deposit->created_at,$deposit->updated_at);
+            $deposit->created_at = null; $deposit->updated_at = null;
         }
 
         return $data;

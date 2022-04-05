@@ -146,7 +146,7 @@ class AddressService
         }
     }
 
-    public function default($id)
+    public function default($id): void
     {
         try {
             // update previous default address to 0

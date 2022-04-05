@@ -29,6 +29,7 @@ if (!function_exists('get_whatsapp_message')) {
                     . 'Regards,'
                     . NEW_LINE
                     . '*{{name}}*';
+
                 break;
         }
 
@@ -57,18 +58,23 @@ if (!function_exists('get_email_subject')) {
         switch ($purpose) {
             case 'register':
                 $return = 'Hey ' . $params . ' - Welcome! Thank you for registering on WhatsPays.';
+
                 break;
             case 'reactivate':
                 $return = 'Hey ' . $params . ' - Welcome Back! Thank you for reactivating on WhatsPays.';
+
                 break;
             case 'forgot-password':
                 $return = 'Hey ' . $params . ' - Forgot your password?';
+
                 break;
             case 'reset-password':
                 $return = 'Hey ' . $params . ' - Security Alert! You have successfully reset your password.';
+
                 break;
             case 'resendcode':
                 $return = 'Hey ' . $params . ' - Welcome Back! Thank you for reactivating on WhatsPays.';
+
                 break;
         }
 
@@ -208,7 +214,7 @@ if (!function_exists('createThumbnail')) {
         $image = Image::make(public_path($img_name))->resize(670, 440)->encode('webp');
         Storage::disk('local')->put('images/' . $name . '-L.webp', $image);
 
-        $img_instance->resize(null, 500, function ($constraint) {
+        $img_instance->resize(null, 500, function ($constraint): void {
             $constraint->aspectRatio();
             $constraint->upsize();
         });
@@ -218,23 +224,23 @@ if (!function_exists('createThumbnail')) {
     }
 
     $file_dimensions = [
-        'full'        => ['width' => 1600, 'height' => 1000, 'ext' => 'webp'],
-        'large'    => ['width' => 1200, 'height' => 750,  'ext' => 'webp'],
-        'medium'   => ['width' => 800,  'height' => 500,  'ext' => 'webp'],
+        'full' => ['width' => 1600, 'height' => 1000, 'ext' => 'webp'],
+        'large' => ['width' => 1200, 'height' => 750,  'ext' => 'webp'],
+        'medium' => ['width' => 800,  'height' => 500,  'ext' => 'webp'],
         'full_jpeg' => ['width' => 800,  'height' => 500,  'ext' => 'jpg'],
-        'small'    => ['width' => 400,  'height' => 250,  'ext' => 'webp'],
+        'small' => ['width' => 400,  'height' => 250,  'ext' => 'webp'],
     ];
     $download_url = ABSPATH . '../uploads/temp_images/';
     $upload_url = '../uploads/store/media/';
     $files_data = [
-        'files'          => $files,
-        'imgz_states'     => $img_states,
-        'download_url'        => $download_url,
-        'upload_url'      => $upload_url,
-        'file_dimensions'  => $file_dimensions,
-        'type'              => 'store',
+        'files' => $files,
+        'imgz_states' => $img_states,
+        'download_url' => $download_url,
+        'upload_url' => $upload_url,
+        'file_dimensions' => $file_dimensions,
+        'type' => 'store',
         // 'count'           => $this->_existing_images_count,
-        'store_name'      => $store_name,
+        'store_name' => $store_name,
     ];
     $upload_images = new MoveImages();
     $message = $upload_images->upload($files_data);

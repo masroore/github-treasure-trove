@@ -20,6 +20,7 @@ class Indicator extends Model
         'Intermediate',
         'Advanced',
     ];
+
     protected $fillable = [
         'branch',
         'designation',

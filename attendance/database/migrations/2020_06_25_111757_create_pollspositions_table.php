@@ -8,12 +8,10 @@ class CreatePollspositionsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('pollspositions', function (Blueprint $table) {
+        Schema::create('pollspositions', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('pollstype_id');
             $table->string('name');
@@ -23,10 +21,8 @@ class CreatePollspositionsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('pollspositions');
     }

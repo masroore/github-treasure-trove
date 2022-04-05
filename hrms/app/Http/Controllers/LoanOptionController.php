@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\LoanOption;
+use Auth;
 use Illuminate\Http\Request;
+use Validator;
 
 class LoanOptionController extends Controller
 {
     public function index()
     {
-        if (\Auth::user()->can('Manage Loan Option')) {
-            $loanoptions = LoanOption::where('created_by', '=', \Auth::user()->creatorId())->get();
+        if (Auth::user()->can('Manage Loan Option')) {
+            $loanoptions = LoanOption::where('created_by', '=', Auth::user()->creatorId())->get();
 
             return view('loanoption.index', compact('loanoptions'));
         }
@@ -20,7 +22,7 @@ class LoanOptionController extends Controller
 
     public function create()
     {
-        if (\Auth::user()->can('Create Loan Option')) {
+        if (Auth::user()->can('Create Loan Option')) {
             return view('loanoption.create');
         }
 
@@ -29,12 +31,12 @@ class LoanOptionController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('Create Loan Option')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Create Loan Option')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'name' => 'required|max:20',
-                               ]
+                    'name' => 'required|max:20',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -43,7 +45,7 @@ class LoanOptionController extends Controller
             }
             $loanoption = new LoanOption();
             $loanoption->name = $request->name;
-            $loanoption->created_by = \Auth::user()->creatorId();
+            $loanoption->created_by = Auth::user()->creatorId();
             $loanoption->save();
 
             return redirect()->route('loanoption.index')->with('success', __('LoanOption  successfully created.'));
@@ -59,8 +61,8 @@ class LoanOptionController extends Controller
 
     public function edit(LoanOption $loanoption)
     {
-        if (\Auth::user()->can('Edit Loan Option')) {
-            if ($loanoption->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('Edit Loan Option')) {
+            if ($loanoption->created_by == Auth::user()->creatorId()) {
                 return view('loanoption.edit', compact('loanoption'));
             }
 
@@ -72,14 +74,14 @@ class LoanOptionController extends Controller
 
     public function update(Request $request, LoanOption $loanoption)
     {
-        if (\Auth::user()->can('Edit Loan Option')) {
-            if ($loanoption->created_by == \Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+        if (Auth::user()->can('Edit Loan Option')) {
+            if ($loanoption->created_by == Auth::user()->creatorId()) {
+                $validator = Validator::make(
                     $request->all(),
                     [
-                                       'name' => 'required|max:20',
+                        'name' => 'required|max:20',
 
-                                   ]
+                    ]
                 );
                 if ($validator->fails()) {
                     $messages = $validator->getMessageBag();
@@ -100,8 +102,8 @@ class LoanOptionController extends Controller
 
     public function destroy(LoanOption $loanoption)
     {
-        if (\Auth::user()->can('Delete Loan Option')) {
-            if ($loanoption->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('Delete Loan Option')) {
+            if ($loanoption->created_by == Auth::user()->creatorId()) {
                 $loanoption->delete();
 
                 return redirect()->route('loanoption.index')->with('success', __('LoanOption successfully deleted.'));

@@ -7,18 +7,18 @@ class HomeController
     public function index()
     {
         $settings1 = [
-            'chart_title'           => 'Published Property',
-            'chart_type'            => 'number_block',
-            'report_type'           => 'group_by_date',
-            'model'                 => 'App\Models\Property',
-            'group_by_field'        => 'created_at',
-            'group_by_period'       => 'day',
-            'aggregate_function'    => 'count',
-            'filter_field'          => 'created_at',
+            'chart_title' => 'Published Property',
+            'chart_type' => 'number_block',
+            'report_type' => 'group_by_date',
+            'model' => 'App\Models\Property',
+            'group_by_field' => 'created_at',
+            'group_by_period' => 'day',
+            'aggregate_function' => 'count',
+            'filter_field' => 'created_at',
             'group_by_field_format' => 'd-m-Y H:i:s',
-            'column_class'          => 'col-md-3',
-            'entries_number'        => '5',
-            'translation_key'       => 'property',
+            'column_class' => 'col-md-3',
+            'entries_number' => '5',
+            'translation_key' => 'property',
         ];
 
         $settings1['total_number'] = 0;
@@ -33,9 +33,15 @@ class HomeController
                 }
                 if (isset($settings1['filter_period'])) {
                     switch ($settings1['filter_period']) {
-                case 'week': $start = date('Y-m-d', strtotime('last Monday')); break;
-                case 'month': $start = date('Y-m') . '-01'; break;
-                case 'year': $start = date('Y') . '-01-01'; break;
+                case 'week': $start = date('Y-m-d', strtotime('last Monday'));
+
+break;
+                case 'month': $start = date('Y-m') . '-01';
+
+break;
+                case 'year': $start = date('Y') . '-01-01';
+
+break;
             }
                     if (isset($start)) {
                         return $query->where($settings1['filter_field'], '>=', $start);
@@ -46,18 +52,18 @@ class HomeController
         }
 
         $settings2 = [
-            'chart_title'           => 'Total Reviews',
-            'chart_type'            => 'number_block',
-            'report_type'           => 'group_by_date',
-            'model'                 => 'App\Models\PropertyReview',
-            'group_by_field'        => 'created_at',
-            'group_by_period'       => 'day',
-            'aggregate_function'    => 'count',
-            'filter_field'          => 'created_at',
+            'chart_title' => 'Total Reviews',
+            'chart_type' => 'number_block',
+            'report_type' => 'group_by_date',
+            'model' => 'App\Models\PropertyReview',
+            'group_by_field' => 'created_at',
+            'group_by_period' => 'day',
+            'aggregate_function' => 'count',
+            'filter_field' => 'created_at',
             'group_by_field_format' => 'd-m-Y H:i:s',
-            'column_class'          => 'col-md-3',
-            'entries_number'        => '5',
-            'translation_key'       => 'propertyReview',
+            'column_class' => 'col-md-3',
+            'entries_number' => '5',
+            'translation_key' => 'propertyReview',
         ];
 
         $settings2['total_number'] = 0;
@@ -72,9 +78,15 @@ class HomeController
                 }
                 if (isset($settings2['filter_period'])) {
                     switch ($settings2['filter_period']) {
-                case 'week': $start = date('Y-m-d', strtotime('last Monday')); break;
-                case 'month': $start = date('Y-m') . '-01'; break;
-                case 'year': $start = date('Y') . '-01-01'; break;
+                case 'week': $start = date('Y-m-d', strtotime('last Monday'));
+
+break;
+                case 'month': $start = date('Y-m') . '-01';
+
+break;
+                case 'year': $start = date('Y') . '-01-01';
+
+break;
             }
                     if (isset($start)) {
                         return $query->where($settings2['filter_field'], '>=', $start);
@@ -85,18 +97,18 @@ class HomeController
         }
 
         $settings3 = [
-            'chart_title'           => 'Messages',
-            'chart_type'            => 'number_block',
-            'report_type'           => 'group_by_date',
-            'model'                 => 'App\Models\PropoertyInquiry',
-            'group_by_field'        => 'created_at',
-            'group_by_period'       => 'day',
-            'aggregate_function'    => 'count',
-            'filter_field'          => 'created_at',
+            'chart_title' => 'Messages',
+            'chart_type' => 'number_block',
+            'report_type' => 'group_by_date',
+            'model' => 'App\Models\PropoertyInquiry',
+            'group_by_field' => 'created_at',
+            'group_by_period' => 'day',
+            'aggregate_function' => 'count',
+            'filter_field' => 'created_at',
             'group_by_field_format' => 'd-m-Y H:i:s',
-            'column_class'          => 'col-md-3',
-            'entries_number'        => '5',
-            'translation_key'       => 'propoertyInquiry',
+            'column_class' => 'col-md-3',
+            'entries_number' => '5',
+            'translation_key' => 'propoertyInquiry',
         ];
 
         $settings3['total_number'] = 0;
@@ -111,9 +123,15 @@ class HomeController
                 }
                 if (isset($settings3['filter_period'])) {
                     switch ($settings3['filter_period']) {
-                case 'week': $start = date('Y-m-d', strtotime('last Monday')); break;
-                case 'month': $start = date('Y-m') . '-01'; break;
-                case 'year': $start = date('Y') . '-01-01'; break;
+                case 'week': $start = date('Y-m-d', strtotime('last Monday'));
+
+break;
+                case 'month': $start = date('Y-m') . '-01';
+
+break;
+                case 'year': $start = date('Y') . '-01-01';
+
+break;
             }
                     if (isset($start)) {
                         return $query->where($settings3['filter_field'], '>=', $start);
@@ -124,18 +142,18 @@ class HomeController
         }
 
         $settings4 = [
-            'chart_title'           => 'Tags',
-            'chart_type'            => 'number_block',
-            'report_type'           => 'group_by_date',
-            'model'                 => 'App\Models\PropertyTag',
-            'group_by_field'        => 'created_at',
-            'group_by_period'       => 'day',
-            'aggregate_function'    => 'count',
-            'filter_field'          => 'created_at',
+            'chart_title' => 'Tags',
+            'chart_type' => 'number_block',
+            'report_type' => 'group_by_date',
+            'model' => 'App\Models\PropertyTag',
+            'group_by_field' => 'created_at',
+            'group_by_period' => 'day',
+            'aggregate_function' => 'count',
+            'filter_field' => 'created_at',
             'group_by_field_format' => 'd-m-Y H:i:s',
-            'column_class'          => 'col-md-3',
-            'entries_number'        => '5',
-            'translation_key'       => 'propertyTag',
+            'column_class' => 'col-md-3',
+            'entries_number' => '5',
+            'translation_key' => 'propertyTag',
         ];
 
         $settings4['total_number'] = 0;
@@ -150,9 +168,15 @@ class HomeController
                 }
                 if (isset($settings4['filter_period'])) {
                     switch ($settings4['filter_period']) {
-                case 'week': $start = date('Y-m-d', strtotime('last Monday')); break;
-                case 'month': $start = date('Y-m') . '-01'; break;
-                case 'year': $start = date('Y') . '-01-01'; break;
+                case 'week': $start = date('Y-m-d', strtotime('last Monday'));
+
+break;
+                case 'month': $start = date('Y-m') . '-01';
+
+break;
+                case 'year': $start = date('Y') . '-01-01';
+
+break;
             }
                     if (isset($start)) {
                         return $query->where($settings4['filter_field'], '>=', $start);
@@ -163,23 +187,23 @@ class HomeController
         }
 
         $settings5 = [
-            'chart_title'           => 'Listing',
-            'chart_type'            => 'latest_entries',
-            'report_type'           => 'group_by_date',
-            'model'                 => 'App\Models\Property',
-            'group_by_field'        => 'created_at',
-            'group_by_period'       => 'day',
-            'aggregate_function'    => 'count',
-            'filter_field'          => 'created_at',
+            'chart_title' => 'Listing',
+            'chart_type' => 'latest_entries',
+            'report_type' => 'group_by_date',
+            'model' => 'App\Models\Property',
+            'group_by_field' => 'created_at',
+            'group_by_period' => 'day',
+            'aggregate_function' => 'count',
+            'filter_field' => 'created_at',
             'group_by_field_format' => 'd-m-Y H:i:s',
-            'column_class'          => 'col-md-12',
-            'entries_number'        => '5',
-            'fields'                => [
+            'column_class' => 'col-md-12',
+            'entries_number' => '5',
+            'fields' => [
                 'property_title' => '',
-                'type'           => 'name',
-                'created_at'     => '',
-                'status'         => '',
-                'available'      => '',
+                'type' => 'name',
+                'created_at' => '',
+                'status' => '',
+                'available' => '',
             ],
             'translation_key' => 'property',
         ];
@@ -196,22 +220,22 @@ class HomeController
         }
 
         $settings6 = [
-            'chart_title'           => 'Messages',
-            'chart_type'            => 'latest_entries',
-            'report_type'           => 'group_by_date',
-            'model'                 => 'App\Models\PropoertyInquiry',
-            'group_by_field'        => 'created_at',
-            'group_by_period'       => 'day',
-            'aggregate_function'    => 'count',
-            'filter_field'          => 'created_at',
+            'chart_title' => 'Messages',
+            'chart_type' => 'latest_entries',
+            'report_type' => 'group_by_date',
+            'model' => 'App\Models\PropoertyInquiry',
+            'group_by_field' => 'created_at',
+            'group_by_period' => 'day',
+            'aggregate_function' => 'count',
+            'filter_field' => 'created_at',
             'group_by_field_format' => 'd-m-Y H:i:s',
-            'column_class'          => 'col-md-12',
-            'entries_number'        => '5',
-            'fields'                => [
-                'property'     => 'property_title',
-                'full_name'    => '',
+            'column_class' => 'col-md-12',
+            'entries_number' => '5',
+            'fields' => [
+                'property' => 'property_title',
+                'full_name' => '',
                 'phone_number' => '',
-                'created_at'   => '',
+                'created_at' => '',
             ],
             'translation_key' => 'propoertyInquiry',
         ];
@@ -228,22 +252,22 @@ class HomeController
         }
 
         $settings7 = [
-            'chart_title'           => 'Review',
-            'chart_type'            => 'latest_entries',
-            'report_type'           => 'group_by_date',
-            'model'                 => 'App\Models\PropertyReview',
-            'group_by_field'        => 'created_at',
-            'group_by_period'       => 'day',
-            'aggregate_function'    => 'count',
-            'filter_field'          => 'created_at',
+            'chart_title' => 'Review',
+            'chart_type' => 'latest_entries',
+            'report_type' => 'group_by_date',
+            'model' => 'App\Models\PropertyReview',
+            'group_by_field' => 'created_at',
+            'group_by_period' => 'day',
+            'aggregate_function' => 'count',
+            'filter_field' => 'created_at',
             'group_by_field_format' => 'd-m-Y H:i:s',
-            'column_class'          => 'col-md-12',
-            'entries_number'        => '5',
-            'fields'                => [
-                'full_name'  => '',
-                'ratings'    => '',
+            'column_class' => 'col-md-12',
+            'entries_number' => '5',
+            'fields' => [
+                'full_name' => '',
+                'ratings' => '',
                 'created_at' => '',
-                'property'   => 'property_title',
+                'property' => 'property_title',
             ],
             'translation_key' => 'propertyReview',
         ];

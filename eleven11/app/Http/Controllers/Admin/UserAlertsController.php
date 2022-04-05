@@ -7,6 +7,7 @@ use App\Http\Requests\MassDestroyUserAlertRequest;
 use App\Http\Requests\StoreUserAlertRequest;
 use App\Models\User;
 use App\Models\UserAlert;
+use Auth;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -64,9 +65,9 @@ class UserAlertsController extends Controller
         return response(null, Response::HTTP_NO_CONTENT);
     }
 
-    public function read(Request $request)
+    public function read(Request $request): void
     {
-        $alerts = \Auth::user()->userUserAlerts()->where('read', false)->get();
+        $alerts = Auth::user()->userUserAlerts()->where('read', false)->get();
 
         foreach ($alerts as $alert) {
             $pivot = $alert->pivot;

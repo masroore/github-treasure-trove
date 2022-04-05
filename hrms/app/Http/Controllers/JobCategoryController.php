@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\JobCategory;
+use Auth;
 use Illuminate\Http\Request;
+use Validator;
 
 class JobCategoryController extends Controller
 {
     public function index()
     {
-        if (\Auth::user()->can('Manage Job Category')) {
-            $categories = JobCategory::where('created_by', '=', \Auth::user()->creatorId())->get();
+        if (Auth::user()->can('Manage Job Category')) {
+            $categories = JobCategory::where('created_by', '=', Auth::user()->creatorId())->get();
 
             return view('jobCategory.index', compact('categories'));
         }
@@ -25,12 +27,12 @@ class JobCategoryController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('Create Job Category')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Create Job Category')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'title' => 'required',
-                               ]
+                    'title' => 'required',
+                ]
             );
 
             if ($validator->fails()) {
@@ -41,7 +43,7 @@ class JobCategoryController extends Controller
 
             $jobCategory = new JobCategory();
             $jobCategory->title = $request->title;
-            $jobCategory->created_by = \Auth::user()->creatorId();
+            $jobCategory->created_by = Auth::user()->creatorId();
             $jobCategory->save();
 
             return redirect()->back()->with('success', __('Job category  successfully created.'));
@@ -50,9 +52,8 @@ class JobCategoryController extends Controller
         return redirect()->back()->with('error', __('Permission denied.'));
     }
 
-    public function show(JobCategory $jobCategory)
+    public function show(JobCategory $jobCategory): void
     {
-
     }
 
     public function edit(JobCategory $jobCategory)
@@ -62,12 +63,12 @@ class JobCategoryController extends Controller
 
     public function update(Request $request, JobCategory $jobCategory)
     {
-        if (\Auth::user()->can('Edit Job Category')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('Edit Job Category')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'title' => 'required',
-                               ]
+                    'title' => 'required',
+                ]
             );
 
             if ($validator->fails()) {
@@ -87,8 +88,8 @@ class JobCategoryController extends Controller
 
     public function destroy(JobCategory $jobCategory)
     {
-        if (\Auth::user()->can('Delete Job Category')) {
-            if ($jobCategory->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('Delete Job Category')) {
+            if ($jobCategory->created_by == Auth::user()->creatorId()) {
                 $jobCategory->delete();
 
                 return redirect()->back()->with('success', __('Job category successfully deleted.'));

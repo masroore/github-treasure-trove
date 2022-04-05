@@ -164,18 +164,18 @@ class StudentPromotionController extends Controller
             } else {
                 //insert
                 $data = [
-           'user_id' => $userid,
-           'programme' => $progrm[0],
-           'session' => $session,
-           'type' => $type,
-           'academicyear' => $academic,
-           'fullname' => $student->fullname,
-           'gpa' => round($gpa->gpa, 2),
-           'graduatingclas' => $class,
-           'year' => date('Y'),
-           'level' => $level,
-           'indexnumber' => $student->indexnumber,
-         ];
+                    'user_id' => $userid,
+                    'programme' => $progrm[0],
+                    'session' => $session,
+                    'type' => $type,
+                    'academicyear' => $academic,
+                    'fullname' => $student->fullname,
+                    'gpa' => round($gpa->gpa, 2),
+                    'graduatingclas' => $class,
+                    'year' => date('Y'),
+                    'level' => $level,
+                    'indexnumber' => $student->indexnumber,
+                ];
 
                 $new = new GraduatingList($data);
                 $new->save();
@@ -183,13 +183,13 @@ class StudentPromotionController extends Controller
         }
 
         return Response::json([
-   'success' => 'true',
-   'level' => $level,
-   'prog' => $code,
-   'session' => $session,
-   'academicyear' => $academic,
-   'type' => $type,
-], 200);
+            'success' => 'true',
+            'level' => $level,
+            'prog' => $code,
+            'session' => $session,
+            'academicyear' => $academic,
+            'type' => $type,
+        ], 200);
     }
 
     public function fetch_graduatng_list($level, $prog, $session, $academicyear, $type)
@@ -242,7 +242,7 @@ class StudentPromotionController extends Controller
                     $this->fpdf->Cell(89, 10, $row->gpa, 'LR', 1, 'L');
                 }
 
-                $fcu++;
+                ++$fcu;
             }
 
             $this->fpdf->Ln(5);
@@ -266,7 +266,7 @@ class StudentPromotionController extends Controller
                     $this->fpdf->Cell(89, 10, $row->gpa, 'LR', 1, 'L');
                 }
 
-                $scu++;
+                ++$scu;
             }
 
             $this->fpdf->Ln(5);
@@ -290,7 +290,7 @@ class StudentPromotionController extends Controller
                     $this->fpdf->Cell(89, 10, $row->gpa, 'LR', 1, 'L');
                 }
 
-                $scl++;
+                ++$scl;
             }
 
             $this->fpdf->Ln(5);
@@ -314,7 +314,7 @@ class StudentPromotionController extends Controller
                     $this->fpdf->Cell(89, 10, $row->gpa, 'LR', 1, 'L');
                 }
 
-                $tc++;
+                ++$tc;
             }
 
             $this->fpdf->Ln(5);
@@ -338,7 +338,7 @@ class StudentPromotionController extends Controller
                     $this->fpdf->Cell(89, 10, $row->gpa, 'LR', 1, 'L');
                 }
 
-                $pas++;
+                ++$pas;
             }
         } else {
             //diploma students graduating
@@ -366,7 +366,7 @@ class StudentPromotionController extends Controller
                     $this->fpdf->Cell(89, 10, $row->gpa, 'LR', 1, 'L');
                 }
 
-                $fcu++;
+                ++$fcu;
             }
 
             $this->fpdf->Ln(5);
@@ -390,7 +390,7 @@ class StudentPromotionController extends Controller
                     $this->fpdf->Cell(89, 10, $row->gpa, 'LR', 1, 'L');
                 }
 
-                $scu++;
+                ++$scu;
             }
 
             $this->fpdf->Ln(5);
@@ -414,7 +414,7 @@ class StudentPromotionController extends Controller
                     $this->fpdf->Cell(89, 10, $row->gpa, 'LR', 1, 'L');
                 }
 
-                $scl++;
+                ++$scl;
             }
 
             $this->fpdf->Ln(5);
@@ -438,7 +438,7 @@ class StudentPromotionController extends Controller
                     $this->fpdf->Cell(89, 10, $row->gpa, 'LR', 1, 'L');
                 }
 
-                $tc++;
+                ++$tc;
             }
         }
 

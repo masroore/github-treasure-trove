@@ -65,7 +65,7 @@ class MenuController extends Controller
 
         $countid = \count($ids);
 
-        for ($i = 0; $i < $countid; $i++) {
+        for ($i = 0; $i < $countid; ++$i) {
             $update = ['order' => $order[$i]];
             Menu::where('id', $ids[$i])->update($update);
         }
@@ -90,7 +90,7 @@ class MenuController extends Controller
 
         $countid = \count($ids);
 
-        for ($i = 0; $i < $countid; $i++) {
+        for ($i = 0; $i < $countid; ++$i) {
             $update = ['order' => $order[$i]];
             SubMenu::where('id', $ids[$i])->update($update);
         }
@@ -121,8 +121,8 @@ class MenuController extends Controller
     public function save_permission(Request $request)
     {
         $this->validate($request, [
-      'menu' => 'required',
-  ]);
+            'menu' => 'required',
+        ]);
 
         $menuid = $request->input('menu');
 
@@ -133,14 +133,14 @@ class MenuController extends Controller
 
         $count = \count($submenu);
 
-        for ($i = 0; $i < $count; $i++) {
+        for ($i = 0; $i < $count; ++$i) {
             $viewtitle = 'view ' . $submenu[$i];
             $createtitle = 'create ' . $submenu[$i];
             $edittitle = 'edit ' . $submenu[$i];
             $deletetitle = 'delete ' . $submenu[$i];
 
             $adddtosub = new SubMenu(
-                ['menu_id'=> $menuid, 'sub_menu'=> $submenu[$i], 'order' => $suborder[$i]]
+                ['menu_id' => $menuid, 'sub_menu' => $submenu[$i], 'order' => $suborder[$i]]
             );
 
             $adddtosub->save();
@@ -155,7 +155,7 @@ class MenuController extends Controller
                 $firstper = Permission::create(['name' => $first]);
                 //insert to database
                 $fadddtomenu = new Menupermission(
-                    ['sub_menu_id'=> $subid, 'menu_id'=> $menuid, 'permission_id'=> $firstper->id]
+                    ['sub_menu_id' => $subid, 'menu_id' => $menuid, 'permission_id' => $firstper->id]
                 );
                 $fadddtomenu->save();
             }
@@ -164,7 +164,7 @@ class MenuController extends Controller
             if (!$checksen) {
                 $second = Permission::create(['name' => $viewtitle]);
                 $sadddtomenu = new Menupermission(
-                    ['sub_menu_id'=> $subid, 'menu_id'=> $menuid, 'permission_id'=> $second->id]
+                    ['sub_menu_id' => $subid, 'menu_id' => $menuid, 'permission_id' => $second->id]
                 );
                 $sadddtomenu->save();
             }
@@ -173,7 +173,7 @@ class MenuController extends Controller
             if (!$checkthird) {
                 $third = Permission::create(['name' => $createtitle]);
                 $tadddtomenu = new Menupermission(
-                    ['sub_menu_id'=> $subid, 'menu_id'=> $menuid, 'permission_id'=> $third->id]
+                    ['sub_menu_id' => $subid, 'menu_id' => $menuid, 'permission_id' => $third->id]
                 );
                 $tadddtomenu->save();
             }
@@ -182,7 +182,7 @@ class MenuController extends Controller
             if (!$checkforth) {
                 $forth = Permission::create(['name' => $edittitle]);
                 $fiadddtomenu = new Menupermission(
-                    ['sub_menu_id'=> $subid, 'menu_id'=> $menuid, 'permission_id'=> $forth->id]
+                    ['sub_menu_id' => $subid, 'menu_id' => $menuid, 'permission_id' => $forth->id]
                 );
                 $fiadddtomenu->save();
             }
@@ -191,7 +191,7 @@ class MenuController extends Controller
             if (!$checkfifth) {
                 $fifth = Permission::create(['name' => $deletetitle]);
                 $fifadddtomenu = new Menupermission(
-                    ['sub_menu_id'=> $subid, 'menu_id'=> $menuid, 'permission_id'=> $fifth->id]
+                    ['sub_menu_id' => $subid, 'menu_id' => $menuid, 'permission_id' => $fifth->id]
                 );
                 $fifadddtomenu->save();
             }
@@ -202,7 +202,7 @@ class MenuController extends Controller
         return Redirect()->back();
     }
 
-    public function save_permission_role(Request $request)
+    public function save_permission_role(Request $request): void
     {
         dd($request);
     }

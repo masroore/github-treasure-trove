@@ -42,7 +42,7 @@ class Page extends Model
     public function validateRequest(Request $request)
     {
         $request->validate([
-            'name'        => 'required',
+            'name' => 'required',
             'category_id' => 'required',
         ]);
 
@@ -52,8 +52,6 @@ class Page extends Model
     }
 
     /**
-     * @throws \Exception
-     *
      * @return bool
      */
     public function storePage()
@@ -62,18 +60,18 @@ class Page extends Model
         $description = preg_replace('/ face=("|\')(.*?)("|\')/', '', $description);
 
         $id = $this->insertGetId([
-            'category_id'      => $this->request->category_id,
-            'name'             => $this->request->name,
-            'slug'             => isset($this->request->slug) ? Str::slug($this->request->slug) : Str::slug($this->request->name),
-            'description'      => $description,
-            'seo_title'        => $this->request->seo_title,
+            'category_id' => $this->request->category_id,
+            'name' => $this->request->name,
+            'slug' => isset($this->request->slug) ? Str::slug($this->request->slug) : Str::slug($this->request->name),
+            'description' => $description,
+            'seo_title' => $this->request->seo_title,
             'meta_description' => $this->request->meta_description,
-            'meta_keywords'    => $this->request->meta_keywords,
-            'group'            => $this->request->group ?? 0,
-            'publish_date'     => isset($this->request->date_published) ? new Carbon($this->request->date_published) : '',
-            'status'           => (isset($this->request->status) && 'on' == $this->request->status) ? 1 : 0,
-            'created_at'       => Carbon::now(),
-            'updated_at'       => Carbon::now(),
+            'meta_keywords' => $this->request->meta_keywords,
+            'group' => $this->request->group ?? 0,
+            'publish_date' => isset($this->request->date_published) ? new Carbon($this->request->date_published) : '',
+            'status' => (isset($this->request->status) && 'on' == $this->request->status) ? 1 : 0,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
 
         if ($id) {
@@ -86,8 +84,6 @@ class Page extends Model
     /**
      * @param array $id
      *
-     * @throws \Exception
-     *
      * @return bool
      */
     public function updatePage($id)
@@ -96,17 +92,17 @@ class Page extends Model
         $description = preg_replace('/ face=("|\')(.*?)("|\')/', '', $description);
 
         return $this->where('id', $id)->update([
-            'category_id'      => $this->request->category_id,
-            'name'             => $this->request->name,
-            'slug'             => isset($this->request->slug) ? Str::slug($this->request->slug) : Str::slug($this->request->name),
-            'description'      => $description,
-            'seo_title'        => $this->request->seo_title,
+            'category_id' => $this->request->category_id,
+            'name' => $this->request->name,
+            'slug' => isset($this->request->slug) ? Str::slug($this->request->slug) : Str::slug($this->request->name),
+            'description' => $description,
+            'seo_title' => $this->request->seo_title,
             'meta_description' => $this->request->meta_description,
-            'meta_keywords'    => $this->request->meta_keywords,
-            'group'            => $this->request->group ?? 0,
-            'publish_date'     => isset($this->request->date_published) ? new Carbon($this->request->date_published) : '',
-            'status'           => (isset($this->request->status) && 'on' == $this->request->status) ? 1 : 0,
-            'updated_at'       => Carbon::now(),
+            'meta_keywords' => $this->request->meta_keywords,
+            'group' => $this->request->group ?? 0,
+            'publish_date' => isset($this->request->date_published) ? new Carbon($this->request->date_published) : '',
+            'status' => (isset($this->request->status) && 'on' == $this->request->status) ? 1 : 0,
+            'updated_at' => Carbon::now(),
         ]);
     }
 
@@ -174,7 +170,7 @@ class Page extends Model
             if ($doc['id']) {
                 $block = PageBlock::where('id', $doc['id'])->first();
                 $doc['paths'] = [
-                    'path'  => $block->path,
+                    'path' => $block->path,
                     'thumb' => $block->thumb,
                 ];
 
@@ -199,10 +195,10 @@ class Page extends Model
         return true;
     }
 
-    /*******************************************************************************
+    /*
      *                                Copyright : AGmedia                           *
      *                              email: filip@agmedia.hr                         *
-     *******************************************************************************/
+     */
     // Static functions
 
     public static function getMenu()
@@ -238,7 +234,7 @@ class Page extends Model
         }
 
         return [
-            'path'  => config('filesystems.disks.page.url') . $path,
+            'path' => config('filesystems.disks.page.url') . $path,
             'thumb' => isset($thumb_path) ? config('filesystems.disks.page.url') . $thumb_path : '',
         ];
     }

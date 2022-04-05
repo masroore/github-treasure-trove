@@ -8,12 +8,10 @@ class CreateAnnouncementsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('announcements', function (Blueprint $table) {
+        Schema::create('announcements', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('title');
             $table->date('start_date');
@@ -29,10 +27,8 @@ class CreateAnnouncementsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('announcements');
     }

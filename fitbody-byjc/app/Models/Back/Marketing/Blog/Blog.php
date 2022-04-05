@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Throwable;
 
 class Blog extends Model
 {
@@ -58,7 +59,7 @@ class Blog extends Model
     public function validateRequest(Request $request)
     {
         $request->validate([
-            'title'       => 'required',
+            'title' => 'required',
             'description' => 'required',
         ]);
 
@@ -74,7 +75,7 @@ class Blog extends Model
     {
         try {
             $this->resource_id = $this->insertGetId($this->setDbData('insert'));
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             Log::info($e->getMessage());
 
             return false;
@@ -94,7 +95,7 @@ class Blog extends Model
 
         try {
             $this->where('id', $id)->update($this->setDbData());
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             Log::info($e->getMessage());
 
             return false;
@@ -161,19 +162,19 @@ class Blog extends Model
     private function setDbData($type = 'update')
     {
         $data = [
-            'title'            => $this->request->title,
-            'description'      => $this->request->description,
+            'title' => $this->request->title,
+            'description' => $this->request->description,
             'meta_description' => $this->request->meta_description,
-            'slug'             => Str::slug($this->request->title),
-            'category_id'      => 0,
-            'is_published'     => (isset($this->request->status) && 'on' == $this->request->status) ? 1 : 0,
-            'updated_at'       => Carbon::now(),
+            'slug' => Str::slug($this->request->title),
+            'category_id' => 0,
+            'is_published' => (isset($this->request->status) && 'on' == $this->request->status) ? 1 : 0,
+            'updated_at' => Carbon::now(),
         ];
 
         if ('insert' == $type) {
             $data += [
-                'user_id'    => Auth::user()->id,
-                'client_id'  => Auth::user()->clientId(),
+                'user_id' => Auth::user()->id,
+                'client_id' => Auth::user()->clientId(),
                 'created_at' => Carbon::now(),
             ];
         }
@@ -186,7 +187,7 @@ class Blog extends Model
      *
      * @param $request
      */
-    private function setRequest($request)
+    private function setRequest($request): void
     {
         $this->request = $request;
     }

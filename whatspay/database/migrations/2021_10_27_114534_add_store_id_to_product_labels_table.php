@@ -8,12 +8,10 @@ class AddStoreIdToProductLabelsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('product_labels', function (Blueprint $table) {
+        Schema::table('product_labels', function (Blueprint $table): void {
             $table->bigInteger('store_id')->unsigned()->index('store_id_index')->comment('Belongs to stores table PK')->after('id');
             $table->foreign('store_id')
                 ->references('id')
@@ -25,13 +23,10 @@ class AddStoreIdToProductLabelsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('product_labels', function (Blueprint $table) {
-
+        Schema::table('product_labels', function (Blueprint $table): void {
         });
     }
 }

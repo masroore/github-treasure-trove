@@ -8,12 +8,10 @@ class CreateProductLabelProductsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('product_label_products', function (Blueprint $table) {
+        Schema::create('product_label_products', function (Blueprint $table): void {
             $table->bigInteger('product_id')->unsigned()->index('p_label_product_id_index')->comment('Belongs to product');
             $table->bigInteger('product_label_id')->unsigned()->index('p_label_product_label_id_index')->comment('Belongs to product_labels');
             $table->foreign('product_id')
@@ -31,10 +29,8 @@ class CreateProductLabelProductsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('product_label_products');
     }

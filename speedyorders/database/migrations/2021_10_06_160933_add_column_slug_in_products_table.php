@@ -8,12 +8,10 @@ class AddColumnSlugInProductsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('products', function (Blueprint $table) {
+        Schema::table('products', function (Blueprint $table): void {
             if (!Schema::hasColumn('products', 'slug')) {
                 $table->text('slug')->default(null)->nullable()->after('name');
             }
@@ -22,13 +20,10 @@ class AddColumnSlugInProductsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('products', function (Blueprint $table) {
-
+        Schema::table('products', function (Blueprint $table): void {
         });
     }
 }

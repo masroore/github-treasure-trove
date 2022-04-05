@@ -9,10 +9,8 @@ class RepositoryServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->app->bind('App\Repositories\EloquentRepositoryInterface', 'App\Repositories\Eloquent\BaseRepository');
 
@@ -32,16 +30,14 @@ class RepositoryServiceProvider extends ServiceProvider
         ];
 
         foreach ($models as $model) {
-            $this->app->bind("App\Repositories\\{$model}Interface", "App\Repositories\Eloquent\\{$model}");
+            $this->app->bind("App\\Repositories\\{$model}Interface", "App\\Repositories\\Eloquent\\{$model}");
         }
     }
 
     /**
      * Bootstrap services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Paginator::useBootstrap();
     }

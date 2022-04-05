@@ -15,11 +15,11 @@ class UpdateRandomCodeRequest extends FormRequest
     public function rules()
     {
         return [
-            'code'             => [
+            'code' => [
                 'string',
                 'required',
             ],
-            'active'           => [
+            'active' => [
                 'required',
                 'integer',
                 'min:-2147483648',
@@ -29,7 +29,7 @@ class UpdateRandomCodeRequest extends FormRequest
                 'required',
                 'integer',
             ],
-            'company_id'       => [
+            'company_id' => [
                 'required',
                 'integer',
             ],

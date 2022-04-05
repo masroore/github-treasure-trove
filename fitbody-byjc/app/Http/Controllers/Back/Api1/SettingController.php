@@ -83,10 +83,10 @@ class SettingController extends Controller
         return redirect()->back()->with('success', 'Application is now live.');
     }
 
-    /*******************************************************************************
+    /*
     *                                Copyright : AGmedia                           *
     *                              email: filip@agmedia.hr                         *
-    *******************************************************************************/
+    */
     /**
      * @needs_testing
      *

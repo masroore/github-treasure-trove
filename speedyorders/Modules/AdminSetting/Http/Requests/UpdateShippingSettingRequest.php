@@ -14,16 +14,16 @@ class UpdateShippingSettingRequest extends FormRequest
     public function rules()
     {
         return [
-            'ups_live_username'=>'nullable|string|max:255',
-            'ups_live_password'=>'nullable|string|max:255',
-            'ups_live_api_key'=>'nullable|string|max:255',
-            'ups_sandbox_username'=>'nullable|string|max:255',
-            'ups_sandbox_password'=>'nullable|string|max:255',
-            'ups_sandbox_api_key'=>'nullable|string|max:255',
-            'ups_api_mode'=>'nullable|string',
-            'box_length'=>'nullable|numeric',
-            'box_breadth'=>'nullable|numeric',
-            'box_height'=>'nullable|numeric',
+            'ups_live_username' => 'nullable|string|max:255',
+            'ups_live_password' => 'nullable|string|max:255',
+            'ups_live_api_key' => 'nullable|string|max:255',
+            'ups_sandbox_username' => 'nullable|string|max:255',
+            'ups_sandbox_password' => 'nullable|string|max:255',
+            'ups_sandbox_api_key' => 'nullable|string|max:255',
+            'ups_api_mode' => 'nullable|string',
+            'box_length' => 'nullable|numeric',
+            'box_breadth' => 'nullable|numeric',
+            'box_height' => 'nullable|numeric',
         ];
     }
 

@@ -3,6 +3,7 @@
 namespace Modules\AdminCategory\Services;
 
 use App\Models\Category;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class UpdateCategoryService
@@ -26,7 +27,7 @@ class UpdateCategoryService
             DB::commit();
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollback();
 
             return false;

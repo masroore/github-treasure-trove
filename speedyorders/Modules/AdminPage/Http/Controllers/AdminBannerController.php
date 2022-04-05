@@ -3,6 +3,7 @@
 namespace Modules\AdminPage\Http\Controllers;
 
 use App\Models\Banner;
+use Exception;
 use Illuminate\Routing\Controller;
 use Modules\AdminPage\Http\Requests\CreateBannerRequest;
 use Modules\AdminPage\Http\Requests\UpdateBannerRequest;
@@ -89,7 +90,7 @@ class AdminBannerController extends Controller
             }
             Banner::where('id', $id)->first()->update(['status' => $status]);
             session()->flash('success_message', 'Banner updated successfully.');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             session()->flash('error_message', 'Banner could not be updated.');
         }
 

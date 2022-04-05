@@ -36,28 +36,28 @@ class DeviceApiController extends Controller
         $token_1 = $request->notifToken;
 
         $data = [
-        'registration_ids' => [
-            $token_1,
-        ],
-        'notification' => [
+            'registration_ids' => [
+                $token_1,
+            ],
+            'notification' => [
 
-            'title' => 'Notification',
+                'title' => 'Notification',
 
-            'body' => 'Description',
+                'body' => 'Description',
 
-            'sound'=> 'default', // required for sound on ios
-        ],
-    ];
+                'sound' => 'default', // required for sound on ios
+            ],
+        ];
 
         $dataString = json_encode($data);
 
         $headers = [
 
-        'Authorization: key=' . $SERVER_API_KEY,
+            'Authorization: key=' . $SERVER_API_KEY,
 
-        'Content-Type: application/json',
+            'Content-Type: application/json',
 
-    ];
+        ];
 
         $ch = curl_init();
 

@@ -9,7 +9,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class ProjectImport implements ToCollection, WithHeadingRow
 {
-    public function collection(Collection $collection)
+    public function collection(Collection $collection): void
     {
         foreach ($collection as $i => $item) {
             $search = substr($item['vrijednost_projekta'], 0, strpos($item['vrijednost_projekta'], ' '));
@@ -17,12 +17,12 @@ class ProjectImport implements ToCollection, WithHeadingRow
             $amount = str_replace(',', '.', $amount);
 
             Project::create([
-                'name'    => (!empty($item['naziv_projekta'])) ? $item['naziv_projekta'] : 'No Name...',
+                'name' => (!empty($item['naziv_projekta'])) ? $item['naziv_projekta'] : 'No Name...',
                 'project' => $item['naziv_programa'],
                 'carrier' => $item['nositeljpartnerizradivac'],
-                'year'    => $item['godina'],
-                'value'   => $item['vrijednost_projekta'],
-                'amount'  => $amount,
+                'year' => $item['godina'],
+                'value' => $item['vrijednost_projekta'],
+                'amount' => $amount,
             ]);
         }
     }

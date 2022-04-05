@@ -10,20 +10,18 @@ class CouponHistoryDatabaseSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         Model::unguard();
 
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 20; ++$i) {
             CouponHistory::create([
-                'coupon_code' => rand(1, 200),
-                'order_id' => rand(1, 200),
-                'customer_id' => rand(1, 200),
-                'order_amount' =>  rand(10000, 50000),
-                'status' =>  rand(10000, 50000),
+                'coupon_code' => mt_rand(1, 200),
+                'order_id' => mt_rand(1, 200),
+                'customer_id' => mt_rand(1, 200),
+                'order_amount' => mt_rand(10000, 50000),
+                'status' => mt_rand(10000, 50000),
             ]);
         }
 

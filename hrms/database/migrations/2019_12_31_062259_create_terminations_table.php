@@ -8,12 +8,10 @@ class CreateTerminationsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('terminations', function (Blueprint $table) {
+        Schema::create('terminations', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->integer('employee_id');
             $table->date('notice_date');
@@ -27,10 +25,8 @@ class CreateTerminationsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('terminations');
     }

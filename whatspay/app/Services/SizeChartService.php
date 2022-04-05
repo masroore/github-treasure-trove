@@ -15,6 +15,7 @@ class SizeChartService
      * @var
      */
     protected $sizeChartRepository;
+
     protected $userRepository;
 
     /**
@@ -35,7 +36,7 @@ class SizeChartService
     {
         try {
             $get_data = $this->sizeChartRepository->findAllByColumn([
-               'store_id' => $request['store_id'],
+                'store_id' => $request['store_id'],
             ], [
                 'id', 'name', 'image', 'description', 'status',
             ]);

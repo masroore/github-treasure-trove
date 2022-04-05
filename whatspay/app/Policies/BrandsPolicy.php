@@ -17,7 +17,6 @@ class BrandsPolicy
      */
     public function viewAny(User $user)
     {
-
     }
 
     /**
@@ -27,7 +26,6 @@ class BrandsPolicy
      */
     public function view(User $user, Brands $brands)
     {
-
     }
 
     /**
@@ -37,7 +35,6 @@ class BrandsPolicy
      */
     public function create(User $user)
     {
-
     }
 
     /**
@@ -47,7 +44,6 @@ class BrandsPolicy
      */
     public function update(User $user, Brands $brands)
     {
-
     }
 
     /**
@@ -57,7 +53,6 @@ class BrandsPolicy
      */
     public function delete(User $user, Brands $brands)
     {
-
     }
 
     /**
@@ -67,7 +62,6 @@ class BrandsPolicy
      */
     public function restore(User $user, Brands $brands)
     {
-
     }
 
     /**
@@ -77,6 +71,5 @@ class BrandsPolicy
      */
     public function forceDelete(User $user, Brands $brands)
     {
-
     }
 }

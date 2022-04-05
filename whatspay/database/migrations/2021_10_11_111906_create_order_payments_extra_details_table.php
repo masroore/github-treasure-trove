@@ -8,12 +8,10 @@ class CreateOrderPaymentsExtraDetailsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('order_payments_extra_details', function (Blueprint $table) {
+        Schema::create('order_payments_extra_details', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->bigInteger('order_id')->unsigned()->index('order_id_order_payments_extra_detail_index')->comment('Belongs to orders table');
             $table->bigInteger('customer_id')->unsigned()->index('customer_id_order_payment_extra_index')->comment('Belongs to id of users table');
@@ -41,10 +39,8 @@ class CreateOrderPaymentsExtraDetailsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('order_payments_extra_details');
     }

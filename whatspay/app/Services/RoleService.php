@@ -56,6 +56,7 @@ class RoleService
             ->user()
             ->currentAccessToken()
             ->store_id;
+
         try {
             $validator = Validator::make($request->input(), [
                 'name' => 'required|string|unique:roles,name,' . $id,
@@ -95,9 +96,10 @@ class RoleService
             ->user()
             ->currentAccessToken()
             ->store_id;
+
         try {
 //             update data
-            $role = $this->roleRepository->findAllByColumn(['store_id'=>$request['store_id']]);
+            $role = $this->roleRepository->findAllByColumn(['store_id' => $request['store_id']]);
         } catch (Exception $e) {
             throw new InvalidArgumentException($e->getMessage());
         }

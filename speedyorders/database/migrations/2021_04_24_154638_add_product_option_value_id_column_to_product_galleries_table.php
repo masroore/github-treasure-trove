@@ -8,24 +8,20 @@ class AddProductOptionValueIdColumnToProductGalleriesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('product_galleries', function (Blueprint $table) {
+        Schema::table('product_galleries', function (Blueprint $table): void {
             $table->unsignedBigInteger('product_option_value_id')->nullable()->default(null)->after('product_id');
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('product_galleries', function (Blueprint $table) {
+        Schema::table('product_galleries', function (Blueprint $table): void {
             $table->dropColumn('product_option_value_id');
         });
     }

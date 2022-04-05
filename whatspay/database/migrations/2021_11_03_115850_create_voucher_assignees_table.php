@@ -8,12 +8,10 @@ class CreateVoucherAssigneesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('voucher_assignees', function (Blueprint $table) {
+        Schema::create('voucher_assignees', function (Blueprint $table): void {
             $table->id();
             $table->foreignId('store_id')
                 ->references('id')
@@ -34,10 +32,8 @@ class CreateVoucherAssigneesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('voucher_assignees');
     }

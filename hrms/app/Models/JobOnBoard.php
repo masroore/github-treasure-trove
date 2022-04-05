@@ -12,6 +12,7 @@ class JobOnBoard extends Model
         'cancel' => 'Cancel',
         'confirm' => 'Confirm',
     ];
+
     protected $fillable = [
         'application',
         'joining_date',

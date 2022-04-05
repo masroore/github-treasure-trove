@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateTimeTrackingsTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::create('time_trackings', function (Blueprint $table) {
+        Schema::create('time_trackings', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->time('checkin_time');
             $table->time('checkout_time')->nullable();

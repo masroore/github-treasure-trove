@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateFacultiesTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::create('faculties', function (Blueprint $table) {
+        Schema::create('faculties', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('falculty_name')->unique();
             $table->timestamps();

@@ -12,8 +12,6 @@ use Intervention\Image\Facades\Image;
 class SliderController extends Controller
 {
     /**
-     * @throws \Exception
-     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
@@ -52,7 +50,7 @@ class SliderController extends Controller
     {
         $sliders = Slider::where('group_id', $group)->get();
 
-        for ($i = 0; $i < \count($sliders); $i++) {
+        for ($i = 0; $i < \count($sliders); ++$i) {
             $path = asset($sliders[$i]->image);
             $type = pathinfo($path, \PATHINFO_EXTENSION);
             $data = file_get_contents($path);

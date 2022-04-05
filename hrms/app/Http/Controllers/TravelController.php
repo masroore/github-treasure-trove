@@ -6,9 +6,11 @@ use App\Mail\TripSend;
 use App\Models\Employee;
 use App\Models\Travel;
 use App\Models\Utility;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Validator;
 
 class TravelController extends Controller
 {
@@ -42,15 +44,15 @@ class TravelController extends Controller
     public function store(Request $request)
     {
         if (\Auth::user()->can('Create Travel')) {
-            $validator = \Validator::make(
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'employee_id' => 'required',
-                                   'start_date' => 'required',
-                                   'end_date' => 'required',
-                                   'purpose_of_visit' => 'required',
-                                   'place_of_visit' => 'required',
-                               ]
+                    'employee_id' => 'required',
+                    'start_date' => 'required',
+                    'end_date' => 'required',
+                    'purpose_of_visit' => 'required',
+                    'place_of_visit' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -83,7 +85,7 @@ class TravelController extends Controller
 
                 try {
                     Mail::to($travel->email)->send(new TripSend($travel));
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     $smtp_error = __('E-Mail has been not sent due to SMTP configuration');
                 }
 
@@ -119,15 +121,15 @@ class TravelController extends Controller
     {
         if (\Auth::user()->can('Edit Travel')) {
             if ($travel->created_by == \Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+                $validator = Validator::make(
                     $request->all(),
                     [
-                                       'employee_id' => 'required',
-                                       'start_date' => 'required',
-                                       'end_date' => 'required',
-                                       'purpose_of_visit' => 'required',
-                                       'place_of_visit' => 'required',
-                                   ]
+                        'employee_id' => 'required',
+                        'start_date' => 'required',
+                        'end_date' => 'required',
+                        'purpose_of_visit' => 'required',
+                        'place_of_visit' => 'required',
+                    ]
                 );
                 if ($validator->fails()) {
                     $messages = $validator->getMessageBag();

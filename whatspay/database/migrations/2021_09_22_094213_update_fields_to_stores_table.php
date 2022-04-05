@@ -8,12 +8,10 @@ class UpdateFieldsToStoresTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('stores', function (Blueprint $table) {
+        Schema::table('stores', function (Blueprint $table): void {
             $table->string('acc_holder_mobile_number', 16)->nullable();
             $table->string('acc_holder_name', 100)->nullable();
             $table->string('paypal_email', 150)->nullable();
@@ -57,13 +55,10 @@ class UpdateFieldsToStoresTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('stores', function (Blueprint $table) {
-
+        Schema::table('stores', function (Blueprint $table): void {
         });
     }
 }

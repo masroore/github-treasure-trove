@@ -65,130 +65,130 @@ Route::post('/lecturer/login', [
     'as' => 'lecturer-login-check',
 ]);
 
-Route::group(['prefix'=> 'Admission'], function () {
+Route::group(['prefix' => 'Admission'], function (): void {
     Route::get('/purchse-OSN-Code', [
-    'uses' => 'AdmissionController@index',
-    'as' => 'onscode',
-]);
+        'uses' => 'AdmissionController@index',
+        'as' => 'onscode',
+    ]);
 
     Route::post('/osn-purchase', [
-    'uses' => 'AdmissionController@purchase_osn',
-    'as' => 'purchase-osn-code',
-]);
+        'uses' => 'AdmissionController@purchase_osn',
+        'as' => 'purchase-osn-code',
+    ]);
 
     Route::get('/osn-payment', [
-    'uses' => 'AdmissionController@osn_payment',
-    'as' => 'osn-payment',
-]);
+        'uses' => 'AdmissionController@osn_payment',
+        'as' => 'osn-payment',
+    ]);
 
     Route::get('/osn-code-generate', [
-    'uses' => 'AdmissionController@osn_code_gen',
-    'as' => 'osn-code-generate',
-]);
+        'uses' => 'AdmissionController@osn_code_gen',
+        'as' => 'osn-code-generate',
+    ]);
 
     Route::get('/online-admission', [
-    'uses' => 'AdmissionController@online_admission',
-    'as' => 'online-admission-login',
-]);
+        'uses' => 'AdmissionController@online_admission',
+        'as' => 'online-admission-login',
+    ]);
 
     Route::post('/login-online-admission', [
-    'uses' => 'AdmissionController@admission_loign',
-    'as' => 'admission-login',
-]);
+        'uses' => 'AdmissionController@admission_loign',
+        'as' => 'admission-login',
+    ]);
 });
 
 Route::group(
-    ['prefix'=> 'Admission', 'middleware' => 'sessionavailable'],
-    function () {
+    ['prefix' => 'Admission', 'middleware' => 'sessionavailable'],
+    function (): void {
         Route::get('/online-admission-personal-information', [
-        'uses' => 'AdmissionController@admission_personal_info',
-        'as' => 'admission-personal-info',
-    ]);
+            'uses' => 'AdmissionController@admission_personal_info',
+            'as' => 'admission-personal-info',
+        ]);
 
         Route::post('/save-online-personal-info', [
-        'uses' => 'AdmissionController@save_per_info',
-        'as' => 'save-personal-info',
-    ]);
+            'uses' => 'AdmissionController@save_per_info',
+            'as' => 'save-personal-info',
+        ]);
 
         Route::get('/online-admission-personal-results', [
-        'uses' => 'AdmissionController@admission_personal_results',
-        'as' => 'admission-personal-results',
-    ]);
+            'uses' => 'AdmissionController@admission_personal_results',
+            'as' => 'admission-personal-results',
+        ]);
 
         Route::post('/save-results', [
-        'uses' => 'AdmissionController@save_results',
-        'as' => 'save-result',
-    ]);
+            'uses' => 'AdmissionController@save_results',
+            'as' => 'save-result',
+        ]);
 
         Route::post('/save-results2', [
-        'uses' => 'AdmissionController@save_results2',
-        'as' => 'save-result2',
-    ]);
+            'uses' => 'AdmissionController@save_results2',
+            'as' => 'save-result2',
+        ]);
 
         Route::post('/save-results3', [
-        'uses' => 'AdmissionController@save_results3',
-        'as' => 'save-result3',
-    ]);
+            'uses' => 'AdmissionController@save_results3',
+            'as' => 'save-result3',
+        ]);
 
         Route::get('/online-admission-personal-school-attended', [
-        'uses' => 'AdmissionController@admission_personal_school',
-        'as' => 'admission-personal-school',
-    ]);
+            'uses' => 'AdmissionController@admission_personal_school',
+            'as' => 'admission-personal-school',
+        ]);
 
         Route::post('/save-online-admission-personal-school-attended', [
-        'uses' => 'AdmissionController@admission_personal_school_save',
-        'as' => 'admission-personal-school-save',
-    ]);
+            'uses' => 'AdmissionController@admission_personal_school_save',
+            'as' => 'admission-personal-school-save',
+        ]);
 
         Route::get('/online-admission-personal-app-information', [
-        'uses' => 'AdmissionController@admission_app_info',
-        'as' => 'admission-app-info',
-    ]);
+            'uses' => 'AdmissionController@admission_app_info',
+            'as' => 'admission-app-info',
+        ]);
 
         Route::post('/save-admission-personal-app-information', [
-        'uses' => 'AdmissionController@admission_app_info_save',
-        'as' => 'admission-app-info-save',
-    ]);
+            'uses' => 'AdmissionController@admission_app_info_save',
+            'as' => 'admission-app-info-save',
+        ]);
 
         Route::get('/online-admission-personal-guidian-information', [
-        'uses' => 'AdmissionController@admission_guidian_info',
-        'as' => 'admission-guidian-info',
-    ]);
+            'uses' => 'AdmissionController@admission_guidian_info',
+            'as' => 'admission-guidian-info',
+        ]);
 
         Route::post('/save-guidian-information', [
-        'uses' => 'AdmissionController@admission_guid_save',
-        'as' => 'admission-app-gurd-save',
-    ]);
+            'uses' => 'AdmissionController@admission_guid_save',
+            'as' => 'admission-app-gurd-save',
+        ]);
 
         Route::get('/online-admission-personal-supporting-documents', [
-        'uses' => 'AdmissionController@admission_sup_doc',
-        'as' => 'admission-sup-doc',
-    ]);
+            'uses' => 'AdmissionController@admission_sup_doc',
+            'as' => 'admission-sup-doc',
+        ]);
 
         Route::post('/online-admission-personal-supporting-documents-save', [
-        'uses' => 'AdmissionController@admission_sup_doc_save',
-        'as' => 'submit-sup-doc',
-    ]);
+            'uses' => 'AdmissionController@admission_sup_doc_save',
+            'as' => 'submit-sup-doc',
+        ]);
 
         Route::post('/doc-delete/{id}', [
-        'uses' => 'AdmissionController@admission_sup_doc_delete',
-        'as' => 'doc-delete',
-    ]);
+            'uses' => 'AdmissionController@admission_sup_doc_delete',
+            'as' => 'doc-delete',
+        ]);
 
         Route::get('/online-admission-personal-upload-profile-image', [
-        'uses' => 'AdmissionController@admission_profile_image',
-        'as' => 'admission-prof-img',
-    ]);
+            'uses' => 'AdmissionController@admission_profile_image',
+            'as' => 'admission-prof-img',
+        ]);
 
         Route::post('/submit-profile-image', [
-        'uses' => 'AdmissionController@admission_submit_img',
-        'as' => 'profile-img-submit',
-    ]);
+            'uses' => 'AdmissionController@admission_submit_img',
+            'as' => 'profile-img-submit',
+        ]);
 
         Route::post('/submit-application-now/{id}', [
-        'uses' => 'AdmissionController@submit_appliaction',
-        'as' => 'sub-application-now',
-    ]);
+            'uses' => 'AdmissionController@submit_appliaction',
+            'as' => 'sub-application-now',
+        ]);
     }
 );
 
@@ -207,12 +207,12 @@ Route::get('/admission-complete-print', [
     'as' => 'admission-completed-print',
 ]);
 
-Route::group(['prefix'=> 'Branches',  'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'Branches',  'middleware' => 'auth'], function (): void {
 
     // Route::get('/create-new-branch', SchoolBranch::class)->name('school-branch');
 });
 
-Route::group(['prefix'=> 'Acadmic-Calendar',  'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'Acadmic-Calendar',  'middleware' => 'auth'], function (): void {
     Route::get('/create-event', [
         'uses' => 'AcademicCalandarController@create_event',
         'middleware' => 'can:view Create Event',
@@ -249,7 +249,7 @@ Route::group(['prefix'=> 'Acadmic-Calendar',  'middleware' => 'auth'], function 
     ]);
 });
 
-Route::group(['prefix'=> 'LatestAdmission',  'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'LatestAdmission',  'middleware' => 'auth'], function (): void {
     Route::get('/all-admissions-submitted', [
         'uses' => 'AppSubmittedController@index',
         'middleware' => 'can:view Online Admissions',
@@ -437,14 +437,14 @@ Route::group(['prefix'=> 'LatestAdmission',  'middleware' => 'auth'], function (
     ]);
 });
 
-Route::group(['prefix'=> 'OSMS',  'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'OSMS',  'middleware' => 'auth'], function (): void {
     Route::get('/dashboard', [
         'uses' => 'DashboardController@index',
         'as' => 'dashboard',
     ]);
 });
 
-Route::group(['prefix'=> 'AcademicYear',  'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'AcademicYear',  'middleware' => 'auth'], function (): void {
     Route::get('/add-academic-year-osms', [
         'uses' => 'AcademicController@create',
         'middleware' => 'can:view Add Academic Year',
@@ -470,7 +470,7 @@ Route::group(['prefix'=> 'AcademicYear',  'middleware' => 'auth'], function () {
     ]);
 });
 
-Route::group(['prefix'=> 'Allstudents',  'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'Allstudents',  'middleware' => 'auth'], function (): void {
     Route::get('/all-students-information', [
         'uses' => 'StudentsController@allstudents',
         'middleware' => 'can:view All Students',
@@ -564,7 +564,7 @@ Route::group(['prefix'=> 'Allstudents',  'middleware' => 'auth'], function () {
     ]);
 });
 
-Route::group(['prefix'=> 'Programmes',  'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'Programmes',  'middleware' => 'auth'], function (): void {
     Route::get('/addprogramme', [
         'uses' => 'ProgrammeController@index',
         'middleware' => 'can:view Add Programme',
@@ -602,7 +602,7 @@ Route::group(['prefix'=> 'Programmes',  'middleware' => 'auth'], function () {
     ]);
 });
 
-Route::group(['prefix'=> 'CourseManagement',  'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'CourseManagement',  'middleware' => 'auth'], function (): void {
     Route::get('/programmme/code/register/degree', [
         'uses' => 'CourseController@pro_degree',
         'middleware' => 'can:view Add Course Degree Level 100',
@@ -905,7 +905,7 @@ Route::group(['prefix'=> 'CourseManagement',  'middleware' => 'auth'], function 
     ]);
 });
 
-Route::group(['prefix'=> 'Booking',  'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'Booking',  'middleware' => 'auth'], function (): void {
     Route::get('/new-appointment-booking', [
         'uses' => 'BookingController@create',
         'as' => 'new-booking',
@@ -939,7 +939,7 @@ Route::group(['prefix'=> 'Booking',  'middleware' => 'auth'], function () {
 
 //Roles and Permssions Configuration
 
-Route::group(['prefix'=> 'UserManagement',  'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'UserManagement',  'middleware' => 'auth'], function (): void {
     Route::get('/adduserRole', [
         'uses' => 'UserRoleController@addrole',
         'as' => 'add-user-role',
@@ -1031,7 +1031,7 @@ Route::get('/users/confirm-password/lms', [
     'as' => 'lmspassconfirm',
 ]);
 
-Route::group(['prefix'=> 'Notifications',  'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'Notifications',  'middleware' => 'auth'], function (): void {
     Route::post('/markallasRead', [
         'uses' => 'NotificationController@markallasread',
         'as' => 'mark-all-as-read',
@@ -1043,7 +1043,7 @@ Route::group(['prefix'=> 'Notifications',  'middleware' => 'auth'], function () 
     ]);
 });
 
-Route::group(['prefix'=> 'CourseRegistration',  'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'CourseRegistration',  'middleware' => 'auth'], function (): void {
     Route::get('/student/register/course', [
         'uses' => 'CouserRegController@register_course_user',
         'as' => 'student-reg-course',
@@ -1065,7 +1065,7 @@ Route::group(['prefix'=> 'CourseRegistration',  'middleware' => 'auth'], functio
     ]);
 });
 
-Route::group(['prefix'=> 'Lecturer',  'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'Lecturer',  'middleware' => 'auth'], function (): void {
     Route::get('/register', [
         'uses' => 'LecturerController@register_lecturer',
         'as' => 'lecturer-reg-lecturer',
@@ -1165,7 +1165,7 @@ Route::group(['prefix'=> 'Lecturer',  'middleware' => 'auth'], function () {
     ]);
 });
 
-Route::group(['prefix'=> 'Polls',  'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'Polls',  'middleware' => 'auth'], function (): void {
     Route::get('/add-polls', [
         'uses' => 'PollsController@add_pols',
         'as' => 'add-polls',
@@ -1297,7 +1297,7 @@ Route::group(['prefix'=> 'Polls',  'middleware' => 'auth'], function () {
     ]);
 });
 
-Route::group(['prefix'=> 'OnlineExamination',  'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'OnlineExamination',  'middleware' => 'auth'], function (): void {
     Route::get('/addExams', [
         'uses' => 'ExaminationController@add_exams',
         'as' => 'add-exams',
@@ -1391,7 +1391,7 @@ Route::group(['prefix'=> 'OnlineExamination',  'middleware' => 'auth'], function
 
 //Lecture Hall Add
 
-Route::group(['prefix'=> 'LectureHall',  'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'LectureHall',  'middleware' => 'auth'], function (): void {
     Route::get('/add-view', [
         'uses' => 'LectureHall@add_view_lecture_hall',
         'as' => 'add-view-lecture-hall',
@@ -1420,7 +1420,7 @@ Route::group(['prefix'=> 'LectureHall',  'middleware' => 'auth'], function () {
 
 //Timetable Management
 
-Route::group(['prefix'=> 'Timetable',  'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'Timetable',  'middleware' => 'auth'], function (): void {
     Route::get('/add-timetable', [
         'uses' => 'TimetableController@add_timetable',
         'as' => 'add-timetable',
@@ -1547,7 +1547,7 @@ Route::group(['prefix'=> 'Timetable',  'middleware' => 'auth'], function () {
     ]);
 });
 
-Route::group(['prefix'=> 'LiveClasses',  'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'LiveClasses',  'middleware' => 'auth'], function (): void {
     Route::get('/createMeeting', [
         'uses' => 'ZoomController@index',
         'as' => 'create-meeting',
@@ -1604,14 +1604,14 @@ Route::group(['prefix'=> 'LiveClasses',  'middleware' => 'auth'], function () {
     ]);
 });
 
-Route::group(['prefix'=> 'Log',  'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'Log',  'middleware' => 'auth'], function (): void {
     Route::get('/systemLogs', [
         'uses' => 'LogController@viewlogs',
         'as' => 'view-system-logs',
     ]);
 });
 
-Route::group(['prefix'=> 'Promote/Student',  'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'Promote/Student',  'middleware' => 'auth'], function (): void {
     Route::get('/all', [
         'uses' => 'StudentPromotionController@promotestudent',
         'middleware' => 'can:view Promote Student',
@@ -1667,7 +1667,7 @@ Route::group(['prefix'=> 'Promote/Student',  'middleware' => 'auth'], function (
     ]);
 });
 
-Route::group(['prefix'=> 'Student-Punishment',  'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'Student-Punishment',  'middleware' => 'auth'], function (): void {
     Route::get('/addfine', [
         'uses' => 'StudentfineController@addfine',
         'middleware' => 'can:view Add Fine',
@@ -1799,7 +1799,7 @@ Route::group(['prefix'=> 'Student-Punishment',  'middleware' => 'auth'], functio
     ]);
 });
 
-Route::group(['prefix'=> 'Front-Desk',  'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'Front-Desk',  'middleware' => 'auth'], function (): void {
     Route::get('/record-enquiry', [
         'uses' => 'FrontDeskController@addenquiry',
         'middleware' => 'can:view Admission Enquiry',
@@ -1827,113 +1827,113 @@ Route::group(['prefix'=> 'Front-Desk',  'middleware' => 'auth'], function () {
     // Visitors Script
 
     Route::get('/add-visitor', [
-            'uses' => 'FrontDeskController@addvisitor',
-            'middleware' => 'can:view Visitors Book',
-            'as' => 'add-visitor',
-        ]);
+        'uses' => 'FrontDeskController@addvisitor',
+        'middleware' => 'can:view Visitors Book',
+        'as' => 'add-visitor',
+    ]);
 
     Route::post('/save-visitor', [
-            'uses' => 'FrontDeskController@savevisitor',
-            'middleware' => 'can:create Visitors Book',
-            'as' => 'save-visitor',
-        ]);
+        'uses' => 'FrontDeskController@savevisitor',
+        'middleware' => 'can:create Visitors Book',
+        'as' => 'save-visitor',
+    ]);
 
     Route::get('/edit-visitor/{id}', [
-            'uses' => 'FrontDeskController@editvisitor',
-            'middleware' => 'can:edit Visitors Book',
-            'as' => 'edit-visitor',
-        ]);
+        'uses' => 'FrontDeskController@editvisitor',
+        'middleware' => 'can:edit Visitors Book',
+        'as' => 'edit-visitor',
+    ]);
 
     Route::get('/add-visitor/{id}', [
-            'uses' => 'FrontDeskController@deletevisitor',
-            'middleware' => 'can:delete Visitors Book',
-            'as' => 'delete-visitor',
-        ]);
+        'uses' => 'FrontDeskController@deletevisitor',
+        'middleware' => 'can:delete Visitors Book',
+        'as' => 'delete-visitor',
+    ]);
 
     // Call Log
 
     Route::get('/add-call', [
-            'uses' => 'FrontDeskController@addcall',
-            'middleware' => 'can:view Phone call log',
-            'as' => 'add-call',
-        ]);
+        'uses' => 'FrontDeskController@addcall',
+        'middleware' => 'can:view Phone call log',
+        'as' => 'add-call',
+    ]);
 
     Route::post('/save-call', [
-            'uses' => 'FrontDeskController@savecall',
-            'middleware' => 'can:create Phone call log',
-            'as' => 'save-call',
-        ]);
+        'uses' => 'FrontDeskController@savecall',
+        'middleware' => 'can:create Phone call log',
+        'as' => 'save-call',
+    ]);
 
     Route::get('/edit-call/{id}', [
-            'uses' => 'FrontDeskController@editcall',
-            'middleware' => 'can:edit Phone call log',
-            'as' => 'edit-call',
-        ]);
+        'uses' => 'FrontDeskController@editcall',
+        'middleware' => 'can:edit Phone call log',
+        'as' => 'edit-call',
+    ]);
 
     Route::get('/delete-call/{id}', [
-            'uses' => 'FrontDeskController@deletecall',
-            'middleware' => 'can:delete Phone call log',
-            'as' => 'delete-call',
-        ]);
+        'uses' => 'FrontDeskController@deletecall',
+        'middleware' => 'can:delete Phone call log',
+        'as' => 'delete-call',
+    ]);
 
     // Postal Dispatch
 
     Route::get('/add-postal-dispatch', [
-            'uses' => 'FrontDeskController@addpostalDispatch',
-            'middleware' => 'can:view Postal Dispatch',
-            'as' => 'add-postal-dispatch',
-        ]);
+        'uses' => 'FrontDeskController@addpostalDispatch',
+        'middleware' => 'can:view Postal Dispatch',
+        'as' => 'add-postal-dispatch',
+    ]);
 
     Route::post('/save-postal-dispatch', [
-            'uses' => 'FrontDeskController@savepostalDispatch',
-            'middleware' => 'can:create Postal Dispatch',
-            'as' => 'save-postal-dispatch',
-        ]);
+        'uses' => 'FrontDeskController@savepostalDispatch',
+        'middleware' => 'can:create Postal Dispatch',
+        'as' => 'save-postal-dispatch',
+    ]);
 
     Route::get('/edit-postal-dispatch/{id}', [
-            'uses' => 'FrontDeskController@editpostalDispatch',
-            'middleware' => 'can:edit Postal Dispatch',
-            'as' => 'edit-postal-dispatch',
-        ]);
+        'uses' => 'FrontDeskController@editpostalDispatch',
+        'middleware' => 'can:edit Postal Dispatch',
+        'as' => 'edit-postal-dispatch',
+    ]);
 
     Route::get('/delete-postal-dispatch/{id}', [
-            'uses' => 'FrontDeskController@deletepostalDispatch',
-            'middleware' => 'can:delete Postal Dispatch',
-            'as' => 'delete-postal-dispatch',
-        ]);
+        'uses' => 'FrontDeskController@deletepostalDispatch',
+        'middleware' => 'can:delete Postal Dispatch',
+        'as' => 'delete-postal-dispatch',
+    ]);
 
     // Postal Receive
 
     Route::get('/add-postal-receive', [
-            'uses' => 'FrontDeskController@addpostalreceive',
-            'middleware' => 'can:view Postal receive',
-            'as' => 'add-postal-receive',
-        ]);
+        'uses' => 'FrontDeskController@addpostalreceive',
+        'middleware' => 'can:view Postal receive',
+        'as' => 'add-postal-receive',
+    ]);
 
     Route::post('/save-postal-receive', [
-            'uses' => 'FrontDeskController@savepostalreceive',
-            'middleware' => 'can:create Postal receive',
-            'as' => 'save-postal-receive',
-        ]);
+        'uses' => 'FrontDeskController@savepostalreceive',
+        'middleware' => 'can:create Postal receive',
+        'as' => 'save-postal-receive',
+    ]);
 
     Route::get('/edit-postal-receive/{id}', [
-            'uses' => 'FrontDeskController@editpostalreceive',
-            'middleware' => 'can:edit Postal receive',
-            'as' => 'edit-postal-receive',
-        ]);
+        'uses' => 'FrontDeskController@editpostalreceive',
+        'middleware' => 'can:edit Postal receive',
+        'as' => 'edit-postal-receive',
+    ]);
 
     Route::get('/delete-postal-receive/{id}', [
-            'uses' => 'FrontDeskController@deletepostalreceive',
-            'middleware' => 'can:delete Postal receive',
-            'as' => 'delete-postal-receive',
-        ]);
+        'uses' => 'FrontDeskController@deletepostalreceive',
+        'middleware' => 'can:delete Postal receive',
+        'as' => 'delete-postal-receive',
+    ]);
 
     // Postal Receive
 });
 
 // Accounts Management
 
-Route::group(['prefix'=> 'Accounts',  'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'Accounts',  'middleware' => 'auth'], function (): void {
     Route::get('/add-mandatory-fees', [
         'uses' => 'AccountController@create',
         'as' => 'add-mandatory-fees',
@@ -2232,34 +2232,34 @@ Route::group(['prefix'=> 'Accounts',  'middleware' => 'auth'], function () {
     ]);
 });
 
-Route::group(['prefix'=> 'OSMS/Chat',  'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'OSMS/Chat',  'middleware' => 'auth'], function (): void {
     Route::get('/public-chat', [
-    'uses' => 'ChatController@public_chat',
-    'as' => 'public_chat',
-]);
+        'uses' => 'ChatController@public_chat',
+        'as' => 'public_chat',
+    ]);
 
     Route::post('/public-chat/save', [
-    'uses' => 'ChatController@public_chat_save',
-    'as' => 'public_chat_save',
-]);
+        'uses' => 'ChatController@public_chat_save',
+        'as' => 'public_chat_save',
+    ]);
 
     Route::get('/private-chat', [
-    'uses' => 'ChatController@private_chat',
-    'as' => 'private_chat',
-]);
+        'uses' => 'ChatController@private_chat',
+        'as' => 'private_chat',
+    ]);
 
     Route::post('/fetch-message-prvate-chat', [
-    'uses' => 'ChatController@private_chat_get_messages',
-    'as' => 'private_chat_get_messages',
-]);
+        'uses' => 'ChatController@private_chat_get_messages',
+        'as' => 'private_chat_get_messages',
+    ]);
 
     Route::post('/private-chat/save', [
-    'uses' => 'ChatController@private_chat_save',
-    'as' => 'private_chat_save',
-]);
+        'uses' => 'ChatController@private_chat_save',
+        'as' => 'private_chat_save',
+    ]);
 });
 
-Route::group(['prefix'=> 'OSMS/Communicate',  'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'OSMS/Communicate',  'middleware' => 'auth'], function (): void {
     Route::get('/send-mail', [
         'uses' => 'CommunicateController@send_mail',
         'as' => 'send_mail',
@@ -2281,308 +2281,308 @@ Route::group(['prefix'=> 'OSMS/Communicate',  'middleware' => 'auth'], function 
     ]);
 });
 
-Route::group(['prefix'=> 'Support-Tickets',  'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'Support-Tickets',  'middleware' => 'auth'], function (): void {
     Route::get('/all-tickets', [
-    'uses' => 'SupportTicketController@all_tickets',
-    'as' => 'all_tickets',
-]);
+        'uses' => 'SupportTicketController@all_tickets',
+        'as' => 'all_tickets',
+    ]);
 
     Route::get('/view-support-tickets/{id}', [
-    'uses' => 'SupportTicketController@view_tickets',
-    'as' => 'view_tickets',
-]);
+        'uses' => 'SupportTicketController@view_tickets',
+        'as' => 'view_tickets',
+    ]);
 
     Route::get('/create-new-ticket', [
-    'uses' => 'SupportTicketController@create_ticket',
-    'as' => 'create_ticket',
-]);
+        'uses' => 'SupportTicketController@create_ticket',
+        'as' => 'create_ticket',
+    ]);
 
     Route::post('/create-new-tickets/save', [
-    'uses' => 'SupportTicketController@post_ticket',
-    'as' => 'post_ticket',
-]);
+        'uses' => 'SupportTicketController@post_ticket',
+        'as' => 'post_ticket',
+    ]);
 
     Route::post('/post-basic-info', [
-    'uses' => 'SupportTicketController@post_basicinfo',
-    'as' => 'post_basicinfo',
-]);
+        'uses' => 'SupportTicketController@post_basicinfo',
+        'as' => 'post_basicinfo',
+    ]);
 
     Route::post('/reply-ticket', [
-    'uses' => 'SupportTicketController@reply_ticket',
-    'as' => 'reply_ticket',
-]);
+        'uses' => 'SupportTicketController@reply_ticket',
+        'as' => 'reply_ticket',
+    ]);
 
     Route::post('/post-ticket-file', [
-    'uses' => 'SupportTicketController@post_ticket_file',
-    'as' => 'post_ticket_file',
-]);
+        'uses' => 'SupportTicketController@post_ticket_file',
+        'as' => 'post_ticket_file',
+    ]);
 
     Route::post('/ticket-system-delete', [
-    'uses' => 'SupportTicketController@delete_ticket',
-    'as' => 'delete_ticket',
-]);
+        'uses' => 'SupportTicketController@delete_ticket',
+        'as' => 'delete_ticket',
+    ]);
 
     Route::post('/ticket-system-delete-file', [
-    'uses' => 'SupportTicketController@delete_ticket_file',
-    'as' => 'delete_ticket_file',
-]);
+        'uses' => 'SupportTicketController@delete_ticket_file',
+        'as' => 'delete_ticket_file',
+    ]);
 
     Route::post('/ticket-system-download', [
-    'uses' => 'SupportTicketController@download_ticket_file',
-    'as' => 'download_ticket_file',
-]);
+        'uses' => 'SupportTicketController@download_ticket_file',
+        'as' => 'download_ticket_file',
+    ]);
 
     Route::get('/ticket-system-download/{id}', [
-    'uses' => 'SupportTicketController@dwn_ticket_file',
-    'as' => 'dwn_ticket_file',
-]);
+        'uses' => 'SupportTicketController@dwn_ticket_file',
+        'as' => 'dwn_ticket_file',
+    ]);
 
     // Student Support Ticket
 
     Route::get('/create-new-ticket-student', [
-    'uses' => 'SupportTicketController@create_ticket_student',
-    'as' => 'create_ticket_student',
-]);
+        'uses' => 'SupportTicketController@create_ticket_student',
+        'as' => 'create_ticket_student',
+    ]);
 
     Route::get('/all-tickets-student', [
-    'uses' => 'SupportTicketController@all_tickets_student',
-    'as' => 'all_tickets_student',
-]);
+        'uses' => 'SupportTicketController@all_tickets_student',
+        'as' => 'all_tickets_student',
+    ]);
 
     Route::get('/view-support-tickets/student/{id}', [
-    'uses' => 'SupportTicketController@view_tickets_student',
-    'as' => 'view_tickets_student',
-]);
+        'uses' => 'SupportTicketController@view_tickets_student',
+        'as' => 'view_tickets_student',
+    ]);
 
     Route::post('/create-new-tickets-student/save', [
-    'uses' => 'SupportTicketController@post_ticket_student',
-    'as' => 'post_ticket_student',
-]);
+        'uses' => 'SupportTicketController@post_ticket_student',
+        'as' => 'post_ticket_student',
+    ]);
 
     Route::post('/reply-ticket-student', [
-    'uses' => 'SupportTicketController@reply_ticket_student',
-    'as' => 'reply_ticket_student',
-]);
+        'uses' => 'SupportTicketController@reply_ticket_student',
+        'as' => 'reply_ticket_student',
+    ]);
 
     Route::post('/post-ticket-file-student', [
-    'uses' => 'SupportTicketController@post_ticket_file_student',
-    'as' => 'post_ticket_file_student',
-]);
+        'uses' => 'SupportTicketController@post_ticket_file_student',
+        'as' => 'post_ticket_file_student',
+    ]);
 });
 
-Route::group(['prefix'=> 'Results-Release',  'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'Results-Release',  'middleware' => 'auth'], function (): void {
     Route::get('/release-now', [
-    'uses' => 'ResultsreleaseController@release_results',
-    'as' => 'release_results',
-]);
+        'uses' => 'ResultsreleaseController@release_results',
+        'as' => 'release_results',
+    ]);
 
     Route::get('/releaseresult', [
-    'uses' => 'ResultsreleaseController@release_now',
-    'as' => 'release_now',
-]);
+        'uses' => 'ResultsreleaseController@release_now',
+        'as' => 'release_now',
+    ]);
 
     Route::get('/unreleaseresults', [
-    'uses' => 'ResultsreleaseController@unrelease_now',
-    'as' => 'unrelease_now',
-]);
+        'uses' => 'ResultsreleaseController@unrelease_now',
+        'as' => 'unrelease_now',
+    ]);
 
     Route::get('/cancel-student-results', [
-    'uses' => 'ResultsreleaseController@cancel_results',
-    'as' => 'cancel_results',
-]);
+        'uses' => 'ResultsreleaseController@cancel_results',
+        'as' => 'cancel_results',
+    ]);
 
     Route::get('/student-results/allstudents', [
-    'uses' => 'ResultsreleaseController@allstudents_results',
-    'as' => 'allstudents_results',
-]);
+        'uses' => 'ResultsreleaseController@allstudents_results',
+        'as' => 'allstudents_results',
+    ]);
 
     Route::get('/student/results/{id}', [
-    'uses' => 'ResultsreleaseController@student_results_view',
-    'as' => 'student_results_view',
-]);
+        'uses' => 'ResultsreleaseController@student_results_view',
+        'as' => 'student_results_view',
+    ]);
 
     Route::post('/student/cancel/request', [
-    'uses' => 'ResultsreleaseController@student_cancel_results',
-    'as' => 'student_cancel_results',
-]);
+        'uses' => 'ResultsreleaseController@student_cancel_results',
+        'as' => 'student_cancel_results',
+    ]);
 
     Route::post('/student/revert/results', [
-    'uses' => 'ResultsreleaseController@student_revert_results',
-    'as' => 'student_revert_results',
-]);
+        'uses' => 'ResultsreleaseController@student_revert_results',
+        'as' => 'student_revert_results',
+    ]);
 
     Route::post('/student/reenter/results', [
-    'uses' => 'ResultsreleaseController@student_reenter_results',
-    'as' => 'student_reenter_results',
-]);
+        'uses' => 'ResultsreleaseController@student_reenter_results',
+        'as' => 'student_reenter_results',
+    ]);
 
     Route::get('/student/cancel-results/session', [
-    'uses' => 'ResultsreleaseController@student_cancel_results_session',
-    'as' => 'student_cancel_results_session',
-]);
+        'uses' => 'ResultsreleaseController@student_cancel_results_session',
+        'as' => 'student_cancel_results_session',
+    ]);
 
     Route::post('/student/session/fetch/all-courses', [
-    'uses' => 'ResultsreleaseController@student_session_all_courses',
-    'as' => 'student_session_all_courses',
-]);
+        'uses' => 'ResultsreleaseController@student_session_all_courses',
+        'as' => 'student_session_all_courses',
+    ]);
 
     Route::post('/student/cancelresults', [
-    'uses' => 'ResultsreleaseController@session_cancel_now',
-    'as' => 'session_cancel_now',
-]);
+        'uses' => 'ResultsreleaseController@session_cancel_now',
+        'as' => 'session_cancel_now',
+    ]);
 });
 
-Route::group(['prefix'=> 'HumanResource',  'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'HumanResource',  'middleware' => 'auth'], function (): void {
     Route::get('/addStaff', [
-    'uses' => 'StaffController@addstaff',
-    'as' => 'addstaff',
-]);
+        'uses' => 'StaffController@addstaff',
+        'as' => 'addstaff',
+    ]);
 
     Route::post('/Staff-save', [
-    'uses' => 'StaffController@savestaff',
-    'as' => 'savestaff',
-]);
+        'uses' => 'StaffController@savestaff',
+        'as' => 'savestaff',
+    ]);
 
     Route::post('/upload-doc', [
-    'uses' => 'StaffController@uploaddoc',
-    'as' => 'uploaddoc',
-]);
+        'uses' => 'StaffController@uploaddoc',
+        'as' => 'uploaddoc',
+    ]);
 
     Route::get('/allStaff', [
-    'uses' => 'StaffController@allStaff',
-    'as' => 'allStaff',
-]);
+        'uses' => 'StaffController@allStaff',
+        'as' => 'allStaff',
+    ]);
 
     Route::get('/Staffprofile', [
-    'uses' => 'StaffController@Staffprofile',
-    'as' => 'Staffprofile',
-]);
+        'uses' => 'StaffController@Staffprofile',
+        'as' => 'Staffprofile',
+    ]);
 
     Route::get('/viewStaff/{id}', [
-    'uses' => 'StaffController@viewStaff',
-    'as' => 'viewStaff',
-]);
+        'uses' => 'StaffController@viewStaff',
+        'as' => 'viewStaff',
+    ]);
 
     Route::get('/editStaff/{id}', [
-    'uses' => 'StaffController@editStaff',
-    'as' => 'editStaff',
-]);
+        'uses' => 'StaffController@editStaff',
+        'as' => 'editStaff',
+    ]);
 
     Route::post('/update-staff-nfo', [
-    'uses' => 'StaffController@update_staff_info',
-    'as' => 'update_staff_info',
-]);
+        'uses' => 'StaffController@update_staff_info',
+        'as' => 'update_staff_info',
+    ]);
 
     Route::post('/del-staff-upload-doc/{id}', [
-    'uses' => 'StaffController@deletedoc',
-    'as' => 'deletedoc',
-]);
+        'uses' => 'StaffController@deletedoc',
+        'as' => 'deletedoc',
+    ]);
 
     Route::get('/Staff-attendance', [
-    'uses' => 'StaffController@recordattendance',
-    'as' => 'recordattendance',
-]);
+        'uses' => 'StaffController@recordattendance',
+        'as' => 'recordattendance',
+    ]);
 
     Route::post('/Staff-attendance/fetch', [
-    'uses' => 'StaffController@fetchstaff',
-    'as' => 'fetchstaff',
-]);
+        'uses' => 'StaffController@fetchstaff',
+        'as' => 'fetchstaff',
+    ]);
 
     Route::post('/Staff-attendance/save', [
-    'uses' => 'StaffController@saveattendant',
-    'as' => 'saveattendant',
-]);
+        'uses' => 'StaffController@saveattendant',
+        'as' => 'saveattendant',
+    ]);
 
     Route::post('/staff-attendance/year-fetch', [
-    'uses' => 'StaffController@yearfetch',
-    'as' => 'yearfetch',
-]);
+        'uses' => 'StaffController@yearfetch',
+        'as' => 'yearfetch',
+    ]);
 
     Route::get('/Staff-payroll', [
-    'uses' => 'StaffController@add_payroll',
-    'as' => 'add_payroll',
-]);
+        'uses' => 'StaffController@add_payroll',
+        'as' => 'add_payroll',
+    ]);
 
     Route::post('/fetch-payroll', [
-    'uses' => 'StaffController@payroll_fetch',
-    'as' => 'payroll_fetch',
-]);
+        'uses' => 'StaffController@payroll_fetch',
+        'as' => 'payroll_fetch',
+    ]);
 
     Route::get('/Staff-payroll/generate/{id}/{month}/{year}/{role}', [
-    'uses' => 'StaffController@generate_payroll',
-    'as' => 'generate_payroll',
-]);
+        'uses' => 'StaffController@generate_payroll',
+        'as' => 'generate_payroll',
+    ]);
 
     Route::get('/Staff-payroll/earning', [
-    'uses' => 'StaffController@genearn',
-    'as' => 'genearn',
-]);
+        'uses' => 'StaffController@genearn',
+        'as' => 'genearn',
+    ]);
 
     Route::get('/Staff-payroll/deduct', [
-    'uses' => 'StaffController@gendeduct',
-    'as' => 'gendeduct',
-]);
+        'uses' => 'StaffController@gendeduct',
+        'as' => 'gendeduct',
+    ]);
 
     Route::post('/Staff-payroll/calculate', [
-    'uses' => 'StaffController@calculate_payroll',
-    'as' => 'calculate_payroll',
-]);
+        'uses' => 'StaffController@calculate_payroll',
+        'as' => 'calculate_payroll',
+    ]);
 
     Route::get('/Staff-payroll/view-staff/{id}/payroll-info', [
-    'uses' => 'StaffController@view_staff_payroll_now',
-    'as' => 'view_staff_payroll_now',
-]);
+        'uses' => 'StaffController@view_staff_payroll_now',
+        'as' => 'view_staff_payroll_now',
+    ]);
 
     Route::get('/Staff-leave', [
-    'uses' => 'StaffController@staffleave',
-    'as' => 'staffleave',
-]);
+        'uses' => 'StaffController@staffleave',
+        'as' => 'staffleave',
+    ]);
 
     Route::get('/Staff-leave/requestleave', [
-    'uses' => 'StaffController@requestleave',
-    'as' => 'requestleave',
-]);
+        'uses' => 'StaffController@requestleave',
+        'as' => 'requestleave',
+    ]);
 
     Route::post('/Staff-leave/save-requestleave', [
-    'uses' => 'StaffController@save_requestleave',
-    'as' => 'save_requestleave',
-]);
+        'uses' => 'StaffController@save_requestleave',
+        'as' => 'save_requestleave',
+    ]);
 
     Route::post('/Staff-leave/update-requestleave', [
-    'uses' => 'StaffController@update_requestleave',
-    'as' => 'update_requestleave',
-]);
+        'uses' => 'StaffController@update_requestleave',
+        'as' => 'update_requestleave',
+    ]);
 
     Route::post('/Staff-leave/leave-req-revert', [
-    'uses' => 'StaffController@leave_req_revert',
-    'as' => 'leave_req_revert',
-]);
+        'uses' => 'StaffController@leave_req_revert',
+        'as' => 'leave_req_revert',
+    ]);
 
     Route::post('/Staff-payroll/fetch-payroll', [
-    'uses' => 'StaffController@fetch_payroll_fetail',
-    'as' => 'fetch_payroll_fetail',
-]);
+        'uses' => 'StaffController@fetch_payroll_fetail',
+        'as' => 'fetch_payroll_fetail',
+    ]);
 
     Route::post('/Staff-payroll/save-payroll', [
-    'uses' => 'StaffController@save_payroll_now',
-    'as' => 'save_payroll_now',
-]);
+        'uses' => 'StaffController@save_payroll_now',
+        'as' => 'save_payroll_now',
+    ]);
 
     Route::post('/Staff-payroll/view-payroll', [
-    'uses' => 'StaffController@view_payroll_now',
-    'as' => 'view_payroll_now',
-]);
+        'uses' => 'StaffController@view_payroll_now',
+        'as' => 'view_payroll_now',
+    ]);
 
     Route::get('/Staff-directory/disable-staff', [
-    'uses' => 'StaffController@disable_staff',
-    'as' => 'disable_staff',
-]);
+        'uses' => 'StaffController@disable_staff',
+        'as' => 'disable_staff',
+    ]);
 });
 
-Route::group(['prefix'=> 'Empty',  'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'Empty',  'middleware' => 'auth'], function (): void {
 });
 
-Route::group(['prefix'=> 'OSMS/Menu',  'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'OSMS/Menu',  'middleware' => 'auth'], function (): void {
     Route::get('/add-menu', [
         'uses' => 'MenuController@add_menu',
         'as' => 'add-menu',
@@ -2649,25 +2649,25 @@ Route::group(['prefix'=> 'OSMS/Menu',  'middleware' => 'auth'], function () {
 //Accounts Controller
 
 Route::post('/pay', [
-        'uses' => 'PaymentController@redirectToGateway',
-        'as' => 'pay',
-    ]);
+    'uses' => 'PaymentController@redirectToGateway',
+    'as' => 'pay',
+]);
 Route::get('/payment/callback', 'PaymentController@handleGatewayCallback');
 
 Route::get('/paystack/all-transactions/student', [
-        'uses' => 'PaymentController@getAlltransactions_student',
-        'as' => 'paystack-all-transactions-student',
-    ]);
+    'uses' => 'PaymentController@getAlltransactions_student',
+    'as' => 'paystack-all-transactions-student',
+]);
 
 Route::get('/paystack/transaction-details/{refid}', [
-        'uses' => 'PaymentController@transaction_refid',
-        'as' => 'transaction_refid',
-    ]);
+    'uses' => 'PaymentController@transaction_refid',
+    'as' => 'transaction_refid',
+]);
 
 Route::get('/paystack/all-transactions', [
-        'uses' => 'PaymentController@getAlltransactions',
-        'as' => 'paystack-all-transactions',
-    ]);
+    'uses' => 'PaymentController@getAlltransactions',
+    'as' => 'paystack-all-transactions',
+]);
 
 Route::get('/sitemap-view', [
     'uses' => 'WebController@sitemapview',
@@ -2676,7 +2676,7 @@ Route::get('/sitemap-view', [
 
 Route::get('osmslogs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 
-Route::group(['prefix'=> '',  'middleware' => 'auth'], function () {
+Route::group(['prefix' => '',  'middleware' => 'auth'], function (): void {
     Route::get('/attendance', [
         'uses' => 'LMS\LMSController@lec_attendance',
         'as' => 'lms-lec-attendance',

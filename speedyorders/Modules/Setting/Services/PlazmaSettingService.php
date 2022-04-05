@@ -3,6 +3,7 @@
 namespace Modules\Setting\Services;
 
 use App\Utils\Option;
+use Exception;
 
 class PlazmaSettingService
 {
@@ -16,7 +17,7 @@ class PlazmaSettingService
             Option::update('plazma_agent_id', $data['plazma_agent_id']);
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
     }

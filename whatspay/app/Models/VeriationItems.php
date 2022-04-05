@@ -12,5 +12,6 @@ class VeriationItems extends Model
     use SoftDeletes;
 
     protected $table = 'product_variation_items';
+
     protected $fillable = ['attribute_id', 'variation_id'];
 }

@@ -8,12 +8,10 @@ class CreateExamchecksTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('examchecks', function (Blueprint $table) {
+        Schema::create('examchecks', function (Blueprint $table): void {
             $table->increments('exam_id');
             $table->timestamps();
         });
@@ -21,10 +19,8 @@ class CreateExamchecksTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('examchecks');
     }

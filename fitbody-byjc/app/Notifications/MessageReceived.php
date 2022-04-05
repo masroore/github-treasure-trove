@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notification;
 class MessageReceived extends Notification
 {
     use Queueable;
+
     /**
      * @var Message
      */

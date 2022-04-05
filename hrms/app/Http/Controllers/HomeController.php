@@ -14,14 +14,13 @@ use App\Models\Payer;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Models\Utility;
+use DB;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -40,20 +39,20 @@ class HomeController extends Controller
                 $emp = Employee::where('user_id', '=', $user->id)->first();
 
                 $announcements = Announcement::orderBy('announcements.id', 'desc')->take(5)->leftjoin('announcement_employees', 'announcements.id', '=', 'announcement_employees.announcement_id')->where('announcement_employees.employee_id', '=', $emp->id)->orWhere(
-                    function ($q) {
+                    function ($q): void {
                         $q->where('announcements.department_id', '["0"]')->where('announcements.employee_id', '["0"]');
                     }
                 )->get();
 
                 $employees = Employee::get();
                 $meetings = Meeting::orderBy('meetings.id', 'desc')->take(5)->leftjoin('meeting_employees', 'meetings.id', '=', 'meeting_employees.meeting_id')->where('meeting_employees.employee_id', '=', $emp->id)->orWhere(
-                    function ($q) {
+                    function ($q): void {
                         $q->where('meetings.department_id', '["0"]')->where('meetings.employee_id', '["0"]');
                     }
                 )->get();
 
                 $events = Event::leftjoin('event_employees', 'events.id', '=', 'event_employees.event_id')->where('event_employees.employee_id', '=', $emp->id)->orWhere(
-                    function ($q) {
+                    function ($q): void {
                         $q->where('events.department_id', '["0"]')->where('events.employee_id', '["0"]');
                     }
                 )->get();
@@ -148,7 +147,7 @@ class HomeController extends Controller
         if ($arrParam['duration']) {
             if ('week' == $arrParam['duration']) {
                 $previous_week = strtotime('-2 week +1 day');
-                for ($i = 0; $i < 14; $i++) {
+                for ($i = 0; $i < 14; ++$i) {
                     $arrDuration[date('Y-m-d', $previous_week)] = date('d-M', $previous_week);
                     $previous_week = strtotime(date('Y-m-d', $previous_week) . ' +1 day');
                 }
@@ -159,7 +158,7 @@ class HomeController extends Controller
         $arrTask['label'] = [];
         $arrTask['data'] = [];
         foreach ($arrDuration as $date => $label) {
-            $data = Order::select(\DB::raw('count(*) as total'))->whereDate('created_at', '=', $date)->first();
+            $data = Order::select(DB::raw('count(*) as total'))->whereDate('created_at', '=', $date)->first();
             $arrTask['label'][] = $label;
             $arrTask['data'][] = $data->total;
         }

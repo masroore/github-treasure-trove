@@ -25,6 +25,7 @@ class Training extends Model
         'Completed',
         'Terminated',
     ];
+
     protected $fillable = [
         'branch',
         'trainer_option',

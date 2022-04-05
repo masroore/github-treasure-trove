@@ -19,15 +19,17 @@ class Quicksms implements ShouldQueue
     use SerializesModels;
 
     public $to;
+
     public $composer;
+
     public $html;
+
     public $from;
+
     public $file;
 
     /**
      * Create a new job instance.
-     *
-     * @return void
      */
     public function __construct($to, $composer, $html, $file, $from)
     {
@@ -40,10 +42,8 @@ class Quicksms implements ShouldQueue
 
     /**
      * Execute the job.
-     *
-     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         if ('false' == $this->file) {
             Notification::route('mail', $this->from)
