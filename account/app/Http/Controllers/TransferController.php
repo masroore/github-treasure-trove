@@ -5,17 +5,20 @@ namespace App\Http\Controllers;
 use App\BankAccount;
 use App\Transfer;
 use App\Utility;
+use Auth;
+use DB;
 use Illuminate\Http\Request;
+use Validator;
 
 class TransferController extends Controller
 {
     public function index(Request $request)
     {
-        if (\Auth::user()->can('manage transfer')) {
-            $account = BankAccount::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('holder_name', 'id');
+        if (Auth::user()->can('manage transfer')) {
+            $account = BankAccount::where('created_by', '=', Auth::user()->creatorId())->get()->pluck('holder_name', 'id');
             $account->prepend('All', '');
 
-            $query = Transfer::where('created_by', '=', \Auth::user()->creatorId());
+            $query = Transfer::where('created_by', '=', Auth::user()->creatorId());
 
             if (!empty($request->date)) {
                 $date_range = explode(' - ', $request->date);
@@ -38,8 +41,8 @@ class TransferController extends Controller
 
     public function create()
     {
-        if (\Auth::user()->can('create transfer')) {
-            $bankAccount = BankAccount::select('*', \DB::raw("CONCAT(bank_name,' ',holder_name) AS name"))->where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        if (Auth::user()->can('create transfer')) {
+            $bankAccount = BankAccount::select('*', DB::raw("CONCAT(bank_name,' ',holder_name) AS name"))->where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
 
             return view('transfer.create', compact('bankAccount'));
         }
@@ -49,15 +52,15 @@ class TransferController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('create transfer')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('create transfer')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'from_account' => 'required|numeric',
-                                   'to_account' => 'required|numeric',
-                                   'amount' => 'required|numeric',
-                                   'date' => 'required',
-                               ]
+                    'from_account' => 'required|numeric',
+                    'to_account' => 'required|numeric',
+                    'amount' => 'required|numeric',
+                    'date' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -73,7 +76,7 @@ class TransferController extends Controller
             $transfer->payment_method = 0;
             $transfer->reference = $request->reference;
             $transfer->description = $request->description;
-            $transfer->created_by = \Auth::user()->creatorId();
+            $transfer->created_by = Auth::user()->creatorId();
             $transfer->save();
 
             Utility::bankAccountBalance($request->from_account, $request->amount, 'debit');
@@ -88,8 +91,8 @@ class TransferController extends Controller
 
     public function edit(Transfer $transfer)
     {
-        if (\Auth::user()->can('edit transfer')) {
-            $bankAccount = BankAccount::select('*', \DB::raw("CONCAT(bank_name,' ',holder_name) AS name"))->where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        if (Auth::user()->can('edit transfer')) {
+            $bankAccount = BankAccount::select('*', DB::raw("CONCAT(bank_name,' ',holder_name) AS name"))->where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
 
             return view('transfer.edit', compact('bankAccount', 'transfer'));
         }
@@ -99,15 +102,15 @@ class TransferController extends Controller
 
     public function update(Request $request, Transfer $transfer)
     {
-        if (\Auth::user()->can('edit transfer')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('edit transfer')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'from_account' => 'required|numeric',
-                                   'to_account' => 'required|numeric',
-                                   'amount' => 'required|numeric',
-                                   'date' => 'required',
-                               ]
+                    'from_account' => 'required|numeric',
+                    'to_account' => 'required|numeric',
+                    'amount' => 'required|numeric',
+                    'date' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -138,8 +141,8 @@ class TransferController extends Controller
 
     public function destroy(Transfer $transfer)
     {
-        if (\Auth::user()->can('delete transfer')) {
-            if ($transfer->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('delete transfer')) {
+            if ($transfer->created_by == Auth::user()->creatorId()) {
                 $transfer->delete();
 
                 Utility::bankAccountBalance($transfer->from_account, $transfer->amount, 'credit');

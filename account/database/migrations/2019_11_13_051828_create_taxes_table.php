@@ -8,12 +8,10 @@ class CreateTaxesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('taxes', function (Blueprint $table) {
+        Schema::create('taxes', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('name');
             $table->text('rate');
@@ -24,10 +22,8 @@ class CreateTaxesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('taxes');
     }

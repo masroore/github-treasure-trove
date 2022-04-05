@@ -8,14 +8,12 @@ class CreateCustomFieldValuesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create(
             'custom_field_values',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->bigIncrements('id');
                 $table->unsignedBigInteger('record_id');
                 $table->unsignedBigInteger('field_id');
@@ -23,9 +21,9 @@ class CreateCustomFieldValuesTable extends Migration
                 $table->timestamps();
                 $table->unique(
                     [
-                    'record_id',
-                    'field_id',
-                ]
+                        'record_id',
+                        'field_id',
+                    ]
                 );
                 $table->foreign('field_id')->references('id')->on('custom_fields')->onDelete('cascade');
             }
@@ -34,10 +32,8 @@ class CreateCustomFieldValuesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('custom_field_values');
     }

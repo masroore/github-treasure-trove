@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\User;
@@ -35,8 +36,6 @@ class RegisterController extends Controller
 
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -49,7 +48,7 @@ class RegisterController extends Controller
             $lang = \App\Utility::getValByName('default_language');
         }
 
-        \App::setLocale($lang);
+        App::setLocale($lang);
 
         return view('auth.register', compact('lang'));
     }
@@ -64,25 +63,25 @@ class RegisterController extends Controller
         return Validator::make(
             $data,
             [
-                     'name' => [
-                         'required',
-                         'string',
-                         'max:255',
-                     ],
-                     'email' => [
-                         'required',
-                         'string',
-                         'email',
-                         'max:255',
-                         'unique:users',
-                     ],
-                     'password' => [
-                         'required',
-                         'string',
-                         'min:8',
-                         'confirmed',
-                     ],
-                 ]
+                'name' => [
+                    'required',
+                    'string',
+                    'max:255',
+                ],
+                'email' => [
+                    'required',
+                    'string',
+                    'email',
+                    'max:255',
+                    'unique:users',
+                ],
+                'password' => [
+                    'required',
+                    'string',
+                    'min:8',
+                    'confirmed',
+                ],
+            ]
         );
     }
 

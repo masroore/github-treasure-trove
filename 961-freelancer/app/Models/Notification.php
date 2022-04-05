@@ -8,12 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Notification extends Model
 {
     use HasFactory;
+
     protected $fillable = [
-      'from',
-      'to',
-      'noti_type',
-      'message',
-      'status',
+        'from',
+        'to',
+        'noti_type',
+        'message',
+        'status',
     ];
 
     public static function getUnseenNoti()

@@ -8,12 +8,10 @@ class CreateStudentLedgerTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('student_ledger', function (Blueprint $table) {
+        Schema::create('student_ledger', function (Blueprint $table): void {
             $table->id();
             $table->integer('journal_items_id')->default(0);
             $table->integer('student_id')->default(0);
@@ -24,10 +22,8 @@ class CreateStudentLedgerTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('student_ledger');
     }

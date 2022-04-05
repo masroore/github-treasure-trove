@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Escrow extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'from',
         'to',

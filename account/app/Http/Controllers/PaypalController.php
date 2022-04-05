@@ -9,6 +9,8 @@ use App\Order;
 use App\Plan;
 use App\UserCoupon;
 use App\Utility;
+use Config;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -29,7 +31,7 @@ class PaypalController extends Controller
 {
     private $_api_context;
 
-    public function setApiContext()
+    public function setApiContext(): void
     {
         $user = Auth::user();
 
@@ -91,21 +93,22 @@ class PaypalController extends Controller
                     route(
                         'plan.get.payment.status',
                         [
-                                                     $plan->id,
-                                                     'coupon_id' => $coupon_id,
-                                                 ]
+                            $plan->id,
+                            'coupon_id' => $coupon_id,
+                        ]
                     )
                 )->setCancelUrl(
                     route(
                         'plan.get.payment.status',
                         [
-                                                     $plan->id,
-                                                     'coupon_id' => $coupon_id,
-                                                 ]
+                            $plan->id,
+                            'coupon_id' => $coupon_id,
+                        ]
                     )
                 );
                 $payment = new Payment();
                 $payment->setIntent('Sale')->setPayer($payer)->setRedirectUrls($redirect_urls)->setTransactions([$transaction]);
+
                 try {
                     $payment->create($this->_api_context);
                 } catch (\PayPal\Exception\PayPalConnectionException $ex) { //PPConnectionException
@@ -118,6 +121,7 @@ class PaypalController extends Controller
                 foreach ($payment->getLinks() as $link) {
                     if ('approval_url' == $link->getRel()) {
                         $redirect_url = $link->getHref();
+
                         break;
                     }
                 }
@@ -127,7 +131,7 @@ class PaypalController extends Controller
                 }
 
                 return redirect()->route('payment', \Illuminate\Support\Facades\Crypt::encrypt($plan->id))->with('error', __('Unknown error occurred'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->route('plans.index')->with('error', __($e->getMessage()));
             }
         } else {
@@ -149,6 +153,7 @@ class PaypalController extends Controller
             $payment = Payment::get($payment_id, $this->_api_context);
             $execution = new PaymentExecution();
             $execution->setPayerId($request->PayerID);
+
             try {
                 $result = $payment->execute($execution, $this->_api_context)->toArray();
                 $orderID = strtoupper(str_replace('.', '', uniqid('', true)));
@@ -194,7 +199,7 @@ class PaypalController extends Controller
                 }
 
                 return redirect()->route('plans.index')->with('error', __('Transaction has been ' . __($status)));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->route('plans.index')->with('error', __('Transaction has been failed.'));
             }
         } else {
@@ -242,15 +247,15 @@ class PaypalController extends Controller
             $redirect_urls = new RedirectUrls();
             $redirect_urls->setReturnUrl(
                 route(
-                        'customer.get.payment.status',
-                        $invoice->id
-                    )
+                    'customer.get.payment.status',
+                    $invoice->id
+                )
             )->setCancelUrl(
-                    route(
+                route(
                         'customer.get.payment.status',
                         $invoice->id
                     )
-                );
+            );
 
             $payment = new Payment();
             $payment->setIntent('Sale')->setPayer($payer)->setRedirectUrls($redirect_urls)->setTransactions([$transaction]);
@@ -258,7 +263,7 @@ class PaypalController extends Controller
             try {
                 $payment->create($this->_api_context);
             } catch (\PayPal\Exception\PayPalConnectionException $ex) { //PPConnectionException
-                if (\Config::get('app.debug')) {
+                if (Config::get('app.debug')) {
                     return redirect()->route(
                         'customer.invoice.show',
                         $invoice_id
@@ -273,6 +278,7 @@ class PaypalController extends Controller
             foreach ($payment->getLinks() as $link) {
                 if ('approval_url' == $link->getRel()) {
                     $redirect_url = $link->getHref();
+
                     break;
                 }
             }
@@ -385,7 +391,7 @@ class PaypalController extends Controller
                 'customer.invoice.show',
                 $invoice_id
             )->with('error', __('Transaction has been ' . $status));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->route(
                 'customer.invoice.show',
                 $invoice_id

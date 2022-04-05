@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Auth;
 use Illuminate\Database\Eloquent\Model;
 
 class ProductServiceCategory extends Model
@@ -11,6 +12,7 @@ class ProductServiceCategory extends Model
         'Income',
         'Expense',
     ];
+
     protected $fillable = [
         'name',
         'type',
@@ -25,9 +27,9 @@ class ProductServiceCategory extends Model
     public function incomeCategoryRevenueAmount()
     {
         $year = date('Y');
-        $revenue = $this->hasMany('App\Revenue', 'category_id', 'id')->where('created_by', \Auth::user()->creatorId())->whereRAW('YEAR(date) =?', [$year])->sum('amount');
+        $revenue = $this->hasMany('App\Revenue', 'category_id', 'id')->where('created_by', Auth::user()->creatorId())->whereRAW('YEAR(date) =?', [$year])->sum('amount');
 
-        $invoices = $this->hasMany('App\Invoice', 'category_id', 'id')->where('created_by', \Auth::user()->creatorId())->whereRAW('YEAR(send_date) =?', [$year])->get();
+        $invoices = $this->hasMany('App\Invoice', 'category_id', 'id')->where('created_by', Auth::user()->creatorId())->whereRAW('YEAR(send_date) =?', [$year])->get();
         $invoiceArray = [];
         foreach ($invoices as $invoice) {
             $invoiceArray[] = $invoice->getTotal();
@@ -39,9 +41,9 @@ class ProductServiceCategory extends Model
     public function expenseCategoryAmount()
     {
         $year = date('Y');
-        $payment = $this->hasMany('App\Payment', 'category_id', 'id')->where('created_by', \Auth::user()->creatorId())->whereRAW('YEAR(date) =?', [$year])->sum('amount');
+        $payment = $this->hasMany('App\Payment', 'category_id', 'id')->where('created_by', Auth::user()->creatorId())->whereRAW('YEAR(date) =?', [$year])->sum('amount');
 
-        $bills = $this->hasMany('App\Bill', 'category_id', 'id')->where('created_by', \Auth::user()->creatorId())->whereRAW('YEAR(send_date) =?', [$year])->get();
+        $bills = $this->hasMany('App\Bill', 'category_id', 'id')->where('created_by', Auth::user()->creatorId())->whereRAW('YEAR(send_date) =?', [$year])->get();
         $billArray = [];
         foreach ($bills as $bill) {
             $billArray[] = $bill->getTotal();

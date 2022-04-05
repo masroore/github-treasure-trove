@@ -19,8 +19,8 @@ class SupportController extends Controller
         $supports = Contact::get();
 
         return View::make('admin.support-list')->with([
-        'supports' => $supports,
-      ]);
+            'supports' => $supports,
+        ]);
     }
 
     /**
@@ -85,9 +85,9 @@ class SupportController extends Controller
     {
         $deleteData = Contact::find($id);
         if ($deleteData->delete()) {
-            return response()->json(['status'=>'true', 'message' => 'support comment deleted'], 200);
+            return response()->json(['status' => 'true', 'message' => 'support comment deleted'], 200);
         }
 
-        return response()->json(['status'=>'error', 'message' => 'error occured please try again'], 200);
+        return response()->json(['status' => 'error', 'message' => 'error occured please try again'], 200);
     }
 }

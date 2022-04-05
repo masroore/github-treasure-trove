@@ -30,9 +30,9 @@ class AdminController extends Controller
             ->orderBy('date', 'desc')
             ->take(6)
             ->get([
-            DB::raw('MONTH(created_at) as date'),
-            DB::raw('count(id) as total'),
-        ])
+                DB::raw('MONTH(created_at) as date'),
+                DB::raw('count(id) as total'),
+            ])
             ->pluck('total', 'date');
         // dd($monthUser);
         $groups = DB::table('users')
@@ -40,7 +40,7 @@ class AdminController extends Controller
             ->groupBy('account_type')
             ->pluck('total', 'account_type')->all();
         // Generate random colours for the groups
-        for ($i = 0; $i <= \count($groups); $i++) {
+        for ($i = 0; $i <= \count($groups); ++$i) {
             $colours[] = '#' . substr(str_shuffle('ABCDEF0123456789'), 0, 6);
         }
         // Prepare the data for returning with the view
@@ -51,9 +51,9 @@ class AdminController extends Controller
         // return view('charts.index', compact('chart'));
 
         return View::make('admin.index')->with([
-        'transactions' => $transaction,
-        'chart' => $chart,
-      ]);
+            'transactions' => $transaction,
+            'chart' => $chart,
+        ]);
     }
 
     public function index(Request $request)
@@ -100,18 +100,18 @@ class AdminController extends Controller
         $blockedusers = User::with('userSkills', 'saveInfo')->whereaccount_type('Freelancer')->where('status', 'block')->get();
 
         return View::make('admin.blocked-users-list')->with([
-          'blockedusers' => $blockedusers,
-      ]);
+            'blockedusers' => $blockedusers,
+        ]);
     }
 
     public function unblockUsers(Request $request, $id)
     {
         $unblock = User::where('id', $id)->update(['status' => 'active']);
         if ($unblock) {
-            return response()->json(['status'=>'true', 'message' => 'User unblocked'], 200);
+            return response()->json(['status' => 'true', 'message' => 'User unblocked'], 200);
         }
 
-        return response()->json(['status'=>'error', 'message' => 'error occured please try again'], 200);
+        return response()->json(['status' => 'error', 'message' => 'error occured please try again'], 200);
     }
 
     /**
@@ -124,8 +124,8 @@ class AdminController extends Controller
         $countries = Countries::get();
 
         return \View::make('admin.user-create')->with([
-        'countries' => $countries,
-      ]);
+            'countries' => $countries,
+        ]);
     }
 
     /**
@@ -156,10 +156,10 @@ class AdminController extends Controller
         $user->country = $country;
 
         if ($user->save()) {
-            return response()->json(['status'=>'true', 'message' => 'User added successfully', 'userType' => $user->account_type], 200);
+            return response()->json(['status' => 'true', 'message' => 'User added successfully', 'userType' => $user->account_type], 200);
         }
 
-        return response()->json(['status'=>'errorr', 'message' => 'error occured please try again'], 200);
+        return response()->json(['status' => 'errorr', 'message' => 'error occured please try again'], 200);
     }
 
     /**
@@ -217,10 +217,10 @@ class AdminController extends Controller
         $findData->country = $country;
 
         if ($findData->save()) {
-            return response()->json(['status'=>'true', 'message' => 'User updated successfully', 'userType' => $findData->account_type], 200);
+            return response()->json(['status' => 'true', 'message' => 'User updated successfully', 'userType' => $findData->account_type], 200);
         }
 
-        return response()->json(['status'=>'errorr', 'message' => 'error occured please try again'], 200);
+        return response()->json(['status' => 'errorr', 'message' => 'error occured please try again'], 200);
     }
 
     /**
@@ -234,10 +234,10 @@ class AdminController extends Controller
     {
         $deleteData = User::find($id);
         if ($deleteData->delete()) {
-            return response()->json(['status'=>'true', 'message' => 'User deleted successfully'], 200);
+            return response()->json(['status' => 'true', 'message' => 'User deleted successfully'], 200);
         }
 
-        return response()->json(['status'=>'error', 'message' => 'error occured please try again'], 200);
+        return response()->json(['status' => 'error', 'message' => 'error occured please try again'], 200);
     }
 
     // Verification List
@@ -246,8 +246,8 @@ class AdminController extends Controller
         $users = User::where('verification_image', '!=', '')->where('verification', 1)->get();
 
         return \View::make('admin.verification-request')->with([
-        'users' => $users,
-      ]);
+            'users' => $users,
+        ]);
     }
 
     public function verify(Request $request, $id)
@@ -256,10 +256,10 @@ class AdminController extends Controller
         $user->verification = 2;
 
         if ($user->save()) {
-            return response()->json(['status'=>'true', 'message' => 'User Verified successfully'], 200);
+            return response()->json(['status' => 'true', 'message' => 'User Verified successfully'], 200);
         }
 
-        return response()->json(['status'=>'error', 'message' => 'error occured please try again'], 200);
+        return response()->json(['status' => 'error', 'message' => 'error occured please try again'], 200);
     }
 
     public function rejectVerify(Request $request, $id)
@@ -268,10 +268,10 @@ class AdminController extends Controller
         $user->verification = 1;
 
         if ($user->save()) {
-            return response()->json(['status'=>'true', 'message' => 'User Verified successfully'], 200);
+            return response()->json(['status' => 'true', 'message' => 'User Verified successfully'], 200);
         }
 
-        return response()->json(['status'=>'error', 'message' => 'error occured please try again'], 200);
+        return response()->json(['status' => 'error', 'message' => 'error occured please try again'], 200);
     }
 
     public function live()

@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Utility;
+use Auth;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -16,8 +17,6 @@ class InvoiceSend extends Mailable
 
     /**
      * Create a new message instance.
-     *
-     * @return void
      */
     public function __construct($invoice)
     {
@@ -31,7 +30,7 @@ class InvoiceSend extends Mailable
      */
     public function build()
     {
-        if ('super admin' == \Auth::user()->type) {
+        if ('super admin' == Auth::user()->type) {
             return $this->view('email.invoice_send')->with('invoice', $this->invoice)->subject('Ragarding to product/service invoice generator.');
         }
 

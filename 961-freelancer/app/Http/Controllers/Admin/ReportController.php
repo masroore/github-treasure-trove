@@ -20,8 +20,8 @@ class ReportController extends Controller
         $reports = ReportUser::with('freelancer', 'user')->get();
 
         return View::make('admin.reports-list')->with([
-        'reports' => $reports,
-      ]);
+            'reports' => $reports,
+        ]);
     }
 
     /**
@@ -86,10 +86,10 @@ class ReportController extends Controller
     {
         $deleteData = ReportUser::find($id);
         if ($deleteData->delete()) {
-            return response()->json(['status'=>'true', 'message' => 'Report deleted successfully'], 200);
+            return response()->json(['status' => 'true', 'message' => 'Report deleted successfully'], 200);
         }
 
-        return response()->json(['status'=>'error', 'message' => 'error occured please try again'], 200);
+        return response()->json(['status' => 'error', 'message' => 'error occured please try again'], 200);
     }
 
     // Block User
@@ -102,9 +102,9 @@ class ReportController extends Controller
         if ($blockuser) {
             $getSingleData->save();
 
-            return response()->json(['status'=>'true', 'message' => 'User Blocked'], 200);
+            return response()->json(['status' => 'true', 'message' => 'User Blocked'], 200);
         }
 
-        return response()->json(['status'=>'error', 'message' => 'error occured please try again'], 200);
+        return response()->json(['status' => 'error', 'message' => 'error occured please try again'], 200);
     }
 }

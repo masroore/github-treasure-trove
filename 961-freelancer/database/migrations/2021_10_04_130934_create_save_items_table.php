@@ -8,12 +8,10 @@ class CreateSaveItemsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('save_items', function (Blueprint $table) {
+        Schema::create('save_items', function (Blueprint $table): void {
             $table->id();
             $table->integer('user_id');
             $table->integer('freelancer_id')->nullable();
@@ -26,10 +24,8 @@ class CreateSaveItemsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('save_items');
     }

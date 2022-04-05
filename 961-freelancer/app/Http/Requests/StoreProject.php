@@ -24,13 +24,13 @@ class StoreProject extends FormRequest
     public function rules()
     {
         return [
-          'job_title' => 'required',
-          'service_level' => 'required',
-          'job_type' => 'required',
-          'job_duration' => 'required',
-          'job_skills' => 'required',
-          'job_cat' => 'required',
-          'job_description' => 'required',
+            'job_title' => 'required',
+            'service_level' => 'required',
+            'job_type' => 'required',
+            'job_duration' => 'required',
+            'job_skills' => 'required',
+            'job_cat' => 'required',
+            'job_description' => 'required',
         ];
     }
 }

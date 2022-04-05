@@ -8,28 +8,26 @@ class AddDescriptionField extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table(
             'proposal_products',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->text('description')->nullable()->after('price');
             }
         );
 
         Schema::table(
             'invoice_products',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->text('description')->nullable()->after('price');
             }
         );
 
         Schema::table(
             'bill_products',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->text('description')->nullable()->after('price');
             }
         );
@@ -37,28 +35,26 @@ class AddDescriptionField extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table(
             'proposal_products',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->dropColumn('description');
             }
         );
 
         Schema::table(
             'invoice_products',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->dropColumn('description');
             }
         );
 
         Schema::table(
             'bill_products',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->dropColumn('description');
             }
         );

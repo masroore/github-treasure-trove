@@ -8,14 +8,12 @@ class CreateBankAccountsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create(
             'bank_accounts',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->bigIncrements('id');
                 $table->string('holder_name');
                 $table->string('bank_name');
@@ -31,10 +29,8 @@ class CreateBankAccountsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('bank_accounts');
     }

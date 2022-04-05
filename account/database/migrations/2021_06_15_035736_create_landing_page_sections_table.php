@@ -8,12 +8,10 @@ class CreateLandingPageSectionsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('landing_page_sections', function (Blueprint $table) {
+        Schema::create('landing_page_sections', function (Blueprint $table): void {
             $table->id();
             $table->string('section_name');
             $table->integer('section_order')->default(0);
@@ -28,10 +26,8 @@ class CreateLandingPageSectionsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('landing_page_sections');
     }

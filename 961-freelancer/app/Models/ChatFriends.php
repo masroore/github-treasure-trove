@@ -8,17 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class ChatFriends extends Model
 {
     use HasFactory;
+
     protected $fillable = [
-      'conversation_id',
-      'message_id',
-      'message',
-      'job_id',
-      'proposal_id',
-      'sender_id',
-      'receiver_id',
-      'time',
-      'message_status',
-      'update_by_message',
+        'conversation_id',
+        'message_id',
+        'message',
+        'job_id',
+        'proposal_id',
+        'sender_id',
+        'receiver_id',
+        'time',
+        'message_status',
+        'update_by_message',
     ];
 
     public function senderInfo()

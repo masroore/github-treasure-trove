@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Language;
 use Illuminate\Http\Request;
+use View;
 
 class LanguageController extends Controller
 {
@@ -17,9 +18,9 @@ class LanguageController extends Controller
     {
         $languages = Language::all();
 
-        return \View::make('admin.languages-list')->with([
-          'languages' => $languages,
-      ]);
+        return View::make('admin.languages-list')->with([
+            'languages' => $languages,
+        ]);
     }
 
     /**
@@ -29,7 +30,7 @@ class LanguageController extends Controller
      */
     public function create()
     {
-        return \View::make('admin.language-create');
+        return View::make('admin.language-create');
     }
 
     /**
@@ -43,10 +44,10 @@ class LanguageController extends Controller
         $language->language_name = $request->input('language_name');
 
         if ($language->save()) {
-            return response()->json(['status'=>'true', 'message' => 'Language added successfully'], 200);
+            return response()->json(['status' => 'true', 'message' => 'Language added successfully'], 200);
         }
 
-        return response()->json(['status'=>'errorr', 'message' => 'error occured please try again'], 200);
+        return response()->json(['status' => 'errorr', 'message' => 'error occured please try again'], 200);
     }
 
     /**
@@ -71,7 +72,7 @@ class LanguageController extends Controller
     {
         $getSingleData = Language::find($id);
 
-        return \View::make('admin.language-update', compact('getSingleData'));
+        return View::make('admin.language-update', compact('getSingleData'));
     }
 
     /**
@@ -87,10 +88,10 @@ class LanguageController extends Controller
         $findData->language_name = $request->input('language_name');
 
         if ($findData->save()) {
-            return response()->json(['status'=>'true', 'message' => 'Language updated successfully'], 200);
+            return response()->json(['status' => 'true', 'message' => 'Language updated successfully'], 200);
         }
 
-        return response()->json(['status'=>'errorr', 'message' => 'error occured please try again'], 200);
+        return response()->json(['status' => 'errorr', 'message' => 'error occured please try again'], 200);
     }
 
     /**
@@ -104,9 +105,9 @@ class LanguageController extends Controller
     {
         $deleteData = Language::find($id);
         if ($deleteData->delete()) {
-            return response()->json(['status'=>'true', 'message' => 'Language deleted successfully'], 200);
+            return response()->json(['status' => 'true', 'message' => 'Language deleted successfully'], 200);
         }
 
-        return response()->json(['status'=>'error', 'message' => 'error occured please try again'], 200);
+        return response()->json(['status' => 'error', 'message' => 'error occured please try again'], 200);
     }
 }

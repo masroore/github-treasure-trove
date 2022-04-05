@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Skills;
 use Illuminate\Http\Request;
+use View;
 
 class SkillController extends Controller
 {
@@ -17,9 +18,9 @@ class SkillController extends Controller
     {
         $skills = Skills::get();
 
-        return \View::make('admin.skills-list')->with([
-          'skills' => $skills,
-      ]);
+        return View::make('admin.skills-list')->with([
+            'skills' => $skills,
+        ]);
     }
 
     /**
@@ -29,7 +30,7 @@ class SkillController extends Controller
      */
     public function create()
     {
-        return \View::make('admin.skill-create');
+        return View::make('admin.skill-create');
     }
 
     /**
@@ -43,10 +44,10 @@ class SkillController extends Controller
         $skill->skill_name = $request->input('skill_name');
 
         if ($skill->save()) {
-            return response()->json(['status'=>'true', 'message' => 'Skill added successfully'], 200);
+            return response()->json(['status' => 'true', 'message' => 'Skill added successfully'], 200);
         }
 
-        return response()->json(['status'=>'errorr', 'message' => 'error occured please try again'], 200);
+        return response()->json(['status' => 'errorr', 'message' => 'error occured please try again'], 200);
     }
 
     /**
@@ -71,7 +72,7 @@ class SkillController extends Controller
     {
         $getSingleData = Skills::find($id);
 
-        return \View::make('admin.skill-update', compact('getSingleData'));
+        return View::make('admin.skill-update', compact('getSingleData'));
     }
 
     /**
@@ -87,10 +88,10 @@ class SkillController extends Controller
         $findData->skill_name = $request->input('skill_name');
 
         if ($findData->save()) {
-            return response()->json(['status'=>'true', 'message' => 'Skill updated successfully'], 200);
+            return response()->json(['status' => 'true', 'message' => 'Skill updated successfully'], 200);
         }
 
-        return response()->json(['status'=>'errorr', 'message' => 'error occured please try again'], 200);
+        return response()->json(['status' => 'errorr', 'message' => 'error occured please try again'], 200);
     }
 
     /**
@@ -104,9 +105,9 @@ class SkillController extends Controller
     {
         $deleteData = Skills::find($id);
         if ($deleteData->delete()) {
-            return response()->json(['status'=>'true', 'message' => 'Skill deleted successfully'], 200);
+            return response()->json(['status' => 'true', 'message' => 'Skill deleted successfully'], 200);
         }
 
-        return response()->json(['status'=>'error', 'message' => 'error occured please try again'], 200);
+        return response()->json(['status' => 'error', 'message' => 'error occured please try again'], 200);
     }
 }

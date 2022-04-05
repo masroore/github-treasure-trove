@@ -8,12 +8,10 @@ class CreateMilestonesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('milestones', function (Blueprint $table) {
+        Schema::create('milestones', function (Blueprint $table): void {
             $table->id();
             $table->string('proposal_id');
             $table->string('job_id');
@@ -30,10 +28,8 @@ class CreateMilestonesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('milestones');
     }

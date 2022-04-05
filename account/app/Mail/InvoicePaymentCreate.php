@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Utility;
+use Auth;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -11,12 +12,11 @@ class InvoicePaymentCreate extends Mailable
 {
     use Queueable;
     use SerializesModels;
+
     public $payment;
 
     /**
      * Create a new message instance.
-     *
-     * @return void
      */
     public function __construct($payment)
     {
@@ -30,7 +30,7 @@ class InvoicePaymentCreate extends Mailable
      */
     public function build()
     {
-        if ('super admin' == \Auth::user()->type) {
+        if ('super admin' == Auth::user()->type) {
             return $this->view('email.invoice_payment_create')->subject('Ragarding to payment succesfully received')->with('payment', $this->payment);
         }
 

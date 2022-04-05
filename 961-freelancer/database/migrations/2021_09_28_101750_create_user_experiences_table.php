@@ -8,12 +8,10 @@ class CreateUserExperiencesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('user_experiences', function (Blueprint $table) {
+        Schema::create('user_experiences', function (Blueprint $table): void {
             $table->id();
             $table->integer('user_id');
             $table->string('company_title');
@@ -27,10 +25,8 @@ class CreateUserExperiencesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('user_experiences');
     }

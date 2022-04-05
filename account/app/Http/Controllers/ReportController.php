@@ -77,7 +77,7 @@ class ReportController extends Controller
                 $tmp = [];
                 $tmp['category'] = !empty(ProductServiceCategory::where('id', '=', $cat_id)->first()) ? ProductServiceCategory::where('id', '=', $cat_id)->first()->name : '';
                 $tmp['data'] = [];
-                for ($i = 1; $i <= 12; $i++) {
+                for ($i = 1; $i <= 12; ++$i) {
                     $tmp['data'][$i] = \array_key_exists($i, $record) ? $record[$i] : 0;
                 }
                 $array[] = $tmp;
@@ -99,7 +99,7 @@ class ReportController extends Controller
             foreach ($incomesData as $k => $incomeData) {
                 $incomeArr[$incomeData->month] = $incomeData->amount;
             }
-            for ($i = 1; $i <= 12; $i++) {
+            for ($i = 1; $i <= 12; ++$i) {
                 $incomeTotal[] = \array_key_exists($i, $incomeArr) ? $incomeArr[$i] : 0;
             }
 
@@ -128,7 +128,7 @@ class ReportController extends Controller
                 $invoice = [];
                 $invoice['category'] = !empty(ProductServiceCategory::where('id', '=', $cat_id)->first()) ? ProductServiceCategory::where('id', '=', $cat_id)->first()->name : '';
                 $invoice['data'] = [];
-                for ($i = 1; $i <= 12; $i++) {
+                for ($i = 1; $i <= 12; ++$i) {
                     $invoice['data'][$i] = \array_key_exists($i, $record) ? array_sum($record[$i]) : 0;
                 }
                 $invoiceArray[] = $invoice;
@@ -138,7 +138,7 @@ class ReportController extends Controller
             foreach ($invoices as $invoice) {
                 $invoiceTotalArray[$invoice->month][] = $invoice->getTotal();
             }
-            for ($i = 1; $i <= 12; $i++) {
+            for ($i = 1; $i <= 12; ++$i) {
                 $invoiceTotal[] = \array_key_exists($i, $invoiceTotalArray) ? array_sum($invoiceTotalArray[$i]) : 0;
             }
 
@@ -216,7 +216,7 @@ class ReportController extends Controller
                 $tmp = [];
                 $tmp['category'] = !empty(ProductServiceCategory::where('id', '=', $cat_id)->first()) ? ProductServiceCategory::where('id', '=', $cat_id)->first()->name : '';
                 $tmp['data'] = [];
-                for ($i = 1; $i <= 12; $i++) {
+                for ($i = 1; $i <= 12; ++$i) {
                     $tmp['data'][$i] = \array_key_exists($i, $record) ? $record[$i] : 0;
                 }
                 $array[] = $tmp;
@@ -238,7 +238,7 @@ class ReportController extends Controller
             foreach ($expensesData as $k => $expenseData) {
                 $expenseArr[$expenseData->month] = $expenseData->amount;
             }
-            for ($i = 1; $i <= 12; $i++) {
+            for ($i = 1; $i <= 12; ++$i) {
                 $expenseTotal[] = \array_key_exists($i, $expenseArr) ? $expenseArr[$i] : 0;
             }
 
@@ -265,7 +265,7 @@ class ReportController extends Controller
                 $bill = [];
                 $bill['category'] = !empty(ProductServiceCategory::where('id', '=', $cat_id)->first()) ? ProductServiceCategory::where('id', '=', $cat_id)->first()->name : '';
                 $bill['data'] = [];
-                for ($i = 1; $i <= 12; $i++) {
+                for ($i = 1; $i <= 12; ++$i) {
                     $bill['data'][$i] = \array_key_exists($i, $record) ? array_sum($record[$i]) : 0;
                 }
                 $billArray[] = $bill;
@@ -275,7 +275,7 @@ class ReportController extends Controller
             foreach ($bills as $bill) {
                 $billTotalArray[$bill->month][] = $bill->getTotal();
             }
-            for ($i = 1; $i <= 12; $i++) {
+            for ($i = 1; $i <= 12; ++$i) {
                 $billTotal[] = \array_key_exists($i, $billTotalArray) ? array_sum($billTotalArray[$i]) : 0;
             }
 
@@ -316,9 +316,9 @@ class ReportController extends Controller
             $category = ProductServiceCategory::where('created_by', '=', \Auth::user()->creatorId())->whereIn(
                 'type',
                 [
-                          1,
-                          2,
-                      ]
+                    1,
+                    2,
+                ]
             )->get()->pluck('name', 'id');
             $category->prepend('All', '');
 
@@ -383,7 +383,7 @@ class ReportController extends Controller
                 $bill = [];
                 $bill['category'] = !empty(ProductServiceCategory::where('id', '=', $cat_id)->first()) ? ProductServiceCategory::where('id', '=', $cat_id)->first()->name : '';
                 $bill['data'] = [];
-                for ($i = 1; $i <= 12; $i++) {
+                for ($i = 1; $i <= 12; ++$i) {
                     $bill['data'][$i] = \array_key_exists($i, $record) ? array_sum($record[$i]) : 0;
                 }
                 $billArray[] = $bill;
@@ -435,7 +435,7 @@ class ReportController extends Controller
                 $invoice = [];
                 $invoice['category'] = !empty(ProductServiceCategory::where('id', '=', $cat_id)->first()) ? ProductServiceCategory::where('id', '=', $cat_id)->first()->name : '';
                 $invoice['data'] = [];
-                for ($i = 1; $i <= 12; $i++) {
+                for ($i = 1; $i <= 12; ++$i) {
                     $invoice['data'][$i] = \array_key_exists($i, $record) ? array_sum($record[$i]) : 0;
                 }
                 $invoiceArray[] = $invoice;
@@ -447,7 +447,7 @@ class ReportController extends Controller
             }
             //        ----------------------------------------------------------------------------------------------------
 
-            for ($i = 1; $i <= 12; $i++) {
+            for ($i = 1; $i <= 12; ++$i) {
                 $paymentExpenseTotal[] = \array_key_exists($i, $expenseArr) ? $expenseArr[$i] : 0;
                 $billExpenseTotal[] = \array_key_exists($i, $billTotalArray) ? array_sum($billTotalArray[$i]) : 0;
 
@@ -541,7 +541,7 @@ class ReportController extends Controller
 
             foreach ($income as $incomeMonth => $incomeTaxData) {
                 $incomeData = [];
-                for ($i = 1; $i <= 12; $i++) {
+                for ($i = 1; $i <= 12; ++$i) {
                     $incomeData[$i] = \array_key_exists($i, $incomeTaxData) ? $incomeTaxData[$i] : 0;
                 }
             }
@@ -593,7 +593,7 @@ class ReportController extends Controller
 
             foreach ($bill as $billMonth => $billTaxData) {
                 $billData = [];
-                for ($i = 1; $i <= 12; $i++) {
+                for ($i = 1; $i <= 12; ++$i) {
                     $billData[$i] = \array_key_exists($i, $billTaxData) ? $billTaxData[$i] : 0;
                 }
             }
@@ -664,7 +664,7 @@ class ReportController extends Controller
                 $tmp = [];
                 $tmp['category'] = !empty(ProductServiceCategory::where('id', '=', $cat_id)->first()) ? ProductServiceCategory::where('id', '=', $cat_id)->first()->name : '';
                 $sumData = [];
-                for ($i = 1; $i <= 12; $i++) {
+                for ($i = 1; $i <= 12; ++$i) {
                     $sumData[] = \array_key_exists($i, $record) ? $record[$i] : 0;
                 }
 
@@ -733,7 +733,7 @@ class ReportController extends Controller
                 $invoiceTmp = [];
                 $invoiceTmp['category'] = !empty(ProductServiceCategory::where('id', '=', $cat_id)->first()) ? ProductServiceCategory::where('id', '=', $cat_id)->first()->name : '';
                 $invoiceSumData = [];
-                for ($i = 1; $i <= 12; $i++) {
+                for ($i = 1; $i <= 12; ++$i) {
                     $invoiceSumData[] = \array_key_exists($i, $record) ? array_sum($record[$i]) : 0;
                 }
 
@@ -807,7 +807,7 @@ class ReportController extends Controller
                 $tmp = [];
                 $tmp['category'] = !empty(ProductServiceCategory::where('id', '=', $cat_id)->first()) ? ProductServiceCategory::where('id', '=', $cat_id)->first()->name : '';
                 $expenseSumData = [];
-                for ($i = 1; $i <= 12; $i++) {
+                for ($i = 1; $i <= 12; ++$i) {
                     $expenseSumData[] = \array_key_exists($i, $record) ? $record[$i] : 0;
                 }
 
@@ -875,7 +875,7 @@ class ReportController extends Controller
                 $billTmp = [];
                 $billTmp['category'] = !empty(ProductServiceCategory::where('id', '=', $cat_id)->first()) ? ProductServiceCategory::where('id', '=', $cat_id)->first()->name : '';
                 $billExpensSumData = [];
-                for ($i = 1; $i <= 12; $i++) {
+                for ($i = 1; $i <= 12; ++$i) {
                     $billExpensSumData[] = \array_key_exists($i, $record) ? array_sum($record[$i]) : 0;
                 }
 
@@ -1032,7 +1032,7 @@ class ReportController extends Controller
             }
             $totalPaidInvoice = $totalInvoice - $totalDueInvoice;
 
-            for ($i = 1; $i <= 12; $i++) {
+            for ($i = 1; $i <= 12; ++$i) {
                 $invoiceTotal[] = \array_key_exists($i, $invoiceTotalArray) ? array_sum($invoiceTotalArray[$i]) : 0;
             }
 
@@ -1098,7 +1098,7 @@ class ReportController extends Controller
             }
             $totalPaidBill = $totalBill - $totalDueBill;
 
-            for ($i = 1; $i <= 12; $i++) {
+            for ($i = 1; $i <= 12; ++$i) {
                 $billTotal[] = \array_key_exists($i, $billTotalArray) ? array_sum($billTotalArray[$i]) : 0;
             }
 
@@ -1155,13 +1155,13 @@ class ReportController extends Controller
 
                 if ('revenue' == $request->type || !isset($request->type)) {
                     $revenues->Orwhere(
-                        function ($query) use ($data) {
+                        function ($query) use ($data): void {
                             $query->whereMonth('date', $data['month'])->whereYear('date', $data['year']);
                         }
                     );
 
                     $revenueAccounts->Orwhere(
-                        function ($query) use ($data) {
+                        function ($query) use ($data): void {
                             $query->whereMonth('date', $data['month'])->whereYear('date', $data['year']);
                         }
                     );
@@ -1169,7 +1169,7 @@ class ReportController extends Controller
 
                 if ('payment' == $request->type) {
                     $paymentAccounts->Orwhere(
-                        function ($query) use ($data) {
+                        function ($query) use ($data): void {
                             $query->whereMonth('date', $data['month'])->whereYear('date', $data['year']);
                         }
                     );
@@ -1273,7 +1273,7 @@ class ReportController extends Controller
         return redirect()->back()->with('error', __('Permission Denied.'));
     }
 
-    public function fileExport(Request $request)
+    public function fileExport(Request $request): void
     {
         $accounts = ChartOfAccount::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
 
@@ -1301,7 +1301,7 @@ class ReportController extends Controller
         $journalItems->where('date', '>=', $start);
         $journalItems->where('date', '<=', $end);
         if (!empty($request->search_text)) {
-            $journalItems->where(function ($journalItems) use ($search_text) {
+            $journalItems->where(function ($journalItems) use ($search_text): void {
                 $journalItems->where('journal_items.description', 'like', '%' . $search_text . '%');
                 $journalItems->orwhere('admission.form_no', 'like', '%' . $search_text . '%');
                 $journalItems->orwhere('users_admission.fullName', 'like', '%' . $search_text . '%');
@@ -1494,7 +1494,7 @@ class ReportController extends Controller
             $journalItems->where('date', '>=', $start);
             $journalItems->where('date', '<=', $end);
             if (!empty($request->search_text)) {
-                $journalItems->where(function ($journalItems) use ($search_text) {
+                $journalItems->where(function ($journalItems) use ($search_text): void {
                     $journalItems->where('journal_items.description', 'like', '%' . $search_text . '%');
                     $journalItems->orwhere('admission.form_no', 'like', '%' . $search_text . '%');
                     $journalItems->orwhere('users_admission.fullName', 'like', '%' . $search_text . '%');

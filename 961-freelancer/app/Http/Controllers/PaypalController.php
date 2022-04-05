@@ -50,7 +50,7 @@ class PaypalController extends Controller
         }
     }
 
-    public function cancel()
+    public function cancel(): void
     {
         dd('Your payment is canceled. You can create cancel page here.');
     }

@@ -8,14 +8,12 @@ class ChangeShippingDefaultVal extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table(
             'customers',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->string('shipping_name')->nullable()->change();
                 $table->string('shipping_country')->nullable()->change();
                 $table->string('shipping_state')->nullable()->change();
@@ -28,7 +26,7 @@ class ChangeShippingDefaultVal extends Migration
 
         Schema::table(
             'venders',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->string('shipping_name')->nullable()->change();
                 $table->string('shipping_country')->nullable()->change();
                 $table->string('shipping_state')->nullable()->change();
@@ -42,14 +40,12 @@ class ChangeShippingDefaultVal extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table(
             'venders',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->dropColumn('shipping_name');
                 $table->dropColumn('shipping_country');
                 $table->dropColumn('shipping_state');
@@ -62,7 +58,7 @@ class ChangeShippingDefaultVal extends Migration
 
         Schema::table(
             'customers',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->dropColumn('shipping_name');
                 $table->dropColumn('shipping_country');
                 $table->dropColumn('shipping_state');

@@ -8,12 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class ReportUser extends Model
 {
     use HasFactory;
+
     protected $fillable = [
-      'report_by',
-      'user_id',
-      'reason',
-      'description',
-      'status',
+        'report_by',
+        'user_id',
+        'reason',
+        'description',
+        'status',
     ];
 
     public function freelancer()

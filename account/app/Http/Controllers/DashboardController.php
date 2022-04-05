@@ -15,14 +15,13 @@ use App\ProductServiceUnit;
 use App\Revenue;
 use App\Tax;
 use App\Utility;
+use DB;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -57,7 +56,7 @@ class DashboardController extends Controller
                 $inColor = [];
                 $inCategory = [];
                 $inAmount = [];
-                for ($i = 0; $i < \count($incomeCategory); $i++) {
+                for ($i = 0; $i < \count($incomeCategory); ++$i) {
                     $inColor[] = '#' . $incomeCategory[$i]->color;
                     $inCategory[] = $incomeCategory[$i]->name;
                     $inAmount[] = $incomeCategory[$i]->incomeCategoryRevenueAmount();
@@ -71,7 +70,7 @@ class DashboardController extends Controller
                 $exColor = [];
                 $exCategory = [];
                 $exAmount = [];
-                for ($i = 0; $i < \count($expenseCategory); $i++) {
+                for ($i = 0; $i < \count($expenseCategory); ++$i) {
                     $exColor[] = '#' . $expenseCategory[$i]->color;
                     $exCategory[] = $expenseCategory[$i]->name;
                     $exAmount[] = $expenseCategory[$i]->expenseCategoryAmount();
@@ -129,7 +128,7 @@ class DashboardController extends Controller
         if ($arrParam['duration']) {
             if ('week' == $arrParam['duration']) {
                 $previous_week = strtotime('-2 week +1 day');
-                for ($i = 0; $i < 14; $i++) {
+                for ($i = 0; $i < 14; ++$i) {
                     $arrDuration[date('Y-m-d', $previous_week)] = date('d-M', $previous_week);
                     $previous_week = strtotime(date('Y-m-d', $previous_week) . ' +1 day');
                 }
@@ -140,7 +139,7 @@ class DashboardController extends Controller
         $arrTask['label'] = [];
         $arrTask['data'] = [];
         foreach ($arrDuration as $date => $label) {
-            $data = Order::select(\DB::raw('count(*) as total'))->whereDate('created_at', '=', $date)->first();
+            $data = Order::select(DB::raw('count(*) as total'))->whereDate('created_at', '=', $date)->first();
             $arrTask['label'][] = $label;
             $arrTask['data'][] = $data->total;
         }

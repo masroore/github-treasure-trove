@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Auth;
 use Illuminate\Database\Eloquent\Model;
 
 class Goal extends Model
@@ -12,6 +13,7 @@ class Goal extends Model
         'Revenue',
         'Payment',
     ];
+
     protected $fillable = [
         'name',
         'type',
@@ -28,26 +30,26 @@ class Goal extends Model
         $fromDate = $from . '-01';
         $toDate = $to . '-01';
         if ('Invoice' == self::$goalType[$type]) {
-            $invoices = Invoice::select('*')->where('created_by', \Auth::user()->creatorId())->where('issue_date', '>=', $fromDate)->where('issue_date', '<=', $toDate)->get();
+            $invoices = Invoice::select('*')->where('created_by', Auth::user()->creatorId())->where('issue_date', '>=', $fromDate)->where('issue_date', '<=', $toDate)->get();
             $total = 0;
             foreach ($invoices as $invoice) {
                 $total += $invoice->getTotal();
             }
         } elseif ('Bill' == self::$goalType[$type]) {
-            $bills = Bill::select('*')->where('created_by', \Auth::user()->creatorId())->where('bill_date', '>=', $fromDate)->where('bill_date', '<=', $toDate)->get();
+            $bills = Bill::select('*')->where('created_by', Auth::user()->creatorId())->where('bill_date', '>=', $fromDate)->where('bill_date', '<=', $toDate)->get();
             $total = 0;
             foreach ($bills as $bill) {
                 $total += $bill->getTotal();
             }
         } elseif ('Revenue' == self::$goalType[$type]) {
-            $revenues = Revenue::select('*')->where('created_by', \Auth::user()->creatorId())->where('date', '>=', $fromDate)->where('date', '<=', $toDate)->get();
+            $revenues = Revenue::select('*')->where('created_by', Auth::user()->creatorId())->where('date', '>=', $fromDate)->where('date', '<=', $toDate)->get();
             $total = 0;
 
             foreach ($revenues as $revenue) {
                 $total += $revenue->amount;
             }
         } elseif ('Payment' == self::$goalType[$type]) {
-            $payments = Payment::select('*')->where('created_by', \Auth::user()->creatorId())->where('date', '>=', $fromDate)->where('date', '<=', $toDate)->get();
+            $payments = Payment::select('*')->where('created_by', Auth::user()->creatorId())->where('date', '>=', $fromDate)->where('date', '<=', $toDate)->get();
             $total = 0;
 
             foreach ($payments as $payment) {

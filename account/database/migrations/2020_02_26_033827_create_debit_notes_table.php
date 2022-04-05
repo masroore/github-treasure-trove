@@ -8,12 +8,10 @@ class CreateDebitNotesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('debit_notes', function (Blueprint $table) {
+        Schema::create('debit_notes', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->integer('bill')->default('0');
             $table->integer('vendor')->default('0');
@@ -26,10 +24,8 @@ class CreateDebitNotesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('debit_notes');
     }

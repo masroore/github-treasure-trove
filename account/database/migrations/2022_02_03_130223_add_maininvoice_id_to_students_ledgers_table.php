@@ -8,25 +8,20 @@ class AddMaininvoiceIdToStudentsLedgersTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('students_ledgers', function (Blueprint $table) {
+        Schema::table('students_ledgers', function (Blueprint $table): void {
             $table->integer('maininvoice_id')->default(0)->after('journal_entries_id');
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('students_ledgers', function (Blueprint $table) {
-
+        Schema::table('students_ledgers', function (Blueprint $table): void {
         });
     }
 }

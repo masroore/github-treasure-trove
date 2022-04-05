@@ -5,18 +5,20 @@ namespace App\Http\Controllers;
 use App\ChartOfAccount;
 use App\ChartOfAccountSubType;
 use App\ChartOfAccountType;
+use Auth;
 use Illuminate\Http\Request;
+use Validator;
 
 class ChartOfAccountController extends Controller
 {
     public function index()
     {
-        if (\Auth::user()->can('manage chart of account')) {
+        if (Auth::user()->can('manage chart of account')) {
             $types = ChartOfAccountType::get();
 
             $chartAccounts = [];
             foreach ($types as $type) {
-                $accounts = ChartOfAccount::where('type', $type->id)->where('created_by', '=', \Auth::user()->creatorId())->get();
+                $accounts = ChartOfAccount::where('type', $type->id)->where('created_by', '=', Auth::user()->creatorId())->get();
 
                 $chartAccounts[$type->name] = $accounts;
             }
@@ -37,13 +39,13 @@ class ChartOfAccountController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('create chart of account')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('create chart of account')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'name' => 'required',
-                                   'type' => 'required',
-                               ]
+                    'name' => 'required',
+                    'type' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -58,7 +60,7 @@ class ChartOfAccountController extends Controller
             $account->sub_type = $request->sub_type;
             $account->description = $request->description;
             $account->is_enabled = isset($request->is_enabled) ? 1 : 0;
-            $account->created_by = \Auth::user()->creatorId();
+            $account->created_by = Auth::user()->creatorId();
             $account->save();
 
             return redirect()->route('chart-of-account.index')->with('success', __('Account successfully created.'));
@@ -67,9 +69,8 @@ class ChartOfAccountController extends Controller
         return redirect()->back()->with('error', __('Permission denied.'));
     }
 
-    public function show(ChartOfAccount $chartOfAccount)
+    public function show(ChartOfAccount $chartOfAccount): void
     {
-
     }
 
     public function edit(ChartOfAccount $chartOfAccount)
@@ -82,12 +83,12 @@ class ChartOfAccountController extends Controller
 
     public function update(Request $request, ChartOfAccount $chartOfAccount)
     {
-        if (\Auth::user()->can('edit chart of account')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('edit chart of account')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'name' => 'required',
-                               ]
+                    'name' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -109,7 +110,7 @@ class ChartOfAccountController extends Controller
 
     public function destroy(ChartOfAccount $chartOfAccount)
     {
-        if (\Auth::user()->can('delete chart of account')) {
+        if (Auth::user()->can('delete chart of account')) {
             $chartOfAccount->delete();
 
             return redirect()->route('chart-of-account.index')->with('success', __('Account successfully deleted.'));

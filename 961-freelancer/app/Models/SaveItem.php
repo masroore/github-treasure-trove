@@ -8,12 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class SaveItem extends Model
 {
     use HasFactory;
+
     protected $fillable = [
-      'user_id',
-      'freelancer_id',
-      'job_id',
-      'save_type',
-      'status',
+        'user_id',
+        'freelancer_id',
+        'job_id',
+        'save_type',
+        'status',
     ];
 
     public function userData()

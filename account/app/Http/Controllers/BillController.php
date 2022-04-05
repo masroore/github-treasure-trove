@@ -15,23 +15,27 @@ use App\ProductServiceCategory;
 use App\Transaction;
 use App\Utility;
 use App\Vender;
+use Auth;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use stdClass;
+use Validator;
 
 class BillController extends Controller
 {
     public function index(Request $request)
     {
-        if (\Auth::user()->can('manage bill')) {
-            $vender = Vender::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        if (Auth::user()->can('manage bill')) {
+            $vender = Vender::where('created_by', '=', Auth::user()->creatorId())->get()->pluck('name', 'id');
             $vender->prepend('All', '');
 
             $status = Bill::$statues;
 
-            $query = Bill::where('created_by', '=', \Auth::user()->creatorId());
+            $query = Bill::where('created_by', '=', Auth::user()->creatorId());
             if (!empty($request->vender)) {
                 $query->where('vender_id', '=', $request->vender);
             }
@@ -53,16 +57,16 @@ class BillController extends Controller
 
     public function create($vendorId)
     {
-        if (\Auth::user()->can('create bill')) {
-            $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'bill')->get();
-            $category = ProductServiceCategory::where('created_by', \Auth::user()->creatorId())->where('type', 2)->get()->pluck('name', 'id');
+        if (Auth::user()->can('create bill')) {
+            $customFields = CustomField::where('created_by', '=', Auth::user()->creatorId())->where('module', '=', 'bill')->get();
+            $category = ProductServiceCategory::where('created_by', Auth::user()->creatorId())->where('type', 2)->get()->pluck('name', 'id');
             $category->prepend('Select Category', '');
 
-            $bill_number = \Auth::user()->billNumberFormat($this->billNumber());
-            $venders = Vender::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $bill_number = Auth::user()->billNumberFormat($this->billNumber());
+            $venders = Vender::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
             $venders->prepend('Select Vender', '');
 
-            $product_services = ProductService::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $product_services = ProductService::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
             $product_services->prepend('--', '');
 
             return view('bill.create', compact('venders', 'bill_number', 'product_services', 'category', 'customFields', 'vendorId'));
@@ -73,16 +77,16 @@ class BillController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('create bill')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('create bill')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'vender_id' => 'required',
-                                   'bill_date' => 'required',
-                                   'due_date' => 'required',
-                                   'category_id' => 'required',
-                                   'items' => 'required',
-                               ]
+                    'vender_id' => 'required',
+                    'bill_date' => 'required',
+                    'due_date' => 'required',
+                    'category_id' => 'required',
+                    'items' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -98,12 +102,12 @@ class BillController extends Controller
             $bill->category_id = $request->category_id;
             $bill->order_number = !empty($request->order_number) ? $request->order_number : 0;
             $bill->discount_apply = isset($request->discount_apply) ? 1 : 0;
-            $bill->created_by = \Auth::user()->creatorId();
+            $bill->created_by = Auth::user()->creatorId();
             $bill->save();
             CustomField::saveData($bill, $request->customField);
             $products = $request->items;
 
-            for ($i = 0; $i < \count($products); $i++) {
+            for ($i = 0; $i < \count($products); ++$i) {
                 $billProduct = new BillProduct();
                 $billProduct->bill_id = $bill->id;
                 $billProduct->product_id = $products[$i]['item'];
@@ -123,7 +127,7 @@ class BillController extends Controller
 
     public function venderNumber()
     {
-        $latest = Vender::where('created_by', '=', \Auth::user()->creatorId())->latest()->first();
+        $latest = Vender::where('created_by', '=', Auth::user()->creatorId())->latest()->first();
         if (!$latest) {
             return 1;
         }
@@ -133,17 +137,17 @@ class BillController extends Controller
 
     public function show($ids)
     {
-        if (\Auth::user()->can('show bill')) {
+        if (Auth::user()->can('show bill')) {
             $id = Crypt::decrypt($ids);
             $bill = Bill::find($id);
 
-            if ($bill->created_by == \Auth::user()->creatorId()) {
+            if ($bill->created_by == Auth::user()->creatorId()) {
                 $billPayment = BillPayment::where('bill_id', $bill->id)->first();
                 $vendor = $bill->vender;
                 $iteams = $bill->items;
 
                 $bill->customField = CustomField::getData($bill, 'bill');
-                $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'bill')->get();
+                $customFields = CustomField::where('created_by', '=', Auth::user()->creatorId())->where('module', '=', 'bill')->get();
 
                 return view('bill.view', compact('bill', 'vendor', 'iteams', 'billPayment', 'customFields'));
             }
@@ -156,18 +160,18 @@ class BillController extends Controller
 
     public function edit($ids)
     {
-        if (\Auth::user()->can('edit bill')) {
+        if (Auth::user()->can('edit bill')) {
             $id = Crypt::decrypt($ids);
             $bill = Bill::find($id);
-            $category = ProductServiceCategory::where('created_by', \Auth::user()->creatorId())->where('type', 2)->get()->pluck('name', 'id');
+            $category = ProductServiceCategory::where('created_by', Auth::user()->creatorId())->where('type', 2)->get()->pluck('name', 'id');
             $category->prepend('Select Category', '');
 
-            $bill_number = \Auth::user()->billNumberFormat($this->billNumber());
-            $venders = Vender::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-            $product_services = ProductService::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $bill_number = Auth::user()->billNumberFormat($this->billNumber());
+            $venders = Vender::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $product_services = ProductService::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
 
             $bill->customField = CustomField::getData($bill, 'bill');
-            $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'bill')->get();
+            $customFields = CustomField::where('created_by', '=', Auth::user()->creatorId())->where('module', '=', 'bill')->get();
 
             return view('bill.edit', compact('venders', 'product_services', 'bill', 'bill_number', 'category', 'customFields'));
         }
@@ -177,16 +181,16 @@ class BillController extends Controller
 
     public function update(Request $request, Bill $bill)
     {
-        if (\Auth::user()->can('edit bill')) {
-            if ($bill->created_by == \Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+        if (Auth::user()->can('edit bill')) {
+            if ($bill->created_by == Auth::user()->creatorId()) {
+                $validator = Validator::make(
                     $request->all(),
                     [
-                                       'vender_id' => 'required',
-                                       'bill_date' => 'required',
-                                       'due_date' => 'required',
-                                       'items' => 'required',
-                                   ]
+                        'vender_id' => 'required',
+                        'bill_date' => 'required',
+                        'due_date' => 'required',
+                        'items' => 'required',
+                    ]
                 );
                 if ($validator->fails()) {
                     $messages = $validator->getMessageBag();
@@ -203,7 +207,7 @@ class BillController extends Controller
                 CustomField::saveData($bill, $request->customField);
                 $products = $request->items;
 
-                for ($i = 0; $i < \count($products); $i++) {
+                for ($i = 0; $i < \count($products); ++$i) {
                     $billProduct = BillProduct::find($products[$i]['id']);
                     if (null == $billProduct) {
                         $billProduct = new BillProduct();
@@ -234,8 +238,8 @@ class BillController extends Controller
 
     public function destroy(Bill $bill)
     {
-        if (\Auth::user()->can('delete bill')) {
-            if ($bill->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('delete bill')) {
+            if ($bill->created_by == Auth::user()->creatorId()) {
                 $bill->delete();
                 if (0 != $bill->vender_id) {
                     Utility::userBalance('vendor', $bill->vender_id, $bill->getTotal(), 'debit');
@@ -253,7 +257,7 @@ class BillController extends Controller
 
     public function billNumber()
     {
-        $latest = Bill::where('created_by', '=', \Auth::user()->creatorId())->latest()->first();
+        $latest = Bill::where('created_by', '=', Auth::user()->creatorId())->latest()->first();
         if (!$latest) {
             return 1;
         }
@@ -277,7 +281,7 @@ class BillController extends Controller
 
     public function productDestroy(Request $request)
     {
-        if (\Auth::user()->can('delete bill product')) {
+        if (Auth::user()->can('delete bill product')) {
             BillProduct::where('id', '=', $request->id)->delete();
 
             return redirect()->back()->with('success', __('Bill product successfully deleted.'));
@@ -288,7 +292,7 @@ class BillController extends Controller
 
     public function sent($id)
     {
-        if (\Auth::user()->can('send bill')) {
+        if (Auth::user()->can('send bill')) {
             $bill = Bill::where('id', $id)->first();
             $bill->send_date = date('Y-m-d');
             $bill->status = 1;
@@ -297,7 +301,7 @@ class BillController extends Controller
             $vender = Vender::where('id', $bill->vender_id)->first();
 
             $bill->name = !empty($vender) ? $vender->name : '';
-            $bill->bill = \Auth::user()->billNumberFormat($bill->bill_id);
+            $bill->bill = Auth::user()->billNumberFormat($bill->bill_id);
 
             $billId = Crypt::encrypt($bill->id);
             $bill->url = route('bill.pdf', $billId);
@@ -306,7 +310,7 @@ class BillController extends Controller
 
             try {
                 Mail::to($vender->email)->send(new BillSend($bill));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $smtp_error = __('E-Mail has been not sent due to SMTP configuration');
             }
 
@@ -318,20 +322,20 @@ class BillController extends Controller
 
     public function resent($id)
     {
-        if (\Auth::user()->can('send bill')) {
+        if (Auth::user()->can('send bill')) {
             $bill = Bill::where('id', $id)->first();
 
             $vender = Vender::where('id', $bill->vender_id)->first();
 
             $bill->name = !empty($vender) ? $vender->name : '';
-            $bill->bill = \Auth::user()->billNumberFormat($bill->bill_id);
+            $bill->bill = Auth::user()->billNumberFormat($bill->bill_id);
 
             $billId = Crypt::encrypt($bill->id);
             $bill->url = route('bill.pdf', $billId);
 
             try {
                 Mail::to($vender->email)->send(new BillSend($bill));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $smtp_error = __('E-Mail has been not sent due to SMTP configuration');
             }
 
@@ -343,12 +347,12 @@ class BillController extends Controller
 
     public function payment($bill_id)
     {
-        if (\Auth::user()->can('create payment bill')) {
+        if (Auth::user()->can('create payment bill')) {
             $bill = Bill::where('id', $bill_id)->first();
-            $venders = Vender::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $venders = Vender::where('created_by', '=', Auth::user()->creatorId())->get()->pluck('name', 'id');
 
-            $categories = ProductServiceCategory::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-            $accounts = BankAccount::select('*', \DB::raw("CONCAT(bank_name,' ',holder_name) AS name"))->where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $categories = ProductServiceCategory::where('created_by', '=', Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $accounts = BankAccount::select('*', \DB::raw("CONCAT(bank_name,' ',holder_name) AS name"))->where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
 
             return view('bill.payment', compact('venders', 'categories', 'accounts', 'bill'));
         }
@@ -358,15 +362,15 @@ class BillController extends Controller
 
     public function createPayment(Request $request, $bill_id)
     {
-        if (\Auth::user()->can('create payment bill')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('create payment bill')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'date' => 'required',
-                                   'amount' => 'required',
-                                   'account_id' => 'required',
+                    'date' => 'required',
+                    'amount' => 'required',
+                    'account_id' => 'required',
 
-                               ]
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -403,7 +407,7 @@ class BillController extends Controller
             $billPayment->user_id = $bill->vender_id;
             $billPayment->user_type = 'Vender';
             $billPayment->type = 'Partial';
-            $billPayment->created_by = \Auth::user()->id;
+            $billPayment->created_by = Auth::user()->id;
             $billPayment->payment_id = $billPayment->id;
             $billPayment->category = 'Bill';
             $billPayment->account = $request->account_id;
@@ -414,9 +418,9 @@ class BillController extends Controller
             $payment = new BillPayment();
             $payment->name = $vender['name'];
             $payment->method = '-';
-            $payment->date = \Auth::user()->dateFormat($request->date);
-            $payment->amount = \Auth::user()->priceFormat($request->amount);
-            $payment->bill = 'bill ' . \Auth::user()->billNumberFormat($billPayment->bill_id);
+            $payment->date = Auth::user()->dateFormat($request->date);
+            $payment->amount = Auth::user()->priceFormat($request->amount);
+            $payment->bill = 'bill ' . Auth::user()->billNumberFormat($billPayment->bill_id);
 
             Utility::userBalance('vendor', $bill->vender_id, $request->amount, 'debit');
 
@@ -424,7 +428,7 @@ class BillController extends Controller
 
             try {
                 Mail::to($vender['email'])->send(new BillPaymentCreate($payment));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $smtp_error = __('E-Mail has been not sent due to SMTP configuration');
             }
 
@@ -434,7 +438,7 @@ class BillController extends Controller
 
     public function paymentDestroy(Request $request, $bill_id, $payment_id)
     {
-        if (\Auth::user()->can('delete payment bill')) {
+        if (Auth::user()->can('delete payment bill')) {
             $payment = BillPayment::find($payment_id);
             BillPayment::where('id', '=', $payment_id)->delete();
 
@@ -465,10 +469,10 @@ class BillController extends Controller
 
     public function venderBill(Request $request)
     {
-        if (\Auth::user()->can('manage vender bill')) {
+        if (Auth::user()->can('manage vender bill')) {
             $status = Bill::$statues;
 
-            $query = Bill::where('vender_id', '=', \Auth::user()->vender_id)->where('status', '!=', '0')->where('created_by', \Auth::user()->creatorId());
+            $query = Bill::where('vender_id', '=', Auth::user()->vender_id)->where('status', '!=', '0')->where('created_by', Auth::user()->creatorId());
 
             if (!empty($request->vender)) {
                 $query->where('id', '=', $request->vender);
@@ -491,11 +495,11 @@ class BillController extends Controller
 
     public function venderBillShow($id)
     {
-        if (\Auth::user()->can('show bill')) {
+        if (Auth::user()->can('show bill')) {
             $bill_id = Crypt::decrypt($id);
             $bill = Bill::where('id', $bill_id)->first();
 
-            if ($bill->created_by == \Auth::user()->creatorId()) {
+            if ($bill->created_by == Auth::user()->creatorId()) {
                 $vendor = $bill->vender;
                 $iteams = $bill->items;
 
@@ -522,11 +526,11 @@ class BillController extends Controller
 
     public function venderBillSendMail(Request $request, $bill_id)
     {
-        $validator = \Validator::make(
+        $validator = Validator::make(
             $request->all(),
             [
-                               'email' => 'required|email',
-                           ]
+                'email' => 'required|email',
+            ]
         );
         if ($validator->fails()) {
             $messages = $validator->getMessageBag();
@@ -539,14 +543,14 @@ class BillController extends Controller
 
         $vender = Vender::where('id', $bill->vender_id)->first();
         $bill->name = !empty($vender) ? $vender->name : '';
-        $bill->bill = \Auth::user()->billNumberFormat($bill->bill_id);
+        $bill->bill = Auth::user()->billNumberFormat($bill->bill_id);
 
         $billId = Crypt::encrypt($bill->id);
         $bill->url = route('bill.pdf', $billId);
 
         try {
             Mail::to($email)->send(new VenderBillSend($bill));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $smtp_error = __('E-Mail has been not sent due to SMTP configuration');
         }
 
@@ -569,7 +573,7 @@ class BillController extends Controller
 
     public function duplicate($bill_id)
     {
-        if (\Auth::user()->can('duplicate bill')) {
+        if (Auth::user()->can('duplicate bill')) {
             $bill = Bill::where('id', $bill_id)->first();
 
             $duplicateBill = new Bill();
@@ -607,11 +611,11 @@ class BillController extends Controller
 
     public function previewBill($template, $color)
     {
-        $objUser = \Auth::user();
+        $objUser = Auth::user();
         $settings = Utility::settings();
         $bill = new Bill();
 
-        $vendor = new \stdClass();
+        $vendor = new stdClass();
         $vendor->email = '<Email>';
         $vendor->shipping_name = '<Vendor Name>';
         $vendor->shipping_country = '<Country>';
@@ -631,8 +635,8 @@ class BillController extends Controller
         $totalTaxPrice = 0;
         $taxesData = [];
         $items = [];
-        for ($i = 1; $i <= 3; $i++) {
-            $item = new \stdClass();
+        for ($i = 1; $i <= 3; ++$i) {
+            $item = new stdClass();
             $item->name = 'Item ' . $i;
             $item->quantity = 1;
             $item->tax = 5;
@@ -709,7 +713,7 @@ class BillController extends Controller
         $items = [];
 
         foreach ($bill->items as $product) {
-            $item = new \stdClass();
+            $item = new stdClass();
             $item->name = !empty($product->product()) ? $product->product()->name : '';
             $item->quantity = $product->quantity;
             $item->tax = $product->tax;
@@ -755,8 +759,8 @@ class BillController extends Controller
         $bill->taxesData = $taxesData;
         $bill->customField = CustomField::getData($bill, 'bill');
         $customFields = [];
-        if (!empty(\Auth::user())) {
-            $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'bill')->get();
+        if (!empty(Auth::user())) {
+            $customFields = CustomField::where('created_by', '=', Auth::user()->creatorId())->where('module', '=', 'bill')->get();
         }
 
         //Set your logo
@@ -787,10 +791,10 @@ class BillController extends Controller
             \DB::insert(
                 'insert into settings (`value`, `name`,`created_by`) values (?, ?, ?) ON DUPLICATE KEY UPDATE `value` = VALUES(`value`) ',
                 [
-                                                                                                                                             $data,
-                                                                                                                                             $key,
-                                                                                                                                             \Auth::user()->creatorId(),
-                                                                                                                                         ]
+                    $data,
+                    $key,
+                    Auth::user()->creatorId(),
+                ]
             );
         }
 

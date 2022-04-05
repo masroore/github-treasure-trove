@@ -41,9 +41,9 @@ class ClientDashboardController extends Controller
 
         // dd($graph);
         return View::make('frontend.client-dashboard')->with([
-        'jobs' => $myJobs,
-        'hiredFreelancers' => $hiredFreelancers,
-      ]);
+            'jobs' => $myJobs,
+            'hiredFreelancers' => $hiredFreelancers,
+        ]);
     }
 
     /**

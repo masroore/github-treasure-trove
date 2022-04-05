@@ -8,14 +8,12 @@ class ChangeProductServicesTaxIdColumnType extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table(
             'product_services',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->string('tax_id', '50')->nullable()->change();
             }
         );
@@ -23,14 +21,12 @@ class ChangeProductServicesTaxIdColumnType extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table(
             'product_services',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->dropColumn('tax_id');
             }
         );

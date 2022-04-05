@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Bill;
 use App\DebitNote;
 use App\Utility;
+use Auth;
 use Illuminate\Http\Request;
+use Validator;
 
 class DebitNoteController extends Controller
 {
@@ -16,8 +18,8 @@ class DebitNoteController extends Controller
 
     public function index()
     {
-        if (\Auth::user()->can('manage debit note')) {
-            $bills = Bill::where('created_by', \Auth::user()->creatorId())->get();
+        if (Auth::user()->can('manage debit note')) {
+            $bills = Bill::where('created_by', Auth::user()->creatorId())->get();
 
             return view('debitNote.index', compact('bills'));
         }
@@ -27,7 +29,7 @@ class DebitNoteController extends Controller
 
     public function create($bill_id)
     {
-        if (\Auth::user()->can('create debit note')) {
+        if (Auth::user()->can('create debit note')) {
             $billDue = Bill::where('id', $bill_id)->first();
 
             return view('debitNote.create', compact('billDue', 'bill_id'));
@@ -38,13 +40,13 @@ class DebitNoteController extends Controller
 
     public function store(Request $request, $bill_id)
     {
-        if (\Auth::user()->can('create debit note')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('create debit note')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'amount' => 'required|numeric',
-                                   'date' => 'required',
-                               ]
+                    'amount' => 'required|numeric',
+                    'date' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -54,7 +56,7 @@ class DebitNoteController extends Controller
             $billDue = Bill::where('id', $bill_id)->first();
 
             if ($request->amount > $billDue->getDue()) {
-                return redirect()->back()->with('error', 'Maximum ' . \Auth::user()->priceFormat($billDue->getDue()) . ' credit limit of this bill.');
+                return redirect()->back()->with('error', 'Maximum ' . Auth::user()->priceFormat($billDue->getDue()) . ' credit limit of this bill.');
             }
             $bill = Bill::where('id', $bill_id)->first();
             $debit = new DebitNote();
@@ -75,7 +77,7 @@ class DebitNoteController extends Controller
 
     public function edit($bill_id, $debitNote_id)
     {
-        if (\Auth::user()->can('edit debit note')) {
+        if (Auth::user()->can('edit debit note')) {
             $debitNote = DebitNote::find($debitNote_id);
 
             return view('debitNote.edit', compact('debitNote'));
@@ -86,13 +88,13 @@ class DebitNoteController extends Controller
 
     public function update(Request $request, $bill_id, $debitNote_id)
     {
-        if (\Auth::user()->can('edit debit note')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('edit debit note')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'amount' => 'required|numeric',
-                                   'date' => 'required',
-                               ]
+                    'amount' => 'required|numeric',
+                    'date' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -101,7 +103,7 @@ class DebitNoteController extends Controller
             }
             $billDue = Bill::where('id', $bill_id)->first();
             if ($request->amount > $billDue->getDue()) {
-                return redirect()->back()->with('error', 'Maximum ' . \Auth::user()->priceFormat($billDue->getDue()) . ' credit limit of this bill.');
+                return redirect()->back()->with('error', 'Maximum ' . Auth::user()->priceFormat($billDue->getDue()) . ' credit limit of this bill.');
             }
 
             $debit = DebitNote::find($debitNote_id);
@@ -121,7 +123,7 @@ class DebitNoteController extends Controller
 
     public function destroy($bill_id, $debitNote_id)
     {
-        if (\Auth::user()->can('delete debit note')) {
+        if (Auth::user()->can('delete debit note')) {
             $debitNote = DebitNote::find($debitNote_id);
             $debitNote->delete();
 
@@ -135,8 +137,8 @@ class DebitNoteController extends Controller
 
     public function customCreate()
     {
-        if (\Auth::user()->can('create debit note')) {
-            $bills = Bill::where('created_by', \Auth::user()->creatorId())->get()->pluck('bill_id', 'id');
+        if (Auth::user()->can('create debit note')) {
+            $bills = Bill::where('created_by', Auth::user()->creatorId())->get()->pluck('bill_id', 'id');
 
             return view('debitNote.custom_create', compact('bills'));
         }
@@ -146,14 +148,14 @@ class DebitNoteController extends Controller
 
     public function customStore(Request $request)
     {
-        if (\Auth::user()->can('create debit note')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('create debit note')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'bill' => 'required|numeric',
-                                   'amount' => 'required|numeric',
-                                   'date' => 'required',
-                               ]
+                    'bill' => 'required|numeric',
+                    'amount' => 'required|numeric',
+                    'date' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -164,7 +166,7 @@ class DebitNoteController extends Controller
             $billDue = Bill::where('id', $bill_id)->first();
 
             if ($request->amount > $billDue->getDue()) {
-                return redirect()->back()->with('error', 'Maximum ' . \Auth::user()->priceFormat($billDue->getDue()) . ' credit limit of this bill.');
+                return redirect()->back()->with('error', 'Maximum ' . Auth::user()->priceFormat($billDue->getDue()) . ' credit limit of this bill.');
             }
             $bill = Bill::where('id', $bill_id)->first();
             $debit = new DebitNote();
@@ -182,7 +184,7 @@ class DebitNoteController extends Controller
         return redirect()->back()->with('error', __('Permission denied.'));
     }
 
-    public function getbill(Request $request)
+    public function getbill(Request $request): void
     {
         $bill = Bill::where('id', $request->bill_id)->first();
         echo json_encode($bill->getDue());

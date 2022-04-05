@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Goal;
+use Auth;
 use Illuminate\Http\Request;
+use Validator;
 
 class GoalController extends Controller
 {
     public function index()
     {
-        if (\Auth::user()->can('manage goal')) {
-            $golas = Goal::where('created_by', '=', \Auth::user()->creatorId())->get();
+        if (Auth::user()->can('manage goal')) {
+            $golas = Goal::where('created_by', '=', Auth::user()->creatorId())->get();
 
             return view('goal.index', compact('golas'));
         }
@@ -20,7 +22,7 @@ class GoalController extends Controller
 
     public function create()
     {
-        if (\Auth::user()->can('create goal')) {
+        if (Auth::user()->can('create goal')) {
             $types = Goal::$goalType;
 
             return view('goal.create', compact('types'));
@@ -31,16 +33,16 @@ class GoalController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('create goal')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('create goal')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'name' => 'required',
-                                   'type' => 'required',
-                                   'from' => 'required',
-                                   'to' => 'required',
-                                   'amount' => 'required',
-                               ]
+                    'name' => 'required',
+                    'type' => 'required',
+                    'from' => 'required',
+                    'to' => 'required',
+                    'amount' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -55,7 +57,7 @@ class GoalController extends Controller
             $goal->to = $request->to;
             $goal->amount = $request->amount;
             $goal->is_display = isset($request->is_display) ? 1 : 0;
-            $goal->created_by = \Auth::user()->creatorId();
+            $goal->created_by = Auth::user()->creatorId();
             $goal->save();
 
             return redirect()->route('goal.index')->with('success', __('Goal successfully created.'));
@@ -64,14 +66,13 @@ class GoalController extends Controller
         return redirect()->back()->with('error', __('Permission denied.'));
     }
 
-    public function show(Goal $goal)
+    public function show(Goal $goal): void
     {
-
     }
 
     public function edit(Goal $goal)
     {
-        if (\Auth::user()->can('create goal')) {
+        if (Auth::user()->can('create goal')) {
             $types = Goal::$goalType;
 
             return view('goal.edit', compact('types', 'goal'));
@@ -82,17 +83,17 @@ class GoalController extends Controller
 
     public function update(Request $request, Goal $goal)
     {
-        if (\Auth::user()->can('edit goal')) {
-            if ($goal->created_by == \Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+        if (Auth::user()->can('edit goal')) {
+            if ($goal->created_by == Auth::user()->creatorId()) {
+                $validator = Validator::make(
                     $request->all(),
                     [
-                                       'name' => 'required',
-                                       'type' => 'required',
-                                       'from' => 'required',
-                                       'to' => 'required',
-                                       'amount' => 'required',
-                                   ]
+                        'name' => 'required',
+                        'type' => 'required',
+                        'from' => 'required',
+                        'to' => 'required',
+                        'amount' => 'required',
+                    ]
                 );
                 if ($validator->fails()) {
                     $messages = $validator->getMessageBag();
@@ -119,8 +120,8 @@ class GoalController extends Controller
 
     public function destroy(Goal $goal)
     {
-        if (\Auth::user()->can('delete goal')) {
-            if ($goal->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('delete goal')) {
+            if ($goal->created_by == Auth::user()->creatorId()) {
                 $goal->delete();
 
                 return redirect()->route('goal.index')->with('success', __('Goal successfully deleted.'));

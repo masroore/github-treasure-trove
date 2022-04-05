@@ -8,12 +8,10 @@ class CreateTransactionHistoriesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('transaction_histories', function (Blueprint $table) {
+        Schema::create('transaction_histories', function (Blueprint $table): void {
             $table->id();
             $table->integer('user_id');
             $table->string('transaction');
@@ -26,10 +24,8 @@ class CreateTransactionHistoriesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('transaction_histories');
     }

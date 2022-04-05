@@ -9,26 +9,29 @@ use App\Transaction;
 use App\User;
 use App\Vender;
 use Auth;
+use Crypt;
+use Exception;
 use File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Role;
+use Validator;
 
 class VenderController extends Controller
 {
     public function dashboard()
     {
-        $data['billChartData'] = \Auth::user()->billChartData();
+        $data['billChartData'] = Auth::user()->billChartData();
 
         return view('vender.dashboard', $data);
     }
 
     public function index()
     {
-        if (\Auth::user()->can('manage vender')) {
-            $venders = Vender::where('created_by', \Auth::user()->creatorId())->get();
+        if (Auth::user()->can('manage vender')) {
+            $venders = Vender::where('created_by', Auth::user()->creatorId())->get();
 
             return view('vender.index', compact('venders'));
         }
@@ -38,8 +41,8 @@ class VenderController extends Controller
 
     public function create()
     {
-        if (\Auth::user()->can('create vender')) {
-            $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'vendor')->get();
+        if (Auth::user()->can('create vender')) {
+            $customFields = CustomField::where('created_by', '=', Auth::user()->creatorId())->where('module', '=', 'vendor')->get();
 
             return view('vender.create', compact('customFields'));
         }
@@ -49,7 +52,7 @@ class VenderController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('create vender')) {
+        if (Auth::user()->can('create vender')) {
             $rules = [
                 'name' => 'required',
                 'contact' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/',
@@ -57,7 +60,7 @@ class VenderController extends Controller
                 'password' => 'required',
             ];
 
-            $validator = \Validator::make($request->all(), $rules);
+            $validator = Validator::make($request->all(), $rules);
 
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -65,7 +68,7 @@ class VenderController extends Controller
                 return redirect()->route('vender.index')->with('error', $messages->first());
             }
 
-            $objVendor = \Auth::user();
+            $objVendor = Auth::user();
             $creator = User::find($objVendor->creatorId());
             $total_vendor = $objVendor->countVenders();
             $plan = Plan::find($creator->plan);
@@ -78,7 +81,7 @@ class VenderController extends Controller
                 $vender->contact = $request->contact;
                 $vender->email = $request->email;
                 $vender->password = Hash::make($request->password);
-                $vender->created_by = \Auth::user()->creatorId();
+                $vender->created_by = Auth::user()->creatorId();
                 $vender->billing_name = $request->billing_name;
                 $vender->billing_country = $request->billing_country;
                 $vender->billing_state = $request->billing_state;
@@ -105,9 +108,10 @@ class VenderController extends Controller
 
             $vender->password = $request->password;
             $vender->type = 'Vender';
+
             try {
                 Mail::to($vender->email)->send(new UserCreate($vender));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $smtp_error = __('E-Mail has been not sent due to SMTP configuration');
             }
 
@@ -119,7 +123,7 @@ class VenderController extends Controller
 
     public function show($ids)
     {
-        $id = \Crypt::decrypt($ids);
+        $id = Crypt::decrypt($ids);
         $vendor = Vender::find($id);
 
         return view('vender.show', compact('vendor'));
@@ -127,11 +131,11 @@ class VenderController extends Controller
 
     public function edit($id)
     {
-        if (\Auth::user()->can('edit vender')) {
+        if (Auth::user()->can('edit vender')) {
             $vender = Vender::find($id);
             $vender->customField = CustomField::getData($vender, 'vendor');
 
-            $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'vendor')->get();
+            $customFields = CustomField::where('created_by', '=', Auth::user()->creatorId())->where('module', '=', 'vendor')->get();
 
             return view('vender.edit', compact('vender', 'customFields'));
         }
@@ -141,13 +145,13 @@ class VenderController extends Controller
 
     public function update(Request $request, Vender $vender)
     {
-        if (\Auth::user()->can('edit vender')) {
+        if (Auth::user()->can('edit vender')) {
             $rules = [
                 'name' => 'required',
                 'contact' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/',
             ];
 
-            $validator = \Validator::make($request->all(), $rules);
+            $validator = Validator::make($request->all(), $rules);
 
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -157,7 +161,7 @@ class VenderController extends Controller
 
             $vender->name = $request->name;
             $vender->contact = $request->contact;
-            $vender->created_by = \Auth::user()->creatorId();
+            $vender->created_by = Auth::user()->creatorId();
             $vender->billing_name = $request->billing_name;
             $vender->billing_country = $request->billing_country;
             $vender->billing_state = $request->billing_state;
@@ -183,8 +187,8 @@ class VenderController extends Controller
 
     public function destroy(Vender $vender)
     {
-        if (\Auth::user()->can('delete vender')) {
-            if ($vender->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('delete vender')) {
+            if ($vender->created_by == Auth::user()->creatorId()) {
                 $vender->delete();
 
                 return redirect()->route('vender.index')->with('success', __('Vendor successfully deleted.'));
@@ -198,7 +202,7 @@ class VenderController extends Controller
 
     public function venderNumber()
     {
-        $latest = Vender::where('created_by', '=', \Auth::user()->creatorId())->latest()->first();
+        $latest = Vender::where('created_by', '=', Auth::user()->creatorId())->latest()->first();
         if (!$latest) {
             return 1;
         }
@@ -208,7 +212,7 @@ class VenderController extends Controller
 
     public function venderLogout(Request $request)
     {
-        \Auth::guard('vender')->logout();
+        Auth::guard('vender')->logout();
 
         $request->session()->invalidate();
 
@@ -217,14 +221,14 @@ class VenderController extends Controller
 
     public function payment(Request $request)
     {
-        if (\Auth::user()->can('manage vender payment')) {
+        if (Auth::user()->can('manage vender payment')) {
             $category = [
                 'Bill' => 'Bill',
                 'Deposit' => 'Deposit',
                 'Sales' => 'Sales',
             ];
 
-            $query = Transaction::where('user_id', \Auth::user()->id)->where('created_by', \Auth::user()->creatorId())->where('user_type', 'Vender')->where('type', 'Payment');
+            $query = Transaction::where('user_id', Auth::user()->id)->where('created_by', Auth::user()->creatorId())->where('user_type', 'Vender')->where('type', 'Payment');
             if (!empty($request->date)) {
                 $date_range = explode(' - ', $request->date);
                 $query->whereBetween('date', $date_range);
@@ -243,14 +247,14 @@ class VenderController extends Controller
 
     public function transaction(Request $request)
     {
-        if (\Auth::user()->can('manage vender transaction')) {
+        if (Auth::user()->can('manage vender transaction')) {
             $category = [
                 'Bill' => 'Bill',
                 'Deposit' => 'Deposit',
                 'Sales' => 'Sales',
             ];
 
-            $query = Transaction::where('user_id', \Auth::user()->id)->where('user_type', 'Vender');
+            $query = Transaction::where('user_id', Auth::user()->id)->where('user_type', 'Vender');
 
             if (!empty($request->date)) {
                 $date_range = explode(' - ', $request->date);
@@ -270,24 +274,24 @@ class VenderController extends Controller
 
     public function profile()
     {
-        $userDetail = \Auth::user();
+        $userDetail = Auth::user();
         $userDetail->customField = CustomField::getData($userDetail, 'vendor');
-        $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'vendor')->get();
+        $customFields = CustomField::where('created_by', '=', Auth::user()->creatorId())->where('module', '=', 'vendor')->get();
 
         return view('vender.profile', compact('userDetail', 'customFields'));
     }
 
     public function editprofile(Request $request)
     {
-        $userDetail = \Auth::user();
+        $userDetail = Auth::user();
         $user = Vender::findOrFail($userDetail['id']);
         $this->validate(
             $request,
             [
-                        'name' => 'required|max:120',
-                        'contact' => 'required',
-                        'email' => 'required|email|unique:users,email,' . $userDetail['id'],
-                    ]
+                'name' => 'required|max:120',
+                'contact' => 'required',
+                'email' => 'required|email|unique:users,email,' . $userDetail['id'],
+            ]
         );
         if ($request->hasFile('profile')) {
             $filenameWithExt = $request->file('profile')->getClientOriginalName();
@@ -326,19 +330,19 @@ class VenderController extends Controller
 
     public function editBilling(Request $request)
     {
-        $userDetail = \Auth::user();
+        $userDetail = Auth::user();
         $user = Vender::findOrFail($userDetail['id']);
         $this->validate(
             $request,
             [
-                        'billing_name' => 'required',
-                        'billing_country' => 'required',
-                        'billing_state' => 'required',
-                        'billing_city' => 'required',
-                        'billing_phone' => 'required',
-                        'billing_zip' => 'required',
-                        'billing_address' => 'required',
-                    ]
+                'billing_name' => 'required',
+                'billing_country' => 'required',
+                'billing_state' => 'required',
+                'billing_city' => 'required',
+                'billing_phone' => 'required',
+                'billing_zip' => 'required',
+                'billing_address' => 'required',
+            ]
         );
         $input = $request->all();
         $user->fill($input)->save();
@@ -351,19 +355,19 @@ class VenderController extends Controller
 
     public function editShipping(Request $request)
     {
-        $userDetail = \Auth::user();
+        $userDetail = Auth::user();
         $user = Vender::findOrFail($userDetail['id']);
         $this->validate(
             $request,
             [
-                        'shipping_name' => 'required',
-                        'shipping_country' => 'required',
-                        'shipping_state' => 'required',
-                        'shipping_city' => 'required',
-                        'shipping_phone' => 'required',
-                        'shipping_zip' => 'required',
-                        'shipping_address' => 'required',
-                    ]
+                'shipping_name' => 'required',
+                'shipping_country' => 'required',
+                'shipping_state' => 'required',
+                'shipping_city' => 'required',
+                'shipping_phone' => 'required',
+                'shipping_zip' => 'required',
+                'shipping_address' => 'required',
+            ]
         );
         $input = $request->all();
         $user->fill($input)->save();

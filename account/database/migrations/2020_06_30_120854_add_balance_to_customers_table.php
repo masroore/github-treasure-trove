@@ -8,14 +8,12 @@ class AddBalanceToCustomersTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table(
             'customers',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->float('balance')->default('0.00')->after('lang');
             }
         );
@@ -23,14 +21,12 @@ class AddBalanceToCustomersTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table(
             'customers',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->dropColumn('balance');
             }
         );

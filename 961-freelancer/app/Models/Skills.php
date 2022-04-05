@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Skills extends Model
 {
     use HasFactory;
+
     protected $fillable = [
-      'skill_name',
+        'skill_name',
     ];
 
     public function skillData()

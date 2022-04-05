@@ -111,8 +111,8 @@ class SocialAuthController extends Controller
         $username = strtolower($username);
 
         return View::make('frontend.facebook-register')->with([
-          'user' => $user,
-          'username' => $username,
+            'user' => $user,
+            'username' => $username,
         ]);
 
         // auth()->login($user);
@@ -161,9 +161,9 @@ class SocialAuthController extends Controller
             $username = strtolower($username);
 
             return View::make('frontend.google-register')->with([
-            'user' => $user,
-            'username' => $username,
-          ]);
+                'user' => $user,
+                'username' => $username,
+            ]);
         } catch (Exception $e) {
             dd($e->getMessage());
         }
@@ -172,17 +172,17 @@ class SocialAuthController extends Controller
     public function googleRegister(Request $request)
     {
         $newUser = User::create([
-          'first_name' => $request->first_name,
-          'last_name' => $request->last_name,
-          'email' => $request->email,
-          'username' => $request->username,
-          'profile_image' => $request->profile_image,
-          'google_id'=> $request->google_id,
-          'password' => Hash::make(trim($request->password)),
-          'user_status' => 'online',
-          'account_type' => $request->account_type,
-          'verification' => 1,
-      ]);
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'username' => $request->username,
+            'profile_image' => $request->profile_image,
+            'google_id' => $request->google_id,
+            'password' => Hash::make(trim($request->password)),
+            'user_status' => 'online',
+            'account_type' => $request->account_type,
+            'verification' => 1,
+        ]);
         Auth::login($newUser);
 
         return redirect('profile');

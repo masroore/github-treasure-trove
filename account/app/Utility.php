@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
@@ -244,8 +245,8 @@ class Utility extends Model
     public static function settings()
     {
         $data = DB::table('settings');
-        if (\Auth::check()) {
-            $userId = \Auth::user()->creatorId();
+        if (Auth::check()) {
+            $userId = Auth::user()->creatorId();
             $data = $data->where('created_by', '=', $userId);
         } else {
             $data = $data->where('created_by', '=', 1);
@@ -496,7 +497,7 @@ class Utility extends Model
         return $taxRate;
     }
 
-    public static function userBalance($users, $id, $amount, $type)
+    public static function userBalance($users, $id, $amount, $type): void
     {
         if ('customer' == $users) {
             $user = Customer::find($id);
@@ -517,7 +518,7 @@ class Utility extends Model
         }
     }
 
-    public static function bankAccountBalance($id, $amount, $type)
+    public static function bankAccountBalance($id, $amount, $type): void
     {
         $bankAccount = BankAccount::find($id);
         if ($bankAccount) {
@@ -573,7 +574,7 @@ class Utility extends Model
             $B / 255,
         ];
 
-        for ($i = 0; $i < \count($C); $i++) {
+        for ($i = 0; $i < \count($C); ++$i) {
             if ($C[$i] <= 0.03928) {
                 $C[$i] = $C[$i] / 12.92;
             } else {
@@ -612,7 +613,7 @@ class Utility extends Model
         return rmdir($dir);
     }
 
-    public static function chartOfAccountTypeData()
+    public static function chartOfAccountTypeData(): void
     {
         $chartOfAccountTypes = self::$chartOfAccountType;
         foreach ($chartOfAccountTypes as $k => $type) {
@@ -636,7 +637,7 @@ class Utility extends Model
         }
     }
 
-    public static function chartOfAccountData($user)
+    public static function chartOfAccountData($user): void
     {
         $chartOfAccounts = self::$chartOfAccount;
         foreach ($chartOfAccounts as $account) {

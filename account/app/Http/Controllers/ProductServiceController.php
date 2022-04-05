@@ -7,18 +7,20 @@ use App\ProductService;
 use App\ProductServiceCategory;
 use App\ProductServiceUnit;
 use App\Tax;
+use Auth;
 use Illuminate\Http\Request;
+use Validator;
 
 class ProductServiceController extends Controller
 {
     public function index(Request $request)
     {
-        if (\Auth::user()->can('manage product & service')) {
-            $category = ProductServiceCategory::where('created_by', '=', \Auth::user()->creatorId())->where('type', '=', 0)->get()->pluck('name', 'id');
+        if (Auth::user()->can('manage product & service')) {
+            $category = ProductServiceCategory::where('created_by', '=', Auth::user()->creatorId())->where('type', '=', 0)->get()->pluck('name', 'id');
             if (!empty($request->category)) {
-                $productServices = ProductService::where('created_by', '=', \Auth::user()->creatorId())->where('category_id', $request->category)->get();
+                $productServices = ProductService::where('created_by', '=', Auth::user()->creatorId())->where('category_id', $request->category)->get();
             } else {
-                $productServices = ProductService::where('created_by', '=', \Auth::user()->creatorId())->get();
+                $productServices = ProductService::where('created_by', '=', Auth::user()->creatorId())->get();
             }
 
             return view('productservice.index', compact('productServices', 'category'));
@@ -29,11 +31,11 @@ class ProductServiceController extends Controller
 
     public function create()
     {
-        if (\Auth::user()->can('create product & service')) {
-            $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'product')->get();
-            $category = ProductServiceCategory::where('created_by', '=', \Auth::user()->creatorId())->where('type', '=', 0)->get()->pluck('name', 'id');
-            $unit = ProductServiceUnit::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-            $tax = Tax::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        if (Auth::user()->can('create product & service')) {
+            $customFields = CustomField::where('created_by', '=', Auth::user()->creatorId())->where('module', '=', 'product')->get();
+            $category = ProductServiceCategory::where('created_by', '=', Auth::user()->creatorId())->where('type', '=', 0)->get()->pluck('name', 'id');
+            $unit = ProductServiceUnit::where('created_by', '=', Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $tax = Tax::where('created_by', '=', Auth::user()->creatorId())->get()->pluck('name', 'id');
 
             return view('productservice.create', compact('category', 'unit', 'tax', 'customFields'));
         }
@@ -43,7 +45,7 @@ class ProductServiceController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('create product & service')) {
+        if (Auth::user()->can('create product & service')) {
             $rules = [
                 'name' => 'required',
                 'sku' => 'required',
@@ -54,7 +56,7 @@ class ProductServiceController extends Controller
                 'type' => 'required',
             ];
 
-            $validator = \Validator::make($request->all(), $rules);
+            $validator = Validator::make($request->all(), $rules);
 
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -72,7 +74,7 @@ class ProductServiceController extends Controller
             $productService->unit_id = $request->unit_id;
             $productService->type = $request->type;
             $productService->category_id = $request->category_id;
-            $productService->created_by = \Auth::user()->creatorId();
+            $productService->created_by = Auth::user()->creatorId();
             $productService->save();
             CustomField::saveData($productService, $request->customField);
 
@@ -86,14 +88,14 @@ class ProductServiceController extends Controller
     {
         $productService = ProductService::find($id);
 
-        if (\Auth::user()->can('edit product & service')) {
-            if ($productService->created_by == \Auth::user()->creatorId()) {
-                $category = ProductServiceCategory::where('created_by', '=', \Auth::user()->creatorId())->where('type', '=', 0)->get()->pluck('name', 'id');
-                $unit = ProductServiceUnit::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-                $tax = Tax::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        if (Auth::user()->can('edit product & service')) {
+            if ($productService->created_by == Auth::user()->creatorId()) {
+                $category = ProductServiceCategory::where('created_by', '=', Auth::user()->creatorId())->where('type', '=', 0)->get()->pluck('name', 'id');
+                $unit = ProductServiceUnit::where('created_by', '=', Auth::user()->creatorId())->get()->pluck('name', 'id');
+                $tax = Tax::where('created_by', '=', Auth::user()->creatorId())->get()->pluck('name', 'id');
 
                 $productService->customField = CustomField::getData($productService, 'product');
-                $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'product')->get();
+                $customFields = CustomField::where('created_by', '=', Auth::user()->creatorId())->where('module', '=', 'product')->get();
                 $productService->tax_id = explode(',', $productService->tax_id);
 
                 return view('productservice.edit', compact('category', 'unit', 'tax', 'productService', 'customFields'));
@@ -107,9 +109,9 @@ class ProductServiceController extends Controller
 
     public function update(Request $request, $id)
     {
-        if (\Auth::user()->can('edit product & service')) {
+        if (Auth::user()->can('edit product & service')) {
             $productService = ProductService::find($id);
-            if ($productService->created_by == \Auth::user()->creatorId()) {
+            if ($productService->created_by == Auth::user()->creatorId()) {
                 $rules = [
                     'name' => 'required',
                     'sku' => 'required',
@@ -121,7 +123,7 @@ class ProductServiceController extends Controller
                     'type' => 'required',
                 ];
 
-                $validator = \Validator::make($request->all(), $rules);
+                $validator = Validator::make($request->all(), $rules);
 
                 if ($validator->fails()) {
                     $messages = $validator->getMessageBag();
@@ -138,7 +140,7 @@ class ProductServiceController extends Controller
                 $productService->unit_id = $request->unit_id;
                 $productService->type = $request->type;
                 $productService->category_id = $request->category_id;
-                $productService->created_by = \Auth::user()->creatorId();
+                $productService->created_by = Auth::user()->creatorId();
                 $productService->save();
                 CustomField::saveData($productService, $request->customField);
 
@@ -153,9 +155,9 @@ class ProductServiceController extends Controller
 
     public function destroy($id)
     {
-        if (\Auth::user()->can('delete product & service')) {
+        if (Auth::user()->can('delete product & service')) {
             $productService = ProductService::find($id);
-            if ($productService->created_by == \Auth::user()->creatorId()) {
+            if ($productService->created_by == Auth::user()->creatorId()) {
                 $productService->delete();
 
                 return redirect()->route('productservice.index')->with('success', __('Product successfully deleted.'));

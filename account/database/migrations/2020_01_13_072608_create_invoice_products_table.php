@@ -8,14 +8,12 @@ class CreateInvoiceProductsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create(
             'invoice_products',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->bigIncrements('id');
                 $table->integer('invoice_id');
                 $table->integer('product_id');
@@ -30,10 +28,8 @@ class CreateInvoiceProductsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('invoice_products');
     }

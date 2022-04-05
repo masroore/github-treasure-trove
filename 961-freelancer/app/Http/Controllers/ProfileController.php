@@ -38,16 +38,16 @@ class ProfileController extends Controller
         $certifications = UserCertification::whereuser_id($user_id)->get();
         // dd($user_skills);
         return View::make('frontend.dashboard')->with([
-        'skills' => $get_skills,
-        'user_skills' => $user_skills,
-        'languages' => $get_languages,
-        'user_languages' => $user_languages,
-        'countries' => $countries,
-        'experience' => $experiences,
-        'education' => $educations,
-        'projects' => $projects,
-        'certifications' => $certifications,
-      ]);
+            'skills' => $get_skills,
+            'user_skills' => $user_skills,
+            'languages' => $get_languages,
+            'user_languages' => $user_languages,
+            'countries' => $countries,
+            'experience' => $experiences,
+            'education' => $educations,
+            'projects' => $projects,
+            'certifications' => $certifications,
+        ]);
     }
 
     /**
@@ -139,7 +139,7 @@ class ProfileController extends Controller
         $current_skill = UserSkill::with('skillData')->whereid($user_skill->id)->first();
         $showCounts = UserSkill::where('user_id', $request->input('user_id'))->count();
         // return $current_skill;
-        return response()->json(['status'=>'true', 'skill' => $current_skill, 'count' => $showCounts]);
+        return response()->json(['status' => 'true', 'skill' => $current_skill, 'count' => $showCounts]);
     }
 
     // Languages
@@ -157,7 +157,7 @@ class ProfileController extends Controller
         $current_language = UserLanguage::with('languageData')->whereid($user_language->id)->first();
         $showCounts = UserLanguage::where('user_id', $request->input('user_id'))->count();
         // return $current_skill;
-        return response()->json(['status'=>'true', 'language' => $current_language, 'count' => $showCounts]);
+        return response()->json(['status' => 'true', 'language' => $current_language, 'count' => $showCounts]);
     }
 
     // Edit Profile
@@ -180,7 +180,7 @@ class ProfileController extends Controller
         $profile_image = $request->file('profile_image');
         if ('' != $profile_image) {
             $filename = $profile_image->getClientOriginalName();
-            $imagename = 'profile-' . rand(000000, 999999) . '.' . $profile_image->getClientOriginalExtension();
+            $imagename = 'profile-' . mt_rand(000000, 999999) . '.' . $profile_image->getClientOriginalExtension();
             $extension = $profile_image->getClientOriginalExtension();
             // $imagename= $filename;
             $destinationpath = public_path('assets/images/user/profile/');
@@ -190,7 +190,7 @@ class ProfileController extends Controller
         $cover_image = $request->file('cover_image');
         if ('' != $cover_image) {
             $filenames = $cover_image->getClientOriginalName();
-            $covername = 'cover-' . rand(000000, 999999) . '.' . $cover_image->getClientOriginalExtension();
+            $covername = 'cover-' . mt_rand(000000, 999999) . '.' . $cover_image->getClientOriginalExtension();
             $extensions = $cover_image->getClientOriginalExtension();
             // $covername= $filename;
             $destinationpath = public_path('assets/images/user/cover/');
@@ -222,10 +222,10 @@ class ProfileController extends Controller
         if ($experience->save()) {
             $data = UserExperience::find($experience->id);
             // dd($data);
-            return response()->json(['status'=>'true', 'message' => 'Employment History added successfully', 'data' => $data], 200);
+            return response()->json(['status' => 'true', 'message' => 'Employment History added successfully', 'data' => $data], 200);
         }
 
-        return response()->json(['status'=>'errorr', 'message' => 'error occured please try again'], 200);
+        return response()->json(['status' => 'errorr', 'message' => 'error occured please try again'], 200);
     }
 
     public function editExperience(Request $request)
@@ -252,8 +252,8 @@ class ProfileController extends Controller
         UserExperience::find($id)->delete($id);
 
         return response()->json([
-          'success' => 'Record deleted successfully!',
-      ]);
+            'success' => 'Record deleted successfully!',
+        ]);
     }
 
     // Education
@@ -277,10 +277,10 @@ class ProfileController extends Controller
         if ($education->save()) {
             $educ = UserEducation::where('id', $education->id)->first();
             // dd($data);
-            return response()->json(['status'=>'true', 'message' => 'Education added successfully', 'data' => $educ], 200);
+            return response()->json(['status' => 'true', 'message' => 'Education added successfully', 'data' => $educ], 200);
         }
 
-        return response()->json(['status'=>'errorr', 'message' => 'error occured please try again'], 200);
+        return response()->json(['status' => 'errorr', 'message' => 'error occured please try again'], 200);
     }
 
     public function editEducation(Request $request)
@@ -308,8 +308,8 @@ class ProfileController extends Controller
         UserEducation::find($id)->delete($id);
 
         return response()->json([
-          'success' => 'Record deleted successfully!',
-      ]);
+            'success' => 'Record deleted successfully!',
+        ]);
     }
 
     // Project
@@ -325,7 +325,7 @@ class ProfileController extends Controller
         $images = [];
         if ($files = $request->file('project_img')) {
             foreach ($files as $file) {
-                $imagename = 'project-' . rand(000000, 999999) . '.' . $file->getClientOriginalExtension();
+                $imagename = 'project-' . mt_rand(000000, 999999) . '.' . $file->getClientOriginalExtension();
                 $extension = $file->getClientOriginalExtension();
                 // $imagename= $filename;
                 $destinationpath = public_path('assets/images/projects/');
@@ -339,7 +339,7 @@ class ProfileController extends Controller
         $project_file = $request->file('pdf_files');
         if ('' != $project_file) {
             $filename = $project_file->getClientOriginalName();
-            $pdfName = 'project-' . rand(000000, 999999) . '.' . $project_file->getClientOriginalExtension();
+            $pdfName = 'project-' . mt_rand(000000, 999999) . '.' . $project_file->getClientOriginalExtension();
             $extension = $project_file->getClientOriginalExtension();
             // $pdfName= $filename;
             $destinationpath = public_path('assets/images/projects/');
@@ -351,10 +351,10 @@ class ProfileController extends Controller
         if ($project->save()) {
             $project = UserProject::where('id', $project->id)->first();
             // dd($data);
-            return response()->json(['status'=>'true', 'message' => 'Project added successfully', 'data' => $project], 200);
+            return response()->json(['status' => 'true', 'message' => 'Project added successfully', 'data' => $project], 200);
         }
 
-        return response()->json(['status'=>'errorr', 'message' => 'error occured please try again'], 200);
+        return response()->json(['status' => 'errorr', 'message' => 'error occured please try again'], 200);
     }
 
     public function editProject(Request $request)
@@ -368,7 +368,7 @@ class ProfileController extends Controller
         $project_file = $request->file('pdf_files');
         if ('' != $project_file) {
             $filename = $project_file->getClientOriginalName();
-            $pdfName = 'project-' . rand(000000, 999999) . '.' . $project_file->getClientOriginalExtension();
+            $pdfName = 'project-' . mt_rand(000000, 999999) . '.' . $project_file->getClientOriginalExtension();
             $extension = $project_file->getClientOriginalExtension();
             // $pdfName= $filename;
             $destinationpath = public_path('assets/images/projects/');
@@ -382,7 +382,7 @@ class ProfileController extends Controller
         $images[] = $project->project_img;
         if ($files = $request->file('project_img')) {
             foreach ($files as $file) {
-                $imagename = 'project-' . rand(000000, 999999) . '.' . $file->getClientOriginalExtension();
+                $imagename = 'project-' . mt_rand(000000, 999999) . '.' . $file->getClientOriginalExtension();
                 $extension = $file->getClientOriginalExtension();
                 // $imagename= $filename;
                 $destinationpath = public_path('assets/images/projects/');
@@ -407,8 +407,8 @@ class ProfileController extends Controller
         UserProject::find($id)->delete($id);
 
         return response()->json([
-          'success' => 'Record deleted successfully!',
-      ]);
+            'success' => 'Record deleted successfully!',
+        ]);
     }
 
     // Certification
@@ -425,10 +425,10 @@ class ProfileController extends Controller
         if ($certificate->save()) {
             $certificate = UserCertification::where('id', $certificate->id)->first();
             // dd($data);
-            return response()->json(['status'=>'true', 'message' => 'Certification added successfully', 'data' => $certificate], 200);
+            return response()->json(['status' => 'true', 'message' => 'Certification added successfully', 'data' => $certificate], 200);
         }
 
-        return response()->json(['status'=>'errorr', 'message' => 'error occured please try again'], 200);
+        return response()->json(['status' => 'errorr', 'message' => 'error occured please try again'], 200);
     }
 
     public function editCertificate(Request $request)
@@ -451,8 +451,8 @@ class ProfileController extends Controller
         UserCertification::find($id)->delete($id);
 
         return response()->json([
-          'success' => 'Record deleted successfully!',
-      ]);
+            'success' => 'Record deleted successfully!',
+        ]);
     }
 
     public function deleteSkill($id)
@@ -461,9 +461,9 @@ class ProfileController extends Controller
         $showCounts = UserSkill::where('user_id', auth()->user()->id)->count();
 
         return response()->json([
-          'success' => 'Record deleted successfully!',
-          'count' => $showCounts,
-      ]);
+            'success' => 'Record deleted successfully!',
+            'count' => $showCounts,
+        ]);
     }
 
     // Delete Language
@@ -473,9 +473,9 @@ class ProfileController extends Controller
         $showCounts = UserLanguage::where('user_id', auth()->user()->id)->count();
 
         return response()->json([
-          'success' => 'Language deleted!',
-          'count' => $showCounts,
-      ]);
+            'success' => 'Language deleted!',
+            'count' => $showCounts,
+        ]);
     }
 
     // Verificatiion Request
@@ -486,7 +486,7 @@ class ProfileController extends Controller
         $verify_image = $request->file('verification_image');
         if ('' != $verify_image) {
             $filename = $verify_image->getClientOriginalName();
-            $imagename = 'verification-' . rand(000000, 999999) . '.' . $verify_image->getClientOriginalExtension();
+            $imagename = 'verification-' . mt_rand(000000, 999999) . '.' . $verify_image->getClientOriginalExtension();
             $extension = $verify_image->getClientOriginalExtension();
             // $imagename= $filename;
             $destinationpath = public_path('assets/images/user/verification/');
@@ -496,10 +496,10 @@ class ProfileController extends Controller
             $user->verification_image = $user->verification_image;
         }
         if ($user->save()) {
-            return response()->json(['status'=>'true', 'message' => 'Verification request submitted'], 200);
+            return response()->json(['status' => 'true', 'message' => 'Verification request submitted'], 200);
         }
 
-        return response()->json(['status'=>'errorr', 'message' => 'error occured please try again'], 200);
+        return response()->json(['status' => 'errorr', 'message' => 'error occured please try again'], 200);
     }
 
     public function storeImage(Request $request)

@@ -8,12 +8,10 @@ class CreateRatingsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('ratings', function (Blueprint $table) {
+        Schema::create('ratings', function (Blueprint $table): void {
             $table->id();
             $table->integer('rating_by');
             $table->integer('rating_to');
@@ -30,10 +28,8 @@ class CreateRatingsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('ratings');
     }

@@ -8,12 +8,10 @@ class CreateWalletsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('wallets', function (Blueprint $table) {
+        Schema::create('wallets', function (Blueprint $table): void {
             $table->id();
             $table->integer('user_id');
             $table->float('amt');
@@ -25,10 +23,8 @@ class CreateWalletsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('wallets');
     }

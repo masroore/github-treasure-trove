@@ -8,12 +8,10 @@ class AddAdmissionToJournalEntriesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('journal_entries', function (Blueprint $table) {
+        Schema::table('journal_entries', function (Blueprint $table): void {
             $table->integer('admission_id')->default(0);
             // $table->foreign('admission_id')
             // ->references('id')->on('admission')
@@ -23,13 +21,10 @@ class AddAdmissionToJournalEntriesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('journal_entries', function (Blueprint $table) {
-
+        Schema::table('journal_entries', function (Blueprint $table): void {
         });
     }
 }

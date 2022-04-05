@@ -5,17 +5,20 @@ namespace App\Http\Controllers;
 use App\Expense;
 use App\ExpensesCategory;
 use App\User;
+use Auth;
+use File;
 use Illuminate\Http\Request;
+use Validator;
 
 class ExpenseController extends Controller
 {
     public function index()
     {
-        if (\Auth::user()->can('manage expense') || 'client' == \Auth::user()->type) {
-            if ('client' == \Auth::user()->type) {
-                $expenses = Expense::select('expenses.*', 'projects.name')->join('projects', 'projects.id', '=', 'expenses.project')->where('projects.client', '=', \Auth::user()->id)->where('expenses.created_by', '=', \Auth::user()->creatorId())->get();
+        if (Auth::user()->can('manage expense') || 'client' == Auth::user()->type) {
+            if ('client' == Auth::user()->type) {
+                $expenses = Expense::select('expenses.*', 'projects.name')->join('projects', 'projects.id', '=', 'expenses.project')->where('projects.client', '=', Auth::user()->id)->where('expenses.created_by', '=', Auth::user()->creatorId())->get();
             } else {
-                $expenses = Expense::where('created_by', '=', \Auth::user()->creatorId())->get();
+                $expenses = Expense::where('created_by', '=', Auth::user()->creatorId())->get();
             }
 
             return view('expenses.index')->with('expenses', $expenses);
@@ -26,10 +29,10 @@ class ExpenseController extends Controller
 
     public function create()
     {
-        if (\Auth::user()->can('create expense')) {
-            $category = ExpensesCategory::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-            $projects = \Auth::user()->projects->pluck('name', 'id');
-            $users = User::where('created_by', '=', \Auth::user()->creatorId())->where('type', '!=', 'client')->get()->pluck('name', 'id');
+        if (Auth::user()->can('create expense')) {
+            $category = ExpensesCategory::where('created_by', '=', Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $projects = Auth::user()->projects->pluck('name', 'id');
+            $users = User::where('created_by', '=', Auth::user()->creatorId())->where('type', '!=', 'client')->get()->pluck('name', 'id');
 
             return view('expenses.create', compact('category', 'projects', 'users'));
         }
@@ -39,7 +42,7 @@ class ExpenseController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('create expense')) {
+        if (Auth::user()->can('create expense')) {
             $rules = [
                 'category_id' => 'required',
                 'amount' => 'required',
@@ -50,7 +53,7 @@ class ExpenseController extends Controller
                 $rules['attachment'] = 'required|max:2048';
             }
 
-            $validator = \Validator::make($request->all(), $rules);
+            $validator = Validator::make($request->all(), $rules);
 
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -65,7 +68,7 @@ class ExpenseController extends Controller
             $expense->date = $request->date;
             $expense->project = $request->project_id;
             $expense->user_id = $request->user_id;
-            $expense->created_by = \Auth::user()->creatorId();
+            $expense->created_by = Auth::user()->creatorId();
             $expense->save();
 
             if ($request->attachment) {
@@ -83,11 +86,11 @@ class ExpenseController extends Controller
 
     public function edit(Expense $expense)
     {
-        if (\Auth::user()->can('edit expense')) {
-            if ($expense->created_by == \Auth::user()->creatorId()) {
-                $category = ExpensesCategory::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-                $projects = \Auth::user()->projects->pluck('name', 'id');
-                $users = User::where('created_by', '=', \Auth::user()->creatorId())->where('type', '!=', 'client')->get()->pluck('name', 'id');
+        if (Auth::user()->can('edit expense')) {
+            if ($expense->created_by == Auth::user()->creatorId()) {
+                $category = ExpensesCategory::where('created_by', '=', Auth::user()->creatorId())->get()->pluck('name', 'id');
+                $projects = Auth::user()->projects->pluck('name', 'id');
+                $users = User::where('created_by', '=', Auth::user()->creatorId())->where('type', '!=', 'client')->get()->pluck('name', 'id');
 
                 return view('expenses.edit', compact('expense', 'category', 'projects', 'users'));
             }
@@ -100,8 +103,8 @@ class ExpenseController extends Controller
 
     public function update(Request $request, Expense $expense)
     {
-        if (\Auth::user()->can('edit expense')) {
-            if ($expense->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('edit expense')) {
+            if ($expense->created_by == Auth::user()->creatorId()) {
                 $rules = [
                     'category_id' => 'required',
                     'amount' => 'required',
@@ -112,7 +115,7 @@ class ExpenseController extends Controller
                     $rules['attachment'] = 'required|max:2048';
                 }
 
-                $validator = \Validator::make($request->all(), $rules);
+                $validator = Validator::make($request->all(), $rules);
 
                 if ($validator->fails()) {
                     $messages = $validator->getMessageBag();
@@ -129,7 +132,7 @@ class ExpenseController extends Controller
 
                 if ($request->attachment) {
                     if ($expense->attachment) {
-                        \File::delete(storage_path('uploads/attachment/' . $expense->attachment));
+                        File::delete(storage_path('uploads/attachment/' . $expense->attachment));
                     }
                     $imageName = 'expense_' . $expense->id . '_' . $request->attachment->getClientOriginalName();
                     $request->attachment->storeAs('attachment', $imageName);
@@ -148,8 +151,8 @@ class ExpenseController extends Controller
 
     public function destroy(Expense $expense)
     {
-        if (\Auth::user()->can('delete expense')) {
-            if ($expense->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('delete expense')) {
+            if ($expense->created_by == Auth::user()->creatorId()) {
                 $expense->delete();
 
                 return redirect()->route('expenses.index')->with('success', __('Expense successfully deleted.'));

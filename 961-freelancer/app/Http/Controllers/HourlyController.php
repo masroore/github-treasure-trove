@@ -36,12 +36,12 @@ class HourlyController extends Controller
             if (!Escrow::where('source_id', $id)->where('type', 3)->where('status', 1)->first()) {
                 // Create an escrow
                 Escrow::create([
-                  'from' => auth()->id(),
-                  'to' => $to->user_id,
-                  'amt' => $hours->weekly_payment,
-                  'source_id' => $id,
-                  'type' => 3,
-              ]);
+                    'from' => auth()->id(),
+                    'to' => $to->user_id,
+                    'amt' => $hours->weekly_payment,
+                    'source_id' => $id,
+                    'type' => 3,
+                ]);
             }
             // Deduct Amt from Wallet
             self::deductAmt($hours->weekly_payment);
@@ -50,19 +50,19 @@ class HourlyController extends Controller
 
             if ($status) {
                 Notification::create([
-                  'from' => auth()->id(),
-                  'to' => $to->user_id,
-                  'message' => 'The Weekly Payment is Deposited!',
-                  'noti_type' => 'project',
-                  'status' => 'unread',
-              ]);
+                    'from' => auth()->id(),
+                    'to' => $to->user_id,
+                    'message' => 'The Weekly Payment is Deposited!',
+                    'noti_type' => 'project',
+                    'status' => 'unread',
+                ]);
                 TransactionHistory::create([
-                  'user_id' => auth()->id(),
-                  'transaction' => 'You Deposit the Weekly Payment from your E-Wallet',
-                  'amount' => $hours->weekly_payment,
-                  'type' => 3,
-                  'status' => 2,
-              ]);
+                    'user_id' => auth()->id(),
+                    'transaction' => 'You Deposit the Weekly Payment from your E-Wallet',
+                    'amount' => $hours->weekly_payment,
+                    'type' => 3,
+                    'status' => 2,
+                ]);
 
                 return redirect()->back()->with('message', 'Weekly Payment Deposit Successfully!');
             }
@@ -73,12 +73,12 @@ class HourlyController extends Controller
             $status = $hs->update(['status' => 4]);
             if ($status) {
                 Notification::create([
-                  'from' => auth()->id(),
-                  'to' => $to->user_id,
-                  'message' => 'The Weekly Payment is Rejected!',
-                  'noti_type' => 'milestone',
-                  'status' => 'unread',
-              ]);
+                    'from' => auth()->id(),
+                    'to' => $to->user_id,
+                    'message' => 'The Weekly Payment is Rejected!',
+                    'noti_type' => 'milestone',
+                    'status' => 'unread',
+                ]);
 
                 return redirect()->back()->with('message', 'Weekly Payment Rejected Successfully!');
             }
@@ -88,9 +88,9 @@ class HourlyController extends Controller
     public function deposit(Request $request)
     {
         $request->validate([
-          'milestone_amount' => 'required',
-          'deposit_name' => 'required',
-      ]);
+            'milestone_amount' => 'required',
+            'deposit_name' => 'required',
+        ]);
         // Getting Records
         $walletAmt = Wallet::where('user_id', auth()->id())->first('amt');
         // Check Wallet exsist or not!
@@ -105,7 +105,7 @@ class HourlyController extends Controller
         }
         // Update Milestone
         $milestone = Milestone::find($request->milestone_id);
-        $milestoneupdate = Milestone::where('id', $request->milestone_id)->update(['status'=>'accept']);
+        $milestoneupdate = Milestone::where('id', $request->milestone_id)->update(['status' => 'accept']);
         // $milestone = Milestone::create([
         //     'name' => $request->deposit_name,
         //     'amount' => $request->deposit_amount,
@@ -118,29 +118,29 @@ class HourlyController extends Controller
         self::deductAmt($request->milestone_amount);
         // Create an escrow
         $escrow = Escrow::create([
-          'from' => auth()->id(),
-          'to' => $to->user_id,
-          'amt' => $request->milestone_amount,
-          'source_id' => $request->milestone_id,
-          'type' => 1,
-      ]);
+            'from' => auth()->id(),
+            'to' => $to->user_id,
+            'amt' => $request->milestone_amount,
+            'source_id' => $request->milestone_id,
+            'type' => 1,
+        ]);
 
         if ($milestone && $escrow) {
             Notification::create([
-              'from' => auth()->id(),
-              'to' => $to->user_id,
-              'message' => 'The Milestone is Deposited!',
-              'noti_type' => 'milestone',
-              'status' => 'unread',
-          ]);
+                'from' => auth()->id(),
+                'to' => $to->user_id,
+                'message' => 'The Milestone is Deposited!',
+                'noti_type' => 'milestone',
+                'status' => 'unread',
+            ]);
 
             TransactionHistory::create([
-              'user_id' => auth()->id(),
-              'transaction' => 'You Deposit the Milestone from your E-Wallet',
-              'amount' => $request->milestone_amount,
-              'type' => 3,
-              'status' => 2,
-          ]);
+                'user_id' => auth()->id(),
+                'transaction' => 'You Deposit the Milestone from your E-Wallet',
+                'amount' => $request->milestone_amount,
+                'type' => 3,
+                'status' => 2,
+            ]);
 
             return redirect()->back()->with('message', 'Milestone Deposit Successfully!');
         }
@@ -164,15 +164,15 @@ class HourlyController extends Controller
             // $net = $escrow->amt / (1 + 0.20);
             if (!$toUser) {
                 Wallet::create([
-                  'user_id' => $escrow->to,
-                  'amt' => $escrow->amt,
-                  'currency_code' => 'USD',
-              ]);
+                    'user_id' => $escrow->to,
+                    'amt' => $escrow->amt,
+                    'currency_code' => 'USD',
+                ]);
             } else {
                 $newWalletAmt = $toUser->amt + $escrow->amt;
                 $toUser->update([
-                  'amt' => $newWalletAmt,
-              ]);
+                    'amt' => $newWalletAmt,
+                ]);
             }
             // Company Wallet
             // $company = Wallet::where('user_id', 1)->first();
@@ -182,20 +182,20 @@ class HourlyController extends Controller
             // ]);
             // Escrow Status Update
             $escrow->update([
-              'status' => 2,
-          ]);
+                'status' => 2,
+            ]);
             // Milestone Status Update (status -> Release Amount)
             $hs->update(['status' => 3]);
             // Project Completion when Milestones are paid according to Project's Budget
             // $msAmt = Milestone::where('job_id', $request->milestone_job_id)->where('status', 'paid')->sum('milestone_amount');
 
             Notification::create([
-              'from' => auth()->id(),
-              'to' => $toUser->user_id,
-              'message' => 'The Milestone is Released!',
-              'noti_type' => 'milestone',
-              'status' => 'unread',
-          ]);
+                'from' => auth()->id(),
+                'to' => $toUser->user_id,
+                'message' => 'The Milestone is Released!',
+                'noti_type' => 'milestone',
+                'status' => 'unread',
+            ]);
 
             // if ($msAmt >= $bid->budget && !Rating::isExist(auth()->id(), $ms->proposal_id, $request->milestone_job_id)) {
             //     $bid->update(['status' => 5]);
@@ -204,12 +204,12 @@ class HourlyController extends Controller
             // }
 
             TransactionHistory::create([
-              'user_id' => $toUser->user_id,
-              'transaction' => 'You received the Weekly amount in your E-Wallet',
-              'amount' => $escrow->amt,
-              'type' => 3,
-              'status' => 1,
-          ]);
+                'user_id' => $toUser->user_id,
+                'transaction' => 'You received the Weekly amount in your E-Wallet',
+                'amount' => $escrow->amt,
+                'type' => 3,
+                'status' => 1,
+            ]);
 
             return redirect()->back()->with('message', 'Weekly Amount Released Successfully!');
         }
@@ -221,43 +221,43 @@ class HourlyController extends Controller
             // Subtract from User Who Refund
             $toUserAmount = $toUser->amt - $ms->amount;
             $toUser->update([
-              'amt' => $toUserAmount,
-          ]);
+                'amt' => $toUserAmount,
+            ]);
             // Added to User Who Collected
             $fromUserAmount = $fromUser->amt + $ms->amount;
             $fromUser->update([
-              'amt' => $fromUserAmount,
-          ]);
+                'amt' => $fromUserAmount,
+            ]);
             // Milestone Update from Paid to Request
             $hs->update([
-              'status' => 1,
-          ]);
+                'status' => 1,
+            ]);
             // Escrow Status Update
             $escrow->update([
-              'status' => 1,
-          ]);
+                'status' => 1,
+            ]);
 
             Notification::create([
-              'from' => auth()->id(),
-              'to' => $fromUser->user_id,
-              'message' => 'The Weekly Amount is Refuned!',
-              'noti_type' => 'milestone',
-              'status' => 'unread',
-          ]);
+                'from' => auth()->id(),
+                'to' => $fromUser->user_id,
+                'message' => 'The Weekly Amount is Refuned!',
+                'noti_type' => 'milestone',
+                'status' => 'unread',
+            ]);
 
             TransactionHistory::create([
-              'user_id' => $fromUser->user_id,
-              'transaction' => 'Your Weekly amount is refunded in your E-Wallet',
-              'amount' => $ms->amount,
-              'type' => 3,
-              'status' => 1,
-          ]);
+                'user_id' => $fromUser->user_id,
+                'transaction' => 'Your Weekly amount is refunded in your E-Wallet',
+                'amount' => $ms->amount,
+                'type' => 3,
+                'status' => 1,
+            ]);
 
             return redirect()->back()->with('message', 'Weekly Amount Refunded Successfully!');
         }
     }
 
-    public static function deductAmt($msAmt)
+    public static function deductAmt($msAmt): void
     {
         $wallet = Wallet::where('user_id', auth()->id())->first();
         $newAmt = $wallet->amt - $msAmt;

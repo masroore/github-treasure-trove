@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Plan;
+use Auth;
 use File;
 use Illuminate\Http\Request;
 
@@ -10,7 +11,7 @@ class PlanController extends Controller
 {
     public function index()
     {
-        if (\Auth::user()->can('manage plan')) {
+        if (Auth::user()->can('manage plan')) {
             $plans = Plan::get();
 
             return view('plan.index', compact('plans'));
@@ -21,7 +22,7 @@ class PlanController extends Controller
 
     public function create()
     {
-        if (\Auth::user()->can('create plan')) {
+        if (Auth::user()->can('create plan')) {
             $arrDuration = Plan::$arrDuration;
 
             return view('plan.create', compact('arrDuration'));
@@ -32,7 +33,7 @@ class PlanController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('create plan')) {
+        if (Auth::user()->can('create plan')) {
             if (('on' == env('ENABLE_STRIPE') && !empty(env('STRIPE_KEY')) && !empty(env('STRIPE_SECRET'))) || ('on' == env('ENABLE_PAYPAL') && !empty(env('PAYPAL_CLIENT_ID')) || !empty(env('PAYPAL_SECRET_KEY')))) {
                 $validation = [];
                 $validation['name'] = 'required|unique:plans';
@@ -76,7 +77,7 @@ class PlanController extends Controller
 
     public function edit($plan_id)
     {
-        if (\Auth::user()->can('edit plan')) {
+        if (Auth::user()->can('edit plan')) {
             $arrDuration = Plan::$arrDuration;
             $plan = Plan::find($plan_id);
 
@@ -88,7 +89,7 @@ class PlanController extends Controller
 
     public function update(Request $request, $plan_id)
     {
-        if (\Auth::user()->can('edit plan')) {
+        if (Auth::user()->can('edit plan')) {
             if (('on' == env('ENABLE_STRIPE') && !empty(env('STRIPE_KEY')) && !empty(env('STRIPE_SECRET'))) || ('on' == env('ENABLE_PAYPAL') && !empty(env('PAYPAL_CLIENT_ID')) || !empty(env('PAYPAL_SECRET_KEY'))) || $request->price <= 0) {
                 $plan = Plan::find($plan_id);
                 if (!empty($plan)) {
@@ -141,7 +142,7 @@ class PlanController extends Controller
 
     public function userPlan(Request $request)
     {
-        $objUser = \Auth::user();
+        $objUser = Auth::user();
         $planID = \Illuminate\Support\Facades\Crypt::decrypt($request->code);
         $plan = Plan::find($planID);
         if ($plan) {

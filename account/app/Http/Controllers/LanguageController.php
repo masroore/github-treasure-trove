@@ -7,6 +7,7 @@ use App\User;
 use App\Utility;
 use App\Vender;
 use Auth;
+use File;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
 
@@ -23,7 +24,7 @@ class LanguageController extends Controller
 
     public function manageLanguage($currantLang)
     {
-        if ('super admin' == \Auth::user()->type) {
+        if ('super admin' == Auth::user()->type) {
             $languages = Utility::languages();
 
             $dir = base_path() . '/resources/lang/' . $currantLang;
@@ -34,9 +35,9 @@ class LanguageController extends Controller
             $arrFiles = array_diff(
                 scandir($dir),
                 [
-                                 '..',
-                                 '.',
-                             ]
+                    '..',
+                    '.',
+                ]
             );
             $arrMessage = [];
 
@@ -56,7 +57,7 @@ class LanguageController extends Controller
 
     public function storeLanguageData(Request $request, $currantLang)
     {
-        if ('super admin' == \Auth::user()->type) {
+        if ('super admin' == Auth::user()->type) {
             $Filesystem = new Filesystem();
             $dir = base_path() . '/resources/lang/';
             if (!is_dir($dir)) {
@@ -111,7 +112,7 @@ class LanguageController extends Controller
 
     public function storeLanguage(Request $request)
     {
-        if ('super admin' == \Auth::user()->type) {
+        if ('super admin' == Auth::user()->type) {
             $Filesystem = new Filesystem();
             $langCode = strtolower($request->code);
             $langDir = base_path() . '/resources/lang/';
@@ -122,7 +123,7 @@ class LanguageController extends Controller
             }
             $dir = $dir . '/' . $langCode;
             $jsonFile = $dir . '.json';
-            \File::copy($langDir . 'en.json', $jsonFile);
+            File::copy($langDir . 'en.json', $jsonFile);
 
             if (!is_dir($dir)) {
                 mkdir($dir);

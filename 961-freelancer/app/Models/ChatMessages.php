@@ -8,17 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class ChatMessages extends Model
 {
     use HasFactory;
+
     protected $fillable = [
-      'conversation_id',
-      'message_sender',
-      'message_receiver',
-      'job_id',
-      'proposal_id',
-      'message_desc',
-      'message_file',
-      'message_type',
-      'message_date',
-      'message_status',
+        'conversation_id',
+        'message_sender',
+        'message_receiver',
+        'job_id',
+        'proposal_id',
+        'message_desc',
+        'message_file',
+        'message_type',
+        'message_date',
+        'message_status',
     ];
 
     public static function getUnseenMsg()

@@ -14,7 +14,6 @@ class ProposalProductController extends Controller
      */
     public function index()
     {
-
     }
 
     /**
@@ -24,7 +23,6 @@ class ProposalProductController extends Controller
      */
     public function create()
     {
-
     }
 
     /**
@@ -34,7 +32,6 @@ class ProposalProductController extends Controller
      */
     public function store(Request $request)
     {
-
     }
 
     /**
@@ -44,7 +41,6 @@ class ProposalProductController extends Controller
      */
     public function show(ProposalProduct $proposalProduct)
     {
-
     }
 
     /**
@@ -54,7 +50,6 @@ class ProposalProductController extends Controller
      */
     public function edit(ProposalProduct $proposalProduct)
     {
-
     }
 
     /**
@@ -64,7 +59,6 @@ class ProposalProductController extends Controller
      */
     public function update(Request $request, ProposalProduct $proposalProduct)
     {
-
     }
 
     /**
@@ -74,6 +68,5 @@ class ProposalProductController extends Controller
      */
     public function destroy(ProposalProduct $proposalProduct)
     {
-
     }
 }

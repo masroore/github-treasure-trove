@@ -12,11 +12,15 @@ use App\ProductServiceCategory;
 use App\Proposal;
 use App\ProposalProduct;
 use App\Utility;
+use Auth;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use stdClass;
+use Validator;
 
 class ProposalController extends Controller
 {
@@ -26,13 +30,13 @@ class ProposalController extends Controller
 
     public function index(Request $request)
     {
-        if (\Auth::user()->can('manage proposal')) {
-            $customer = Customer::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        if (Auth::user()->can('manage proposal')) {
+            $customer = Customer::where('created_by', '=', Auth::user()->creatorId())->get()->pluck('name', 'id');
             $customer->prepend('All', '');
 
             $status = Proposal::$statues;
 
-            $query = Proposal::where('created_by', '=', \Auth::user()->creatorId());
+            $query = Proposal::where('created_by', '=', Auth::user()->creatorId());
 
             if (!empty($request->customer)) {
                 $query->where('id', '=', $request->customer);
@@ -55,14 +59,14 @@ class ProposalController extends Controller
 
     public function create($customerId)
     {
-        if (\Auth::user()->can('create proposal')) {
-            $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'proposal')->get();
-            $proposal_number = \Auth::user()->proposalNumberFormat($this->proposalNumber());
-            $customers = Customer::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        if (Auth::user()->can('create proposal')) {
+            $customFields = CustomField::where('created_by', '=', Auth::user()->creatorId())->where('module', '=', 'proposal')->get();
+            $proposal_number = Auth::user()->proposalNumberFormat($this->proposalNumber());
+            $customers = Customer::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
             $customers->prepend('Select Customer', '');
-            $category = ProductServiceCategory::where('created_by', \Auth::user()->creatorId())->where('type', 1)->get()->pluck('name', 'id');
+            $category = ProductServiceCategory::where('created_by', Auth::user()->creatorId())->where('type', 1)->get()->pluck('name', 'id');
             $category->prepend('Select Category', '');
-            $product_services = ProductService::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $product_services = ProductService::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
             $product_services->prepend('--', '');
 
             return view('proposal.create', compact('customers', 'proposal_number', 'product_services', 'category', 'customFields', 'customerId'));
@@ -97,15 +101,15 @@ class ProposalController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('create proposal')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('create proposal')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'customer_id' => 'required',
-                                   'issue_date' => 'required',
-                                   'category_id' => 'required',
-                                   'items' => 'required',
-                               ]
+                    'customer_id' => 'required',
+                    'issue_date' => 'required',
+                    'category_id' => 'required',
+                    'items' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -121,12 +125,12 @@ class ProposalController extends Controller
             $proposal->issue_date = $request->issue_date;
             $proposal->category_id = $request->category_id;
             $proposal->discount_apply = isset($request->discount_apply) ? 1 : 0;
-            $proposal->created_by = \Auth::user()->creatorId();
+            $proposal->created_by = Auth::user()->creatorId();
             $proposal->save();
             CustomField::saveData($proposal, $request->customField);
             $products = $request->items;
 
-            for ($i = 0; $i < \count($products); $i++) {
+            for ($i = 0; $i < \count($products); ++$i) {
                 $proposalProduct = new ProposalProduct();
                 $proposalProduct->proposal_id = $proposal->id;
                 $proposalProduct->product_id = $products[$i]['item'];
@@ -146,17 +150,17 @@ class ProposalController extends Controller
 
     public function edit($ids)
     {
-        if (\Auth::user()->can('edit proposal')) {
+        if (Auth::user()->can('edit proposal')) {
             $id = Crypt::decrypt($ids);
             $proposal = Proposal::find($id);
-            $proposal_number = \Auth::user()->proposalNumberFormat($proposal->proposal_id);
-            $customers = Customer::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-            $category = ProductServiceCategory::where('created_by', \Auth::user()->creatorId())->where('type', 1)->get()->pluck('name', 'id');
+            $proposal_number = Auth::user()->proposalNumberFormat($proposal->proposal_id);
+            $customers = Customer::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $category = ProductServiceCategory::where('created_by', Auth::user()->creatorId())->where('type', 1)->get()->pluck('name', 'id');
             $category->prepend('Select Category', '');
-            $product_services = ProductService::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $product_services = ProductService::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
             //            dd($product_services);
             $proposal->customField = CustomField::getData($proposal, 'proposal');
-            $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'proposal')->get();
+            $customFields = CustomField::where('created_by', '=', Auth::user()->creatorId())->where('module', '=', 'proposal')->get();
 
             $items = [];
             foreach ($proposal->items as $proposalItem) {
@@ -174,16 +178,16 @@ class ProposalController extends Controller
 
     public function update(Request $request, Proposal $proposal)
     {
-        if (\Auth::user()->can('edit proposal')) {
-            if ($proposal->created_by == \Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+        if (Auth::user()->can('edit proposal')) {
+            if ($proposal->created_by == Auth::user()->creatorId()) {
+                $validator = Validator::make(
                     $request->all(),
                     [
-                                       'customer_id' => 'required',
-                                       'issue_date' => 'required',
-                                       'category_id' => 'required',
-                                       'items' => 'required',
-                                   ]
+                        'customer_id' => 'required',
+                        'issue_date' => 'required',
+                        'category_id' => 'required',
+                        'items' => 'required',
+                    ]
                 );
                 if ($validator->fails()) {
                     $messages = $validator->getMessageBag();
@@ -198,7 +202,7 @@ class ProposalController extends Controller
                 CustomField::saveData($proposal, $request->customField);
                 $products = $request->items;
 
-                for ($i = 0; $i < \count($products); $i++) {
+                for ($i = 0; $i < \count($products); ++$i) {
                     $proposalProduct = ProposalProduct::find($products[$i]['id']);
                     if (null == $proposalProduct) {
                         $proposalProduct = new ProposalProduct();
@@ -228,7 +232,7 @@ class ProposalController extends Controller
 
     public function proposalNumber()
     {
-        $latest = Proposal::where('created_by', '=', \Auth::user()->creatorId())->latest()->first();
+        $latest = Proposal::where('created_by', '=', Auth::user()->creatorId())->latest()->first();
         if (!$latest) {
             return 1;
         }
@@ -238,16 +242,16 @@ class ProposalController extends Controller
 
     public function show($ids)
     {
-        if (\Auth::user()->can('show proposal')) {
+        if (Auth::user()->can('show proposal')) {
             $id = Crypt::decrypt($ids);
             $proposal = Proposal::find($id);
-            if ($proposal->created_by == \Auth::user()->creatorId()) {
+            if ($proposal->created_by == Auth::user()->creatorId()) {
                 $customer = $proposal->customer;
                 $iteams = $proposal->items;
                 $status = Proposal::$statues;
 
                 $proposal->customField = CustomField::getData($proposal, 'proposal');
-                $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'proposal')->get();
+                $customFields = CustomField::where('created_by', '=', Auth::user()->creatorId())->where('module', '=', 'proposal')->get();
 
                 return view('proposal.view', compact('proposal', 'customer', 'iteams', 'status', 'customFields'));
             }
@@ -260,8 +264,8 @@ class ProposalController extends Controller
 
     public function destroy(Proposal $proposal)
     {
-        if (\Auth::user()->can('delete proposal')) {
-            if ($proposal->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('delete proposal')) {
+            if ($proposal->created_by == Auth::user()->creatorId()) {
                 $proposal->delete();
                 ProposalProduct::where('proposal_id', '=', $proposal->id)->delete();
 
@@ -276,7 +280,7 @@ class ProposalController extends Controller
 
     public function productDestroy(Request $request)
     {
-        if (\Auth::user()->can('delete proposal product')) {
+        if (Auth::user()->can('delete proposal product')) {
             ProposalProduct::where('id', '=', $request->id)->delete();
 
             return redirect()->back()->with('success', __('Proposal product successfully deleted.'));
@@ -287,10 +291,10 @@ class ProposalController extends Controller
 
     public function customerProposal(Request $request)
     {
-        if (\Auth::user()->can('manage customer proposal')) {
+        if (Auth::user()->can('manage customer proposal')) {
             $status = Proposal::$statues;
 
-            $query = Proposal::where('customer_id', '=', \Auth::user()->id)->where('status', '!=', '0')->where('created_by', \Auth::user()->creatorId());
+            $query = Proposal::where('customer_id', '=', Auth::user()->id)->where('status', '!=', '0')->where('created_by', Auth::user()->creatorId());
 
             if (!empty($request->issue_date)) {
                 $date_range = explode(' - ', $request->issue_date);
@@ -310,10 +314,10 @@ class ProposalController extends Controller
 
     public function customerProposalShow($id)
     {
-        if (\Auth::user()->can('show proposal')) {
+        if (Auth::user()->can('show proposal')) {
             $proposal_id = Crypt::decrypt($id);
             $proposal = Proposal::where('id', $proposal_id)->first();
-            if ($proposal->created_by == \Auth::user()->creatorId()) {
+            if ($proposal->created_by == Auth::user()->creatorId()) {
                 $customer = $proposal->customer;
                 $iteams = $proposal->items;
 
@@ -328,7 +332,7 @@ class ProposalController extends Controller
 
     public function sent($id)
     {
-        if (\Auth::user()->can('send proposal')) {
+        if (Auth::user()->can('send proposal')) {
             $proposal = Proposal::where('id', $id)->first();
             $proposal->send_date = date('Y-m-d');
             $proposal->status = 1;
@@ -336,14 +340,14 @@ class ProposalController extends Controller
 
             $customer = Customer::where('id', $proposal->customer_id)->first();
             $proposal->name = !empty($customer) ? $customer->name : '';
-            $proposal->proposal = \Auth::user()->proposalNumberFormat($proposal->proposal_id);
+            $proposal->proposal = Auth::user()->proposalNumberFormat($proposal->proposal_id);
 
             $proposalId = Crypt::encrypt($proposal->id);
             $proposal->url = route('proposal.pdf', $proposalId);
 
             try {
                 Mail::to($customer->email)->send(new ProposalSend($proposal));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $smtp_error = __('E-Mail has been not sent due to SMTP configuration');
             }
 
@@ -355,19 +359,19 @@ class ProposalController extends Controller
 
     public function resent($id)
     {
-        if (\Auth::user()->can('send proposal')) {
+        if (Auth::user()->can('send proposal')) {
             $proposal = Proposal::where('id', $id)->first();
 
             $customer = Customer::where('id', $proposal->customer_id)->first();
             $proposal->name = !empty($customer) ? $customer->name : '';
-            $proposal->proposal = \Auth::user()->proposalNumberFormat($proposal->proposal_id);
+            $proposal->proposal = Auth::user()->proposalNumberFormat($proposal->proposal_id);
 
             $proposalId = Crypt::encrypt($proposal->id);
             $proposal->url = route('proposal.pdf', $proposalId);
 
             try {
                 Mail::to($customer->email)->send(new ProposalSend($proposal));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $smtp_error = __('E-Mail has been not sent due to SMTP configuration');
             }
 
@@ -393,7 +397,7 @@ class ProposalController extends Controller
 
     public function duplicate($proposal_id)
     {
-        if (\Auth::user()->can('duplicate proposal')) {
+        if (Auth::user()->can('duplicate proposal')) {
             $proposal = Proposal::where('id', $proposal_id)->first();
             $duplicateProposal = new Proposal();
             $duplicateProposal->proposal_id = $this->proposalNumber();
@@ -427,7 +431,7 @@ class ProposalController extends Controller
 
     public function convert($proposal_id)
     {
-        if (\Auth::user()->can('convert invoice')) {
+        if (Auth::user()->can('convert invoice')) {
             $proposal = Proposal::where('id', $proposal_id)->first();
             $proposal->is_convert = 1;
             $proposal->save();
@@ -478,11 +482,11 @@ class ProposalController extends Controller
 
     public function previewProposal($template, $color)
     {
-        $objUser = \Auth::user();
+        $objUser = Auth::user();
         $settings = Utility::settings();
         $proposal = new Proposal();
 
-        $customer = new \stdClass();
+        $customer = new stdClass();
         $customer->email = '<Email>';
         $customer->shipping_name = '<Customer Name>';
         $customer->shipping_country = '<Country>';
@@ -503,8 +507,8 @@ class ProposalController extends Controller
         $taxesData = [];
 
         $items = [];
-        for ($i = 1; $i <= 3; $i++) {
-            $item = new \stdClass();
+        for ($i = 1; $i <= 3; ++$i) {
+            $item = new stdClass();
             $item->name = 'Item ' . $i;
             $item->quantity = 1;
             $item->tax = 5;
@@ -581,7 +585,7 @@ class ProposalController extends Controller
         $totalDiscount = 0;
         $taxesData = [];
         foreach ($proposal->items as $product) {
-            $item = new \stdClass();
+            $item = new stdClass();
             $item->name = !empty($product->product) ? $product->product->name : '';
             $item->quantity = $product->quantity;
             $item->tax = $product->tax;
@@ -629,8 +633,8 @@ class ProposalController extends Controller
 
         $proposal->customField = CustomField::getData($proposal, 'proposal');
         $customFields = [];
-        if (!empty(\Auth::user())) {
-            $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'proposal')->get();
+        if (!empty(Auth::user())) {
+            $customFields = CustomField::where('created_by', '=', Auth::user()->creatorId())->where('module', '=', 'proposal')->get();
         }
 
         //Set your logo
@@ -661,10 +665,10 @@ class ProposalController extends Controller
             \DB::insert(
                 'insert into settings (`value`, `name`,`created_by`) values (?, ?, ?) ON DUPLICATE KEY UPDATE `value` = VALUES(`value`) ',
                 [
-                                                                                                                                             $data,
-                                                                                                                                             $key,
-                                                                                                                                             \Auth::user()->creatorId(),
-                                                                                                                                         ]
+                    $data,
+                    $key,
+                    Auth::user()->creatorId(),
+                ]
             );
         }
 
@@ -673,7 +677,7 @@ class ProposalController extends Controller
 
     public function invoiceNumber()
     {
-        $latest = Invoice::where('created_by', '=', \Auth::user()->creatorId())->latest()->first();
+        $latest = Invoice::where('created_by', '=', Auth::user()->creatorId())->latest()->first();
         if (!$latest) {
             return 1;
         }

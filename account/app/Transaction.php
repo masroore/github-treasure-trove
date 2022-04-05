@@ -22,7 +22,7 @@ class Transaction extends Model
         return $this->hasOne('App\BankAccount', 'id', 'account')->first();
     }
 
-    public static function addTransaction($request)
+    public static function addTransaction($request): void
     {
         $transaction = new self();
         $transaction->account = $request->account;
@@ -38,7 +38,7 @@ class Transaction extends Model
         $transaction->save();
     }
 
-    public static function editTransaction($request)
+    public static function editTransaction($request): void
     {
         $transaction = self::where('payment_id', $request->payment_id)->where('type', $request->type)->first();
         $transaction->account = $request->account;
@@ -49,7 +49,7 @@ class Transaction extends Model
         $transaction->save();
     }
 
-    public static function destroyTransaction($id, $type, $user)
+    public static function destroyTransaction($id, $type, $user): void
     {
         self::where('payment_id', $id)->where('type', $type)->where('user_type', $user)->delete();
     }

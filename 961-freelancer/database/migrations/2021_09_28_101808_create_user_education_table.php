@@ -8,12 +8,10 @@ class CreateUserEducationTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('user_education', function (Blueprint $table) {
+        Schema::create('user_education', function (Blueprint $table): void {
             $table->id();
             $table->integer('user_id');
             $table->string('institute');
@@ -29,10 +27,8 @@ class CreateUserEducationTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('user_education');
     }

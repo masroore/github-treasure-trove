@@ -2,18 +2,21 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App;
 use App\Customer;
 use App\Http\Controllers\Controller;
 use App\Plan;
 use App\Providers\RouteServiceProvider;
 use App\User;
 use App\Vender;
+use Auth;
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Str;
 
 class LoginController extends Controller
 {
@@ -39,8 +42,6 @@ class LoginController extends Controller
 
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -57,7 +58,7 @@ class LoginController extends Controller
             $lang = \App\Utility::getValByName('default_language');
         }
 
-        \App::setLocale($lang);
+        App::setLocale($lang);
 
         return view('auth.customer_login', compact('lang'));
     }
@@ -67,20 +68,20 @@ class LoginController extends Controller
         $this->validate(
             $request,
             [
-                        'email' => 'required|email',
-                        'password' => 'required|min:6',
-                    ]
+                'email' => 'required|email',
+                'password' => 'required|min:6',
+            ]
         );
 
-        if (\Auth::guard('customer')->attempt(
+        if (Auth::guard('customer')->attempt(
             [
                 'email' => $request->email,
                 'password' => $request->password,
             ],
             $request->get('remember')
         )) {
-            if (0 == \Auth::guard('customer')->user()->is_active) {
-                \Auth::guard('customer')->logout();
+            if (0 == Auth::guard('customer')->user()->is_active) {
+                Auth::guard('customer')->logout();
             }
 
             return redirect()->route('customer.dashboard');
@@ -95,7 +96,7 @@ class LoginController extends Controller
             $lang = \App\Utility::getValByName('default_language');
         }
 
-        \App::setLocale($lang);
+        App::setLocale($lang);
 
         return view('auth.vender_login', compact('lang'));
     }
@@ -105,19 +106,19 @@ class LoginController extends Controller
         $this->validate(
             $request,
             [
-                        'email' => 'required|email',
-                        'password' => 'required|min:6',
-                    ]
+                'email' => 'required|email',
+                'password' => 'required|min:6',
+            ]
         );
-        if (\Auth::guard('vender')->attempt(
+        if (Auth::guard('vender')->attempt(
             [
                 'email' => $request->email,
                 'password' => $request->password,
             ],
             $request->get('remember')
         )) {
-            if (0 == \Auth::guard('vender')->user()->is_active) {
-                \Auth::guard('vender')->logout();
+            if (0 == Auth::guard('vender')->user()->is_active) {
+                Auth::guard('vender')->logout();
             }
 
             return redirect()->route('vender.dashboard');
@@ -132,7 +133,7 @@ class LoginController extends Controller
             $lang = \App\Utility::getValByName('default_language');
         }
 
-        \App::setLocale($lang);
+        App::setLocale($lang);
 
         return view('auth.login', compact('lang'));
     }
@@ -143,7 +144,7 @@ class LoginController extends Controller
             $lang = \App\Utility::getValByName('default_language');
         }
 
-        \App::setLocale($lang);
+        App::setLocale($lang);
 
         return view('auth.passwords.email', compact('lang'));
     }
@@ -154,7 +155,7 @@ class LoginController extends Controller
             $lang = \App\Utility::getValByName('default_language');
         }
 
-        \App::setLocale($lang);
+        App::setLocale($lang);
 
         return view('auth.customer_login', compact('lang'));
     }
@@ -165,7 +166,7 @@ class LoginController extends Controller
             $lang = \App\Utility::getValByName('default_language');
         }
 
-        \App::setLocale($lang);
+        App::setLocale($lang);
 
         return view('auth.vender_login', compact('lang'));
     }
@@ -177,7 +178,7 @@ class LoginController extends Controller
             $lang = \App\Utility::getValByName('default_language');
         }
 
-        \App::setLocale($lang);
+        App::setLocale($lang);
 
         return view('auth.passwords.customerEmail', compact('lang'));
     }
@@ -190,7 +191,7 @@ class LoginController extends Controller
             ]
         );
 
-        $token = \Str::random(60);
+        $token = Str::random(60);
 
         DB::table('password_resets')->insert(
             [
@@ -203,7 +204,7 @@ class LoginController extends Controller
         Mail::send(
             'auth.customerVerify',
             ['token' => $token],
-            function ($message) use ($request) {
+            function ($message) use ($request): void {
                 $message->from(env('MAIL_USERNAME'), env('MAIL_FROM_NAME'));
                 $message->to($request->email);
                 $message->subject('Reset Password Notification');
@@ -218,7 +219,7 @@ class LoginController extends Controller
         $default_language = DB::table('settings')->select('value')->where('name', 'default_language')->first();
         $lang = !empty($default_language) ? $default_language->value : 'en';
 
-        \App::setLocale($lang);
+        App::setLocale($lang);
 
         return view('auth.passwords.reset')->with(
             [
@@ -247,9 +248,9 @@ class LoginController extends Controller
 
         $updatePassword = DB::table('password_resets')->where(
             [
-                    'email' => $request->email,
-                    'token' => $request->token,
-                ]
+                'email' => $request->email,
+                'token' => $request->token,
+            ]
         )->first();
 
         if (!$updatePassword) {
@@ -270,7 +271,7 @@ class LoginController extends Controller
             $lang = \App\Utility::getValByName('default_language');
         }
 
-        \App::setLocale($lang);
+        App::setLocale($lang);
 
         return view('auth.passwords.vendorEmail', compact('lang'));
     }
@@ -283,7 +284,7 @@ class LoginController extends Controller
             ]
         );
 
-        $token = \Str::random(60);
+        $token = Str::random(60);
 
         DB::table('password_resets')->insert(
             [
@@ -296,7 +297,7 @@ class LoginController extends Controller
         Mail::send(
             'auth.vendorVerify',
             ['token' => $token],
-            function ($message) use ($request) {
+            function ($message) use ($request): void {
                 $message->from(env('MAIL_USERNAME'), env('MAIL_FROM_NAME'));
                 $message->to($request->email);
                 $message->subject('Reset Password Notification');
@@ -358,9 +359,9 @@ class LoginController extends Controller
                     $user->plan_expire_date = null;
                     $user->save();
 
-                    $users = User::where('created_by', '=', \Auth::user()->creatorId())->get();
-                    $customers = Customer::where('created_by', '=', \Auth::user()->creatorId())->get();
-                    $venders = Vender::where('created_by', '=', \Auth::user()->creatorId())->get();
+                    $users = User::where('created_by', '=', Auth::user()->creatorId())->get();
+                    $customers = Customer::where('created_by', '=', Auth::user()->creatorId())->get();
+                    $venders = Vender::where('created_by', '=', Auth::user()->creatorId())->get();
 
                     if (-1 == $free_plan->max_users) {
                         foreach ($users as $user) {
@@ -370,7 +371,7 @@ class LoginController extends Controller
                     } else {
                         $userCount = 0;
                         foreach ($users as $user) {
-                            $userCount++;
+                            ++$userCount;
                             if ($userCount <= $free_plan->max_users) {
                                 $user->is_active = 1;
                                 $user->save();
@@ -389,7 +390,7 @@ class LoginController extends Controller
                     } else {
                         $customerCount = 0;
                         foreach ($customers as $customer) {
-                            $customerCount++;
+                            ++$customerCount;
                             if ($customerCount <= $free_plan->max_customers) {
                                 $customer->is_active = 1;
                                 $customer->save();
@@ -408,7 +409,7 @@ class LoginController extends Controller
                     } else {
                         $venderCount = 0;
                         foreach ($venders as $vender) {
-                            $venderCount++;
+                            ++$venderCount;
                             if ($venderCount <= $free_plan->max_venders) {
                                 $vender->is_active = 1;
                                 $vender->save();

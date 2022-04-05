@@ -8,12 +8,10 @@ class CreateRevenuesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('revenues', function (Blueprint $table) {
+        Schema::create('revenues', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->date('date');
             $table->float('amount', 15, 2)->default('0.00');
@@ -30,10 +28,8 @@ class CreateRevenuesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('revenues');
     }

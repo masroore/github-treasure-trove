@@ -10,24 +10,28 @@ use App\ProductServiceCategory;
 use App\Revenue;
 use App\Transaction;
 use App\Utility;
+use Auth;
+use DB;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Validator;
 
 class RevenueController extends Controller
 {
     public function index(Request $request)
     {
-        if (\Auth::user()->can('manage revenue')) {
-            $customer = Customer::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        if (Auth::user()->can('manage revenue')) {
+            $customer = Customer::where('created_by', '=', Auth::user()->creatorId())->get()->pluck('name', 'id');
             $customer->prepend('All', '');
 
-            $account = BankAccount::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('holder_name', 'id');
+            $account = BankAccount::where('created_by', '=', Auth::user()->creatorId())->get()->pluck('holder_name', 'id');
             $account->prepend('All', '');
 
-            $category = ProductServiceCategory::where('created_by', '=', \Auth::user()->creatorId())->where('type', '=', 1)->get()->pluck('name', 'id');
+            $category = ProductServiceCategory::where('created_by', '=', Auth::user()->creatorId())->where('type', '=', 1)->get()->pluck('name', 'id');
             $category->prepend('All', '');
 
-            $query = Revenue::where('created_by', '=', \Auth::user()->creatorId());
+            $query = Revenue::where('created_by', '=', Auth::user()->creatorId());
 
             if (!empty($request->date)) {
                 $date_range = explode(' - ', $request->date);
@@ -58,11 +62,11 @@ class RevenueController extends Controller
 
     public function create()
     {
-        if (\Auth::user()->can('create revenue')) {
-            $customers = Customer::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        if (Auth::user()->can('create revenue')) {
+            $customers = Customer::where('created_by', '=', Auth::user()->creatorId())->get()->pluck('name', 'id');
             $customers->prepend('--', 0);
-            $categories = ProductServiceCategory::where('created_by', '=', \Auth::user()->creatorId())->where('type', '=', 1)->get()->pluck('name', 'id');
-            $accounts = BankAccount::select('*', \DB::raw("CONCAT(bank_name,' ',holder_name) AS name"))->where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $categories = ProductServiceCategory::where('created_by', '=', Auth::user()->creatorId())->where('type', '=', 1)->get()->pluck('name', 'id');
+            $accounts = BankAccount::select('*', DB::raw("CONCAT(bank_name,' ',holder_name) AS name"))->where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
 
             return view('revenue.create', compact('customers', 'categories', 'accounts'));
         }
@@ -72,15 +76,15 @@ class RevenueController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('create revenue')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('create revenue')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'date' => 'required',
-                                   'amount' => 'required',
-                                   'account_id' => 'required',
-                                   'category_id' => 'required',
-                               ]
+                    'date' => 'required',
+                    'amount' => 'required',
+                    'account_id' => 'required',
+                    'category_id' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -97,7 +101,7 @@ class RevenueController extends Controller
             $revenue->payment_method = 0;
             $revenue->reference = $request->reference;
             $revenue->description = $request->description;
-            $revenue->created_by = \Auth::user()->creatorId();
+            $revenue->created_by = Auth::user()->creatorId();
             $revenue->save();
 
             $category = ProductServiceCategory::where('id', $request->category_id)->first();
@@ -112,8 +116,8 @@ class RevenueController extends Controller
             $customer = Customer::where('id', $request->customer_id)->first();
             $payment = new InvoicePayment();
             $payment->name = !empty($customer) ? $customer['name'] : '';
-            $payment->date = \Auth::user()->dateFormat($request->date);
-            $payment->amount = \Auth::user()->priceFormat($request->amount);
+            $payment->date = Auth::user()->dateFormat($request->date);
+            $payment->amount = Auth::user()->priceFormat($request->amount);
             $payment->invoice = '';
 
             if (!empty($customer)) {
@@ -124,7 +128,7 @@ class RevenueController extends Controller
 
             try {
                 Mail::to($customer['email'])->send(new InvoicePaymentCreate($payment));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $smtp_error = __('E-Mail has been not sent due to SMTP configuration');
             }
 
@@ -136,11 +140,11 @@ class RevenueController extends Controller
 
     public function edit(Revenue $revenue)
     {
-        if (\Auth::user()->can('edit revenue')) {
-            $customers = Customer::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        if (Auth::user()->can('edit revenue')) {
+            $customers = Customer::where('created_by', '=', Auth::user()->creatorId())->get()->pluck('name', 'id');
             $customers->prepend('--', 0);
-            $categories = ProductServiceCategory::where('created_by', '=', \Auth::user()->creatorId())->where('type', '=', 1)->get()->pluck('name', 'id');
-            $accounts = BankAccount::select('*', \DB::raw("CONCAT(bank_name,' ',holder_name) AS name"))->where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $categories = ProductServiceCategory::where('created_by', '=', Auth::user()->creatorId())->where('type', '=', 1)->get()->pluck('name', 'id');
+            $accounts = BankAccount::select('*', DB::raw("CONCAT(bank_name,' ',holder_name) AS name"))->where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
 
             return view('revenue.edit', compact('customers', 'categories', 'accounts', 'revenue'));
         }
@@ -150,15 +154,15 @@ class RevenueController extends Controller
 
     public function update(Request $request, Revenue $revenue)
     {
-        if (\Auth::user()->can('edit revenue')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('edit revenue')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'date' => 'required',
-                                   'amount' => 'required',
-                                   'account_id' => 'required',
-                                   'category_id' => 'required',
-                               ]
+                    'date' => 'required',
+                    'amount' => 'required',
+                    'account_id' => 'required',
+                    'category_id' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -204,8 +208,8 @@ class RevenueController extends Controller
 
     public function destroy(Revenue $revenue)
     {
-        if (\Auth::user()->can('delete revenue')) {
-            if ($revenue->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('delete revenue')) {
+            if ($revenue->created_by == Auth::user()->creatorId()) {
                 $revenue->delete();
                 $type = 'Revenue';
                 $user = 'Customer';

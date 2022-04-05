@@ -2,6 +2,7 @@
 
 namespace App;
 
+use DB;
 use Illuminate\Database\Eloquent\Model;
 
 class CustomField extends Model
@@ -24,6 +25,7 @@ class CustomField extends Model
         'Bill' => 'Bill',
         'account' => 'Account',
     ];
+
     protected $fillable = [
         'name',
         'type',
@@ -31,20 +33,20 @@ class CustomField extends Model
         'created_by',
     ];
 
-    public static function saveData($obj, $data)
+    public static function saveData($obj, $data): void
     {
         if ($data) {
             $RecordId = $obj->id;
             foreach ($data as $fieldId => $value) {
-                \DB::insert(
+                DB::insert(
                     'insert into custom_field_values (`record_id`, `field_id`,`value`,`created_at`,`updated_at`) values (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE `value` = VALUES(`value`),`updated_at` = VALUES(`updated_at`) ',
                     [
-                                                                                                                                                                                                                                   $RecordId,
-                                                                                                                                                                                                                                   $fieldId,
-                                                                                                                                                                                                                                   $value,
-                                                                                                                                                                                                                                   date('Y-m-d H:i:s'),
-                                                                                                                                                                                                                                   date('Y-m-d H:i:s'),
-                                                                                                                                                                                                                               ]
+                        $RecordId,
+                        $fieldId,
+                        $value,
+                        date('Y-m-d H:i:s'),
+                        date('Y-m-d H:i:s'),
+                    ]
                 );
             }
         }
@@ -52,7 +54,7 @@ class CustomField extends Model
 
     public static function getData($obj, $module)
     {
-        return \DB::table('custom_field_values')->select(
+        return DB::table('custom_field_values')->select(
             [
                 'custom_field_values.value',
                 'custom_fields.id',

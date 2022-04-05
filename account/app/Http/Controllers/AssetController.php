@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Asset;
+use Auth;
 use Illuminate\Http\Request;
+use Validator;
 
 class AssetController extends Controller
 {
     public function index()
     {
-        if (\Auth::user()->can('manage assets')) {
-            $assets = Asset::where('created_by', '=', \Auth::user()->creatorId())->get();
+        if (Auth::user()->can('manage assets')) {
+            $assets = Asset::where('created_by', '=', Auth::user()->creatorId())->get();
 
             return view('assets.index', compact('assets'));
         }
@@ -20,7 +22,7 @@ class AssetController extends Controller
 
     public function create()
     {
-        if (\Auth::user()->can('create assets')) {
+        if (Auth::user()->can('create assets')) {
             return view('assets.create');
         }
 
@@ -29,15 +31,15 @@ class AssetController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('create assets')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('create assets')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'name' => 'required',
-                                   'purchase_date' => 'required',
-                                   'supported_date' => 'required',
-                                   'amount' => 'required',
-                               ]
+                    'name' => 'required',
+                    'purchase_date' => 'required',
+                    'supported_date' => 'required',
+                    'amount' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -51,7 +53,7 @@ class AssetController extends Controller
             $assets->supported_date = $request->supported_date;
             $assets->amount = $request->amount;
             $assets->description = $request->description;
-            $assets->created_by = \Auth::user()->creatorId();
+            $assets->created_by = Auth::user()->creatorId();
             $assets->save();
 
             return redirect()->route('account-assets.index')->with('success', __('Assets successfully created.'));
@@ -60,14 +62,13 @@ class AssetController extends Controller
         return redirect()->back()->with('error', __('Permission denied.'));
     }
 
-    public function show(Asset $asset)
+    public function show(Asset $asset): void
     {
-
     }
 
     public function edit($id)
     {
-        if (\Auth::user()->can('edit assets')) {
+        if (Auth::user()->can('edit assets')) {
             $asset = Asset::find($id);
 
             return view('assets.edit', compact('asset'));
@@ -78,17 +79,17 @@ class AssetController extends Controller
 
     public function update(Request $request, $id)
     {
-        if (\Auth::user()->can('edit assets')) {
+        if (Auth::user()->can('edit assets')) {
             $asset = Asset::find($id);
-            if ($asset->created_by == \Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+            if ($asset->created_by == Auth::user()->creatorId()) {
+                $validator = Validator::make(
                     $request->all(),
                     [
-                                       'name' => 'required',
-                                       'purchase_date' => 'required',
-                                       'supported_date' => 'required',
-                                       'amount' => 'required',
-                                   ]
+                        'name' => 'required',
+                        'purchase_date' => 'required',
+                        'supported_date' => 'required',
+                        'amount' => 'required',
+                    ]
                 );
                 if ($validator->fails()) {
                     $messages = $validator->getMessageBag();
@@ -114,9 +115,9 @@ class AssetController extends Controller
 
     public function destroy($id)
     {
-        if (\Auth::user()->can('delete assets')) {
+        if (Auth::user()->can('delete assets')) {
             $asset = Asset::find($id);
-            if ($asset->created_by == \Auth::user()->creatorId()) {
+            if ($asset->created_by == Auth::user()->creatorId()) {
                 $asset->delete();
 
                 return redirect()->route('account-assets.index')->with('success', __('Assets successfully deleted.'));

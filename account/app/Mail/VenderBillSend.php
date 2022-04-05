@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Utility;
+use Auth;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -11,12 +12,11 @@ class VenderBillSend extends Mailable
 {
     use Queueable;
     use SerializesModels;
+
     public $bill;
 
     /**
      * Create a new message instance.
-     *
-     * @return void
      */
     public function __construct($bill)
     {
@@ -30,7 +30,7 @@ class VenderBillSend extends Mailable
      */
     public function build()
     {
-        if ('super admin' == \Auth::user()->type) {
+        if ('super admin' == Auth::user()->type) {
             return $this->view('email.vender_bill_send')->with('bill', $this->bill)->subject('Ragarding to send bill');
         }
 

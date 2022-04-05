@@ -9,26 +9,29 @@ use App\Plan;
 use App\Transaction;
 use App\User;
 use Auth;
+use Crypt;
+use Exception;
 use File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Role;
+use Validator;
 
 class CustomerController extends Controller
 {
     public function dashboard()
     {
-        $data['invoiceChartData'] = \Auth::user()->invoiceChartData();
+        $data['invoiceChartData'] = Auth::user()->invoiceChartData();
 
         return view('customer.dashboard', $data);
     }
 
     public function index()
     {
-        if (\Auth::user()->can('manage customer')) {
-            $customers = Customer::where('created_by', \Auth::user()->creatorId())->get();
+        if (Auth::user()->can('manage customer')) {
+            $customers = Customer::where('created_by', Auth::user()->creatorId())->get();
 
             return view('customer.index', compact('customers'));
         }
@@ -38,8 +41,8 @@ class CustomerController extends Controller
 
     public function create()
     {
-        if (\Auth::user()->can('create customer')) {
-            $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'customer')->get();
+        if (Auth::user()->can('create customer')) {
+            $customFields = CustomField::where('created_by', '=', Auth::user()->creatorId())->where('module', '=', 'customer')->get();
 
             return view('customer.create', compact('customFields'));
         }
@@ -49,7 +52,7 @@ class CustomerController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('create customer')) {
+        if (Auth::user()->can('create customer')) {
             $rules = [
                 'name' => 'required',
                 'contact' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/',
@@ -58,7 +61,7 @@ class CustomerController extends Controller
 
             ];
 
-            $validator = \Validator::make($request->all(), $rules);
+            $validator = Validator::make($request->all(), $rules);
 
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -66,7 +69,7 @@ class CustomerController extends Controller
                 return redirect()->route('customer.index')->with('error', $messages->first());
             }
 
-            $objCustomer = \Auth::user();
+            $objCustomer = Auth::user();
             $creator = User::find($objCustomer->creatorId());
             $total_customer = $objCustomer->countCustomers();
             $plan = Plan::find($creator->plan);
@@ -79,7 +82,7 @@ class CustomerController extends Controller
                 $customer->contact = $request->contact;
                 $customer->email = $request->email;
                 $customer->password = Hash::make($request->password);
-                $customer->created_by = \Auth::user()->creatorId();
+                $customer->created_by = Auth::user()->creatorId();
                 $customer->billing_name = $request->billing_name;
                 $customer->billing_country = $request->billing_country;
                 $customer->billing_state = $request->billing_state;
@@ -109,9 +112,10 @@ class CustomerController extends Controller
 
             $customer->password = $request->password;
             $customer->type = 'Customer';
+
             try {
                 Mail::to($customer->email)->send(new UserCreate($customer));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $smtp_error = __('E-Mail has been not sent due to SMTP configuration');
             }
 
@@ -123,7 +127,7 @@ class CustomerController extends Controller
 
     public function show($ids)
     {
-        $id = \Crypt::decrypt($ids);
+        $id = Crypt::decrypt($ids);
         $customer = Customer::find($id);
 
         return view('customer.show', compact('customer'));
@@ -131,11 +135,11 @@ class CustomerController extends Controller
 
     public function edit($id)
     {
-        if (\Auth::user()->can('edit customer')) {
+        if (Auth::user()->can('edit customer')) {
             $customer = Customer::find($id);
             $customer->customField = CustomField::getData($customer, 'customer');
 
-            $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'customer')->get();
+            $customFields = CustomField::where('created_by', '=', Auth::user()->creatorId())->where('module', '=', 'customer')->get();
 
             return view('customer.edit', compact('customer', 'customFields'));
         }
@@ -145,13 +149,13 @@ class CustomerController extends Controller
 
     public function update(Request $request, Customer $customer)
     {
-        if (\Auth::user()->can('edit customer')) {
+        if (Auth::user()->can('edit customer')) {
             $rules = [
                 'name' => 'required',
                 'contact' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/',
             ];
 
-            $validator = \Validator::make($request->all(), $rules);
+            $validator = Validator::make($request->all(), $rules);
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
 
@@ -160,7 +164,7 @@ class CustomerController extends Controller
 
             $customer->name = $request->name;
             $customer->contact = $request->contact;
-            $customer->created_by = \Auth::user()->creatorId();
+            $customer->created_by = Auth::user()->creatorId();
             $customer->billing_name = $request->billing_name;
             $customer->billing_country = $request->billing_country;
             $customer->billing_state = $request->billing_state;
@@ -187,8 +191,8 @@ class CustomerController extends Controller
 
     public function destroy(Customer $customer)
     {
-        if (\Auth::user()->can('delete customer')) {
-            if ($customer->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('delete customer')) {
+            if ($customer->created_by == Auth::user()->creatorId()) {
                 $customer->delete();
 
                 return redirect()->route('customer.index')->with('success', __('Customer successfully deleted.'));
@@ -202,7 +206,7 @@ class CustomerController extends Controller
 
     public function customerNumber()
     {
-        $latest = Customer::where('created_by', '=', \Auth::user()->creatorId())->latest()->first();
+        $latest = Customer::where('created_by', '=', Auth::user()->creatorId())->latest()->first();
         if (!$latest) {
             return 1;
         }
@@ -212,7 +216,7 @@ class CustomerController extends Controller
 
     public function customerLogout(Request $request)
     {
-        \Auth::guard('customer')->logout();
+        Auth::guard('customer')->logout();
 
         $request->session()->invalidate();
 
@@ -221,14 +225,14 @@ class CustomerController extends Controller
 
     public function payment(Request $request)
     {
-        if (\Auth::user()->can('manage customer payment')) {
+        if (Auth::user()->can('manage customer payment')) {
             $category = [
                 'Invoice' => 'Invoice',
                 'Deposit' => 'Deposit',
                 'Sales' => 'Sales',
             ];
 
-            $query = Transaction::where('user_id', \Auth::user()->id)->where('user_type', 'Customer')->where('type', 'Payment');
+            $query = Transaction::where('user_id', Auth::user()->id)->where('user_type', 'Customer')->where('type', 'Payment');
             if (!empty($request->date)) {
                 $date_range = explode(' - ', $request->date);
                 $query->whereBetween('date', $date_range);
@@ -247,14 +251,14 @@ class CustomerController extends Controller
 
     public function transaction(Request $request)
     {
-        if (\Auth::user()->can('manage customer payment')) {
+        if (Auth::user()->can('manage customer payment')) {
             $category = [
                 'Invoice' => 'Invoice',
                 'Deposit' => 'Deposit',
                 'Sales' => 'Sales',
             ];
 
-            $query = Transaction::where('user_id', \Auth::user()->id)->where('user_type', 'Customer');
+            $query = Transaction::where('user_id', Auth::user()->id)->where('user_type', 'Customer');
 
             if (!empty($request->date)) {
                 $date_range = explode(' - ', $request->date);
@@ -274,25 +278,25 @@ class CustomerController extends Controller
 
     public function profile()
     {
-        $userDetail = \Auth::user();
+        $userDetail = Auth::user();
         $userDetail->customField = CustomField::getData($userDetail, 'customer');
-        $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'customer')->get();
+        $customFields = CustomField::where('created_by', '=', Auth::user()->creatorId())->where('module', '=', 'customer')->get();
 
         return view('customer.profile', compact('userDetail', 'customFields'));
     }
 
     public function editprofile(Request $request)
     {
-        $userDetail = \Auth::user();
+        $userDetail = Auth::user();
         $user = Customer::findOrFail($userDetail['id']);
 
         $this->validate(
             $request,
             [
-                        'name' => 'required|max:120',
-                        'contact' => 'required',
-                        'email' => 'required|email|unique:users,email,' . $userDetail['id'],
-                    ]
+                'name' => 'required|max:120',
+                'contact' => 'required',
+                'email' => 'required|email|unique:users,email,' . $userDetail['id'],
+            ]
         );
 
         if ($request->hasFile('profile')) {
@@ -332,19 +336,19 @@ class CustomerController extends Controller
 
     public function editBilling(Request $request)
     {
-        $userDetail = \Auth::user();
+        $userDetail = Auth::user();
         $user = Customer::findOrFail($userDetail['id']);
         $this->validate(
             $request,
             [
-                        'billing_name' => 'required',
-                        'billing_country' => 'required',
-                        'billing_state' => 'required',
-                        'billing_city' => 'required',
-                        'billing_phone' => 'required',
-                        'billing_zip' => 'required',
-                        'billing_address' => 'required',
-                    ]
+                'billing_name' => 'required',
+                'billing_country' => 'required',
+                'billing_state' => 'required',
+                'billing_city' => 'required',
+                'billing_phone' => 'required',
+                'billing_zip' => 'required',
+                'billing_address' => 'required',
+            ]
         );
         $input = $request->all();
         $user->fill($input)->save();
@@ -357,19 +361,19 @@ class CustomerController extends Controller
 
     public function editShipping(Request $request)
     {
-        $userDetail = \Auth::user();
+        $userDetail = Auth::user();
         $user = Customer::findOrFail($userDetail['id']);
         $this->validate(
             $request,
             [
-                        'shipping_name' => 'required',
-                        'shipping_country' => 'required',
-                        'shipping_state' => 'required',
-                        'shipping_city' => 'required',
-                        'shipping_phone' => 'required',
-                        'shipping_zip' => 'required',
-                        'shipping_address' => 'required',
-                    ]
+                'shipping_name' => 'required',
+                'shipping_country' => 'required',
+                'shipping_state' => 'required',
+                'shipping_city' => 'required',
+                'shipping_phone' => 'required',
+                'shipping_zip' => 'required',
+                'shipping_address' => 'required',
+            ]
         );
         $input = $request->all();
         $user->fill($input)->save();

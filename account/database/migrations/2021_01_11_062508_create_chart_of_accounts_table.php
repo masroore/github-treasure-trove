@@ -8,14 +8,12 @@ class CreateChartOfAccountsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create(
             'chart_of_accounts',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->id();
                 $table->string('name');
                 $table->integer('code')->default(0);
@@ -31,10 +29,8 @@ class CreateChartOfAccountsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('chart_of_accounts');
     }

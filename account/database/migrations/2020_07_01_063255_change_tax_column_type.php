@@ -8,26 +8,24 @@ class ChangeTaxColumnType extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table(
             'proposal_products',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->string('tax', '50')->nullable()->change();
             }
         );
         Schema::table(
             'invoice_products',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->string('tax', '50')->nullable()->change();
             }
         );
         Schema::table(
             'bill_products',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->string('tax', '50')->nullable()->change();
             }
         );
@@ -35,26 +33,24 @@ class ChangeTaxColumnType extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table(
             'proposal_products',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->dropColumn('tax');
             }
         );
         Schema::table(
             'invoice_products',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->dropColumn('tax');
             }
         );
         Schema::table(
             'bill_products',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->dropColumn('tax');
             }
         );

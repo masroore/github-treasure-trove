@@ -8,12 +8,10 @@ class CreateUserProjectsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('user_projects', function (Blueprint $table) {
+        Schema::create('user_projects', function (Blueprint $table): void {
             $table->id();
             $table->integer('user_id');
             $table->string('project_title');
@@ -26,10 +24,8 @@ class CreateUserProjectsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('user_projects');
     }

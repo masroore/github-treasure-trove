@@ -6,14 +6,16 @@ use App\BillProduct;
 use App\InvoiceProduct;
 use App\ProposalProduct;
 use App\Tax;
+use Auth;
 use Illuminate\Http\Request;
+use Validator;
 
 class TaxController extends Controller
 {
     public function index()
     {
-        if (\Auth::user()->can('manage constant tax')) {
-            $taxes = Tax::where('created_by', '=', \Auth::user()->creatorId())->get();
+        if (Auth::user()->can('manage constant tax')) {
+            $taxes = Tax::where('created_by', '=', Auth::user()->creatorId())->get();
 
             return view('taxes.index')->with('taxes', $taxes);
         }
@@ -23,7 +25,7 @@ class TaxController extends Controller
 
     public function create()
     {
-        if (\Auth::user()->can('create constant tax')) {
+        if (Auth::user()->can('create constant tax')) {
             return view('taxes.create');
         }
 
@@ -32,13 +34,13 @@ class TaxController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('create constant tax')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('create constant tax')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'name' => 'required|max:20',
-                                   'rate' => 'required|numeric',
-                               ]
+                    'name' => 'required|max:20',
+                    'rate' => 'required|numeric',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -49,7 +51,7 @@ class TaxController extends Controller
             $tax = new Tax();
             $tax->name = $request->name;
             $tax->rate = $request->rate;
-            $tax->created_by = \Auth::user()->creatorId();
+            $tax->created_by = Auth::user()->creatorId();
             $tax->save();
 
             return redirect()->route('taxes.index')->with('success', __('Tax rate successfully created.'));
@@ -65,8 +67,8 @@ class TaxController extends Controller
 
     public function edit(Tax $tax)
     {
-        if (\Auth::user()->can('edit constant tax')) {
-            if ($tax->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('edit constant tax')) {
+            if ($tax->created_by == Auth::user()->creatorId()) {
                 return view('taxes.edit', compact('tax'));
             }
 
@@ -78,14 +80,14 @@ class TaxController extends Controller
 
     public function update(Request $request, Tax $tax)
     {
-        if (\Auth::user()->can('edit constant tax')) {
-            if ($tax->created_by == \Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+        if (Auth::user()->can('edit constant tax')) {
+            if ($tax->created_by == Auth::user()->creatorId()) {
+                $validator = Validator::make(
                     $request->all(),
                     [
-                                       'name' => 'required|max:20',
-                                       'rate' => 'required|numeric',
-                                   ]
+                        'name' => 'required|max:20',
+                        'rate' => 'required|numeric',
+                    ]
                 );
                 if ($validator->fails()) {
                     $messages = $validator->getMessageBag();
@@ -108,8 +110,8 @@ class TaxController extends Controller
 
     public function destroy(Tax $tax)
     {
-        if (\Auth::user()->can('delete constant tax')) {
-            if ($tax->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('delete constant tax')) {
+            if ($tax->created_by == Auth::user()->creatorId()) {
                 $proposalData = ProposalProduct::whereRaw("find_in_set('$tax->id',tax)")->first();
                 $billData = BillProduct::whereRaw("find_in_set('$tax->id',tax)")->first();
                 $invoiceData = InvoiceProduct::whereRaw("find_in_set('$tax->id',tax)")->first();

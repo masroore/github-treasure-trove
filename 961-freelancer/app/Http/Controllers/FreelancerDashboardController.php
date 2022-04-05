@@ -28,10 +28,10 @@ class FreelancerDashboardController extends Controller
 
         // dd(count($monthlySale['Dec']));
         return View::make('frontend.freelancer-dashboard')->with([
-        'freelancerOngoingJobs' => $freelancerJobs,
-        'completedJobs' => $completedJobs,
-        'monthlySale' => $monthlySale,
-      ]);
+            'freelancerOngoingJobs' => $freelancerJobs,
+            'completedJobs' => $completedJobs,
+            'monthlySale' => $monthlySale,
+        ]);
     }
 
     /**

@@ -8,12 +8,10 @@ class CreateChatFriendsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('chat_friends', function (Blueprint $table) {
+        Schema::create('chat_friends', function (Blueprint $table): void {
             $table->id();
             $table->string('conversation_id');
             $table->integer('message_id');
@@ -30,10 +28,8 @@ class CreateChatFriendsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('chat_friends');
     }

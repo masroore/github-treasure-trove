@@ -23,7 +23,7 @@ Route::get('/login/{lang?}', 'Auth\LoginController@showLoginForm')->name('login'
 Route::get('/password/resets/{lang?}', 'Auth\LoginController@showLinkRequestForm')->name('change.langPass');
 
 Route::prefix('customer')->as('customer.')->group(
-    function () {
+    function (): void {
         Route::get('login/{lang}', 'Auth\LoginController@showCustomerLoginLang')->name('login.lang')->middleware(['XSS']);
         Route::get('login', 'Auth\LoginController@showCustomerLoginForm')->name('login')->middleware(['XSS']);
         Route::post('login', 'Auth\LoginController@customerLogin')->name('login')->middleware(['XSS']);
@@ -159,7 +159,7 @@ Route::prefix('customer')->as('customer.')->group(
 );
 
 Route::prefix('vender')->as('vender.')->group(
-    function () {
+    function (): void {
         Route::get('login/{lang}', 'Auth\LoginController@showVenderLoginLang')->name('login.lang')->middleware(['XSS']);
         Route::get('login', 'Auth\LoginController@showVenderLoginForm')->name('login')->middleware(['XSS']);
         Route::post('login', 'Auth\LoginController@VenderLogin')->name('login')->middleware(['XSS']);
@@ -322,7 +322,7 @@ Route::group(
             'XSS', 'revalidate',
         ],
     ],
-    function () {
+    function (): void {
         Route::get('change-language/{lang}', 'LanguageController@changeLanquage')->name('change.language');
         Route::get('manage-language/{lang}', 'LanguageController@manageLanguage')->name('manage.language');
         Route::post('store-language-data/{lang}', 'LanguageController@storeLanguageData')->name('store.language.data');
@@ -340,7 +340,7 @@ Route::group(
             'XSS', 'revalidate',
         ],
     ],
-    function () {
+    function (): void {
         Route::resource('systems', 'SystemController');
         Route::post('email-settings', 'SystemController@saveEmailSettings')->name('email.settings');
         Route::post('company-settings', 'SystemController@saveCompanySettings')->name('company.settings');
@@ -369,7 +369,7 @@ Route::group(
             'XSS', 'revalidate',
         ],
     ],
-    function () {
+    function (): void {
         Route::get('customer/{id}/show', 'CustomerController@show')->name('customer.show');
         Route::resource('customer', 'CustomerController');
     }
@@ -381,7 +381,7 @@ Route::group(
             'XSS', 'revalidate',
         ],
     ],
-    function () {
+    function (): void {
         Route::get('vender/{id}/show', 'VenderController@show')->name('vender.show');
         Route::resource('vender', 'VenderController');
     }
@@ -394,7 +394,7 @@ Route::group(
             'XSS', 'revalidate',
         ],
     ],
-    function () {
+    function (): void {
         Route::resource('bank-account', 'BankAccountController');
     }
 );
@@ -405,7 +405,7 @@ Route::group(
             'XSS', 'revalidate',
         ],
     ],
-    function () {
+    function (): void {
         Route::get('transfer/index', 'TransferController@index')->name('transfer.index');
         Route::resource('transfer', 'TransferController');
     }
@@ -440,7 +440,7 @@ Route::group(
             'XSS', 'revalidate',
         ],
     ],
-    function () {
+    function (): void {
         Route::get('invoice/{id}/duplicate', 'InvoiceController@duplicate')->name('invoice.duplicate');
         Route::get('invoice/{id}/shipping/print', 'InvoiceController@shippingDisplay')->name('invoice.shipping.print');
         Route::get('invoice/{id}/payment/reminder', 'InvoiceController@paymentReminder')->name('invoice.payment.reminder');
@@ -463,16 +463,16 @@ Route::group(
 Route::get(
     '/invoices/preview/{template}/{color}',
     [
-                                              'as' => 'invoice.preview',
-                                              'uses' => 'InvoiceController@previewInvoice',
-                                          ]
+        'as' => 'invoice.preview',
+        'uses' => 'InvoiceController@previewInvoice',
+    ]
 );
 Route::post(
     '/invoices/template/setting',
     [
-                                    'as' => 'template.setting',
-                                    'uses' => 'InvoiceController@saveTemplateSettings',
-                                ]
+        'as' => 'template.setting',
+        'uses' => 'InvoiceController@saveTemplateSettings',
+    ]
 );
 
 Route::group(
@@ -482,7 +482,7 @@ Route::group(
             'XSS', 'revalidate',
         ],
     ],
-    function () {
+    function (): void {
         Route::get('credit-note', 'CreditNoteController@index')->name('credit.note');
         Route::get('custom-credit-note', 'CreditNoteController@customCreate')->name('invoice.custom.credit.note');
         Route::post('custom-credit-note', 'CreditNoteController@customStore')->name('invoice.custom.credit.note');
@@ -502,7 +502,7 @@ Route::group(
             'XSS', 'revalidate',
         ],
     ],
-    function () {
+    function (): void {
         Route::get('debit-note', 'DebitNoteController@index')->name('debit.note');
         Route::get('custom-debit-note', 'DebitNoteController@customCreate')->name('bill.custom.debit.note');
         Route::post('custom-debit-note', 'DebitNoteController@customStore')->name('bill.custom.debit.note');
@@ -518,16 +518,16 @@ Route::group(
 Route::get(
     '/bill/preview/{template}/{color}',
     [
-                                          'as' => 'bill.preview',
-                                          'uses' => 'BillController@previewBill',
-                                      ]
+        'as' => 'bill.preview',
+        'uses' => 'BillController@previewBill',
+    ]
 );
 Route::post(
     '/bill/template/setting',
     [
-                                'as' => 'bill.template.setting',
-                                'uses' => 'BillController@saveBillTemplateSettings',
-                            ]
+        'as' => 'bill.template.setting',
+        'uses' => 'BillController@saveBillTemplateSettings',
+    ]
 );
 
 Route::resource('taxes', 'TaxController')->middleware(
@@ -558,7 +558,7 @@ Route::group(
             'XSS', 'revalidate',
         ],
     ],
-    function () {
+    function (): void {
         Route::get('bill/{id}/duplicate', 'BillController@duplicate')->name('bill.duplicate');
         Route::get('bill/{id}/shipping/print', 'BillController@shippingDisplay')->name('bill.shipping.print');
         Route::get('bill/index', 'BillController@index')->name('bill.index');
@@ -611,7 +611,7 @@ Route::group(
             'XSS', 'revalidate',
         ],
     ],
-    function () {
+    function (): void {
         Route::get('/orders', 'StripePaymentController@index')->name('order.index');
         Route::get('/stripe/{code}', 'StripePaymentController@stripe')->name('stripe');
         Route::post('/stripe', 'StripePaymentController@stripePost')->name('stripe.post');
@@ -625,7 +625,7 @@ Route::group(
             'XSS', 'revalidate',
         ],
     ],
-    function () {
+    function (): void {
         Route::get('report/transaction', 'TransactionController@index')->name('transaction.index');
     }
 );
@@ -637,7 +637,7 @@ Route::group(
             'XSS', 'revalidate',
         ],
     ],
-    function () {
+    function (): void {
         Route::get('report/income-summary', 'ReportController@incomeSummary')->name('report.income.summary');
         Route::get('report/expense-summary', 'ReportController@expenseSummary')->name('report.expense.summary');
         Route::get('report/income-vs-expense-summary', 'ReportController@incomeVsExpenseSummary')->name('report.income.vs.expense.summary');
@@ -661,9 +661,9 @@ Route::group(
 Route::get(
     '/apply-coupon',
     [
-                       'as' => 'apply.coupon',
-                       'uses' => 'CouponController@applyCoupon',
-                   ]
+        'as' => 'apply.coupon',
+        'uses' => 'CouponController@applyCoupon',
+    ]
 )->middleware(
     [
         'auth',
@@ -686,7 +686,7 @@ Route::group(
             'XSS', 'revalidate',
         ],
     ],
-    function () {
+    function (): void {
         Route::get('proposal/{id}/status/change', 'ProposalController@statusChange')->name('proposal.status.change');
         Route::get('proposal/{id}/convert', 'ProposalController@convert')->name('proposal.convert');
         Route::get('proposal/{id}/duplicate', 'ProposalController@duplicate')->name('proposal.duplicate');
@@ -705,16 +705,16 @@ Route::group(
 Route::get(
     '/proposal/preview/{template}/{color}',
     [
-                                              'as' => 'proposal.preview',
-                                              'uses' => 'ProposalController@previewProposal',
-                                          ]
+        'as' => 'proposal.preview',
+        'uses' => 'ProposalController@previewProposal',
+    ]
 );
 Route::post(
     '/proposal/template/setting',
     [
-                                    'as' => 'proposal.template.setting',
-                                    'uses' => 'ProposalController@saveProposalTemplateSettings',
-                                ]
+        'as' => 'proposal.template.setting',
+        'uses' => 'ProposalController@saveProposalTemplateSettings',
+    ]
 );
 
 Route::resource('goal', 'GoalController')->middleware(
@@ -773,7 +773,7 @@ Route::group(
             'XSS', 'revalidate',
         ],
     ],
-    function () {
+    function (): void {
         Route::resource('chart-of-account', 'ChartOfAccountController');
     }
 );
@@ -785,7 +785,7 @@ Route::group(
             'XSS', 'revalidate',
         ],
     ],
-    function () {
+    function (): void {
         Route::post('journal-entry/account/destroy', 'JournalEntryController@accountDestroy')->name('journal.account.destroy');
         Route::resource('journal-entry', 'JournalEntryController');
     }

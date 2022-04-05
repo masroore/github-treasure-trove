@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Auth;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
@@ -14,6 +15,7 @@ class Vender extends Authenticatable
     public $settings;
 
     protected $guard_name = 'web';
+
     protected $fillable = [
         'vender_id',
         'name',
@@ -123,35 +125,35 @@ class Vender extends Authenticatable
         $data['month'] = $month;
         $data['currentYear'] = date('M-Y');
 
-        $totalBill = Bill::where('vender_id', \Auth::user()->id)->count();
+        $totalBill = Bill::where('vender_id', Auth::user()->id)->count();
         $unpaidArr = [];
 
-        for ($i = 1; $i <= 12; $i++) {
-            $unpaidBill = Bill::where('vender_id', \Auth::user()->id)->whereRaw('year(`send_date`) = ?', [date('Y')])->whereRaw('month(`send_date`) = ?', $i)->where('status', '1')->where('due_date', '>', date('Y-m-d'))->get();
-            $paidBill = Bill::where('vender_id', \Auth::user()->id)->whereRaw('year(`send_date`) = ?', [date('Y')])->whereRaw('month(`send_date`) = ?', $i)->where('status', '4')->get();
-            $partialBill = Bill::where('vender_id', \Auth::user()->id)->whereRaw('year(`send_date`) = ?', [date('Y')])->whereRaw('month(`send_date`) = ?', $i)->where('status', '3')->get();
-            $dueBill = Bill::where('vender_id', \Auth::user()->id)->whereRaw('year(`send_date`) = ?', [date('Y')])->whereRaw('month(`send_date`) = ?', $i)->where('status', '1')->where('due_date', '<', date('Y-m-d'))->get();
+        for ($i = 1; $i <= 12; ++$i) {
+            $unpaidBill = Bill::where('vender_id', Auth::user()->id)->whereRaw('year(`send_date`) = ?', [date('Y')])->whereRaw('month(`send_date`) = ?', $i)->where('status', '1')->where('due_date', '>', date('Y-m-d'))->get();
+            $paidBill = Bill::where('vender_id', Auth::user()->id)->whereRaw('year(`send_date`) = ?', [date('Y')])->whereRaw('month(`send_date`) = ?', $i)->where('status', '4')->get();
+            $partialBill = Bill::where('vender_id', Auth::user()->id)->whereRaw('year(`send_date`) = ?', [date('Y')])->whereRaw('month(`send_date`) = ?', $i)->where('status', '3')->get();
+            $dueBill = Bill::where('vender_id', Auth::user()->id)->whereRaw('year(`send_date`) = ?', [date('Y')])->whereRaw('month(`send_date`) = ?', $i)->where('status', '1')->where('due_date', '<', date('Y-m-d'))->get();
 
             $totalUnpaid = 0;
-            for ($j = 0; $j < \count($unpaidBill); $j++) {
+            for ($j = 0; $j < \count($unpaidBill); ++$j) {
                 $unpaidAmount = $unpaidBill[$j]->getDue();
                 $totalUnpaid += $unpaidAmount;
             }
 
             $totalPaid = 0;
-            for ($j = 0; $j < \count($paidBill); $j++) {
+            for ($j = 0; $j < \count($paidBill); ++$j) {
                 $paidAmount = $paidBill[$j]->getTotal();
                 $totalPaid += $paidAmount;
             }
 
             $totalPartial = 0;
-            for ($j = 0; $j < \count($partialBill); $j++) {
+            for ($j = 0; $j < \count($partialBill); ++$j) {
                 $partialAmount = $partialBill[$j]->getDue();
                 $totalPartial += $partialAmount;
             }
 
             $totalDue = 0;
-            for ($j = 0; $j < \count($dueBill); $j++) {
+            for ($j = 0; $j < \count($dueBill); ++$j) {
                 $dueAmount = $dueBill[$j]->getDue();
                 $totalDue += $dueAmount;
             }
@@ -167,12 +169,12 @@ class Vender extends Authenticatable
         }
         $data['data'] = $dataStatus;
 
-        $unpaidBill = Bill::where('vender_id', \Auth::user()->id)->whereRaw('year(`send_date`) = ?', [date('Y')])->where('status', '1')->where('due_date', '>', date('Y-m-d'))->get();
-        $paidBill = Bill::where('vender_id', \Auth::user()->id)->whereRaw('year(`send_date`) = ?', [date('Y')])->where('status', '4')->get();
-        $partialBill = Bill::where('vender_id', \Auth::user()->id)->whereRaw('year(`send_date`) = ?', [date('Y')])->where('status', '3')->get();
-        $dueBill = Bill::where('vender_id', \Auth::user()->id)->whereRaw('year(`send_date`) = ?', [date('Y')])->where('status', '1')->where('due_date', '<', date('Y-m-d'))->get();
+        $unpaidBill = Bill::where('vender_id', Auth::user()->id)->whereRaw('year(`send_date`) = ?', [date('Y')])->where('status', '1')->where('due_date', '>', date('Y-m-d'))->get();
+        $paidBill = Bill::where('vender_id', Auth::user()->id)->whereRaw('year(`send_date`) = ?', [date('Y')])->where('status', '4')->get();
+        $partialBill = Bill::where('vender_id', Auth::user()->id)->whereRaw('year(`send_date`) = ?', [date('Y')])->where('status', '3')->get();
+        $dueBill = Bill::where('vender_id', Auth::user()->id)->whereRaw('year(`send_date`) = ?', [date('Y')])->where('status', '1')->where('due_date', '<', date('Y-m-d'))->get();
 
-        $progressData['totalBill'] = $totalBill = Bill::where('vender_id', \Auth::user()->id)->whereRaw('year(`send_date`) = ?', [date('Y')])->count();
+        $progressData['totalBill'] = $totalBill = Bill::where('vender_id', Auth::user()->id)->whereRaw('year(`send_date`) = ?', [date('Y')])->count();
         $progressData['totalUnpaidBill'] = $totalUnpaidBill = \count($unpaidBill);
         $progressData['totalPaidBill'] = $totalPaidBill = \count($paidBill);
         $progressData['totalPartialBill'] = $totalPartialBill = \count($partialBill);
@@ -203,9 +205,9 @@ class Vender extends Authenticatable
         $dueBill = Bill::where('vender_id', $vendorId)->whereNotIn(
             'status',
             [
-                        '0',
-                        '4',
-                    ]
+                '0',
+                '4',
+            ]
         )->where('due_date', '<', date('Y-m-d'))->get();
         $due = 0;
         foreach ($dueBill as $bill) {

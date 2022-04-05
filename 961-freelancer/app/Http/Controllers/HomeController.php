@@ -24,8 +24,8 @@ class HomeController extends Controller
         $categories = Category::limit(8)->get();
 
         return View::make('frontend.index')->with([
-        'categories' => $categories,
-      ]);
+            'categories' => $categories,
+        ]);
     }
 
     /**
@@ -56,18 +56,18 @@ class HomeController extends Controller
             $toemail = 'peek.zeeshan@gmail.com';
             Mail::send(
                 'mail.contact-email',
-                ['user' =>$new_user],
-                function ($message) use ($toemail) {
+                ['user' => $new_user],
+                function ($message) use ($toemail): void {
                     $message->subject('961Freelancer - Contact Us');
                     $message->from('support@961freelancer.com', '961Freelancer');
                     $message->to($toemail);
                 }
             );
 
-            return response()->json(['status'=>'true', 'message' => 'Your message sent successfully'], 200);
+            return response()->json(['status' => 'true', 'message' => 'Your message sent successfully'], 200);
         }
 
-        return response()->json(['status'=>'errorr', 'message' => 'error occured please try again'], 200);
+        return response()->json(['status' => 'errorr', 'message' => 'error occured please try again'], 200);
     }
 
     /**
@@ -121,8 +121,8 @@ class HomeController extends Controller
         $categories = Category::get();
 
         return View::make('frontend.categories')->with([
-        'categories' => $categories,
-      ]);
+            'categories' => $categories,
+        ]);
     }
 
     // Contact Us
@@ -163,11 +163,11 @@ class HomeController extends Controller
             $languages = Language::all();
 
             return View::make('frontend.freelancers')->with([
-            'freelancers' => $freelancers,
-            'categories' => $categories,
-            'countries' => $countries,
-            'languages' => $languages,
-        ]);
+                'freelancers' => $freelancers,
+                'categories' => $categories,
+                'countries' => $countries,
+                'languages' => $languages,
+            ]);
         }
         if ('' != $request->keyword) {
             $jobs = Job::with('saveJobs')->where('job_status', 1)->where('job_title', 'like', '%' . $request->keyword . '%')->orWhere('job_description', 'like', '%' . $request->keyword . '%')->orWhere('job_skills', 'like', '%' . $request->keyword . '%')->orWhere('job_cat', 'like', '%' . $request->keyword . '%')->orWhere('service_level', 'like', '%' . $request->keyword . '%')->orWhere('job_location', 'like', '%' . $request->keyword . '%')->orWhere('job_duration', 'like', '%' . $request->keyword . '%')->orWhere('job_type', 'like', '%' . $request->keyword . '%')->orderBy('created_at', 'DESC')->paginate(10);
@@ -179,9 +179,9 @@ class HomeController extends Controller
         $countries = Countries::get();
 
         return View::make('frontend.job-listings')->with([
-          'jobs' => $jobs,
-          'categories' => $categories,
-          'countries' => $countries,
+            'jobs' => $jobs,
+            'categories' => $categories,
+            'countries' => $countries,
         ]);
     }
 }

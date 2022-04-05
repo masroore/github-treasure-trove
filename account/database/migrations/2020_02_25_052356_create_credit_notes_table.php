@@ -8,14 +8,12 @@ class CreateCreditNotesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create(
             'credit_notes',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->bigIncrements('id');
                 $table->integer('invoice')->default('0');
                 $table->integer('customer')->default('0');
@@ -29,10 +27,8 @@ class CreateCreditNotesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('credit_notes');
     }

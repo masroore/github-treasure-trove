@@ -13,6 +13,7 @@ class Bill extends Model
         'Partialy Paid',
         'Paid',
     ];
+
     protected $fillable = [
         'vender_id',
         'currency',

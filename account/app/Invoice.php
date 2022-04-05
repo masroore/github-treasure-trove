@@ -13,6 +13,7 @@ class Invoice extends Model
         'Partialy Paid',
         'Paid',
     ];
+
     protected $fillable = [
         'invoice_id',
         'customer_id',
@@ -91,7 +92,7 @@ class Invoice extends Model
         return ($this->getTotal() - $due) - $this->invoiceTotalCreditNote();
     }
 
-    public static function change_status($invoice_id, $status)
+    public static function change_status($invoice_id, $status): void
     {
         $invoice = self::find($invoice_id);
         $invoice->status = $status;

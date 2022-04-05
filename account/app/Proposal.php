@@ -18,6 +18,7 @@ class Proposal extends Model
         'Close',
         //4
     ];
+
     protected $fillable = [
         'proposal_id',
         'customer_id',
@@ -91,7 +92,7 @@ class Proposal extends Model
         return ($this->getTotal() - $due) - $this->invoiceTotalCreditNote();
     }
 
-    public static function change_status($proposal_id, $status)
+    public static function change_status($proposal_id, $status): void
     {
         $proposal = self::find($proposal_id);
         $proposal->status = $status;

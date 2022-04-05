@@ -8,12 +8,10 @@ class AddClassToJournalEntriesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('journal_entries', function (Blueprint $table) {
+        Schema::table('journal_entries', function (Blueprint $table): void {
             $table->integer('class_id')->default(0);
             // $table->foreign('class_id')
             // ->references('classesID')->on('classes')
@@ -23,13 +21,10 @@ class AddClassToJournalEntriesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('journal_entries', function (Blueprint $table) {
-
+        Schema::table('journal_entries', function (Blueprint $table): void {
         });
     }
 }

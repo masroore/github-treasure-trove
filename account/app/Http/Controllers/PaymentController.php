@@ -10,24 +10,28 @@ use App\ProductServiceCategory;
 use App\Transaction;
 use App\Utility;
 use App\Vender;
+use Auth;
+use DB;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Validator;
 
 class PaymentController extends Controller
 {
     public function index(Request $request)
     {
-        if (\Auth::user()->can('manage payment')) {
-            $vender = Vender::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        if (Auth::user()->can('manage payment')) {
+            $vender = Vender::where('created_by', '=', Auth::user()->creatorId())->get()->pluck('name', 'id');
             $vender->prepend('All', '');
 
-            $account = BankAccount::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('holder_name', 'id');
+            $account = BankAccount::where('created_by', '=', Auth::user()->creatorId())->get()->pluck('holder_name', 'id');
             $account->prepend('All', '');
 
-            $category = ProductServiceCategory::where('created_by', '=', \Auth::user()->creatorId())->where('type', '=', 2)->get()->pluck('name', 'id');
+            $category = ProductServiceCategory::where('created_by', '=', Auth::user()->creatorId())->where('type', '=', 2)->get()->pluck('name', 'id');
             $category->prepend('All', '');
 
-            $query = Payment::where('created_by', '=', \Auth::user()->creatorId());
+            $query = Payment::where('created_by', '=', Auth::user()->creatorId());
 
             if (!empty($request->date)) {
                 $date_range = explode(' - ', $request->date);
@@ -55,11 +59,11 @@ class PaymentController extends Controller
 
     public function create()
     {
-        if (\Auth::user()->can('create payment')) {
-            $venders = Vender::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        if (Auth::user()->can('create payment')) {
+            $venders = Vender::where('created_by', '=', Auth::user()->creatorId())->get()->pluck('name', 'id');
             $venders->prepend('--', 0);
-            $categories = ProductServiceCategory::where('created_by', '=', \Auth::user()->creatorId())->where('type', '=', 2)->get()->pluck('name', 'id');
-            $accounts = BankAccount::select('*', \DB::raw("CONCAT(bank_name,' ',holder_name) AS name"))->where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $categories = ProductServiceCategory::where('created_by', '=', Auth::user()->creatorId())->where('type', '=', 2)->get()->pluck('name', 'id');
+            $accounts = BankAccount::select('*', DB::raw("CONCAT(bank_name,' ',holder_name) AS name"))->where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
 
             return view('payment.create', compact('venders', 'categories', 'accounts'));
         }
@@ -69,15 +73,15 @@ class PaymentController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('create payment')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('create payment')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'date' => 'required',
-                                   'amount' => 'required',
-                                   'account_id' => 'required',
-                                   'category_id' => 'required',
-                               ]
+                    'date' => 'required',
+                    'amount' => 'required',
+                    'account_id' => 'required',
+                    'category_id' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -94,7 +98,7 @@ class PaymentController extends Controller
             $payment->payment_method = 0;
             $payment->reference = $request->reference;
             $payment->description = $request->description;
-            $payment->created_by = \Auth::user()->creatorId();
+            $payment->created_by = Auth::user()->creatorId();
             $payment->save();
 
             $category = ProductServiceCategory::where('id', $request->category_id)->first();
@@ -111,8 +115,8 @@ class PaymentController extends Controller
             $payment = new BillPayment();
             $payment->name = !empty($vender) ? $vender['name'] : '';
             $payment->method = '-';
-            $payment->date = \Auth::user()->dateFormat($request->date);
-            $payment->amount = \Auth::user()->priceFormat($request->amount);
+            $payment->date = Auth::user()->dateFormat($request->date);
+            $payment->amount = Auth::user()->priceFormat($request->amount);
             $payment->bill = '';
 
             if (!empty($vender)) {
@@ -123,7 +127,7 @@ class PaymentController extends Controller
 
             try {
                 Mail::to($vender['email'])->send(new BillPaymentCreate($payment));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $smtp_error = __('E-Mail has been not sent due to SMTP configuration');
             }
 
@@ -135,12 +139,12 @@ class PaymentController extends Controller
 
     public function edit(Payment $payment)
     {
-        if (\Auth::user()->can('edit payment')) {
-            $venders = Vender::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        if (Auth::user()->can('edit payment')) {
+            $venders = Vender::where('created_by', '=', Auth::user()->creatorId())->get()->pluck('name', 'id');
             $venders->prepend('--', 0);
-            $categories = ProductServiceCategory::where('created_by', '=', \Auth::user()->creatorId())->get()->where('type', '=', 2)->pluck('name', 'id');
+            $categories = ProductServiceCategory::where('created_by', '=', Auth::user()->creatorId())->get()->where('type', '=', 2)->pluck('name', 'id');
 
-            $accounts = BankAccount::select('*', \DB::raw("CONCAT(bank_name,' ',holder_name) AS name"))->where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $accounts = BankAccount::select('*', DB::raw("CONCAT(bank_name,' ',holder_name) AS name"))->where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
 
             return view('payment.edit', compact('venders', 'categories', 'accounts', 'payment'));
         }
@@ -150,16 +154,16 @@ class PaymentController extends Controller
 
     public function update(Request $request, Payment $payment)
     {
-        if (\Auth::user()->can('edit payment')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('edit payment')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'date' => 'required',
-                                   'amount' => 'required',
-                                   'account_id' => 'required',
-                                   'vender_id' => 'required',
-                                   'category_id' => 'required',
-                               ]
+                    'date' => 'required',
+                    'amount' => 'required',
+                    'account_id' => 'required',
+                    'vender_id' => 'required',
+                    'category_id' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -203,8 +207,8 @@ class PaymentController extends Controller
 
     public function destroy(Payment $payment)
     {
-        if (\Auth::user()->can('delete payment')) {
-            if ($payment->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('delete payment')) {
+            if ($payment->created_by == Auth::user()->creatorId()) {
                 $payment->delete();
                 $type = 'Payment';
                 $user = 'Vender';

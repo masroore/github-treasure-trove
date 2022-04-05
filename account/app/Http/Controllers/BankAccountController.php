@@ -9,14 +9,16 @@ use App\InvoicePayment;
 use App\Payment;
 use App\Revenue;
 use App\Transaction;
+use Auth;
 use Illuminate\Http\Request;
+use Validator;
 
 class BankAccountController extends Controller
 {
     public function index()
     {
-        if (\Auth::user()->can('create bank account')) {
-            $accounts = BankAccount::where('created_by', '=', \Auth::user()->creatorId())->get();
+        if (Auth::user()->can('create bank account')) {
+            $accounts = BankAccount::where('created_by', '=', Auth::user()->creatorId())->get();
 
             return view('bankAccount.index', compact('accounts'));
         }
@@ -26,8 +28,8 @@ class BankAccountController extends Controller
 
     public function create()
     {
-        if (\Auth::user()->can('create bank account')) {
-            $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'account')->get();
+        if (Auth::user()->can('create bank account')) {
+            $customFields = CustomField::where('created_by', '=', Auth::user()->creatorId())->where('module', '=', 'account')->get();
 
             return view('bankAccount.create', compact('customFields'));
         }
@@ -37,16 +39,16 @@ class BankAccountController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('create bank account')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('create bank account')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'holder_name' => 'required',
-                                   'bank_name' => 'required',
-                                   'account_number' => 'required',
-                                   'opening_balance' => 'required',
-                                   'contact_number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/',
-                               ]
+                    'holder_name' => 'required',
+                    'bank_name' => 'required',
+                    'account_number' => 'required',
+                    'opening_balance' => 'required',
+                    'contact_number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/',
+                ]
             );
 
             if ($validator->fails()) {
@@ -62,7 +64,7 @@ class BankAccountController extends Controller
             $account->opening_balance = $request->opening_balance;
             $account->contact_number = $request->contact_number;
             $account->bank_address = $request->bank_address;
-            $account->created_by = \Auth::user()->creatorId();
+            $account->created_by = Auth::user()->creatorId();
             $account->save();
             CustomField::saveData($account, $request->customField);
 
@@ -74,10 +76,10 @@ class BankAccountController extends Controller
 
     public function edit(BankAccount $bankAccount)
     {
-        if (\Auth::user()->can('edit bank account')) {
-            if ($bankAccount->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('edit bank account')) {
+            if ($bankAccount->created_by == Auth::user()->creatorId()) {
                 $bankAccount->customField = CustomField::getData($bankAccount, 'account');
-                $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'account')->get();
+                $customFields = CustomField::where('created_by', '=', Auth::user()->creatorId())->where('module', '=', 'account')->get();
 
                 return view('bankAccount.edit', compact('bankAccount', 'customFields'));
             }
@@ -90,16 +92,16 @@ class BankAccountController extends Controller
 
     public function update(Request $request, BankAccount $bankAccount)
     {
-        if (\Auth::user()->can('create bank account')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('create bank account')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'holder_name' => 'required',
-                                   'bank_name' => 'required',
-                                   'account_number' => 'required',
-                                   'opening_balance' => 'required',
-                                   'contact_number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/',
-                               ]
+                    'holder_name' => 'required',
+                    'bank_name' => 'required',
+                    'account_number' => 'required',
+                    'opening_balance' => 'required',
+                    'contact_number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/',
+                ]
             );
 
             if ($validator->fails()) {
@@ -114,7 +116,7 @@ class BankAccountController extends Controller
             $bankAccount->opening_balance = $request->opening_balance;
             $bankAccount->contact_number = $request->contact_number;
             $bankAccount->bank_address = $request->bank_address;
-            $bankAccount->created_by = \Auth::user()->creatorId();
+            $bankAccount->created_by = Auth::user()->creatorId();
             $bankAccount->save();
             CustomField::saveData($bankAccount, $request->customField);
 
@@ -126,8 +128,8 @@ class BankAccountController extends Controller
 
     public function destroy(BankAccount $bankAccount)
     {
-        if (\Auth::user()->can('delete bank account')) {
-            if ($bankAccount->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('delete bank account')) {
+            if ($bankAccount->created_by == Auth::user()->creatorId()) {
                 $revenue = Revenue::where('account_id', $bankAccount->id)->first();
                 $invoicePayment = InvoicePayment::where('account_id', $bankAccount->id)->first();
                 $transaction = Transaction::where('account', $bankAccount->id)->first();

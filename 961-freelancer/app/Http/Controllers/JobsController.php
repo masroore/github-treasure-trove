@@ -27,10 +27,10 @@ class JobsController extends Controller
         $countries = Countries::get();
 
         return View::make('frontend.job-listings')->with([
-        'jobs' => $jobs,
-        'categories' => $categories,
-        'countries' => $countries,
-      ]);
+            'jobs' => $jobs,
+            'categories' => $categories,
+            'countries' => $countries,
+        ]);
     }
 
     /**
@@ -55,24 +55,24 @@ class JobsController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-        'job_title' => 'required',
-        'service_level' => 'required',
-        'job_type' => 'required',
-        'job_duration' => 'required',
-        'job_description' => 'required',
-        'job_skills' => 'required',
-        'job_cat' => 'required',
+            'job_title' => 'required',
+            'service_level' => 'required',
+            'job_type' => 'required',
+            'job_duration' => 'required',
+            'job_description' => 'required',
+            'job_skills' => 'required',
+            'job_cat' => 'required',
 
-      ], [
+        ], [
 
-        'job_title.required' => 'Enter job title',
-        'service_level.required' => 'Select service level',
-        'job_type.required' => 'Select job type',
-        'job_duration.required' => 'Select job duration',
-        'job_description.required' => 'Enter job description',
-        'job_skills.required' => 'Select at least one skill to continue',
-        'job_cat.required' => 'Select at least one category to continue',
-      ]);
+            'job_title.required' => 'Enter job title',
+            'service_level.required' => 'Select service level',
+            'job_type.required' => 'Select job type',
+            'job_duration.required' => 'Select job duration',
+            'job_description.required' => 'Enter job description',
+            'job_skills.required' => 'Select at least one skill to continue',
+            'job_cat.required' => 'Select at least one category to continue',
+        ]);
         // dd($request->all());
         $job = new Job();
         $job->job_id = time() . Str::random(6);
@@ -101,7 +101,7 @@ class JobsController extends Controller
         $images = [];
         if ($files = $request->file('job_attachement')) {
             foreach ($files as $file) {
-                $imagename = 'job-' . rand(000000, 999999) . '.' . $file->getClientOriginalExtension();
+                $imagename = 'job-' . mt_rand(000000, 999999) . '.' . $file->getClientOriginalExtension();
                 $extension = $file->getClientOriginalExtension();
                 // $imagename= $filename;
                 $destinationpath = public_path('assets/images/jobs/');
@@ -130,9 +130,9 @@ class JobsController extends Controller
         $bidsOnProjCount = Proposal::where('job_id', $id)->where('status', 1)->count();
 
         return \View::make('frontend.single-job')->with([
-        'job' => $job,
-        'bidsOnProjCount' => $bidsOnProjCount,
-      ]);
+            'job' => $job,
+            'bidsOnProjCount' => $bidsOnProjCount,
+        ]);
     }
 
     /**
@@ -150,11 +150,11 @@ class JobsController extends Controller
         $skills = Skills::get();
         // dd($getSingleData);
         return \View::make('frontend.edit-job')->with([
-        'categories' => $categories,
-        'countries' => $countries,
-        'skills' => $skills,
-        'getSingleData' => $getSingleData,
-      ]);
+            'categories' => $categories,
+            'countries' => $countries,
+            'skills' => $skills,
+            'getSingleData' => $getSingleData,
+        ]);
     }
 
     /**
@@ -169,10 +169,10 @@ class JobsController extends Controller
         $job = Job::find($id);
         $job->job_status = 1;
         if ($job->save()) {
-            return response()->json(['status'=>'true', 'message' => 'Project updated successfully'], 200);
+            return response()->json(['status' => 'true', 'message' => 'Project updated successfully'], 200);
         }
 
-        return response()->json(['status'=>'errorr', 'message' => 'error occured please try again'], 200);
+        return response()->json(['status' => 'errorr', 'message' => 'error occured please try again'], 200);
     }
 
     // UpdateJob
@@ -206,7 +206,7 @@ class JobsController extends Controller
         if ($request->file('job_attachement')) {
             if ($files = $request->file('job_attachement')) {
                 foreach ($files as $file) {
-                    $imagename = 'job-' . rand(000000, 999999) . '.' . $file->getClientOriginalExtension();
+                    $imagename = 'job-' . mt_rand(000000, 999999) . '.' . $file->getClientOriginalExtension();
                     $extension = $file->getClientOriginalExtension();
                     // $imagename= $filename;
                     $destinationpath = public_path('assets/images/jobs/');
@@ -236,10 +236,10 @@ class JobsController extends Controller
     {
         $deleteData = Job::find($id);
         if ($deleteData->delete()) {
-            return response()->json(['status'=>'true', 'message' => 'Project deleted successfully'], 200);
+            return response()->json(['status' => 'true', 'message' => 'Project deleted successfully'], 200);
         }
 
-        return response()->json(['status'=>'error', 'message' => 'error occured please try again'], 200);
+        return response()->json(['status' => 'error', 'message' => 'error occured please try again'], 200);
     }
 
     // Jobs By category
@@ -252,10 +252,10 @@ class JobsController extends Controller
         $countries = Countries::get();
 
         return View::make('frontend.job-listings')->with([
-        'jobs' => $jobs,
-        'categories' => $categories,
-        'countries' => $countries,
-      ]);
+            'jobs' => $jobs,
+            'categories' => $categories,
+            'countries' => $countries,
+        ]);
     }
     // Manage Jobs
 
@@ -265,9 +265,9 @@ class JobsController extends Controller
         $myJobs = Job::with('proposal', 'clientInfo')->whereuser_id($user_id)->orderBy('created_at', 'DESC')->paginate(5);
         // $bidsOnProjCount = Proposal::where('job_id', $id)->where('status', 1)->count();
         return View::make('frontend.manage-jobs')->with([
-        'myJobs' => $myJobs,
-        // 'bidsOnProjCount' => $bidsOnProjCount,
-      ]);
+            'myJobs' => $myJobs,
+            // 'bidsOnProjCount' => $bidsOnProjCount,
+        ]);
     }
 
     // Completed Job
@@ -279,9 +279,9 @@ class JobsController extends Controller
         $freelancerJobs = Proposal::with('job', 'freelancerRating')->whereuser_id($user_id)->wherestatus(5)->orderBy('created_at', 'DESC')->paginate(5);
         // dd($freelancerJobs);
         return View::make('frontend.completed-jobs')->with([
-        'clientCompletedJobs' => $clientjobs,
-        'freelancerCompletedJobs' => $freelancerJobs,
-      ]);
+            'clientCompletedJobs' => $clientjobs,
+            'freelancerCompletedJobs' => $freelancerJobs,
+        ]);
     }
 
     // Cacelled Job
@@ -293,9 +293,9 @@ class JobsController extends Controller
         $freelancerJobs = Proposal::with('job')->whereuser_id($user_id)->where('status', 3)->orWhere('status', 4)->orderBy('created_at', 'DESC')->paginate(5);
         // dd($proposals);
         return View::make('frontend.cancelled-jobs')->with([
-        'clientCancelledJobs' => $clientjobs,
-        'freelancerCancelledJobs' => $freelancerJobs,
-      ]);
+            'clientCancelledJobs' => $clientjobs,
+            'freelancerCancelledJobs' => $freelancerJobs,
+        ]);
     }
 
     // Ongoing Job
@@ -308,9 +308,9 @@ class JobsController extends Controller
 
         // dd($proposals);
         return View::make('frontend.ongoing-jobs')->with([
-        'clientOngoingJobs' => $clientjobs,
-        'freelancerOngoingJobs' => $freelancerJobs,
-      ]);
+            'clientOngoingJobs' => $clientjobs,
+            'freelancerOngoingJobs' => $freelancerJobs,
+        ]);
     }
 
     // Store Weekly Hours Manually
@@ -324,10 +324,10 @@ class JobsController extends Controller
         $hours->weekly_payment = $request->completed_hours * $request->hourly_amount;
         $hours->status = 1;
         if ($hours->save()) {
-            return response()->json(['status'=>'true', 'message' => 'Your weekly completed hours updated', 'job_id' =>$hours->job_id], 200);
+            return response()->json(['status' => 'true', 'message' => 'Your weekly completed hours updated', 'job_id' => $hours->job_id], 200);
         }
 
-        return response()->json(['status'=>'error', 'message' => 'error occured please try again'], 200);
+        return response()->json(['status' => 'error', 'message' => 'error occured please try again'], 200);
     }
 
     // Ongoing Job Detail
@@ -345,11 +345,11 @@ class JobsController extends Controller
         }
 
         return View::make('frontend.ongoing-detail')->with([
-        'ongoingJob' => $jobData,
-        'rating_count' => $rating_count,
-        'rating_avg' => $rating_avg,
-        'weeklyHours' => $weeklyHours,
-      ]);
+            'ongoingJob' => $jobData,
+            'rating_count' => $rating_count,
+            'rating_avg' => $rating_avg,
+            'weeklyHours' => $weeklyHours,
+        ]);
     }
 
     // Category Search
@@ -359,8 +359,8 @@ class JobsController extends Controller
         $get_category = Category::where('category_name', 'like', '%' . $keyword . '%')->get();
 
         return View::make('frontend.ajax.cate-filter')->with([
-        'categories' => $get_category,
-      ]);
+            'categories' => $get_category,
+        ]);
     }
 
     // Location Search
@@ -370,8 +370,8 @@ class JobsController extends Controller
         $get_country = Countries::where('name', 'like', '%' . $keyword . '%')->get();
 
         return View::make('frontend.ajax.location-filter')->with([
-        'countries' => $get_country,
-      ]);
+            'countries' => $get_country,
+        ]);
     }
 
     // Filters and Sorting
@@ -435,7 +435,7 @@ class JobsController extends Controller
         }
 
         return View::make('frontend.ajax.job-sorting')->with([
-        'jobs' => $jobs,
-      ]);
+            'jobs' => $jobs,
+        ]);
     }
 }

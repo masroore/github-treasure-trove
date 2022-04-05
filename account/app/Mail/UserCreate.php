@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Utility;
+use Auth;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -11,12 +12,11 @@ class UserCreate extends Mailable
 {
     use Queueable;
     use SerializesModels;
+
     public $user;
 
     /**
      * Create a new message instance.
-     *
-     * @return void
      */
     public function __construct($user)
     {
@@ -30,7 +30,7 @@ class UserCreate extends Mailable
      */
     public function build()
     {
-        if ('super admin' == \Auth::user()->type) {
+        if ('super admin' == Auth::user()->type) {
             return $this->markdown('email.user_create')->subject('Login details - ' . env('APP_NAME'))->with('user', $this->user);
         }
 

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\DocumentEntries;
+use Auth;
 use Illuminate\Http\Request;
+use Validator;
 
 class DocumentsController extends Controller
 {
@@ -18,7 +20,7 @@ class DocumentsController extends Controller
         //  $assets = Asset::where('created_by', '=', \Auth::user()->creatorId())->get();
 
         //     return view('assets.index', compact('assets'));
-        $documents = DocumentEntries::where('created_by', '=', \Auth::user()->creatorId())->get();
+        $documents = DocumentEntries::where('created_by', '=', Auth::user()->creatorId())->get();
         // var_dump($documents);
         // exit();
         return view('documentEntries.index', compact('documents'));
@@ -31,7 +33,7 @@ class DocumentsController extends Controller
      */
     public function create()
     {
-        if (\Auth::user()->can('create documents')) {
+        if (Auth::user()->can('create documents')) {
             return view('documentEntries.create');
         }
 
@@ -45,13 +47,13 @@ class DocumentsController extends Controller
      */
     public function store(Request $request)
     {
-        if (\Auth::user()->can('create documents')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('create documents')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'payment_text' => 'required',
-                                   'file_type' => 'required',
-                               ]
+                    'payment_text' => 'required',
+                    'file_type' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -87,7 +89,7 @@ class DocumentsController extends Controller
             $documents->file_type = $request->file_type;
 
             $documents->file_upload = !empty($request->file_upload) ? $fileNameToStores : 'default.jpg';
-            $documents->created_by = \Auth::user()->creatorId();
+            $documents->created_by = Auth::user()->creatorId();
             $documents->save();
 
             return redirect()->route('document-entry.index')->with('success', __('Document successfully created.'));
@@ -105,7 +107,6 @@ class DocumentsController extends Controller
      */
     public function show($id)
     {
-
     }
 
     /**
@@ -117,7 +118,7 @@ class DocumentsController extends Controller
      */
     public function edit($id)
     {
-        if (\Auth::user()->can('edit documents')) {
+        if (Auth::user()->can('edit documents')) {
             $document = DocumentEntries::find($id);
             // var_dump($document);
             return view('documentEntries.edit', compact('document'));
@@ -135,15 +136,15 @@ class DocumentsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if (\Auth::user()->can('edit documents')) {
+        if (Auth::user()->can('edit documents')) {
             $asset = DocumentEntries::find($id);
-            if ($asset->created_by == \Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+            if ($asset->created_by == Auth::user()->creatorId()) {
+                $validator = Validator::make(
                     $request->all(),
                     [
-                                        'payment_text' => 'required',
-                                        'file_type' => 'required',
-                                   ]
+                        'payment_text' => 'required',
+                        'file_type' => 'required',
+                    ]
                 );
                 if ($validator->fails()) {
                     $messages = $validator->getMessageBag();
@@ -198,9 +199,9 @@ class DocumentsController extends Controller
      */
     public function destroy($id)
     {
-        if (\Auth::user()->can('delete documents')) {
+        if (Auth::user()->can('delete documents')) {
             $document = DocumentEntries::find($id);
-            if ($document->created_by == \Auth::user()->creatorId()) {
+            if ($document->created_by == Auth::user()->creatorId()) {
                 $document->delete();
 
                 return redirect()->route('document-entry.index')->with('success', __('Document successfully deleted.'));

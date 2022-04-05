@@ -98,23 +98,23 @@ class ChatController extends Controller
             $conversation_id = $check_friend->conversation_id;
         } else {
             $conversation = ChatFriends::create([
-          'sender_id' => auth()->id(),
-          'receiver_id' => $request->receiver_id,
-          'job_id' => $request->job_id,
-          'proposal_id' => $request->proposal_id,
-          'conversation_id' => time() . Str::random(9),
-          'message_id' => '0',
-          'time' => Carbon::now(),
-        ]);
+                'sender_id' => auth()->id(),
+                'receiver_id' => $request->receiver_id,
+                'job_id' => $request->job_id,
+                'proposal_id' => $request->proposal_id,
+                'conversation_id' => time() . Str::random(9),
+                'message_id' => '0',
+                'time' => Carbon::now(),
+            ]);
             $conversation_id = $conversation->conversation_id;
             if ($conversation) {
-                return response()->json(['status'=>'true', 'message' => 'Chat Created', 'conversation_id' => $conversation_id], 200);
+                return response()->json(['status' => 'true', 'message' => 'Chat Created', 'conversation_id' => $conversation_id], 200);
             }
 
-            return response()->json(['status'=>'errorr', 'message' => 'error occured please try again'], 200);
+            return response()->json(['status' => 'errorr', 'message' => 'error occured please try again'], 200);
         }
 
-        return response()->json(['status'=>'true', 'message' => 'Chat Created', 'conversation_id' => $conversation_id], 200);
+        return response()->json(['status' => 'true', 'message' => 'Chat Created', 'conversation_id' => $conversation_id], 200);
     }
 
     public function friendsList(Request $request, $id)
@@ -161,7 +161,7 @@ class ChatController extends Controller
         // dd($getsingleChat);
     }
 
-    public function send(Request $request)
+    public function send(Request $request): void
     {
         // dd($request->all());
         $type = 0;
@@ -176,13 +176,13 @@ class ChatController extends Controller
         $conversation_id = $request->input('conversation_id');
 
         $data = [
-        'message_sender' => $request->input('message_sender'),
-        'message_receiver' => $request->input('message_receiver'),
-        'message_desc' => $request->input('message'),
-        'message_status' => $message_status,
-        'conversation_id' => $request->input('conversation_id'),
-        'message_date' => $request->input('message_date'),
-      ];
+            'message_sender' => $request->input('message_sender'),
+            'message_receiver' => $request->input('message_receiver'),
+            'message_desc' => $request->input('message'),
+            'message_status' => $message_status,
+            'conversation_id' => $request->input('conversation_id'),
+            'message_date' => $request->input('message_date'),
+        ];
         $data['message_type'] = '0';
         if ('' != $file) {
             $filename = $file->getClientOriginalName();
@@ -236,11 +236,11 @@ class ChatController extends Controller
         // })->update(['message_status', 'seen']);
         //   dd($getsingleChat);
         $where = [
-        'conversation_id'=>$conversation_id,
-        'message_sender'=>$receiver_id,
-      ];
+            'conversation_id' => $conversation_id,
+            'message_sender' => $receiver_id,
+        ];
 
-        return ChatMessages::where($where)->update(['message_status'=>'read']);
+        return ChatMessages::where($where)->update(['message_status' => 'read']);
     }
 
     public function messsageCount(Request $request, $id)

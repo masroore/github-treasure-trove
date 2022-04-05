@@ -8,12 +8,10 @@ class CreateProductServicesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('product_services', function (Blueprint $table) {
+        Schema::create('product_services', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('sku');
@@ -32,10 +30,8 @@ class CreateProductServicesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('product_services');
     }

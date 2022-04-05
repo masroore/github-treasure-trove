@@ -14,6 +14,7 @@ class Admin extends Model implements AuthenticatableContract
     use Authenticatable;
     use HasFactory;
     use Notifiable;
+
     protected $fillable = [
         'name',
         'email',

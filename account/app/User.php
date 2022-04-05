@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Auth;
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -136,9 +137,9 @@ class User extends Authenticatable
             }
             $this->save();
 
-            $users = self::where('created_by', '=', \Auth::user()->creatorId())->where('type', '!=', 'super admin')->where('type', '!=', 'company')->get();
-            $customers = Customer::where('created_by', '=', \Auth::user()->creatorId())->get();
-            $venders = Vender::where('created_by', '=', \Auth::user()->creatorId())->get();
+            $users = self::where('created_by', '=', Auth::user()->creatorId())->where('type', '!=', 'super admin')->where('type', '!=', 'company')->get();
+            $customers = Customer::where('created_by', '=', Auth::user()->creatorId())->get();
+            $venders = Vender::where('created_by', '=', Auth::user()->creatorId())->get();
 
             if (-1 == $plan->max_users) {
                 foreach ($users as $user) {
@@ -148,7 +149,7 @@ class User extends Authenticatable
             } else {
                 $userCount = 0;
                 foreach ($users as $user) {
-                    $userCount++;
+                    ++$userCount;
                     if ($userCount <= $plan->max_users) {
                         $user->is_active = 1;
                         $user->save();
@@ -167,7 +168,7 @@ class User extends Authenticatable
             } else {
                 $customerCount = 0;
                 foreach ($customers as $customer) {
-                    $customerCount++;
+                    ++$customerCount;
                     if ($customerCount <= $plan->max_customers) {
                         $customer->is_active = 1;
                         $customer->save();
@@ -186,7 +187,7 @@ class User extends Authenticatable
             } else {
                 $venderCount = 0;
                 foreach ($venders as $vender) {
-                    $venderCount++;
+                    ++$venderCount;
                     if ($venderCount <= $plan->max_venders) {
                         $vender->is_active = 1;
                         $vender->save();
@@ -201,9 +202,9 @@ class User extends Authenticatable
         }
 
         return [
-                'is_success' => false,
-                'error' => 'Plan is deleted.',
-            ];
+            'is_success' => false,
+            'error' => 'Plan is deleted.',
+        ];
     }
 
     public function customerNumberFormat($number)
@@ -245,10 +246,10 @@ class User extends Authenticatable
         return self::where('type', '=', 'company')->whereNotIn(
             'plan',
             [
-                      0,
-                      1,
-                  ]
-        )->where('created_by', '=', \Auth::user()->id)->count();
+                0,
+                1,
+            ]
+        )->where('created_by', '=', Auth::user()->id)->count();
     }
 
     public function countCustomers()
@@ -273,8 +274,8 @@ class User extends Authenticatable
 
     public function todayIncome()
     {
-        $revenue = Revenue::where('created_by', '=', $this->creatorId())->whereRaw('Date(date) = CURDATE()')->where('created_by', \Auth::user()->creatorId())->sum('amount');
-        $invoices = Invoice::select('*')->where('created_by', \Auth::user()->creatorId())->whereRAW('Date(send_date) = CURDATE()')->get();
+        $revenue = Revenue::where('created_by', '=', $this->creatorId())->whereRaw('Date(date) = CURDATE()')->where('created_by', Auth::user()->creatorId())->sum('amount');
+        $invoices = Invoice::select('*')->where('created_by', Auth::user()->creatorId())->whereRAW('Date(send_date) = CURDATE()')->get();
         $invoiceArray = [];
         foreach ($invoices as $invoice) {
             $invoiceArray[] = $invoice->getTotal();
@@ -285,9 +286,9 @@ class User extends Authenticatable
 
     public function todayExpense()
     {
-        $payment = Payment::where('created_by', '=', $this->creatorId())->where('created_by', \Auth::user()->creatorId())->whereRaw('Date(date) = CURDATE()')->sum('amount');
+        $payment = Payment::where('created_by', '=', $this->creatorId())->where('created_by', Auth::user()->creatorId())->whereRaw('Date(date) = CURDATE()')->sum('amount');
 
-        $bills = Bill::select('*')->where('created_by', \Auth::user()->creatorId())->whereRAW('Date(send_date) = CURDATE()')->get();
+        $bills = Bill::select('*')->where('created_by', Auth::user()->creatorId())->whereRAW('Date(send_date) = CURDATE()')->get();
 
         $billArray = [];
         foreach ($bills as $bill) {
@@ -302,7 +303,7 @@ class User extends Authenticatable
         $currentMonth = date('m');
         $revenue = Revenue::where('created_by', '=', $this->creatorId())->whereRaw('MONTH(date) = ?', [$currentMonth])->sum('amount');
 
-        $invoices = Invoice::select('*')->where('created_by', \Auth::user()->creatorId())->whereRAW('MONTH(send_date) = ?', [$currentMonth])->get();
+        $invoices = Invoice::select('*')->where('created_by', Auth::user()->creatorId())->whereRAW('MONTH(send_date) = ?', [$currentMonth])->get();
 
         $invoiceArray = [];
         foreach ($invoices as $invoice) {
@@ -318,7 +319,7 @@ class User extends Authenticatable
 
         $payment = Payment::where('created_by', '=', $this->creatorId())->whereRaw('MONTH(date) = ?', [$currentMonth])->sum('amount');
 
-        $bills = Bill::select('*')->where('created_by', \Auth::user()->creatorId())->whereRAW('MONTH(send_date) = ?', [$currentMonth])->get();
+        $bills = Bill::select('*')->where('created_by', Auth::user()->creatorId())->whereRAW('MONTH(send_date) = ?', [$currentMonth])->get();
         $billArray = [];
         foreach ($bills as $bill) {
             $billArray[] = $bill->getTotal();
@@ -343,9 +344,9 @@ class User extends Authenticatable
         $month[] = __('December');
         $dataArr['month'] = $month;
 
-        for ($i = 1; $i <= 12; $i++) {
+        for ($i = 1; $i <= 12; ++$i) {
             $monthlyIncome = Revenue::selectRaw('sum(amount) amount')->where('created_by', '=', $this->creatorId())->whereRaw('year(`date`) = ?', [date('Y')])->whereRaw('month(`date`) = ?', $i)->first();
-            $invoices = Invoice::select('*')->where('created_by', \Auth::user()->creatorId())->whereRaw('year(`send_date`) = ?', [date('Y')])->whereRaw('month(`send_date`) = ?', $i)->get();
+            $invoices = Invoice::select('*')->where('created_by', Auth::user()->creatorId())->whereRaw('year(`send_date`) = ?', [date('Y')])->whereRaw('month(`send_date`) = ?', $i)->get();
 
             $invoiceArray = [];
             foreach ($invoices as $invoice) {
@@ -356,7 +357,7 @@ class User extends Authenticatable
             $incomeArr[] = !empty($totalIncome) ? number_format($totalIncome, 2) : 0;
 
             $monthlyExpense = Payment::selectRaw('sum(amount) amount')->where('created_by', '=', $this->creatorId())->whereRaw('year(`date`) = ?', [date('Y')])->whereRaw('month(`date`) = ?', $i)->first();
-            $bills = Bill::select('*')->where('created_by', \Auth::user()->creatorId())->whereRaw('year(`send_date`) = ?', [date('Y')])->whereRaw('month(`send_date`) = ?', $i)->get();
+            $bills = Bill::select('*')->where('created_by', Auth::user()->creatorId())->whereRaw('year(`send_date`) = ?', [date('Y')])->whereRaw('month(`send_date`) = ?', $i)->get();
             $billArray = [];
             foreach ($bills as $bill) {
                 $billArray[] = $bill->getTotal();
@@ -375,7 +376,7 @@ class User extends Authenticatable
 
     public function getIncExpLineChartDate()
     {
-        $usr = \Auth::user();
+        $usr = Auth::user();
         $m = date('m');
         $de = date('d');
         $y = date('Y');
@@ -383,7 +384,7 @@ class User extends Authenticatable
         $arrDate = [];
         $arrDateFormat = [];
 
-        for ($i = 0; $i <= 15 - 1; $i++) {
+        for ($i = 0; $i <= 15 - 1; ++$i) {
             $date = date($format, mktime(0, 0, 0, $m, ($de - $i), $y));
 
             $arrDay[] = date('D', mktime(0, 0, 0, $m, ($de - $i), $y));
@@ -391,10 +392,10 @@ class User extends Authenticatable
             $arrDateFormat[] = date('d-M', strtotime($date));
         }
         $dataArr['day'] = $arrDateFormat;
-        for ($i = 0; $i < \count($arrDate); $i++) {
-            $dayIncome = Revenue::selectRaw('sum(amount) amount')->where('created_by', \Auth::user()->creatorId())->whereRaw('date = ?', $arrDate[$i])->first();
+        for ($i = 0; $i < \count($arrDate); ++$i) {
+            $dayIncome = Revenue::selectRaw('sum(amount) amount')->where('created_by', Auth::user()->creatorId())->whereRaw('date = ?', $arrDate[$i])->first();
 
-            $invoices = Invoice::select('*')->where('created_by', \Auth::user()->creatorId())->whereRAW('send_date = ?', $arrDate[$i])->get();
+            $invoices = Invoice::select('*')->where('created_by', Auth::user()->creatorId())->whereRAW('send_date = ?', $arrDate[$i])->get();
             $invoiceArray = [];
             foreach ($invoices as $invoice) {
                 $invoiceArray[] = $invoice->getTotal();
@@ -403,9 +404,9 @@ class User extends Authenticatable
             $incomeAmount = (!empty($dayIncome->amount) ? $dayIncome->amount : 0) + (!empty($invoiceArray) ? array_sum($invoiceArray) : 0);
             $incomeArr[] = str_replace(',', '', number_format($incomeAmount, 2));
 
-            $dayExpense = Payment::selectRaw('sum(amount) amount')->where('created_by', \Auth::user()->creatorId())->whereRaw('date = ?', $arrDate[$i])->first();
+            $dayExpense = Payment::selectRaw('sum(amount) amount')->where('created_by', Auth::user()->creatorId())->whereRaw('date = ?', $arrDate[$i])->first();
 
-            $bills = Bill::select('*')->where('created_by', \Auth::user()->creatorId())->whereRAW('send_date = ?', $arrDate[$i])->get();
+            $bills = Bill::select('*')->where('created_by', Auth::user()->creatorId())->whereRAW('send_date = ?', $arrDate[$i])->get();
             $billArray = [];
             foreach ($bills as $bill) {
                 $billArray[] = $bill->getTotal();
@@ -437,7 +438,7 @@ class User extends Authenticatable
 
     public function planPrice()
     {
-        $user = \Auth::user();
+        $user = Auth::user();
         if ('super admin' == $user->type) {
             $userId = $user->id;
         } else {
@@ -456,7 +457,7 @@ class User extends Authenticatable
     {
         $staticstart = date('Y-m-d', strtotime('last Week'));
         $currentDate = date('Y-m-d');
-        $invoices = Invoice::select('*')->where('created_by', \Auth::user()->creatorId())->where('issue_date', '>=', $staticstart)->where('issue_date', '<=', $currentDate)->get();
+        $invoices = Invoice::select('*')->where('created_by', Auth::user()->creatorId())->where('issue_date', '>=', $staticstart)->where('issue_date', '<=', $currentDate)->get();
         $invoiceTotal = 0;
         $invoicePaid = 0;
         $invoiceDue = 0;
@@ -477,7 +478,7 @@ class User extends Authenticatable
     {
         $staticstart = date('Y-m-d', strtotime('last Month'));
         $currentDate = date('Y-m-d');
-        $invoices = Invoice::select('*')->where('created_by', \Auth::user()->creatorId())->where('issue_date', '>=', $staticstart)->where('issue_date', '<=', $currentDate)->get();
+        $invoices = Invoice::select('*')->where('created_by', Auth::user()->creatorId())->where('issue_date', '>=', $staticstart)->where('issue_date', '<=', $currentDate)->get();
         $invoiceTotal = 0;
         $invoicePaid = 0;
         $invoiceDue = 0;
@@ -498,7 +499,7 @@ class User extends Authenticatable
     {
         $staticstart = date('Y-m-d', strtotime('last Week'));
         $currentDate = date('Y-m-d');
-        $bills = Bill::select('*')->where('created_by', \Auth::user()->creatorId())->where('bill_date', '>=', $staticstart)->where('bill_date', '<=', $currentDate)->get();
+        $bills = Bill::select('*')->where('created_by', Auth::user()->creatorId())->where('bill_date', '>=', $staticstart)->where('bill_date', '<=', $currentDate)->get();
         $billTotal = 0;
         $billPaid = 0;
         $billDue = 0;
@@ -519,7 +520,7 @@ class User extends Authenticatable
     {
         $staticstart = date('Y-m-d', strtotime('last Month'));
         $currentDate = date('Y-m-d');
-        $bills = Bill::select('*')->where('created_by', \Auth::user()->creatorId())->where('bill_date', '>=', $staticstart)->where('bill_date', '<=', $currentDate)->get();
+        $bills = Bill::select('*')->where('created_by', Auth::user()->creatorId())->where('bill_date', '>=', $staticstart)->where('bill_date', '<=', $currentDate)->get();
         $billTotal = 0;
         $billPaid = 0;
         $billDue = 0;

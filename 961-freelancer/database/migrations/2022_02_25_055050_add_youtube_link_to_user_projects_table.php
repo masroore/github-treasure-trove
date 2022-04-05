@@ -8,12 +8,10 @@ class AddYoutubeLinkToUserProjectsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('user_projects', function (Blueprint $table) {
+        Schema::table('user_projects', function (Blueprint $table): void {
             $table->string('pdf_files')->nullable()->after('project_img');
             $table->string('youtube_link')->nullable()->after('pdf_files');
         });
@@ -21,12 +19,10 @@ class AddYoutubeLinkToUserProjectsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('user_projects', function (Blueprint $table) {
+        Schema::table('user_projects', function (Blueprint $table): void {
         });
     }
 }

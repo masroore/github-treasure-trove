@@ -5,13 +5,16 @@ namespace App\Http\Controllers;
 use App\Coupon;
 use App\Plan;
 use App\UserCoupon;
+use Auth;
 use Illuminate\Http\Request;
+use Utility;
+use Validator;
 
 class CouponController extends Controller
 {
     public function index()
     {
-        if (\Auth::user()->can('manage coupon')) {
+        if (Auth::user()->can('manage coupon')) {
             $coupons = Coupon::get();
 
             return view('coupon.index', compact('coupons'));
@@ -22,7 +25,7 @@ class CouponController extends Controller
 
     public function create()
     {
-        if (\Auth::user()->can('create coupon')) {
+        if (Auth::user()->can('create coupon')) {
             return view('coupon.create');
         }
 
@@ -31,14 +34,14 @@ class CouponController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('create coupon')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('create coupon')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'name' => 'required',
-                                   'discount' => 'required|numeric',
-                                   'limit' => 'required|numeric',
-                               ]
+                    'name' => 'required',
+                    'discount' => 'required|numeric',
+                    'limit' => 'required|numeric',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -79,7 +82,7 @@ class CouponController extends Controller
 
     public function edit(Coupon $coupon)
     {
-        if (\Auth::user()->can('edit coupon')) {
+        if (Auth::user()->can('edit coupon')) {
             return view('coupon.edit', compact('coupon'));
         }
 
@@ -88,15 +91,15 @@ class CouponController extends Controller
 
     public function update(Request $request, Coupon $coupon)
     {
-        if (\Auth::user()->can('edit coupon')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('edit coupon')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'name' => 'required',
-                                   'discount' => 'required|numeric',
-                                   'limit' => 'required|numeric',
-                                   'code' => 'required',
-                               ]
+                    'name' => 'required',
+                    'discount' => 'required|numeric',
+                    'limit' => 'required|numeric',
+                    'code' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -120,7 +123,7 @@ class CouponController extends Controller
 
     public function destroy(Coupon $coupon)
     {
-        if (\Auth::user()->can('delete coupon')) {
+        if (Auth::user()->can('delete coupon')) {
             $coupon->delete();
 
             return redirect()->route('coupons.index')->with('success', __('Coupon successfully deleted.'));
@@ -142,7 +145,7 @@ class CouponController extends Controller
                         [
                             'is_success' => false,
                             'final_price' => $original_price,
-                            'price' => number_format($plan->price, \Utility::getValByName('decimal_number')),
+                            'price' => number_format($plan->price, Utility::getValByName('decimal_number')),
                             'message' => __('This coupon code has expired.'),
                         ]
                     );
@@ -155,28 +158,28 @@ class CouponController extends Controller
 
                 return response()->json(
                     [
-                            'is_success' => true,
-                            'discount_price' => $discount_value,
-                            'final_price' => $price,
-                            'price' => number_format($plan_price, \Utility::getValByName('decimal_number')),
-                            'message' => __('Coupon code has applied successfully.'),
-                        ]
+                        'is_success' => true,
+                        'discount_price' => $discount_value,
+                        'final_price' => $price,
+                        'price' => number_format($plan_price, Utility::getValByName('decimal_number')),
+                        'message' => __('Coupon code has applied successfully.'),
+                    ]
                 );
             }
 
             return response()->json(
                 [
-                        'is_success' => false,
-                        'final_price' => $original_price,
-                        'price' => number_format($plan->price, \Utility::getValByName('decimal_number')),
-                        'message' => __('This coupon code is invalid or has expired.'),
-                    ]
+                    'is_success' => false,
+                    'final_price' => $original_price,
+                    'price' => number_format($plan->price, Utility::getValByName('decimal_number')),
+                    'message' => __('This coupon code is invalid or has expired.'),
+                ]
             );
         }
     }
 
     public function formatPrice($price)
     {
-        return env('CURRENCY_SYMBOL') . number_format($price, \Utility::getValByName('decimal_number'));
+        return env('CURRENCY_SYMBOL') . number_format($price, Utility::getValByName('decimal_number'));
     }
 }

@@ -95,10 +95,10 @@ class RegisterController extends Controller
         $check = User::where('username', $request->username)->first();
         // dd($check);
         if ($check) {
-            return response()->json(['status'=>'true', 'message' => 'username already exists, try another one'], 200);
+            return response()->json(['status' => 'true', 'message' => 'username already exists, try another one'], 200);
         }
 
-        return response()->json(['status'=>'errorr', 'message' => 'you can use this as your username'], 200);
+        return response()->json(['status' => 'errorr', 'message' => 'you can use this as your username'], 200);
     }
 
     public function register(Request $request)
@@ -111,23 +111,23 @@ class RegisterController extends Controller
                 return redirect('/login');
             }
             $this->validate($request, [
-          'mobile_number' => 'required|min:2|max:32',
-          'email' => 'required|email|unique:users,email',
-          'username' => 'required|unique:users,username',
-          'password' => 'required|min:5|max:50',
-          'account_type' => 'required',
-          'age' => 'required',
+                'mobile_number' => 'required|min:2|max:32',
+                'email' => 'required|email|unique:users,email',
+                'username' => 'required|unique:users,username',
+                'password' => 'required|min:5|max:50',
+                'account_type' => 'required',
+                'age' => 'required',
 
-        ], [
+            ], [
 
-          'email.unique' => 'Email must be unique',
-          'email.required' => 'Enter Email',
-          'mobile_number.required' => 'Enter Mobile Number',
-          'address.required' => 'Enter Address',
-          'password.required' => 'Enter password',
-          'account_type.required' => 'Select you account type',
-          'age.required' => 'Please enter your date of birth',
-        ]);
+                'email.unique' => 'Email must be unique',
+                'email.required' => 'Enter Email',
+                'mobile_number.required' => 'Enter Mobile Number',
+                'address.required' => 'Enter Address',
+                'password.required' => 'Enter password',
+                'account_type.required' => 'Select you account type',
+                'age.required' => 'Please enter your date of birth',
+            ]);
 
             // save User
             $user = new User();
@@ -163,8 +163,8 @@ class RegisterController extends Controller
             // dd($toemail);
             Mail::send(
                 'mail.user-registration-email',
-                ['user' =>$new_user],
-                function ($message) use ($toemail) {
+                ['user' => $new_user],
+                function ($message) use ($toemail): void {
                     $message->subject('961Freelancer - Verify Account');
                     $message->from('support@961freelancer.com', '961Freelancer');
                     $message->to($toemail);
@@ -196,19 +196,19 @@ class RegisterController extends Controller
     public function checkLogin(Request $request)
     {
         $this->validate($request, [
-          'username' => 'required',
-          'password' => 'required',
-      ]);
+            'username' => 'required',
+            'password' => 'required',
+        ]);
         $user_data = [
-          'username'  => $request->get('username'),
-          'password' => $request->get('password'),
-      ];
+            'username' => $request->get('username'),
+            'password' => $request->get('password'),
+        ];
 
         if (!Auth::attempt($user_data)) {
             $user_data2 = [
-            'email'  => $request->get('username'),
-            'password' => $request->get('password'),
-        ];
+                'email' => $request->get('username'),
+                'password' => $request->get('password'),
+            ];
             if (!Auth::attempt($user_data2)) {
                 $request->session()->flash('loginAlert', 'Invalid Email & Password');
 
@@ -222,7 +222,7 @@ class RegisterController extends Controller
             $update_status = User::where('id', $user_id)->update(['user_status' => 'online']);
             if (null != $next) {
                 if (null != $package_id) {
-                    return redirect($next)->with(['package_id'=>$package_id]);
+                    return redirect($next)->with(['package_id' => $package_id]);
                 }
 
                 return redirect($next);
@@ -273,7 +273,7 @@ class RegisterController extends Controller
     {
         if ($request->isMethod('post')) {
             $email = $request->input('email');
-            $string = rand(5, 999999999);
+            $string = mt_rand(5, 999999999);
             // $remember_token = $request->input('_token');
 
             $new_user = User::whereemail($email)->first();
@@ -292,8 +292,8 @@ class RegisterController extends Controller
                 $toemail = $userData->email;
                 Mail::send(
                     'mail.forgotpassword-email',
-                    ['user' =>$userData],
-                    function ($message) use ($toemail) {
+                    ['user' => $userData],
+                    function ($message) use ($toemail): void {
                         $message->subject('961Freelancer - Forgot Password');
                         $message->from('support@961freelancer.com', '961Freelancer');
                         $message->to($toemail);
@@ -326,12 +326,12 @@ class RegisterController extends Controller
     public function resetPassword(Request $request)
     {
         $this->validate($request, [
-        'password' => 'required|min:5|max:50|required_with:confirm_password|same:confirm_password',
-        'confirm_password' => 'min:5',
-      ]);
+            'password' => 'required|min:5|max:50|required_with:confirm_password|same:confirm_password',
+            'confirm_password' => 'min:5',
+        ]);
         $user_id = $request->input('user_id');
         $pass = Hash::make(trim($request->input('password')));
-        $user = User::whereid($user_id)->update(['password'=>$pass]);
+        $user = User::whereid($user_id)->update(['password' => $pass]);
         $request->session()->flash('passwordSuccess', 'Password changed successfully');
         Auth::logout();
 

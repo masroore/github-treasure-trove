@@ -45,6 +45,7 @@ class User extends Authenticatable
         'verification_image',
         'status',
     ];
+
     /**
      * The attributes that should be hidden for serialization.
      *

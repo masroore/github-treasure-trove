@@ -8,12 +8,10 @@ class CreateWithdrawsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('withdraws', function (Blueprint $table) {
+        Schema::create('withdraws', function (Blueprint $table): void {
             $table->id();
             $table->integer('user_id');
             $table->string('trans_id');
@@ -28,10 +26,8 @@ class CreateWithdrawsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('withdraws');
     }

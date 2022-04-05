@@ -8,18 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 class Proposal extends Model
 {
     use HasFactory;
+
     protected $fillable = [
-      'job_id',
-      'user_id',
-      'budget',
-      'budget_receive',
-      'service_fee',
-      'cover_letter',
-      'proposal_type',
-      'duration',
-      'proposed_hours',
-      'attachments',
-      'status',
+        'job_id',
+        'user_id',
+        'budget',
+        'budget_receive',
+        'service_fee',
+        'cover_letter',
+        'proposal_type',
+        'duration',
+        'proposed_hours',
+        'attachments',
+        'status',
     ];
 
     public static function isBidAvailable($user_id, $job_id)

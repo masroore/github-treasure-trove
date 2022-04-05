@@ -12,6 +12,7 @@ class Plan extends Model
         'month' => 'Per Month',
         'year' => 'Per Year',
     ];
+
     protected $fillable = [
         'name',
         'price',

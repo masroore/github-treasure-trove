@@ -6,14 +6,16 @@ use App\Bill;
 use App\Invoice;
 use App\ProductService;
 use App\ProductServiceCategory;
+use Auth;
 use Illuminate\Http\Request;
+use Validator;
 
 class ProductServiceCategoryController extends Controller
 {
     public function index()
     {
-        if (\Auth::user()->can('manage constant category')) {
-            $categories = ProductServiceCategory::where('created_by', '=', \Auth::user()->creatorId())->get();
+        if (Auth::user()->can('manage constant category')) {
+            $categories = ProductServiceCategory::where('created_by', '=', Auth::user()->creatorId())->get();
 
             return view('productServiceCategory.index', compact('categories'));
         }
@@ -23,7 +25,7 @@ class ProductServiceCategoryController extends Controller
 
     public function create()
     {
-        if (\Auth::user()->can('create constant category')) {
+        if (Auth::user()->can('create constant category')) {
             $types = ProductServiceCategory::$categoryType;
 
             return view('productServiceCategory.create', compact('types'));
@@ -34,14 +36,14 @@ class ProductServiceCategoryController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('create constant category')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('create constant category')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'name' => 'required|max:20',
-                                   'type' => 'required',
-                                   'color' => 'required',
-                               ]
+                    'name' => 'required|max:20',
+                    'type' => 'required',
+                    'color' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -53,7 +55,7 @@ class ProductServiceCategoryController extends Controller
             $category->name = $request->name;
             $category->color = $request->color;
             $category->type = $request->type;
-            $category->created_by = \Auth::user()->creatorId();
+            $category->created_by = Auth::user()->creatorId();
             $category->save();
 
             return redirect()->route('product-category.index')->with('success', __('Category successfully created.'));
@@ -64,7 +66,7 @@ class ProductServiceCategoryController extends Controller
 
     public function edit($id)
     {
-        if (\Auth::user()->can('edit constant category')) {
+        if (Auth::user()->can('edit constant category')) {
             $types = ProductServiceCategory::$categoryType;
             $category = ProductServiceCategory::find($id);
 
@@ -76,16 +78,16 @@ class ProductServiceCategoryController extends Controller
 
     public function update(Request $request, $id)
     {
-        if (\Auth::user()->can('edit constant category')) {
+        if (Auth::user()->can('edit constant category')) {
             $category = ProductServiceCategory::find($id);
-            if ($category->created_by == \Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+            if ($category->created_by == Auth::user()->creatorId()) {
+                $validator = Validator::make(
                     $request->all(),
                     [
-                                       'name' => 'required|max:20',
-                                       'type' => 'required',
-                                       'color' => 'required',
-                                   ]
+                        'name' => 'required|max:20',
+                        'type' => 'required',
+                        'color' => 'required',
+                    ]
                 );
                 if ($validator->fails()) {
                     $messages = $validator->getMessageBag();
@@ -109,9 +111,9 @@ class ProductServiceCategoryController extends Controller
 
     public function destroy($id)
     {
-        if (\Auth::user()->can('delete constant category')) {
+        if (Auth::user()->can('delete constant category')) {
             $category = ProductServiceCategory::find($id);
-            if ($category->created_by == \Auth::user()->creatorId()) {
+            if ($category->created_by == Auth::user()->creatorId()) {
                 if (0 == $category->type) {
                     $categories = ProductService::where('category_id', $category->id)->first();
                 } elseif (1 == $category->type) {

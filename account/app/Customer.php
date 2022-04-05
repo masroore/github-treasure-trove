@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Auth;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
@@ -125,35 +126,35 @@ class Customer extends Authenticatable
 
         $data['currentYear'] = date('M-Y');
 
-        $totalInvoice = Invoice::where('customer_id', \Auth::user()->id)->count();
+        $totalInvoice = Invoice::where('customer_id', Auth::user()->id)->count();
         $unpaidArr = [];
 
-        for ($i = 1; $i <= 12; $i++) {
-            $unpaidInvoice = Invoice::where('customer_id', \Auth::user()->id)->whereRaw('year(`send_date`) = ?', [date('Y')])->whereRaw('month(`send_date`) = ?', $i)->where('status', '1')->where('due_date', '>', date('Y-m-d'))->get();
-            $paidInvoice = Invoice::where('customer_id', \Auth::user()->id)->whereRaw('year(`send_date`) = ?', [date('Y')])->whereRaw('month(`send_date`) = ?', $i)->where('status', '4')->get();
-            $partialInvoice = Invoice::where('customer_id', \Auth::user()->id)->whereRaw('year(`send_date`) = ?', [date('Y')])->whereRaw('month(`send_date`) = ?', $i)->where('status', '3')->get();
-            $dueInvoice = Invoice::where('customer_id', \Auth::user()->id)->whereRaw('year(`send_date`) = ?', [date('Y')])->whereRaw('month(`send_date`) = ?', $i)->where('status', '1')->where('due_date', '<', date('Y-m-d'))->get();
+        for ($i = 1; $i <= 12; ++$i) {
+            $unpaidInvoice = Invoice::where('customer_id', Auth::user()->id)->whereRaw('year(`send_date`) = ?', [date('Y')])->whereRaw('month(`send_date`) = ?', $i)->where('status', '1')->where('due_date', '>', date('Y-m-d'))->get();
+            $paidInvoice = Invoice::where('customer_id', Auth::user()->id)->whereRaw('year(`send_date`) = ?', [date('Y')])->whereRaw('month(`send_date`) = ?', $i)->where('status', '4')->get();
+            $partialInvoice = Invoice::where('customer_id', Auth::user()->id)->whereRaw('year(`send_date`) = ?', [date('Y')])->whereRaw('month(`send_date`) = ?', $i)->where('status', '3')->get();
+            $dueInvoice = Invoice::where('customer_id', Auth::user()->id)->whereRaw('year(`send_date`) = ?', [date('Y')])->whereRaw('month(`send_date`) = ?', $i)->where('status', '1')->where('due_date', '<', date('Y-m-d'))->get();
 
             $totalUnpaid = 0;
-            for ($j = 0; $j < \count($unpaidInvoice); $j++) {
+            for ($j = 0; $j < \count($unpaidInvoice); ++$j) {
                 $unpaidAmount = $unpaidInvoice[$j]->getDue();
                 $totalUnpaid += $unpaidAmount;
             }
 
             $totalPaid = 0;
-            for ($j = 0; $j < \count($paidInvoice); $j++) {
+            for ($j = 0; $j < \count($paidInvoice); ++$j) {
                 $paidAmount = $paidInvoice[$j]->getTotal();
                 $totalPaid += $paidAmount;
             }
 
             $totalPartial = 0;
-            for ($j = 0; $j < \count($partialInvoice); $j++) {
+            for ($j = 0; $j < \count($partialInvoice); ++$j) {
                 $partialAmount = $partialInvoice[$j]->getDue();
                 $totalPartial += $partialAmount;
             }
 
             $totalDue = 0;
-            for ($j = 0; $j < \count($dueInvoice); $j++) {
+            for ($j = 0; $j < \count($dueInvoice); ++$j) {
                 $dueAmount = $dueInvoice[$j]->getDue();
                 $totalDue += $dueAmount;
             }
@@ -171,12 +172,12 @@ class Customer extends Authenticatable
 
         $data['data'] = $statusData;
 
-        $unpaidInvoice = Invoice::where('customer_id', \Auth::user()->id)->whereRaw('year(`send_date`) = ?', [date('Y')])->where('status', '1')->where('due_date', '>', date('Y-m-d'))->get();
-        $paidInvoice = Invoice::where('customer_id', \Auth::user()->id)->whereRaw('year(`send_date`) = ?', [date('Y')])->where('status', '4')->get();
-        $partialInvoice = Invoice::where('customer_id', \Auth::user()->id)->whereRaw('year(`send_date`) = ?', [date('Y')])->where('status', '3')->get();
-        $dueInvoice = Invoice::where('customer_id', \Auth::user()->id)->whereRaw('year(`send_date`) = ?', [date('Y')])->where('status', '1')->where('due_date', '<', date('Y-m-d'))->get();
+        $unpaidInvoice = Invoice::where('customer_id', Auth::user()->id)->whereRaw('year(`send_date`) = ?', [date('Y')])->where('status', '1')->where('due_date', '>', date('Y-m-d'))->get();
+        $paidInvoice = Invoice::where('customer_id', Auth::user()->id)->whereRaw('year(`send_date`) = ?', [date('Y')])->where('status', '4')->get();
+        $partialInvoice = Invoice::where('customer_id', Auth::user()->id)->whereRaw('year(`send_date`) = ?', [date('Y')])->where('status', '3')->get();
+        $dueInvoice = Invoice::where('customer_id', Auth::user()->id)->whereRaw('year(`send_date`) = ?', [date('Y')])->where('status', '1')->where('due_date', '<', date('Y-m-d'))->get();
 
-        $progressData['totalInvoice'] = $totalInvoice = Invoice::where('customer_id', \Auth::user()->id)->whereRaw('year(`send_date`) = ?', [date('Y')])->count();
+        $progressData['totalInvoice'] = $totalInvoice = Invoice::where('customer_id', Auth::user()->id)->whereRaw('year(`send_date`) = ?', [date('Y')])->count();
         $progressData['totalUnpaidInvoice'] = $totalUnpaidInvoice = \count($unpaidInvoice);
         $progressData['totalPaidInvoice'] = $totalPaidInvoice = \count($paidInvoice);
         $progressData['totalPartialInvoice'] = $totalPartialInvoice = \count($partialInvoice);
@@ -215,9 +216,9 @@ class Customer extends Authenticatable
         $dueInvoices = Invoice::where('customer_id', $customerId)->whereNotIn(
             'status',
             [
-                        '0',
-                        '4',
-                    ]
+                '0',
+                '4',
+            ]
         )->where('due_date', '<', date('Y-m-d'))->get();
         $due = 0;
         foreach ($dueInvoices as $invoice) {

@@ -24,8 +24,8 @@ class ProjectController extends Controller
         $projects = Job::with('clientInfo')->orderBy('created_at', 'DESC')->get();
 
         return View::make('admin.projects-list')->with([
-          'projects' => $projects,
-      ]);
+            'projects' => $projects,
+        ]);
     }
 
     /**
@@ -40,10 +40,10 @@ class ProjectController extends Controller
         $countries = Countries::get();
 
         return \View::make('admin.projects-create')->with([
-        'categories' => $categories,
-        'skills' => $skills,
-        'countries' => $countries,
-      ]);
+            'categories' => $categories,
+            'skills' => $skills,
+            'countries' => $countries,
+        ]);
     }
 
     /**
@@ -84,7 +84,7 @@ class ProjectController extends Controller
         $images = [];
         if ($files = $request->file('job_attachement')) {
             foreach ($files as $file) {
-                $imagename = 'job-' . rand(000000, 999999) . '.' . $file->getClientOriginalExtension();
+                $imagename = 'job-' . mt_rand(000000, 999999) . '.' . $file->getClientOriginalExtension();
                 $extension = $file->getClientOriginalExtension();
                 // $imagename= $filename;
                 $destinationpath = public_path('assets/images/jobs/');
@@ -96,10 +96,10 @@ class ProjectController extends Controller
         $job->job_attachement = implode(',', $images);
 
         if ($job->save()) {
-            return response()->json(['status'=>'true', 'message' => 'Project created successfully'], 200);
+            return response()->json(['status' => 'true', 'message' => 'Project created successfully'], 200);
         }
 
-        return response()->json(['status'=>'errorr', 'message' => 'error occured please try again'], 200);
+        return response()->json(['status' => 'errorr', 'message' => 'error occured please try again'], 200);
     }
 
     /**
@@ -128,11 +128,11 @@ class ProjectController extends Controller
         $getSingleData = Job::find($id);
 
         return \View::make('admin.projects-update')->with([
-        'categories' => $categories,
-        'skills' => $skills,
-        'countries' => $countries,
-        'getSingleData' => $getSingleData,
-      ]);
+            'categories' => $categories,
+            'skills' => $skills,
+            'countries' => $countries,
+            'getSingleData' => $getSingleData,
+        ]);
     }
 
     /**
@@ -176,7 +176,7 @@ class ProjectController extends Controller
         if ('' != $request->file('job_attachement')) {
             if ($files = $request->file('job_attachement')) {
                 foreach ($files as $file) {
-                    $imagename = 'job-' . rand(000000, 999999) . '.' . $file->getClientOriginalExtension();
+                    $imagename = 'job-' . mt_rand(000000, 999999) . '.' . $file->getClientOriginalExtension();
                     $extension = $file->getClientOriginalExtension();
                     // $imagename= $filename;
                     $destinationpath = public_path('assets/images/jobs/');
@@ -193,10 +193,10 @@ class ProjectController extends Controller
         $job->job_attachement = implode(',', $images);
 
         if ($job->save()) {
-            return response()->json(['status'=>'true', 'message' => 'Project updated successfully'], 200);
+            return response()->json(['status' => 'true', 'message' => 'Project updated successfully'], 200);
         }
 
-        return response()->json(['status'=>'errorr', 'message' => 'error occured please try again'], 200);
+        return response()->json(['status' => 'errorr', 'message' => 'error occured please try again'], 200);
     }
 
     /**
@@ -210,9 +210,9 @@ class ProjectController extends Controller
     {
         $deleteData = Job::find($id);
         if ($deleteData->delete()) {
-            return response()->json(['status'=>'true', 'message' => 'Project deleted successfully'], 200);
+            return response()->json(['status' => 'true', 'message' => 'Project deleted successfully'], 200);
         }
 
-        return response()->json(['status'=>'error', 'message' => 'error occured please try again'], 200);
+        return response()->json(['status' => 'error', 'message' => 'error occured please try again'], 200);
     }
 }

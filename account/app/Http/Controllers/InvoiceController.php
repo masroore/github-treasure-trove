@@ -16,11 +16,15 @@ use App\ProductService;
 use App\ProductServiceCategory;
 use App\Transaction;
 use App\Utility;
+use Auth;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use stdClass;
+use Validator;
 
 class InvoiceController extends Controller
 {
@@ -31,13 +35,13 @@ class InvoiceController extends Controller
 
     public function index(Request $request)
     {
-        if (\Auth::user()->can('manage invoice')) {
-            $customer = Customer::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        if (Auth::user()->can('manage invoice')) {
+            $customer = Customer::where('created_by', '=', Auth::user()->creatorId())->get()->pluck('name', 'id');
             $customer->prepend('All', '');
 
             $status = Invoice::$statues;
 
-            $query = Invoice::where('created_by', '=', \Auth::user()->creatorId());
+            $query = Invoice::where('created_by', '=', Auth::user()->creatorId());
 
             if (!empty($request->customer)) {
                 $query->where('customer_id', '=', $request->customer);
@@ -60,14 +64,14 @@ class InvoiceController extends Controller
 
     public function create($customerId)
     {
-        if (\Auth::user()->can('create invoice')) {
-            $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'invoice')->get();
-            $invoice_number = \Auth::user()->invoiceNumberFormat($this->invoiceNumber());
-            $customers = Customer::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        if (Auth::user()->can('create invoice')) {
+            $customFields = CustomField::where('created_by', '=', Auth::user()->creatorId())->where('module', '=', 'invoice')->get();
+            $invoice_number = Auth::user()->invoiceNumberFormat($this->invoiceNumber());
+            $customers = Customer::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
             $customers->prepend('Select Customer', '');
-            $category = ProductServiceCategory::where('created_by', \Auth::user()->creatorId())->where('type', 1)->get()->pluck('name', 'id');
+            $category = ProductServiceCategory::where('created_by', Auth::user()->creatorId())->where('type', 1)->get()->pluck('name', 'id');
             $category->prepend('Select Category', '');
-            $product_services = ProductService::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $product_services = ProductService::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
             $product_services->prepend('--', '');
 
             return view('invoice.create', compact('customers', 'invoice_number', 'product_services', 'category', 'customFields', 'customerId'));
@@ -99,16 +103,16 @@ class InvoiceController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('create invoice')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('create invoice')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'customer_id' => 'required',
-                                   'issue_date' => 'required',
-                                   'due_date' => 'required',
-                                   'category_id' => 'required',
-                                   'items' => 'required',
-                               ]
+                    'customer_id' => 'required',
+                    'issue_date' => 'required',
+                    'due_date' => 'required',
+                    'category_id' => 'required',
+                    'items' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -126,12 +130,12 @@ class InvoiceController extends Controller
             $invoice->category_id = $request->category_id;
             $invoice->ref_number = $request->ref_number;
             $invoice->discount_apply = isset($request->discount_apply) ? 1 : 0;
-            $invoice->created_by = \Auth::user()->creatorId();
+            $invoice->created_by = Auth::user()->creatorId();
             $invoice->save();
             CustomField::saveData($invoice, $request->customField);
             $products = $request->items;
 
-            for ($i = 0; $i < \count($products); $i++) {
+            for ($i = 0; $i < \count($products); ++$i) {
                 $invoiceProduct = new InvoiceProduct();
                 $invoiceProduct->invoice_id = $invoice->id;
                 $invoiceProduct->product_id = $products[$i]['item'];
@@ -151,18 +155,18 @@ class InvoiceController extends Controller
 
     public function edit($ids)
     {
-        if (\Auth::user()->can('edit invoice')) {
+        if (Auth::user()->can('edit invoice')) {
             $id = Crypt::decrypt($ids);
             $invoice = Invoice::find($id);
 
-            $invoice_number = \Auth::user()->invoiceNumberFormat($invoice->invoice_id);
-            $customers = Customer::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-            $category = ProductServiceCategory::where('created_by', \Auth::user()->creatorId())->where('type', 1)->get()->pluck('name', 'id');
+            $invoice_number = Auth::user()->invoiceNumberFormat($invoice->invoice_id);
+            $customers = Customer::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $category = ProductServiceCategory::where('created_by', Auth::user()->creatorId())->where('type', 1)->get()->pluck('name', 'id');
             $category->prepend('Select Category', '');
-            $product_services = ProductService::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $product_services = ProductService::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
 
             $invoice->customField = CustomField::getData($invoice, 'invoice');
-            $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'invoice')->get();
+            $customFields = CustomField::where('created_by', '=', Auth::user()->creatorId())->where('module', '=', 'invoice')->get();
 
             return view('invoice.edit', compact('customers', 'product_services', 'invoice', 'invoice_number', 'category', 'customFields'));
         }
@@ -172,17 +176,17 @@ class InvoiceController extends Controller
 
     public function update(Request $request, Invoice $invoice)
     {
-        if (\Auth::user()->can('edit bill')) {
-            if ($invoice->created_by == \Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+        if (Auth::user()->can('edit bill')) {
+            if ($invoice->created_by == Auth::user()->creatorId()) {
+                $validator = Validator::make(
                     $request->all(),
                     [
-                                       'customer_id' => 'required',
-                                       'issue_date' => 'required',
-                                       'due_date' => 'required',
-                                       'category_id' => 'required',
-                                       'items' => 'required',
-                                   ]
+                        'customer_id' => 'required',
+                        'issue_date' => 'required',
+                        'due_date' => 'required',
+                        'category_id' => 'required',
+                        'items' => 'required',
+                    ]
                 );
                 if ($validator->fails()) {
                     $messages = $validator->getMessageBag();
@@ -199,7 +203,7 @@ class InvoiceController extends Controller
                 CustomField::saveData($invoice, $request->customField);
                 $products = $request->items;
 
-                for ($i = 0; $i < \count($products); $i++) {
+                for ($i = 0; $i < \count($products); ++$i) {
                     $invoiceProduct = InvoiceProduct::find($products[$i]['id']);
 
                     if (null == $invoiceProduct) {
@@ -230,7 +234,7 @@ class InvoiceController extends Controller
 
     public function invoiceNumber()
     {
-        $latest = Invoice::where('created_by', '=', \Auth::user()->creatorId())->latest()->first();
+        $latest = Invoice::where('created_by', '=', Auth::user()->creatorId())->latest()->first();
         if (!$latest) {
             return 1;
         }
@@ -240,17 +244,17 @@ class InvoiceController extends Controller
 
     public function show($ids)
     {
-        if (\Auth::user()->can('show invoice')) {
+        if (Auth::user()->can('show invoice')) {
             $id = Crypt::decrypt($ids);
             $invoice = Invoice::find($id);
-            if ($invoice->created_by == \Auth::user()->creatorId()) {
+            if ($invoice->created_by == Auth::user()->creatorId()) {
                 $invoicePayment = InvoicePayment::where('invoice_id', $invoice->id)->first();
 
                 $customer = $invoice->customer;
                 $iteams = $invoice->items;
 
                 $invoice->customField = CustomField::getData($invoice, 'invoice');
-                $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'invoice')->get();
+                $customFields = CustomField::where('created_by', '=', Auth::user()->creatorId())->where('module', '=', 'invoice')->get();
 
                 return view('invoice.view', compact('invoice', 'customer', 'iteams', 'invoicePayment', 'customFields'));
             }
@@ -263,8 +267,8 @@ class InvoiceController extends Controller
 
     public function destroy(Invoice $invoice)
     {
-        if (\Auth::user()->can('delete invoice')) {
-            if ($invoice->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('delete invoice')) {
+            if ($invoice->created_by == Auth::user()->creatorId()) {
                 $invoice->delete();
                 if (0 != $invoice->customer_id) {
                     Utility::userBalance('customer', $invoice->customer_id, $invoice->getTotal(), 'debit');
@@ -282,7 +286,7 @@ class InvoiceController extends Controller
 
     public function productDestroy(Request $request)
     {
-        if (\Auth::user()->can('delete invoice product')) {
+        if (Auth::user()->can('delete invoice product')) {
             InvoiceProduct::where('id', '=', $request->id)->delete();
 
             return redirect()->back()->with('success', __('Bill product successfully deleted.'));
@@ -293,10 +297,10 @@ class InvoiceController extends Controller
 
     public function customerInvoice(Request $request)
     {
-        if (\Auth::user()->can('manage customer invoice')) {
+        if (Auth::user()->can('manage customer invoice')) {
             $status = Invoice::$statues;
 
-            $query = Invoice::where('customer_id', '=', \Auth::user()->id)->where('status', '!=', '0')->where('created_by', \Auth::user()->creatorId());
+            $query = Invoice::where('customer_id', '=', Auth::user()->id)->where('status', '!=', '0')->where('created_by', Auth::user()->creatorId());
 
             if (!empty($request->issue_date)) {
                 $date_range = explode(' - ', $request->issue_date);
@@ -316,10 +320,10 @@ class InvoiceController extends Controller
 
     public function customerInvoiceShow($id)
     {
-        if (\Auth::user()->can('show invoice')) {
+        if (Auth::user()->can('show invoice')) {
             $invoice_id = Crypt::decrypt($id);
             $invoice = Invoice::where('id', $invoice_id)->first();
-            if ($invoice->created_by == \Auth::user()->creatorId()) {
+            if ($invoice->created_by == Auth::user()->creatorId()) {
                 $customer = $invoice->customer;
                 $iteams = $invoice->items;
 
@@ -334,7 +338,7 @@ class InvoiceController extends Controller
 
     public function sent($id)
     {
-        if (\Auth::user()->can('send invoice')) {
+        if (Auth::user()->can('send invoice')) {
             $invoice = Invoice::where('id', $id)->first();
             $invoice->send_date = date('Y-m-d');
             $invoice->status = 1;
@@ -342,7 +346,7 @@ class InvoiceController extends Controller
 
             $customer = Customer::where('id', $invoice->customer_id)->first();
             $invoice->name = !empty($customer) ? $customer->name : '';
-            $invoice->invoice = \Auth::user()->invoiceNumberFormat($invoice->invoice_id);
+            $invoice->invoice = Auth::user()->invoiceNumberFormat($invoice->invoice_id);
 
             $invoiceId = Crypt::encrypt($invoice->id);
             $invoice->url = route('invoice.pdf', $invoiceId);
@@ -351,7 +355,7 @@ class InvoiceController extends Controller
 
             try {
                 Mail::to($customer->email)->send(new InvoiceSend($invoice));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $smtp_error = __('E-Mail has been not sent due to SMTP configuration');
             }
 
@@ -363,19 +367,19 @@ class InvoiceController extends Controller
 
     public function resent($id)
     {
-        if (\Auth::user()->can('send invoice')) {
+        if (Auth::user()->can('send invoice')) {
             $invoice = Invoice::where('id', $id)->first();
 
             $customer = Customer::where('id', $invoice->customer_id)->first();
             $invoice->name = !empty($customer) ? $customer->name : '';
-            $invoice->invoice = \Auth::user()->invoiceNumberFormat($invoice->invoice_id);
+            $invoice->invoice = Auth::user()->invoiceNumberFormat($invoice->invoice_id);
 
             $invoiceId = Crypt::encrypt($invoice->id);
             $invoice->url = route('invoice.pdf', $invoiceId);
 
             try {
                 Mail::to($customer->email)->send(new InvoiceSend($invoice));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $smtp_error = __('E-Mail has been not sent due to SMTP configuration');
             }
 
@@ -387,12 +391,12 @@ class InvoiceController extends Controller
 
     public function payment($invoice_id)
     {
-        if (\Auth::user()->can('create payment invoice')) {
+        if (Auth::user()->can('create payment invoice')) {
             $invoice = Invoice::where('id', $invoice_id)->first();
 
-            $customers = Customer::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-            $categories = ProductServiceCategory::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-            $accounts = BankAccount::select('*', \DB::raw("CONCAT(bank_name,' ',holder_name) AS name"))->where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $customers = Customer::where('created_by', '=', Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $categories = ProductServiceCategory::where('created_by', '=', Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $accounts = BankAccount::select('*', \DB::raw("CONCAT(bank_name,' ',holder_name) AS name"))->where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
 
             return view('invoice.payment', compact('customers', 'categories', 'accounts', 'invoice'));
         }
@@ -402,14 +406,14 @@ class InvoiceController extends Controller
 
     public function createPayment(Request $request, $invoice_id)
     {
-        if (\Auth::user()->can('create payment invoice')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('create payment invoice')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'date' => 'required',
-                                   'amount' => 'required',
-                                   'account_id' => 'required',
-                               ]
+                    'date' => 'required',
+                    'amount' => 'required',
+                    'account_id' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -445,7 +449,7 @@ class InvoiceController extends Controller
             $invoicePayment->user_id = $invoice->customer_id;
             $invoicePayment->user_type = 'Customer';
             $invoicePayment->type = 'Partial';
-            $invoicePayment->created_by = \Auth::user()->id;
+            $invoicePayment->created_by = Auth::user()->id;
             $invoicePayment->payment_id = $invoicePayment->id;
             $invoicePayment->category = 'Invoice';
             $invoicePayment->account = $request->account_id;
@@ -456,10 +460,10 @@ class InvoiceController extends Controller
 
             $payment = new InvoicePayment();
             $payment->name = $customer['name'];
-            $payment->date = \Auth::user()->dateFormat($request->date);
-            $payment->amount = \Auth::user()->priceFormat($request->amount);
-            $payment->invoice = 'invoice ' . \Auth::user()->invoiceNumberFormat($invoice->invoice_id);
-            $payment->dueAmount = \Auth::user()->priceFormat($invoice->getDue());
+            $payment->date = Auth::user()->dateFormat($request->date);
+            $payment->amount = Auth::user()->priceFormat($request->amount);
+            $payment->invoice = 'invoice ' . Auth::user()->invoiceNumberFormat($invoice->invoice_id);
+            $payment->dueAmount = Auth::user()->priceFormat($invoice->getDue());
 
             Utility::userBalance('customer', $invoice->customer_id, $request->amount, 'debit');
 
@@ -467,7 +471,7 @@ class InvoiceController extends Controller
 
             try {
                 Mail::to($customer['email'])->send(new InvoicePaymentCreate($payment));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $smtp_error = __('E-Mail has been not sent due to SMTP configuration');
             }
 
@@ -477,7 +481,7 @@ class InvoiceController extends Controller
 
     public function paymentDestroy(Request $request, $invoice_id, $payment_id)
     {
-        if (\Auth::user()->can('delete payment invoice')) {
+        if (Auth::user()->can('delete payment invoice')) {
             $payment = InvoicePayment::find($payment_id);
 
             InvoicePayment::where('id', '=', $payment_id)->delete();
@@ -511,14 +515,14 @@ class InvoiceController extends Controller
     {
         $invoice = Invoice::find($invoice_id);
         $customer = Customer::where('id', $invoice->customer_id)->first();
-        $invoice->dueAmount = \Auth::user()->priceFormat($invoice->getDue());
+        $invoice->dueAmount = Auth::user()->priceFormat($invoice->getDue());
         $invoice->name = $customer['name'];
-        $invoice->date = \Auth::user()->dateFormat($invoice->send_date);
-        $invoice->invoice = \Auth::user()->invoiceNumberFormat($invoice->invoice_id);
+        $invoice->date = Auth::user()->dateFormat($invoice->send_date);
+        $invoice->invoice = Auth::user()->invoiceNumberFormat($invoice->invoice_id);
 
         try {
             Mail::to($customer['email'])->send(new PaymentReminder($invoice));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $smtp_error = __('E-Mail has been not sent due to SMTP configuration');
         }
 
@@ -532,11 +536,11 @@ class InvoiceController extends Controller
 
     public function customerInvoiceSendMail(Request $request, $invoice_id)
     {
-        $validator = \Validator::make(
+        $validator = Validator::make(
             $request->all(),
             [
-                               'email' => 'required|email',
-                           ]
+                'email' => 'required|email',
+            ]
         );
         if ($validator->fails()) {
             $messages = $validator->getMessageBag();
@@ -549,14 +553,14 @@ class InvoiceController extends Controller
 
         $customer = Customer::where('id', $invoice->customer_id)->first();
         $invoice->name = !empty($customer) ? $customer->name : '';
-        $invoice->invoice = \Auth::user()->invoiceNumberFormat($invoice->invoice_id);
+        $invoice->invoice = Auth::user()->invoiceNumberFormat($invoice->invoice_id);
 
         $invoiceId = Crypt::encrypt($invoice->id);
         $invoice->url = route('invoice.pdf', $invoiceId);
 
         try {
             Mail::to($email)->send(new CustomerInvoiceSend($invoice));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $smtp_error = __('E-Mail has been not sent due to SMTP configuration');
         }
 
@@ -579,7 +583,7 @@ class InvoiceController extends Controller
 
     public function duplicate($invoice_id)
     {
-        if (\Auth::user()->can('duplicate invoice')) {
+        if (Auth::user()->can('duplicate invoice')) {
             $invoice = Invoice::where('id', $invoice_id)->first();
             $duplicateInvoice = new Invoice();
             $duplicateInvoice->invoice_id = $this->invoiceNumber();
@@ -616,11 +620,11 @@ class InvoiceController extends Controller
 
     public function previewInvoice($template, $color)
     {
-        $objUser = \Auth::user();
+        $objUser = Auth::user();
         $settings = Utility::settings();
         $invoice = new Invoice();
 
-        $customer = new \stdClass();
+        $customer = new stdClass();
         $customer->email = '<Email>';
         $customer->shipping_name = '<Customer Name>';
         $customer->shipping_country = '<Country>';
@@ -641,8 +645,8 @@ class InvoiceController extends Controller
         $taxesData = [];
 
         $items = [];
-        for ($i = 1; $i <= 3; $i++) {
-            $item = new \stdClass();
+        for ($i = 1; $i <= 3; ++$i) {
+            $item = new stdClass();
             $item->name = 'Item ' . $i;
             $item->quantity = 1;
             $item->tax = 5;
@@ -719,7 +723,7 @@ class InvoiceController extends Controller
         $totalDiscount = 0;
         $taxesData = [];
         foreach ($invoice->items as $product) {
-            $item = new \stdClass();
+            $item = new stdClass();
             $item->name = !empty($product->product()) ? $product->product()->name : '';
             $item->quantity = $product->quantity;
             $item->tax = $product->tax;
@@ -765,8 +769,8 @@ class InvoiceController extends Controller
         $invoice->taxesData = $taxesData;
         $invoice->customField = CustomField::getData($invoice, 'invoice');
         $customFields = [];
-        if (!empty(\Auth::user())) {
-            $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'invoice')->get();
+        if (!empty(Auth::user())) {
+            $customFields = CustomField::where('created_by', '=', Auth::user()->creatorId())->where('module', '=', 'invoice')->get();
         }
 
         //Set your logo
@@ -797,10 +801,10 @@ class InvoiceController extends Controller
             \DB::insert(
                 'insert into settings (`value`, `name`,`created_by`) values (?, ?, ?) ON DUPLICATE KEY UPDATE `value` = VALUES(`value`) ',
                 [
-                                                                                                                                             $data,
-                                                                                                                                             $key,
-                                                                                                                                             \Auth::user()->creatorId(),
-                                                                                                                                         ]
+                    $data,
+                    $key,
+                    Auth::user()->creatorId(),
+                ]
             );
         }
 

@@ -6,14 +6,17 @@ use App\ChartOfAccount;
 use App\JournalEntry;
 use App\JournalItem;
 use App\Utility;
+use Auth;
+use DB;
 use Illuminate\Http\Request;
+use Validator;
 
 class JournalEntryController extends Controller
 {
     public function index()
     {
-        if (\Auth::user()->can('manage journal entry')) {
-            $journalEntries = JournalEntry::where('created_by', '=', \Auth::user()->creatorId())->Paginate(10);
+        if (Auth::user()->can('manage journal entry')) {
+            $journalEntries = JournalEntry::where('created_by', '=', Auth::user()->creatorId())->Paginate(10);
             // $journalEntries = $journalEntries->Paginate(5);
             // dd($journalEntries);
             return view('journalEntry.index', compact('journalEntries'));
@@ -24,8 +27,8 @@ class JournalEntryController extends Controller
 
     public function create()
     {
-        if (\Auth::user()->can('create journal entry')) {
-            $accounts = ChartOfAccount::select(\DB::raw('CONCAT(code, " - ", name) AS code_name, id'))->where('created_by', \Auth::user()->creatorId())->get()->pluck('code_name', 'id');
+        if (Auth::user()->can('create journal entry')) {
+            $accounts = ChartOfAccount::select(DB::raw('CONCAT(code, " - ", name) AS code_name, id'))->where('created_by', Auth::user()->creatorId())->get()->pluck('code_name', 'id');
             $accounts->prepend('--', '');
 
             $journalId = $this->journalNumber();
@@ -38,13 +41,13 @@ class JournalEntryController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('create invoice')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('create invoice')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'date' => 'required',
-                                   'accounts' => 'required',
-                               ]
+                    'date' => 'required',
+                    'accounts' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -56,7 +59,7 @@ class JournalEntryController extends Controller
 
             $totalDebit = 0;
             $totalCredit = 0;
-            for ($i = 0; $i < \count($accounts); $i++) {
+            for ($i = 0; $i < \count($accounts); ++$i) {
                 $debit = $accounts[$i]['debit'] ?? 0;
                 $credit = $accounts[$i]['credit'] ?? 0;
                 $totalDebit += $debit;
@@ -73,10 +76,10 @@ class JournalEntryController extends Controller
             $journal->reference = $request->reference;
             $journal->vouchertype = $request->vouchertype;
             $journal->description = $request->description;
-            $journal->created_by = \Auth::user()->creatorId();
+            $journal->created_by = Auth::user()->creatorId();
             $journal->save();
 
-            for ($i = 0; $i < \count($accounts); $i++) {
+            for ($i = 0; $i < \count($accounts); ++$i) {
                 $journalItem = new JournalItem();
                 $journalItem->journal = $journal->id;
                 $journalItem->account = $accounts[$i]['account'];
@@ -95,8 +98,8 @@ class JournalEntryController extends Controller
     public function show(JournalEntry $journalEntry)
     {
         // dd("Hello");
-        if (\Auth::user()->can('show journal entry')) {
-            if ($journalEntry->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('show journal entry')) {
+            if ($journalEntry->created_by == Auth::user()->creatorId()) {
                 $accounts = $journalEntry->accounts;
                 $settings = Utility::settings();
 
@@ -111,8 +114,8 @@ class JournalEntryController extends Controller
 
     public function edit(JournalEntry $journalEntry)
     {
-        if (\Auth::user()->can('edit journal entry')) {
-            $accounts = ChartOfAccount::select(\DB::raw('CONCAT(code, " - ", name) AS code_name, id'))->where('created_by', \Auth::user()->creatorId())->get()->pluck('code_name', 'id');
+        if (Auth::user()->can('edit journal entry')) {
+            $accounts = ChartOfAccount::select(DB::raw('CONCAT(code, " - ", name) AS code_name, id'))->where('created_by', Auth::user()->creatorId())->get()->pluck('code_name', 'id');
             $accounts->prepend('--', '');
 
             return view('journalEntry.edit', compact('accounts', 'journalEntry'));
@@ -123,14 +126,14 @@ class JournalEntryController extends Controller
 
     public function update(Request $request, JournalEntry $journalEntry)
     {
-        if (\Auth::user()->can('edit journal entry')) {
-            if ($journalEntry->created_by == \Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+        if (Auth::user()->can('edit journal entry')) {
+            if ($journalEntry->created_by == Auth::user()->creatorId()) {
+                $validator = Validator::make(
                     $request->all(),
                     [
-                                       'date' => 'required',
-                                       'accounts' => 'required',
-                                   ]
+                        'date' => 'required',
+                        'accounts' => 'required',
+                    ]
                 );
                 if ($validator->fails()) {
                     $messages = $validator->getMessageBag();
@@ -142,7 +145,7 @@ class JournalEntryController extends Controller
 
                 $totalDebit = 0;
                 $totalCredit = 0;
-                for ($i = 0; $i < \count($accounts); $i++) {
+                for ($i = 0; $i < \count($accounts); ++$i) {
                     $debit = $accounts[$i]['debit'] ?? 0;
                     $credit = $accounts[$i]['credit'] ?? 0;
                     $totalDebit += $debit;
@@ -157,10 +160,10 @@ class JournalEntryController extends Controller
                 $journalEntry->reference = $request->reference;
                 $journalEntry->vouchertype = $request->vouchertype;
                 $journalEntry->description = $request->description;
-                $journalEntry->created_by = \Auth::user()->creatorId();
+                $journalEntry->created_by = Auth::user()->creatorId();
                 $journalEntry->save();
 
-                for ($i = 0; $i < \count($accounts); $i++) {
+                for ($i = 0; $i < \count($accounts); ++$i) {
                     $journalItem = JournalItem::find($accounts[$i]['id']);
 
                     if (null == $journalItem) {
@@ -189,8 +192,8 @@ class JournalEntryController extends Controller
 
     public function destroy(JournalEntry $journalEntry)
     {
-        if (\Auth::user()->can('delete journal entry')) {
-            if ($journalEntry->created_by == \Auth::user()->creatorId()) {
+        if (Auth::user()->can('delete journal entry')) {
+            if ($journalEntry->created_by == Auth::user()->creatorId()) {
                 $journalEntry->delete();
 
                 JournalItem::where('journal', '=', $journalEntry->id)->delete();
@@ -206,7 +209,7 @@ class JournalEntryController extends Controller
 
     public function journalNumber()
     {
-        $latest = JournalEntry::where('created_by', '=', \Auth::user()->creatorId())->latest()->first();
+        $latest = JournalEntry::where('created_by', '=', Auth::user()->creatorId())->latest()->first();
         if (!$latest) {
             return 1;
         }
@@ -216,7 +219,7 @@ class JournalEntryController extends Controller
 
     public function accountDestroy(Request $request)
     {
-        if (\Auth::user()->can('delete journal entry')) {
+        if (Auth::user()->can('delete journal entry')) {
             JournalItem::where('id', '=', $request->id)->delete();
 
             return redirect()->back()->with('success', __('Journal entry account successfully deleted.'));

@@ -8,15 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class UserEducation extends Model
 {
     use HasFactory;
+
     protected $fillable = [
-      'user_id',
-      'institute',
-      'start_date',
-      'end_date',
-      'continue_study',
-      'degree',
-      'area_of_study',
-      'description',
+        'user_id',
+        'institute',
+        'start_date',
+        'end_date',
+        'continue_study',
+        'degree',
+        'area_of_study',
+        'description',
     ];
 
     public function userInfo()

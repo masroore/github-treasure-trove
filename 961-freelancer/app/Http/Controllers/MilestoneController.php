@@ -103,7 +103,7 @@ class MilestoneController extends Controller
         }
         // Update Milestone
         $milestone = Milestone::find($request->milestone_id);
-        $milestoneupdate = Milestone::where('id', $request->milestone_id)->update(['status'=>'accept']);
+        $milestoneupdate = Milestone::where('id', $request->milestone_id)->update(['status' => 'accept']);
         // $milestone = Milestone::create([
         //     'name' => $request->deposit_name,
         //     'amount' => $request->deposit_amount,
@@ -256,7 +256,7 @@ class MilestoneController extends Controller
         }
     }
 
-    public static function deductAmt($msAmt)
+    public static function deductAmt($msAmt): void
     {
         $wallet = Wallet::where('user_id', auth()->id())->first();
         $newAmt = $wallet->amt - $msAmt;

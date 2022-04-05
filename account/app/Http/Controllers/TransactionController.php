@@ -5,17 +5,18 @@ namespace App\Http\Controllers;
 use App\BankAccount;
 use App\ProductServiceCategory;
 use App\Transaction;
+use Auth;
 use Illuminate\Http\Request;
 
 class TransactionController extends Controller
 {
     public function index(Request $request)
     {
-        if (\Auth::user()->can('manage transaction')) {
+        if (Auth::user()->can('manage transaction')) {
             $filter['account'] = __('All');
             $filter['category'] = __('All');
 
-            $account = BankAccount::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('holder_name', 'id');
+            $account = BankAccount::where('created_by', '=', Auth::user()->creatorId())->get()->pluck('holder_name', 'id');
             $account->prepend(__('Stripe / Paypal'), 'strip-paypal');
             $account->prepend('All', '');
 
@@ -23,12 +24,12 @@ class TransactionController extends Controller
                 ->leftjoin('bank_accounts', 'transactions.account', '=', 'bank_accounts.id')
                 ->groupBy('transactions.account')->selectRaw('sum(amount) as total');
 
-            $category = ProductServiceCategory::where('created_by', '=', \Auth::user()->creatorId())->whereIn(
+            $category = ProductServiceCategory::where('created_by', '=', Auth::user()->creatorId())->whereIn(
                 'type',
                 [
-                          1,
-                          2,
-                      ]
+                    1,
+                    2,
+                ]
             )->get()->pluck('name', 'name');
 
             $category->prepend('Invoice', 'Invoice');
@@ -52,13 +53,13 @@ class TransactionController extends Controller
                 $data['year'] = date('Y', $currentdate);
 
                 $transactions->Orwhere(
-                    function ($query) use ($data) {
+                    function ($query) use ($data): void {
                         $query->whereMonth('date', $data['month'])->whereYear('date', $data['year']);
                     }
                 );
 
                 $accounts->Orwhere(
-                    function ($query) use ($data) {
+                    function ($query) use ($data): void {
                         $query->whereMonth('date', $data['month'])->whereYear('date', $data['year']);
                     }
                 );
@@ -91,8 +92,8 @@ class TransactionController extends Controller
                 $filter['category'] = $request->category;
             }
 
-            $transactions->where('created_by', '=', \Auth::user()->creatorId());
-            $accounts->where('transactions.created_by', '=', \Auth::user()->creatorId());
+            $transactions->where('created_by', '=', Auth::user()->creatorId());
+            $accounts->where('transactions.created_by', '=', Auth::user()->creatorId());
             $transactions = $transactions->get();
             $accounts = $accounts->get();
 

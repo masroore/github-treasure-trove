@@ -8,23 +8,24 @@ use Illuminate\Database\Eloquent\Model;
 class Job extends Model
 {
     use HasFactory;
+
     protected $fillable = [
-      'user_id',
-      'job_id',
-      'job_title',
-      'service_level',
-      'job_type',
-      'hourly_min_price',
-      'hourly_max_price',
-      'fixed_price',
-      'job_duration',
-      'is_featured',
-      'job_description',
-      'job_skills',
-      'job_cat',
-      'job_location',
-      'job_attachement',
-      'job_status',
+        'user_id',
+        'job_id',
+        'job_title',
+        'service_level',
+        'job_type',
+        'hourly_min_price',
+        'hourly_max_price',
+        'fixed_price',
+        'job_duration',
+        'is_featured',
+        'job_description',
+        'job_skills',
+        'job_cat',
+        'job_location',
+        'job_attachement',
+        'job_status',
     ];
 
     public function clientInfo()

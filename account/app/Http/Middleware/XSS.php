@@ -2,8 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App;
 use App\LandingPageSection;
 use App\Utility;
+use Auth;
 use Closure;
 
 class XSS
@@ -17,10 +19,10 @@ class XSS
      */
     public function handle($request, Closure $next)
     {
-        if (\Auth::check()) {
-            \App::setLocale(\Auth::user()->lang);
+        if (Auth::check()) {
+            App::setLocale(Auth::user()->lang);
 
-            if ('super admin' == \Auth::user()->type) {
+            if ('super admin' == Auth::user()->type) {
                 $migrations = $this->getMigrations();
                 $dbMigrations = $this->getExecutedMigrations();
                 $numberOfUpdatesPending = \count($migrations) - \count($dbMigrations);
@@ -39,7 +41,7 @@ class XSS
         $input = $request->all();
         array_walk_recursive(
             $input,
-            function (&$input) {
+            function (&$input): void {
                 $input = strip_tags($input);
             }
         );

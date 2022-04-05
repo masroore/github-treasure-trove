@@ -8,14 +8,12 @@ class CreateTransfersTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create(
             'transfers',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->bigIncrements('id');
                 $table->integer('from_account')->default('0');
                 $table->integer('to_account')->default('0');
@@ -32,10 +30,8 @@ class CreateTransfersTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('transfers');
     }

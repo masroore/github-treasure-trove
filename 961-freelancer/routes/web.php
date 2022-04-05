@@ -70,7 +70,7 @@ Route::get('/reset-password/{email}/{token}', [RegisterController::class, 'showP
 Route::post('/reset-password', [RegisterController::class, 'resetPassword']);
 
 // Profile
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth'])->group(function (): void {
     Route::resource('profile', ProfileController::class);
     Route::match(['get', 'post'], '/edit-profile', [ProfileController::class, 'edit_profile']);
     // Skills
@@ -209,11 +209,11 @@ Route::get('cat-search', [JobsController::class, 'catSearch']);
 Route::get('loc-search', [JobsController::class, 'locationSearch']);
 Route::get('lang-search', [FreelancerController::class, 'languageSearch']);
 
-Route::name('admin.')->namespace('Admin')->prefix('admin')->group(function () {
-    Route::namespace('Auth')->middleware('guest:admin')->group(function () {
+Route::name('admin.')->namespace('Admin')->prefix('admin')->group(function (): void {
+    Route::namespace('Auth')->middleware('guest:admin')->group(function (): void {
         Route::match(['get', 'post'], '/login', [AdminController::class, 'adminLogin'])->name('login');
     });
-    Route::namespace('Auth')->middleware('auth:admin')->group(function () {
+    Route::namespace('Auth')->middleware('auth:admin')->group(function (): void {
 
       // Route::get('/', function(){
         //   return view('admin.index');
@@ -240,9 +240,9 @@ Route::name('admin.')->namespace('Admin')->prefix('admin')->group(function () {
             Auth::guard('admin')->logout();
 
             return redirect()->action([
-           AdminController::class,
-           'adminLogin',
-       ]);
+                AdminController::class,
+                'adminLogin',
+            ]);
         })->name('logout');
     });
 });

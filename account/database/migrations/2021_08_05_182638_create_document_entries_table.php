@@ -8,12 +8,10 @@ class CreateDocumentEntriesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('document_entries', function (Blueprint $table) {
+        Schema::create('document_entries', function (Blueprint $table): void {
             $table->id();
             $table->string('payment_text');
             $table->string('file_upload');
@@ -25,10 +23,8 @@ class CreateDocumentEntriesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('document_entries');
     }

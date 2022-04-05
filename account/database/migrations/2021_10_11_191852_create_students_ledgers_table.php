@@ -8,12 +8,10 @@ class CreateStudentsLedgersTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('students_ledgers', function (Blueprint $table) {
+        Schema::create('students_ledgers', function (Blueprint $table): void {
             $table->id();
             $table->integer('journal_entries_id')->default(0);
             $table->date('date');
@@ -30,10 +28,8 @@ class CreateStudentsLedgersTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('students_ledgers');
     }

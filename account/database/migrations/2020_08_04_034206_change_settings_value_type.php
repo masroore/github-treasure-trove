@@ -8,14 +8,12 @@ class ChangeSettingsValueType extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table(
             'settings',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->text('value')->nullable()->change();
             }
         );
@@ -23,14 +21,12 @@ class ChangeSettingsValueType extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table(
             'settings',
-            function (Blueprint $table) {
+            function (Blueprint $table): void {
                 $table->dropColumn('value');
             }
         );

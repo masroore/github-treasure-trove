@@ -10,6 +10,8 @@ use App\Plan;
 use App\Transaction;
 use App\UserCoupon;
 use App\Utility;
+use Auth;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Stripe;
@@ -20,7 +22,7 @@ class StripePaymentController extends Controller
 
     public function index()
     {
-        $objUser = \Auth::user();
+        $objUser = Auth::user();
         if ('super admin' == $objUser->type) {
             $orders = Order::select(
                 [
@@ -53,7 +55,7 @@ class StripePaymentController extends Controller
 
     public function stripePost(Request $request)
     {
-        $objUser = \Auth::user();
+        $objUser = Auth::user();
         $planID = \Illuminate\Support\Facades\Crypt::decrypt($request->plan_id);
         $plan = Plan::find($planID);
 
@@ -142,7 +144,7 @@ class StripePaymentController extends Controller
                 }
 
                 return redirect()->route('plans.index')->with('error', __('Transaction has been failed.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->route('plans.index')->with('error', __($e->getMessage()));
             }
         } else {
@@ -152,9 +154,9 @@ class StripePaymentController extends Controller
 
     public function addPayment(Request $request, $id)
     {
-        $settings = DB::table('settings')->where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('value', 'name');
+        $settings = DB::table('settings')->where('created_by', '=', Auth::user()->creatorId())->get()->pluck('value', 'name');
 
-        $objUser = \Auth::user();
+        $objUser = Auth::user();
         $invoice = Invoice::find($id);
 
         if ($invoice) {
@@ -168,31 +170,31 @@ class StripePaymentController extends Controller
                 Stripe\Stripe::setApiKey(Utility::getValByName('stripe_secret'));
                 $data = Stripe\Charge::create(
                     [
-                            'amount' => 100 * $price,
-                            'currency' => Utility::getValByName('site_currency'),
-                            'source' => $request->stripeToken,
-                            'description' => 'Invoice ' . Utility::invoiceNumberFormat($settings, $invoice->invoice_id),
-                            'metadata' => ['order_id' => $orderID],
-                        ]
+                        'amount' => 100 * $price,
+                        'currency' => Utility::getValByName('site_currency'),
+                        'source' => $request->stripeToken,
+                        'description' => 'Invoice ' . Utility::invoiceNumberFormat($settings, $invoice->invoice_id),
+                        'metadata' => ['order_id' => $orderID],
+                    ]
                 );
 
                 if (0 == $data['amount_refunded'] && empty($data['failure_code']) && 1 == $data['paid'] && 1 == $data['captured']) {
                     $payments = InvoicePayment::create(
                         [
 
-                                'invoice_id' => $invoice->id,
-                                'date' => date('Y-m-d'),
-                                'amount' => $price,
-                                'account_id' => 0,
-                                'payment_method' => 0,
-                                'order_id' => $orderID,
-                                'currency' => $data['currency'],
-                                'txn_id' => $data['balance_transaction'],
-                                'payment_type' => __('STRIPE'),
-                                'receipt' => $data['receipt_url'],
-                                'reference' => '',
-                                'description' => 'Invoice ' . Utility::invoiceNumberFormat($settings, $invoice->invoice_id),
-                            ]
+                            'invoice_id' => $invoice->id,
+                            'date' => date('Y-m-d'),
+                            'amount' => $price,
+                            'account_id' => 0,
+                            'payment_method' => 0,
+                            'order_id' => $orderID,
+                            'currency' => $data['currency'],
+                            'txn_id' => $data['balance_transaction'],
+                            'payment_type' => __('STRIPE'),
+                            'receipt' => $data['receipt_url'],
+                            'reference' => '',
+                            'description' => 'Invoice ' . Utility::invoiceNumberFormat($settings, $invoice->invoice_id),
+                        ]
                     );
 
                     if ($invoice->getDue() <= 0) {
@@ -208,12 +210,12 @@ class StripePaymentController extends Controller
                     $invoicePayment->user_id = $invoice->customer_id;
                     $invoicePayment->user_type = 'Customer';
                     $invoicePayment->type = 'STRIPE';
-                    $invoicePayment->created_by = \Auth::user()->id;
+                    $invoicePayment->created_by = Auth::user()->id;
                     $invoicePayment->payment_id = $invoicePayment->id;
                     $invoicePayment->category = 'Invoice';
                     $invoicePayment->amount = $price;
                     $invoicePayment->date = date('Y-m-d');
-                    $invoicePayment->created_by = \Auth::user()->creatorId();
+                    $invoicePayment->created_by = Auth::user()->creatorId();
                     $invoicePayment->payment_id = $payments->id;
                     $invoicePayment->description = 'Invoice ' . Utility::invoiceNumberFormat($settings, $invoice->invoice_id);
                     $invoicePayment->account = 0;
@@ -227,7 +229,7 @@ class StripePaymentController extends Controller
                 }
 
                 return redirect()->back()->with('error', __('Transaction has been failed.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->route(
                     'customer.invoice.show',
                     $invoice->id

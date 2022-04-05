@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class UserLanguage extends Model
 {
     use HasFactory;
+
     protected $fillable = [
-      'user_id',
-      'language_id',
-      'language_rate',
+        'user_id',
+        'language_id',
+        'language_rate',
     ];
 
     public function languageData()

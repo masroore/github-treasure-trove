@@ -22,8 +22,8 @@ class PaymentController extends Controller
         // $client = Transaction::with('job')->whereclient_id($user_id)->paginate(10);
 
         return View::make('frontend.transactions')->with([
-          'transactions' => $transactions,
-      ]);
+            'transactions' => $transactions,
+        ]);
     }
 
     /**

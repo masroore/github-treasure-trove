@@ -4,14 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Mail\testMail;
 use App\Utility;
+use Auth;
+use DB;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Validator;
 
 class SystemController extends Controller
 {
     public function index()
     {
-        if (\Auth::user()->can('manage system settings')) {
+        if (Auth::user()->can('manage system settings')) {
             $settings = Utility::settings();
 
             return view('settings.index', compact('settings'));
@@ -22,7 +26,7 @@ class SystemController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('manage system settings')) {
+        if (Auth::user()->can('manage system settings')) {
             if ($request->logo) {
                 $request->validate(
                     [
@@ -66,13 +70,13 @@ class SystemController extends Controller
                 unset($post['_token']);
                 foreach ($post as $key => $data) {
                     if (\in_array($key, array_keys($settings))) {
-                        \DB::insert(
+                        DB::insert(
                             'insert into settings (`value`, `name`,`created_by`) values (?, ?, ?) ON DUPLICATE KEY UPDATE `value` = VALUES(`value`) ',
                             [
-                                                                                                                                                         $data,
-                                                                                                                                                         $key,
-                                                                                                                                                         \Auth::user()->creatorId(),
-                                                                                                                                                     ]
+                                $data,
+                                $key,
+                                Auth::user()->creatorId(),
+                            ]
                         );
                     }
                 }
@@ -86,7 +90,7 @@ class SystemController extends Controller
 
     public function saveEmailSettings(Request $request)
     {
-        if (\Auth::user()->can('manage system settings')) {
+        if (Auth::user()->can('manage system settings')) {
             $request->validate(
                 [
                     'mail_driver' => 'required|string|max:255',
@@ -120,8 +124,8 @@ class SystemController extends Controller
 
     public function saveCompanySettings(Request $request)
     {
-        if (\Auth::user()->can('manage company settings')) {
-            $user = \Auth::user();
+        if (Auth::user()->can('manage company settings')) {
+            $user = Auth::user();
             $request->validate(
                 [
                     'company_name' => 'required|string|max:255',
@@ -135,13 +139,13 @@ class SystemController extends Controller
 
             foreach ($post as $key => $data) {
                 if (\in_array($key, array_keys($settings))) {
-                    \DB::insert(
+                    DB::insert(
                         'insert into settings (`value`, `name`,`created_by`) values (?, ?, ?) ON DUPLICATE KEY UPDATE `value` = VALUES(`value`) ',
                         [
-                                                                                                                                                     $data,
-                                                                                                                                                     $key,
-                                                                                                                                                     \Auth::user()->creatorId(),
-                                                                                                                                                 ]
+                            $data,
+                            $key,
+                            Auth::user()->creatorId(),
+                        ]
                     );
                 }
             }
@@ -154,13 +158,13 @@ class SystemController extends Controller
 
     public function savePaymentSettings(Request $request)
     {
-        if (\Auth::user()->can('manage stripe settings')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('manage stripe settings')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'currency' => 'required|string|max:255',
-                                   'currency_symbol' => 'required|string|max:255',
-                               ]
+                    'currency' => 'required|string|max:255',
+                    'currency_symbol' => 'required|string|max:255',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -169,12 +173,12 @@ class SystemController extends Controller
             }
 
             if (isset($request->enable_stripe) && 'on' == $request->enable_stripe) {
-                $validator = \Validator::make(
+                $validator = Validator::make(
                     $request->all(),
                     [
-                                       'stripe_key' => 'required|string|max:255',
-                                       'stripe_secret' => 'required|string|max:255',
-                                   ]
+                        'stripe_key' => 'required|string|max:255',
+                        'stripe_secret' => 'required|string|max:255',
+                    ]
                 );
                 if ($validator->fails()) {
                     $messages = $validator->getMessageBag();
@@ -182,13 +186,13 @@ class SystemController extends Controller
                     return redirect()->back()->with('error', $messages->first());
                 }
             } elseif (isset($request->enable_paypal) && 'on' == $request->enable_paypal) {
-                $validator = \Validator::make(
+                $validator = Validator::make(
                     $request->all(),
                     [
 
-                                       'paypal_client_id' => 'required|string',
-                                       'paypal_secret_key' => 'required|string',
-                                   ]
+                        'paypal_client_id' => 'required|string',
+                        'paypal_secret_key' => 'required|string',
+                    ]
                 );
                 if ($validator->fails()) {
                     $messages = $validator->getMessageBag();
@@ -218,15 +222,15 @@ class SystemController extends Controller
             $settings = Utility::settings();
             foreach ($post as $key => $data) {
                 if (\in_array($key, array_keys($settings))) {
-                    \DB::insert(
+                    DB::insert(
                         'insert into settings (`value`, `name`,`created_by`,`created_at`,`updated_at`) values (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE `value` = VALUES(`value`) ',
                         [
-                                                                                                                                                                                     $data,
-                                                                                                                                                                                     $key,
-                                                                                                                                                                                     \Auth::user()->creatorId(),
-                                                                                                                                                                                     date('Y-m-d H:i:s'),
-                                                                                                                                                                                     date('Y-m-d H:i:s'),
-                                                                                                                                                                                 ]
+                            $data,
+                            $key,
+                            Auth::user()->creatorId(),
+                            date('Y-m-d H:i:s'),
+                            date('Y-m-d H:i:s'),
+                        ]
                     );
                 }
             }
@@ -239,8 +243,8 @@ class SystemController extends Controller
 
     public function saveSystemSettings(Request $request)
     {
-        if (\Auth::user()->can('manage company settings')) {
-            $user = \Auth::user();
+        if (Auth::user()->can('manage company settings')) {
+            $user = Auth::user();
             $request->validate(
                 [
                     'site_currency' => 'required',
@@ -257,15 +261,15 @@ class SystemController extends Controller
 
             foreach ($post as $key => $data) {
                 if (\in_array($key, array_keys($settings))) {
-                    \DB::insert(
+                    DB::insert(
                         'insert into settings (`value`, `name`,`created_by`,`created_at`,`updated_at`) values (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE `value` = VALUES(`value`) ',
                         [
-                                                                                                                                                                                     $data,
-                                                                                                                                                                                     $key,
-                                                                                                                                                                                     \Auth::user()->creatorId(),
-                                                                                                                                                                                     date('Y-m-d H:i:s'),
-                                                                                                                                                                                     date('Y-m-d H:i:s'),
-                                                                                                                                                                                 ]
+                            $data,
+                            $key,
+                            Auth::user()->creatorId(),
+                            date('Y-m-d H:i:s'),
+                            date('Y-m-d H:i:s'),
+                        ]
                     );
                 }
             }
@@ -278,8 +282,8 @@ class SystemController extends Controller
 
     public function saveBusinessSettings(Request $request)
     {
-        if (\Auth::user()->can('manage business settings')) {
-            $user = \Auth::user();
+        if (Auth::user()->can('manage business settings')) {
+            $user = Auth::user();
             if ($request->company_logo) {
                 $request->validate(
                     [
@@ -291,13 +295,13 @@ class SystemController extends Controller
                 $path = $request->file('company_logo')->storeAs('uploads/logo/', $logoName);
                 $company_logo = !empty($request->company_logo) ? $logoName : 'logo.png';
 
-                \DB::insert(
+                DB::insert(
                     'insert into settings (`value`, `name`,`created_by`) values (?, ?, ?) ON DUPLICATE KEY UPDATE `value` = VALUES(`value`) ',
                     [
-                                                                                                                                                 $logoName,
-                                                                                                                                                 'company_logo',
-                                                                                                                                                 \Auth::user()->creatorId(),
-                                                                                                                                             ]
+                        $logoName,
+                        'company_logo',
+                        Auth::user()->creatorId(),
+                    ]
                 );
             }
 
@@ -312,13 +316,13 @@ class SystemController extends Controller
 
                 $company_small_logo = !empty($request->company_small_logo) ? $smallLogoName : 'small_logo.png';
 
-                \DB::insert(
+                DB::insert(
                     'insert into settings (`value`, `name`,`created_by`) values (?, ?, ?) ON DUPLICATE KEY UPDATE `value` = VALUES(`value`) ',
                     [
-                                                                                                                                                 $smallLogoName,
-                                                                                                                                                 'company_small_logo',
-                                                                                                                                                 \Auth::user()->creatorId(),
-                                                                                                                                             ]
+                        $smallLogoName,
+                        'company_small_logo',
+                        Auth::user()->creatorId(),
+                    ]
                 );
             }
 
@@ -333,13 +337,13 @@ class SystemController extends Controller
 
                 $company_favicon = !empty($request->favicon) ? $favicon : 'favicon.png';
 
-                \DB::insert(
+                DB::insert(
                     'insert into settings (`value`, `name`,`created_by`) values (?, ?, ?) ON DUPLICATE KEY UPDATE `value` = VALUES(`value`) ',
                     [
-                                                                                                                                                 $favicon,
-                                                                                                                                                 'company_favicon',
-                                                                                                                                                 \Auth::user()->creatorId(),
-                                                                                                                                             ]
+                        $favicon,
+                        'company_favicon',
+                        Auth::user()->creatorId(),
+                    ]
                 );
             }
 
@@ -350,13 +354,13 @@ class SystemController extends Controller
                 unset($post['_token'], $post['company_logo'], $post['company_small_logo'], $post['company_favicon']);
                 foreach ($post as $key => $data) {
                     if (\in_array($key, array_keys($settings))) {
-                        \DB::insert(
+                        DB::insert(
                             'insert into settings (`value`, `name`,`created_by`) values (?, ?, ?) ON DUPLICATE KEY UPDATE `value` = VALUES(`value`) ',
                             [
-                                                                                                                                                         $data,
-                                                                                                                                                         $key,
-                                                                                                                                                         \Auth::user()->creatorId(),
-                                                                                                                                                     ]
+                                $data,
+                                $key,
+                                Auth::user()->creatorId(),
+                            ]
                         );
                     }
                 }
@@ -370,7 +374,7 @@ class SystemController extends Controller
 
     public function companyIndex()
     {
-        if (\Auth::user()->can('manage company settings')) {
+        if (Auth::user()->can('manage company settings')) {
             $settings = Utility::settings();
 
             return view('settings.company', compact('settings'));
@@ -406,15 +410,15 @@ class SystemController extends Controller
 
         foreach ($post as $key => $data) {
             if (\in_array($key, array_keys($settings))) {
-                \DB::insert(
+                DB::insert(
                     'insert into settings (`value`, `name`,`created_by`,`created_at`,`updated_at`) values (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE `value` = VALUES(`value`) ',
                     [
-                                                                                                                                                                                 $data,
-                                                                                                                                                                                 $key,
-                                                                                                                                                                                 \Auth::user()->creatorId(),
-                                                                                                                                                                                 date('Y-m-d H:i:s'),
-                                                                                                                                                                                 date('Y-m-d H:i:s'),
-                                                                                                                                                                             ]
+                        $data,
+                        $key,
+                        Auth::user()->creatorId(),
+                        date('Y-m-d H:i:s'),
+                        date('Y-m-d H:i:s'),
+                    ]
                 );
             }
         }
@@ -429,7 +433,7 @@ class SystemController extends Controller
 
     public function testSendMail(Request $request)
     {
-        $validator = \Validator::make($request->all(), ['email' => 'required|email']);
+        $validator = Validator::make($request->all(), ['email' => 'required|email']);
         if ($validator->fails()) {
             $messages = $validator->getMessageBag();
 
@@ -438,7 +442,7 @@ class SystemController extends Controller
 
         try {
             Mail::to($request->email)->send(new testMail());
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $smtp_error = __('E-Mail has been not sent due to SMTP configuration');
         }
 

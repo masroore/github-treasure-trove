@@ -121,11 +121,11 @@ class FreelancerController extends Controller
         $jobCount = $getSavedjob->count();
 
         return View::make('frontend.saved-items')->with([
-        'saveFreelancers' => $getSavedFreelancer,
-        'freelancerCount' => $countFreelancer,
-        'saveJobs' => $getSavedjob,
-        'jobCount' => $jobCount,
-      ]);
+            'saveFreelancers' => $getSavedFreelancer,
+            'freelancerCount' => $countFreelancer,
+            'saveJobs' => $getSavedjob,
+            'jobCount' => $jobCount,
+        ]);
     }
 
     public function saveFreelancer(Request $request)
@@ -229,8 +229,8 @@ class FreelancerController extends Controller
         }
 
         return View::make('frontend.ajax.get-freelancers')->with([
-          'freelancers' => $freelancers,
-      ]);
+            'freelancers' => $freelancers,
+        ]);
     }
 
     // Language Search
@@ -240,8 +240,8 @@ class FreelancerController extends Controller
         $get_languge = Language::where('language_name', 'like', '%' . $keyword . '%')->get();
 
         return View::make('frontend.ajax.language-filter')->with([
-        'languages' => $get_languge,
-      ]);
+            'languages' => $get_languge,
+        ]);
     }
 
     // Filter Freelancer Using Language
@@ -252,8 +252,8 @@ class FreelancerController extends Controller
             $freelancers = UserLanguage::with('freelancer', 'freelancerRating')->withCount('freelancerRating')->where('language_id', $language_id)->paginate(10);
 
             return View::make('frontend.ajax.get-freelancers-language')->with([
-            'freelancers' => $freelancers,
-        ]);
+                'freelancers' => $freelancers,
+            ]);
         }
         $freelancers = User::with('userSkills', 'saveInfo', 'freelancerRating')->withCount('freelancerRating')->whereaccount_type('Freelancer')->paginate(10);
 
@@ -288,9 +288,9 @@ class FreelancerController extends Controller
         }
 
         return View::make('frontend.client')->with([
-          'client' => $client,
-          'rating_avg' => $rating_avg,
-      ]);
+            'client' => $client,
+            'rating_avg' => $rating_avg,
+        ]);
     }
 
     // Report User
@@ -299,9 +299,9 @@ class FreelancerController extends Controller
         // dd($request->all());
         $report = ReportUser::create($request->all());
         if ($report) {
-            return response()->json(['status'=>'true', 'message' => 'Freelancer reported successfully'], 200);
+            return response()->json(['status' => 'true', 'message' => 'Freelancer reported successfully'], 200);
         }
 
-        return response()->json(['status'=>'true', 'message' => 'Freelancer reported successfully'], 200);
+        return response()->json(['status' => 'true', 'message' => 'Freelancer reported successfully'], 200);
     }
 }

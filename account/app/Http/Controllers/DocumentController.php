@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\DocumentEntry;
+use Auth;
 use Illuminate\Http\Request;
+use Validator;
 
 class DocumentController extends Controller
 {
@@ -23,7 +25,7 @@ class DocumentController extends Controller
 
     public function create()
     {
-        if (\Auth::user()->can('create assets')) {
+        if (Auth::user()->can('create assets')) {
             return view('dcoument_entry.create');
         }
 
@@ -32,13 +34,13 @@ class DocumentController extends Controller
 
     public function store(Request $request)
     {
-        if (\Auth::user()->can('create assets')) {
-            $validator = \Validator::make(
+        if (Auth::user()->can('create assets')) {
+            $validator = Validator::make(
                 $request->all(),
                 [
-                                   'payment_text' => 'required',
-                                   'file_type' => 'required',
-                               ]
+                    'payment_text' => 'required',
+                    'file_type' => 'required',
+                ]
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
@@ -66,7 +68,7 @@ class DocumentController extends Controller
             // $assets->supported_date = $request->supported_date;
             // $assets->amount         = $request->amount;
             // $assets->description    = $request->description;
-            $assets->created_by = \Auth::user()->creatorId();
+            $assets->created_by = Auth::user()->creatorId();
             $assets->save();
 
             return redirect()->route('dcoument_entrys.index')->with('success', __('Document successfully created.'));
@@ -75,14 +77,13 @@ class DocumentController extends Controller
         return redirect()->back()->with('error', __('Permission denied.'));
     }
 
-    public function show(Asset $asset)
+    public function show(Asset $asset): void
     {
-
     }
 
     public function edit($id)
     {
-        if (\Auth::user()->can('edit assets')) {
+        if (Auth::user()->can('edit assets')) {
             $asset = DocumentEntry::find($id);
 
             return view('dcoument_entry.edit', compact('asset'));
@@ -93,15 +94,15 @@ class DocumentController extends Controller
 
     public function update(Request $request, $id)
     {
-        if (\Auth::user()->can('edit assets')) {
+        if (Auth::user()->can('edit assets')) {
             $asset = DocumentEntry::find($id);
-            if ($asset->created_by == \Auth::user()->creatorId()) {
-                $validator = \Validator::make(
+            if ($asset->created_by == Auth::user()->creatorId()) {
+                $validator = Validator::make(
                     $request->all(),
                     [
-                                        'payment_text' => 'required',
-                                        'file_type' => 'required',
-                                   ]
+                        'payment_text' => 'required',
+                        'file_type' => 'required',
+                    ]
                 );
                 if ($validator->fails()) {
                     $messages = $validator->getMessageBag();
@@ -140,9 +141,9 @@ class DocumentController extends Controller
 
     public function destroy($id)
     {
-        if (\Auth::user()->can('delete assets')) {
+        if (Auth::user()->can('delete assets')) {
             $asset = DocumentEntry::find($id);
-            if ($asset->created_by == \Auth::user()->creatorId()) {
+            if ($asset->created_by == Auth::user()->creatorId()) {
                 $asset->delete();
 
                 return redirect()->route('dcoument_entry.index')->with('success', __('Document successfully deleted.'));
