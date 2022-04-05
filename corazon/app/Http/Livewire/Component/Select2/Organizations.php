@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Http\Livewire\Component\Select2;
+
+use Livewire\Component;
+
+class Organizations extends Component
+{
+    public $model;
+
+    public $collection;
+
+    public $selected = [];
+
+    public function updatedSelected($value): void
+    {
+        $this->emit('selectedOrganizations', $this->selected);
+    }
+
+    public function mount($model): void
+    {
+        $this->model = $model;
+        $this->collection = \App\Models\Organization::all();
+    }
+
+    public function render()
+    {
+        return view('livewire.component.select2.organizations');
+    }
+}

@@ -1,0 +1,95 @@
+/*---- STEP FORM ----*/
+.sw-theme-default {
+
+  .bootstrap-select .dropdown-menu li a span.text {
+    display: block !important;
+  }
+
+  .table-content {
+    table-layout: fixed;
+
+    thead {
+      display: table;
+      width: 100%;
+      table-layout: fixed;
+    }
+
+    tbody {
+      display: block;
+      height: 300px;
+      overflow: scroll;
+
+      tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+      }
+    }
+
+  }
+
+
+  box-shadow: none;
+
+
+  .step-anchor {
+    background: transparent !important;
+    border: none;
+
+
+    .nav-item {
+
+      padding: 0.25rem;
+      font-size: 1.25rem;
+      border-radius: 0.25rem;
+      box-shadow: 2px 2px 3px rgba(theme-color('dark'), .5);
+      font-family: 'Campton', sans-serif;
+
+      .nav-link {
+        background: theme-color("white") !important;
+        color: theme-color("mandys-pink") !important;
+      }
+
+
+      &.active {
+        background: theme-color("ce-soir") !important;
+
+        .nav-link {
+          background: transparent !important;
+          color: theme-color("light") !important;
+        }
+      }
+
+
+    }
+
+
+  }
+
+  .sw-container {
+
+    .step-content {
+      width: 100%;
+
+      .step-content-container {
+        overflow-y: scroll;
+        height: 30rem;
+        padding: 0.5rem;
+      }
+    }
+  }
+
+  .btn-toolbar {
+    padding: 1rem 0;
+
+    .btn-secondary {
+      background-color: theme-color("ce-soir") !important;
+      color: theme-color("light") !important;
+    }
+
+  }
+}
+
+/*---- STEP FORM ----*/
+
+

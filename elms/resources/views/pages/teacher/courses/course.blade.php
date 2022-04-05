@@ -1,0 +1,9 @@
+@extends('layouts.master')
+@section('content')
+<div>
+    @livewire('teacher-courses-page',['course'=>$course])
+</div>
+@endsection
+@section('sidebar')
+    @include('includes.teacher.sidebar')
+@endsection

@@ -1,0 +1,54 @@
+{
+  "menus": [
+    {
+      "status": "1",
+      "title": "배너관리",
+      "url": "/admin/banners"
+    },
+    {
+      "status": "1",
+      "title": "사용자관리",
+      "url": "/admin/users"
+    },
+    {
+      "status": "1",
+      "title": "등급관리",
+      "url": "/admin/roles"
+    },
+    {
+      "status": "1",
+      "title": "권한관리",
+      "url": "/admin/permissions"
+    },
+    {
+      "status": "0",
+      "title": "Pages",
+      "url": "/admin/pages"
+    },
+    {
+      "status": "0",
+      "title": "Activity Logs",
+      "url": "/admin/activitylogs"
+    },
+    {
+      "status": "1",
+      "title": "컨텐츠관리",
+      "url": "/admin/posts"
+    },
+    {
+      "status": "1",
+      "title": "업소관리",
+      "url": "/admin/upsos"
+    },
+    {
+      "status": "1",
+      "title": "설정관리",
+      "url": "/admin/settings"
+    },
+    {
+      "status": "0",
+      "title": "Generator",
+      "url": "/admin/generator"
+    }
+  ]
+}

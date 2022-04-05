@@ -1,0 +1,62 @@
+
+.notifications-container {
+  max-height: 300px;
+  width: 500px;
+  overflow-y: auto;
+
+  .dropdown-notification {
+
+    &:active, &.active {
+      color: #1d1e1f;
+      text-decoration: none;
+      background-color: #f7f7f9;
+    }
+
+    &:hover, &.notification-read {
+      color: #34495E;
+    }
+  }
+
+
+}
+
+.notification-dropdown-menu {
+  padding-bottom: 0;
+
+}
+
+.notifications-body {
+  display: block;
+  width: 100% !important;
+
+}
+
+.notification-texte {
+  text-align: left;
+  margin: 0;
+}
+
+.notification-read {
+  margin: 0;
+  height: 48px;
+  vertical-align: top;
+  line-height: 48px;
+  padding-left: 15px;
+  color: white;
+  float: right;
+}
+
+.notification-date {
+  text-align: left;
+  color: #2980b9;
+  margin: 0;
+}
+
+.notification-solo {
+  margin-top: 1rem;
+}
+
+.notification-unread {
+  text-decoration: none;
+  background-color: #f7f7f9;
+}

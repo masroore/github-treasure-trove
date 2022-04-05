@@ -1,0 +1,77 @@
+.bg-city-container{
+  padding-top: 120px;
+  padding-bottom: 150px;
+  background-position:  center top;
+  background-size: cover;
+ 
+}
+
+
+@include media-breakpoint-up(xs) {
+
+.bg-atention-center-USA{
+  padding-top: 120px;
+  padding-bottom: 150px;
+  background-position:  center top;
+}
+
+  .bg-atention-center{
+    padding-top: 120px;
+    padding-bottom: 150px;
+    background-position:  center top;
+    
+  }
+}
+
+@include media-breakpoint-up(sm) {
+
+  .bg-atention-center-USA{
+    padding-top: 120px;
+    padding-bottom: 150px;
+    background-position:  center top;
+  }
+
+  .bg-atention-center{
+    padding-top: 120px;
+    padding-bottom: 150px;
+    background-position:  center top;
+    
+  }
+}
+
+@include media-breakpoint-up(md) {
+
+  .bg-atention-center-USA{
+    padding-top: 120px;
+    padding-bottom: 150px;
+    background-position:  center top;
+  }
+  .bg-atention-center{
+    padding-top: 120px;
+    padding-bottom: 150px;
+    background-position:  center top;
+    
+  }
+}
+
+
+@include media-breakpoint-up(xl) {
+  .bg-atention-center-USA{
+    padding-top: 120px;
+    padding-bottom: 150px;
+    background-position:  center top;
+    background-size: cover;
+  }
+  .bg-atention-center{
+    padding-top: 120px;
+    padding-bottom: 150px;
+    background-position:  center top;
+    background-size: cover;
+   
+  }
+}
+
+
+
+
+

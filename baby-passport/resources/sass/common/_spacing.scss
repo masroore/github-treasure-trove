@@ -1,0 +1,23 @@
+@mixin top-translate-between($from, $to, $value) {
+    @include media-breakpoint-between($from, $to) {
+        top: $value;
+    }
+}
+
+@mixin top-translate-only($from, $value) {
+    @include media-breakpoint-only($from) {
+        top: $value;
+    }
+}
+
+@mixin top-translate-up($from, $value) {
+    @include media-breakpoint-up($from) {
+        top: $value;
+    }
+}
+
+@mixin top-translate-down($from,$value) {
+    @include media-breakpoint-down($from) {
+        top: $value;
+    }
+}

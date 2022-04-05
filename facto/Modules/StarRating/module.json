@@ -1,0 +1,13 @@
+{
+    "name": "StarRating",
+    "alias": "starrating",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\StarRating\\Providers\\StarRatingServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

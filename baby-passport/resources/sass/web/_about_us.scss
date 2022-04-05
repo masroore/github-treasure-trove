@@ -1,0 +1,129 @@
+.about-container {
+
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: initial;
+  background-image: url("../../img/miscellaneous/doctores.jpg");
+
+
+
+  @include media-breakpoint-down(md) {
+    padding: 1.5rem;
+  }
+
+  @include media-breakpoint-up(md) {
+    padding: 3rem;
+  }
+
+  @include media-breakpoint-up(lg) {
+    padding: 6rem;
+  }
+
+
+}
+
+
+.steps {
+  .step-number {
+    height: 5rem;
+    width: 5rem;
+    line-height: 5rem;
+    margin: 0 auto;
+  }
+}
+
+
+.about-cta-container {
+  background-color: lighten(theme-color('lola'), 25);
+  
+}
+
+/*lineamiento*/
+
+.justify-copy{
+hyphens: auto;
+}
+
+
+
+/* Flip cards*/
+
+
+
+@include media-breakpoint-up(xs) {
+
+  .flip-card {
+    background-color: transparent;
+    width: 315px;
+    height: 370px;
+    perspective: 1000px;
+    }
+
+  
+  }
+  
+  @include media-breakpoint-up(sm) {
+  
+    .flip-card {
+      background-color: transparent;
+      width: 360px;
+      height: 330px;
+      perspective: 1000px;
+      }
+   
+  }
+  
+  @include media-breakpoint-up(md) {
+    .flip-card {
+      background-color: transparent;
+      width: 360px;
+      height: 330px;
+      perspective: 1000px;
+      }
+    
+  }
+  
+  
+  @include media-breakpoint-up(xl) {
+    .flip-card {
+      background-color: transparent;
+      width: 360px;
+      height: 330px;
+      perspective: 1000px;
+      }
+  }
+
+
+  
+  .flip-card-inner {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	transition: transform 0.6s;
+	transform-style: preserve-3d;
+	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  }
+  
+  .flip-card:hover .flip-card-inner {
+	transform: rotateY(180deg);
+  }
+  
+  .flip-card-front, .flip-card-back {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+  }
+  
+  .flip-card-front {
+	background-color: #bbb;
+	color: black;
+  }
+  
+  .flip-card-back {
+	background-color: #2980b9;
+	color: white;
+	transform: rotateY(180deg);
+  }

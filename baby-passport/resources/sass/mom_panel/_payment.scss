@@ -1,0 +1,18 @@
+.payment-card {
+
+  border: none;
+
+  .card-header {
+    background-color: theme-color("light");
+    color: theme-color("ce-soir");
+    border-top-left-radius: 2rem;
+    border-top-right-radius: 2rem;
+  }
+
+  .card-body {
+    background: rgba(theme-color("light"), .4);
+    border-bottom-left-radius: 2rem;
+    border-bottom-right-radius: 2rem;
+  }
+
+}

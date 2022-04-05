@@ -1,0 +1,30 @@
+@import "../config/_custom-variables";
+@import "~bootstrap/scss/bootstrap";
+@import "~mdbootstrap/scss/mdb";
+@import "~parsleyjs/src/parsley.css";
+@import "~animate.css/animate.min.css";
+@import "~fullcalendar/dist/fullcalendar.css";
+@import "~smartwizard/dist/css/smart_wizard.min.css";
+@import "~smartwizard/dist/css/smart_wizard_theme_circles.min.css";
+@import "~bootstrap-select/dist/css/bootstrap-select";
+//CONFIG
+@import "../config/general";
+@import "../common/spacing";
+@import "../common/font_sizing";
+@import "../common/navbar";
+@import "../common/footer";
+@import "register";
+@import "index";
+@import "about_us";
+@import "how_to_win";
+@import "im_mom";
+@import "im_doctor";
+@import "city";
+@import "doctor_subscription";
+@import "hospital_profile";
+@import "atention-center";
+@import "blog";
+@import "faqs";
+@import "terms";
+@import "../mom_panel/payment";
+

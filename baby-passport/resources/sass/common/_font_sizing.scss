@@ -1,0 +1,97 @@
+
+//HEADERS FONT SIZE MEDIA BREAKPOINTS
+@mixin headers-size-between($from, $to, $value) {
+    @include media-breakpoint-between($from, $to) {
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-size: $value !important;
+        }
+    }
+}
+
+@mixin headers-size-only($from, $value) {
+    @include media-breakpoint-only($from) {
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-size: $value !important;
+        }
+    }
+}
+
+@mixin headers-size-up($from, $value) {
+    @include media-breakpoint-up($from) {
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-size: $value !important;
+        }
+    }
+}
+
+@mixin headers-size-down($from, $value) {
+    @include media-breakpoint-down($from) {
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-size: $value !important;
+        }
+    }
+}
+
+
+//PARAGRAPH FONT SIZE
+
+//HEADERS FONT SIZE MEDIA BREAKPOINTS
+@mixin paragraph-size-between($from, $to, $value) {
+    @include media-breakpoint-between($from, $to) {
+        p {
+            font-size: $value !important;
+            line-height: $value+.25rem;
+        }
+    }
+}
+
+@mixin paragraph-size-only($from, $value) {
+    @include media-breakpoint-only($from) {
+        p {
+            font-size: $value !important;
+            line-height: $value+.25rem;
+
+        }
+    }
+}
+
+@mixin paragraph-size-up($from, $value) {
+    @include media-breakpoint-up($from) {
+        p {
+            font-size: $value !important;
+            line-height: $value+.25rem;
+
+        }
+    }
+}
+
+@mixin paragraph-size-down($from, $value) {
+    @include media-breakpoint-down($from) {
+        p {
+            font-size: $value !important;
+            line-height: $value+.25rem;
+
+        }
+    }
+}
+

@@ -1,0 +1,20 @@
+.register {
+  background-size: cover;
+  background-position: center;
+  padding: 160px 0 180px 0;
+
+
+  input:-webkit-autofill {
+    background-color: transparent !important;
+  }
+
+  .md-form {
+    input {
+      border-bottom: 1px solid theme-color('ce-soir') !important;
+
+      &:focus {
+        border-bottom: 1px solid darken(theme-color('ce-soir'), 10) !important;
+      }
+    }
+  }
+}

@@ -1,0 +1,211 @@
+@page {
+  margin: 2rem;
+}
+
+
+
+@font-face {
+  font-family: "Roboto";
+  src: url("fonts/Roboto-Bold.ttf");
+}
+
+
+* {
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+
+  h1, h2, h3, h4, h5, p {
+    margin: 0 !important;
+  }
+
+}
+
+body {
+
+  margin-top: 220px;
+  margin-bottom: 130px;
+
+
+  header {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    height: 50px;
+
+    /** Extra personal styles **/
+    height: 190px;
+    border-bottom: 2px solid #9a7aa0;
+
+
+    .logo-header {
+      height: 5rem;
+    }
+
+  }
+
+
+  footer {
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    height: 100px;
+
+    border-top: 2px solid #9a7aa0;
+
+    .logo {
+      height: 30px;
+    }
+  }
+
+  .page-break {
+    page-break-after: always;
+  }
+
+
+  //--FORMATTING----
+  table {
+    width: 100%;
+
+    td {
+      //border: 1px solid;
+    }
+  }
+
+
+  h1, h2, h3, h4, h5 {
+    font-family: "Roboto", sans-serif;
+    color: #9a7aa0;
+  }
+
+
+  color: #98989a;
+  font-family: "Roboto", Arial, Helvetica, sans-serif;
+
+
+  //----END FORMATTING----
+
+
+  //----WIDTH ----
+  .w-15 {
+    width: 15%;
+  }
+
+  .w-25 {
+    width: 25%;
+  }
+
+  .w-50 {
+    width: 50%;
+  }
+
+  .w-75 {
+    width: 75%;
+  }
+
+  .w-85 {
+    width: 85%;
+  }
+
+
+  //----WIDTH----
+
+  //----DISPLAY----
+
+  .d-inline {
+    display: inline-block !important;
+  }
+
+  .d-block {
+    display: block !important;
+
+  }
+
+  //----END DISPLAY----
+
+
+  //----SPACING -----
+
+  .mx-auto {
+    margin: 0 auto !important;
+  }
+
+
+  .mt-1 {
+    margin-top: 0.375rem !important;
+  }
+
+  .mt-2 {
+    margin-top: 0.5rem !important;
+  }
+
+  .mt-3 {
+    margin-top: 0.75rem !important;
+  }
+
+  .mt-4 {
+    margin-top: 0.875rem !important;
+  }
+
+  .mt-5 {
+    margin-top: 1rem !important;
+  }
+
+  .mb-5 {
+    margin-bottom: 1rem !important;
+  }
+
+  .py-1 {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+  }
+
+  .px-3 {
+    padding-right: 0.75rem;
+    padding-left: 0.75rem;
+  }
+
+
+  //---- END SPACING----
+
+
+  //----TEXT----
+  .text-ce-soir {
+    color: #9a7aa0;
+  }
+
+  .text-grey-suit {
+    color: #98989a;
+  }
+
+  .text-dark {
+    color: #000;
+  }
+
+
+  .text-center {
+    text-align: center;
+  }
+
+  .text-left {
+    text-align: left;
+  }
+
+  .text-right {
+    text-align: right;
+  }
+
+
+  .font-weight-normal {
+    font-weight: normal;
+  }
+
+  //---- END TEXT----
+
+
+  .border-bottom {
+    border-bottom: 1px solid #98989a;
+  }
+}

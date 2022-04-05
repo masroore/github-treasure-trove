@@ -1,0 +1,12 @@
+.win-container {
+  padding: 120px 0;
+  background-color: lighten(theme-color('ice-cold'), 15);
+  z-index: -1;
+}
+
+
+.win-form {
+  margin-top: -100px;
+  background: #ffffff;
+  border-radius: 10px;
+}

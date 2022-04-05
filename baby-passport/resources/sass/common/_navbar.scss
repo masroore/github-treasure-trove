@@ -1,0 +1,42 @@
+header {
+
+  /*---- CURVED BOTTOM NAVBAR ----*/
+  background: #fff;
+  @include media-breakpoint-up(md) {
+    border: 1em; 
+    border-bottom-left-radius: 4rem;
+    border-bottom-right-radius: 4rem;
+    background-color: rgba(248,249,250,.9);
+  }
+
+  .navbar {
+    box-shadow: none !important;
+
+
+    .nav-item {
+      //--- CHANGE NAV LINK STYLE ----
+      .nav-link {
+        font-size: 1rem;
+        font-weight: bold;
+        font-family: "Campton", Arial, Helvetica, sans-serif !important;
+        margin: 0 0.8rem;
+        
+        @include media-breakpoint-up(md) {
+          padding: 1.5rem 0.25rem;
+        }
+      }
+
+      //---- SET BOTTOM BORDER TO ACTIVE MENU-----
+      &.active {
+        .nav-link {
+          background: none !important;
+          border-bottom: 4px solid theme-color('ce-soir');
+        }
+      }
+
+
+    }
+
+
+  }
+}

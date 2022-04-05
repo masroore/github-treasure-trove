@@ -1,0 +1,33 @@
+// Body
+$body-bg: #fff;
+
+
+$theme-colors: (
+        "spray": #78ded4,
+        "ice-cold": #a4dfd5,
+        "ce-soir": #9a7aa0,
+        "lola": #b2a4b8,
+        "mandys-pink": #f3be9a,
+        "desert-sand": #efd0b8,
+        "provincial-pink": #f3dcce,
+        "grey-suit": #98989a,
+        "selective-yellow": #feb100,
+        "whatsapp": #00bd3e,
+        "blue-call": #2196f3
+ 
+);
+
+
+$pink-base:       #f3be9a !default;
+$blue-base:       #78ded4 !default;
+
+$enable-shadows: true;
+$enable-gradients: false;
+
+$custom-file-text: (
+        en: "Browse",
+        es: "Buscar archivo"
+);
+
+
+$roboto-font-path: "../../fonts/" !default;

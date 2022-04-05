@@ -1,0 +1,96 @@
+<?php
+
+namespace Modules\StarRating\Providers;
+
+use Config;
+use Illuminate\Database\Eloquent\Factory;
+use Illuminate\Support\ServiceProvider;
+
+class StarRatingServiceProvider extends ServiceProvider
+{
+    /**
+     * Boot the application events.
+     */
+    public function boot(): void
+    {
+        $this->registerTranslations();
+        $this->registerConfig();
+        $this->registerViews();
+        $this->registerFactories();
+        $this->loadMigrationsFrom(module_path('StarRating', 'Database/Migrations'));
+    }
+
+    /**
+     * Register the service provider.
+     */
+    public function register(): void
+    {
+        $this->app->register(RouteServiceProvider::class);
+    }
+
+    /**
+     * Register config.
+     */
+    protected function registerConfig(): void
+    {
+        $this->publishes([
+            module_path('StarRating', 'Config/config.php') => config_path('starrating.php'),
+        ], 'config');
+        $this->mergeConfigFrom(
+            module_path('StarRating', 'Config/config.php'),
+            'starrating'
+        );
+    }
+
+    /**
+     * Register views.
+     */
+    public function registerViews(): void
+    {
+        $viewPath = resource_path('views/modules/starrating');
+
+        $sourcePath = module_path('StarRating', 'Resources/views');
+
+        $this->publishes([
+            $sourcePath => $viewPath,
+        ], 'views');
+
+        $this->loadViewsFrom(array_merge(array_map(function ($path) {
+            return $path . '/modules/starrating';
+        }, Config::get('view.paths')), [$sourcePath]), 'starrating');
+    }
+
+    /**
+     * Register translations.
+     */
+    public function registerTranslations(): void
+    {
+        $langPath = resource_path('lang/modules/starrating');
+
+        if (is_dir($langPath)) {
+            $this->loadTranslationsFrom($langPath, 'starrating');
+        } else {
+            $this->loadTranslationsFrom(module_path('StarRating', 'Resources/lang'), 'starrating');
+        }
+    }
+
+    /**
+     * Register an additional directory of factories.
+     */
+    public function registerFactories(): void
+    {
+        if (!app()->environment('production') && $this->app->runningInConsole()) {
+            app(Factory::class)->load(module_path('StarRating', 'Database/factories'));
+        }
+    }
+
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array
+     */
+    public function provides()
+    {
+        return [];
+    }
+}

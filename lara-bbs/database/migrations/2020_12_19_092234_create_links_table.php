@@ -1,0 +1,23 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateLinksTable extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('links', function (Blueprint $table): void {
+            $table->increments('id');
+            $table->string('title')->comment('资源的描述')->index();
+            $table->string('link')->comment('资源的链接')->index();
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('links');
+    }
+}

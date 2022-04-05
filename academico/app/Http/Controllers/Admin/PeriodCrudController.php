@@ -1,0 +1,98 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+// VALIDATION: change the requests to match your own file names if you need form validation
+use App\Models\Period;
+use App\Models\Year;
+use Backpack\CRUD\app\Http\Controllers\CrudController;
+use Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+use Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+use Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+use Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+
+class PeriodCrudController extends CrudController
+{
+    use \Backpack\CRUD\app\Http\Controllers\Operations\FetchOperation;
+    use CreateOperation;
+    use DeleteOperation;
+    use ListOperation;
+    use UpdateOperation;
+
+    public function setup(): void
+    {
+        CRUD::setModel(Period::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/period');
+        CRUD::setEntityNameStrings(__('period'), __('periods'));
+    }
+
+    public function setupListOperation(): void
+    {
+        CRUD::setColumns([
+            [
+                'label' => __('Year'),
+                'type' => 'relationship',
+                'name' => 'year',
+                'attribute' => 'name',
+            ],
+
+            [
+                'label' => __('Name'),
+                'type' => 'text',
+                'name' => 'name',
+            ],
+
+            [
+                'label' => __('Start'),
+                'type' => 'date',
+                'name' => 'start',
+            ],
+
+            [
+                'label' => __('End'),
+                'type' => 'date',
+                'name' => 'end',
+            ],
+        ]);
+    }
+
+    public function setupCreateOperation(): void
+    {
+        CRUD::addFields([
+            [
+                'type' => 'relationship',
+                'name' => 'year_id', // the method on your model that defines the relationship
+                'inline_create' => true, // assumes the URL will be "/admin/category/inline/create"
+            ],
+
+            [
+                'label' => __('Name'),
+                'type' => 'text',
+                'name' => 'name',
+            ],
+
+            [
+                'label' => __('Start'),
+                'type' => 'date',
+                'name' => 'start',
+            ],
+
+            [
+                'label' => __('End'),
+                'type' => 'date',
+                'name' => 'end',
+            ],
+        ]);
+    }
+
+    public function setupUpdateOperation(): void
+    {
+        $this->setupCreateOperation();
+    }
+
+    protected function fetchYear()
+    {
+        return $this->fetch(Year::class);
+    }
+}

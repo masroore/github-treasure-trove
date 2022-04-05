@@ -1,0 +1,354 @@
+<?php
+/**
+ * Zend Framework.
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://framework.zend.com/license/new-bsd
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@zend.com so we can send you a copy immediately.
+ *
+ * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ *
+ * @version    $Id: Activemq.php 24593 2012-01-05 20:35:02Z matthew $
+ */
+
+/**
+ * @see Zend_Queue_Adapter_AdapterAbstract
+ */
+require_once 'Zend/Queue/Adapter/AdapterAbstract.php';
+
+/**
+ * @see Zend_Queue_Adapter_Stomp_Client
+ */
+require_once 'Zend/Queue/Stomp/Client.php';
+
+/**
+ * @see Zend_Queue_Adapter_Stomp_Frame
+ */
+require_once 'Zend/Queue/Stomp/Frame.php';
+
+/**
+ * Class for using Stomp to talk to an Stomp compliant server.
+ *
+ * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ */
+class Zend_Queue_Adapter_Activemq extends Zend_Queue_Adapter_AdapterAbstract
+{
+    const DEFAULT_SCHEME = 'tcp';
+    const DEFAULT_HOST = '127.0.0.1';
+    const DEFAULT_PORT = 61613;
+
+    /**
+     * @var Zend_Queue_Adapter_Stomp_client
+     */
+    private $_client;
+
+    /**
+     * @var array
+     */
+    private $_subscribed = [];
+
+    /**
+     * Constructor.
+     *
+     * @param  Zend_Queue The Zend_Queue object that created this class
+     */
+    public function __construct($options, ?Zend_Queue $queue = null)
+    {
+        parent::__construct($options);
+
+        $options = &$this->_options['driverOptions'];
+        if (!array_key_exists('scheme', $options)) {
+            $options['scheme'] = self::DEFAULT_SCHEME;
+        }
+        if (!array_key_exists('host', $options)) {
+            $options['host'] = self::DEFAULT_HOST;
+        }
+        if (!array_key_exists('port', $options)) {
+            $options['port'] = self::DEFAULT_PORT;
+        }
+
+        if (array_key_exists('stompClient', $options)) {
+            $this->_client = $options['stompClient'];
+        } else {
+            $this->_client = new Zend_Queue_Stomp_Client($options['scheme'], $options['host'], $options['port']);
+        }
+
+        $connect = $this->_client->createFrame();
+
+        // Username and password are optional on some messaging servers
+        // such as Apache's ActiveMQ
+        $connect->setCommand('CONNECT');
+        if (isset($options['username'])) {
+            $connect->setHeader('login', $options['username']);
+            $connect->setHeader('passcode', $options['password']);
+        }
+
+        $response = $this->_client->send($connect)->receive();
+
+        if ((false !== $response)
+            && ($response->getCommand() != 'CONNECTED')
+        ) {
+            require_once 'Zend/Queue/Exception.php';
+
+            throw new Zend_Queue_Exception("Unable to authenticate to '" . $options['scheme'] . '://' . $options['host'] . ':' . $options['port'] . "'");
+        }
+    }
+
+    /**
+     * Close the socket explicitly when destructed.
+     */
+    public function __destruct()
+    {
+        // Gracefully disconnect
+        $frame = $this->_client->createFrame();
+        $frame->setCommand('DISCONNECT');
+        $this->_client->send($frame);
+        $this->_client = null;
+    }
+
+    /**
+     * Create a new queue.
+     *
+     * @param  string  $name    queue name
+     * @param  int $timeout default visibility timeout
+     */
+    public function create($name, $timeout = null): void
+    {
+        require_once 'Zend/Queue/Exception.php';
+
+        throw new Zend_Queue_Exception('create() is not supported in ' . static::class);
+    }
+
+    /**
+     * Delete a queue and all of its messages.
+     *
+     * @param  string $name queue name
+     */
+    public function delete($name): void
+    {
+        require_once 'Zend/Queue/Exception.php';
+
+        throw new Zend_Queue_Exception('delete() is not supported in ' . static::class);
+    }
+
+    /**
+     * Delete a message from the queue.
+     *
+     * Returns true if the message is deleted, false if the deletion is
+     * unsuccessful.
+     *
+     * @return bool
+     */
+    public function deleteMessage(Zend_Queue_Message $message)
+    {
+        $frame = $this->_client->createFrame();
+        $frame->setCommand('ACK');
+        $frame->setHeader('message-id', $message->handle);
+
+        $this->_client->send($frame);
+
+        return true;
+    }
+
+    /**
+     * Get an array of all available queues.
+     */
+    public function getQueues(): void
+    {
+        require_once 'Zend/Queue/Exception.php';
+
+        throw new Zend_Queue_Exception('getQueues() is not supported in this adapter');
+    }
+
+    /**
+     * Checks if the client is subscribed to the queue.
+     *
+     * @return bool
+     */
+    protected function _isSubscribed(Zend_Queue $queue)
+    {
+        return isset($this->_subscribed[$queue->getName()]);
+    }
+
+    /**
+     * Subscribes the client to the queue.
+     */
+    protected function _subscribe(Zend_Queue $queue): void
+    {
+        $frame = $this->_client->createFrame();
+        $frame->setCommand('SUBSCRIBE');
+        $frame->setHeader('destination', $queue->getName());
+        $frame->setHeader('ack', 'client');
+        $this->_client->send($frame);
+        $this->_subscribed[$queue->getName()] = true;
+    }
+
+    /**
+     * Return the first element in the queue.
+     *
+     * @param  int    $maxMessages
+     * @param  int    $timeout
+     * @param  Zend_Queue $queue
+     *
+     * @return Zend_Queue_Message_Iterator
+     */
+    public function receive($maxMessages = null, $timeout = null, ?Zend_Queue $queue = null)
+    {
+        if ($maxMessages === null) {
+            $maxMessages = 1;
+        }
+        if ($timeout === null) {
+            $timeout = self::RECEIVE_TIMEOUT_DEFAULT;
+        }
+        if ($queue === null) {
+            $queue = $this->_queue;
+        }
+
+        // read
+        $data = [];
+
+        // signal that we are reading
+        if (!$this->_isSubscribed($queue)) {
+            $this->_subscribe($queue);
+        }
+
+        if ($maxMessages > 0) {
+            if ($this->_client->canRead()) {
+                for ($i = 0; $i < $maxMessages; ++$i) {
+                    $response = $this->_client->receive();
+
+                    switch ($response->getCommand()) {
+                        case 'MESSAGE':
+                            $datum = [
+                                'message_id' => $response->getHeader('message-id'),
+                                'handle' => $response->getHeader('message-id'),
+                                'body' => $response->getBody(),
+                                'md5' => md5($response->getBody()),
+                            ];
+                            $data[] = $datum;
+
+                            break;
+                        default:
+                            $block = print_r($response, true);
+                            require_once 'Zend/Queue/Exception.php';
+
+                            throw new Zend_Queue_Exception('Invalid response received: ' . $block);
+                    }
+                }
+            }
+        }
+
+        $options = [
+            'queue' => $queue,
+            'data' => $data,
+            'messageClass' => $queue->getMessageClass(),
+        ];
+
+        $classname = $queue->getMessageSetClass();
+
+        if (!class_exists($classname)) {
+            require_once 'Zend/Loader.php';
+            Zend_Loader::loadClass($classname);
+        }
+
+        return new $classname($options);
+    }
+
+    /**
+     * Push an element onto the end of the queue.
+     *
+     * @param  string     $message message to send to the queue
+     * @param  Zend_Queue $queue
+     *
+     * @return Zend_Queue_Message
+     */
+    public function send($message, ?Zend_Queue $queue = null)
+    {
+        if ($queue === null) {
+            $queue = $this->_queue;
+        }
+
+        $frame = $this->_client->createFrame();
+        $frame->setCommand('SEND');
+        $frame->setHeader('destination', $queue->getName());
+        $frame->setHeader('content-length', strlen($message));
+        $frame->setBody((string) $message);
+        $this->_client->send($frame);
+
+        $data = [
+            'message_id' => null,
+            'body' => $message,
+            'md5' => md5($message),
+            'handle' => null,
+        ];
+
+        $options = [
+            'queue' => $queue,
+            'data' => $data,
+        ];
+
+        $classname = $queue->getMessageClass();
+        if (!class_exists($classname)) {
+            require_once 'Zend/Loader.php';
+            Zend_Loader::loadClass($classname);
+        }
+
+        return new $classname($options);
+    }
+
+    /**
+     * Returns the length of the queue.
+     *
+     * @param  Zend_Queue $queue
+     *
+     * @return int
+     */
+    public function count(?Zend_Queue $queue = null)
+    {
+        require_once 'Zend/Queue/Exception.php';
+
+        throw new Zend_Queue_Exception('count() is not supported in this adapter');
+    }
+
+    /**
+     * Does a queue already exist?
+     *
+     * @param  string $name
+     *
+     * @return bool
+     */
+    public function isExists($name)
+    {
+        require_once 'Zend/Queue/Exception.php';
+
+        throw new Zend_Queue_Exception('isExists() is not supported in this adapter');
+    }
+
+    /**
+     * Return a list of queue capabilities functions.
+     *
+     * $array['function name'] = true or false
+     * true is supported, false is not supported.
+     *
+     * @return array
+     */
+    public function getCapabilities()
+    {
+        return [
+            'create' => false,
+            'delete' => false,
+            'send' => true,
+            'receive' => true,
+            'deleteMessage' => true,
+            'getQueues' => false,
+            'count' => false,
+            'isExists' => false,
+        ];
+    }
+}

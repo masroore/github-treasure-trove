@@ -1,0 +1,58 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateEnrollmentsTable extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('enrollment_status_types', function (Blueprint $table): void {
+            $table->increments('id');
+            $table->text('name');
+        });
+
+        Schema::create('enrollments', function (Blueprint $table): void {
+            $table->increments('id');
+            $table->integer('student_id')->unsigned();
+            $table->integer('responsible_id')->unsigned()->nullable();
+            $table->integer('course_id')->unsigned();
+            $table->integer('status_id')->unsigned()->default(1);
+            $table->integer('parent_id')->nullable()->unsigned();
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
+        Schema::table('enrollments', function (Blueprint $table): void {
+            $table->foreign('student_id')
+                ->references('id')->on('students')
+                ->onDelete('cascade');
+
+            $table->foreign('responsible_id')
+                ->references('id')->on('users')
+                ->onDelete('restrict');
+
+            $table->foreign('course_id')
+                ->references('id')->on('courses')
+                ->onDelete('restrict');
+
+            $table->foreign('parent_id')
+                ->references('id')->on('enrollments')
+                ->onDelete('cascade');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::disableForeignKeyConstraints();
+        Schema::dropIfExists('enrollments');
+        Schema::dropIfExists('enrollment_status_types');
+    }
+}

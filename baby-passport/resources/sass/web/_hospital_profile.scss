@@ -1,0 +1,139 @@
+// Within style tags in your html file
+* {
+  box-sizing: border-box;
+}
+
+.grid:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+.grid-sizer,
+.grid-item {
+  width: 33%;
+}
+
+
+.grid-item--width2 {
+  width: 66%;
+
+}
+
+@media (max-width: 575px) {
+  .grid-sizer,
+  .grid-item,
+  .grid-item--width2 {
+    width: 100%;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767px) {
+  .grid-sizer,
+  .grid-item,
+  .grid-item--width2 {
+    width: 50%;
+  }
+}
+
+/* To change the amount of columns on larger devices, uncomment the code below */
+
+/* @media (min-width: 768px) and (max-width: 991px) {
+  .grid-sizer,
+  .grid-item {
+    width: 33.333%;
+  }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  .grid-sizer,
+  .grid-item {
+    width: 25%;
+  }
+}
+@media (min-width: 1200px) {
+  .grid-sizer,
+  .grid-item {
+    width: 20%;
+  }
+} */
+
+.grid-item {
+  float: left;
+}
+
+.grid-item img {
+  display: block;
+  max-width: 100%;
+}
+
+
+.services-list {
+
+  .pricing-card {
+    text-align: center;
+
+    .price {
+      position: relative;
+      padding-top: 3.94rem;
+    }
+
+    .version {
+      box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .16), 0 2px 10px 0 rgba(0, 0, 0, .12);
+      border-radius: .25rem .25rem 0 0;
+      position: absolute;
+      top: 0;
+      width: 100%;
+      padding: 1rem;
+      background-color: rgba(0, 0, 0, .3);
+    }
+
+    .header {
+      box-shadow: 0 5px 11px 0 rgba(0, 0, 0, .18), 0 4px 15px 0 rgba(0, 0, 0, .15);
+
+    }
+
+
+
+    .number {
+      font-size: 3.5rem;
+      padding: 1rem;
+      font-weight: 300;
+
+      &:before {
+        content: "$";
+        position: absolute;
+        font-size: 1.88rem;
+        margin-left: -1.2rem;
+        margin-top: .7rem;
+      }
+
+    }
+
+
+
+    .striped {
+      padding: 1rem;
+
+      ul {
+        list-style-type: none;
+        padding: 0;
+
+        li {
+          border-bottom: 1px solid #eaeaea;
+
+          p {
+            margin: 1rem 0;
+          }
+        }
+      }
+    }
+
+
+  }
+}
+
+
+.schedule-card{
+  position:fixed;
+  top:20px;
+}

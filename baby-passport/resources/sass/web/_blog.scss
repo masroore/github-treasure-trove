@@ -1,0 +1,78 @@
+.blog {
+
+  padding-top: 100px !important;
+
+
+  .blog-card {
+    margin: 0 auto;
+    cursor: pointer;
+    border: none;
+    border-radius: 2rem;
+
+    @include media-breakpoint-down(lg) {
+      width: 100%;
+    }
+
+    @include media-breakpoint-up(xl) {
+      height: 20rem;
+      width: 20rem;
+    }
+
+    .blog-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba(theme-color("ce-soir"), 0.8);
+      overflow: hidden;
+      width: 100%;
+      height: 0%;
+      transition: 0.5s ease;
+      display: flex;
+      flex-flow: column;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      color: white;
+      padding: 0 1.5rem;
+      border-radius: 2rem !important;
+    }
+
+    &:hover {
+      .blog-overlay {
+        height: 100%;
+      }
+    }
+
+    .card-img {
+      height: 100%;
+      border-radius: 2rem !important;
+    }
+
+    .card-img-overlay {
+      top: 50%;
+      left: 0%;
+      transform: translate(0%, -50%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      padding: 0 1rem;
+    }
+  }
+}
+
+.categories {
+  .nav-link {
+    border: 1px solid theme-color("ce-soir");
+    color: theme-color("ce-soir");
+
+    border-radius: 2rem;
+    margin: 0 1rem;
+
+    &.active {
+      background-color: theme-color("ce-soir");
+      color: theme-color("light");
+    }
+  }
+}

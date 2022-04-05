@@ -1,0 +1,13 @@
+{
+    "name": "ClickLog",
+    "alias": "clicklog",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\ClickLog\\Providers\\ClickLogServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

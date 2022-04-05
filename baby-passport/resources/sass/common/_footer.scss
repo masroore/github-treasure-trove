@@ -1,0 +1,35 @@
+footer {
+  z-index: 2;
+
+  .mm-logo {
+    height: 4rem;
+    width: auto;
+  }
+
+  @include media-breakpoint-down(lg) {
+    .marker-logo {
+      height: 3rem;
+      width: auto;
+    }
+
+    .text-logo {
+      height: 1.5rem;
+    }
+  }
+  @include media-breakpoint-up(lg) {
+    .marker-logo {
+      height: 3rem;
+      width: auto;
+    }
+
+    .text-logo {
+      height: 3rem;
+    }
+  }
+
+  .btn .btn-link{
+
+    color: white !important;
+    
+      }
+}

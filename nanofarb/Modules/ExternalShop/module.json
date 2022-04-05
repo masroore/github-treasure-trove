@@ -1,0 +1,13 @@
+{
+    "name": "ExternalShop",
+    "alias": "externalshop",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\ExternalShop\\Providers\\ExternalShopServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

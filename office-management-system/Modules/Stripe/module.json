@@ -1,0 +1,13 @@
+{
+    "name": "Stripe",
+    "alias": "stripe",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\Stripe\\Providers\\StripeServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

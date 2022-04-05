@@ -1,0 +1,28 @@
+{
+    "name": "itspace/externalshop",
+    "description": "",
+    "authors": [
+        {
+            "name": "Fomin Vasyl",
+            "email": "fomvasss@gmail.com"
+        }
+    ],
+    "require": {
+        "fomvasss/laravel-variables": "^2.0|^3.0"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\ExternalShop\\Providers\\ExternalShopServiceProvider"
+            ],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\ExternalShop\\": ""
+        }
+    }
+}

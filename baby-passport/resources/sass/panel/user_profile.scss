@@ -1,0 +1,20 @@
+.profile-tab {
+
+  .nav-item {
+    background: #ffffff;
+    box-shadow: 2px 2px 5px rgba(theme-color('dark'), .5);
+    margin: 0 0.5rem;
+
+    .nav-link {
+      color: theme-color('mandys-pink');
+      font-family: 'Campton', sans-serif;
+      font-size: 1.25rem;
+      border: none;
+
+      &.active {
+        color: #ffffff;
+        background: theme-color('ce-soir');
+      }
+    }
+  }
+}
